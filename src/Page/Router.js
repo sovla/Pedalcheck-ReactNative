@@ -100,7 +100,7 @@ export default function Router() {
     <>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Shop"
+          initialRouteName="Home"
           screenOptions={{
             headerShown: false,
           }}>
