@@ -52,12 +52,7 @@ export default function ProductDetail() {
       <ScrollView>
         <Container alignItems="center" pd="20px 0px">
           <Box width={size.minusPadding} height="200px" mg="0px 0px 20px">
-            <Swiper
-              imageArray={dummyImageArray}
-              width={size.screenWidth - 32}
-              height={200}
-              borderRadius="All"
-            />
+            <Swiper imageArray={dummyImageArray} width={412 - 32} height={200} borderRadius="All" />
           </Box>
           <Box width={size.minusPadding} alignItems="center">
             <DefaultText fontSize={Theme.fontSize.fs15} color={Theme.color.gray}>

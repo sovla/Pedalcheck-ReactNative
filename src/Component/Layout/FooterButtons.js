@@ -18,7 +18,7 @@ import {useNavigation} from '@react-navigation/core';
 export default function FooterButtons({selectMenu}) {
   const navigation = useNavigation();
   const {size} = useSelector(state => state);
-  const boxWidth = `${(size.screenWidth - 32) / 4}px`;
+  const boxWidth = `${(412 - 32) / 4}px`;
   const menuArray = [
     {
       content: '정비소',

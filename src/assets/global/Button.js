@@ -11,7 +11,7 @@ export const Button = styled.View`
   background-color: ${p => p.backgroundColor ?? Theme.color.skyBlue};
 
   width: ${p => pixelChange(p.width) ?? '380px'};
-  height: ${p => pixelHeightChange(p.height) ?? '44px'};
+  height: ${p => pixelChange(p.height) ?? '44px'};
   border: ${p => (p.borderColor ? '1px' : '0px')} solid ${p => p.borderColor ?? 'white'};
 
   border-radius: ${p => p.borderRadius ?? '10px'};
@@ -94,7 +94,7 @@ export const BorderButton = styled.Text`
   border: 1px solid ${Theme.color.skyBlue};
   letter-spacing: -0.45px;
   width: ${p => pixelChange(p.width) ?? '41px'};
-  height: ${p => pixelHeightChange(p.height) ?? '28px'};
+  height: ${p => pixelChange(p.height) ?? '28px'};
   font-size: ${pixelChange(Theme.fontSize.fs15)};
   color: ${p => p.color ?? Theme.color.skyBlue};
   text-align: center;
@@ -110,7 +110,7 @@ export const FooterButton = ({
   rightPress,
 }) => {
   const {size} = useSelector(state => state);
-  const buttonWidth = `${(size.screenWidth - 42) / 2}px`;
+  const buttonWidth = `${(412 - 42) / 2}px`;
   return (
     <PositionBox
       style={{flexDirection: 'row'}}

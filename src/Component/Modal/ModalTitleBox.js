@@ -10,7 +10,7 @@ import {useDispatch} from 'react-redux';
 
 export default function ModalTitleBox({size, title, padding = 64}) {
   const dispatch = useDispatch();
-  const boxWidth = size.screenWidth - padding;
+  const boxWidth = 412 - padding;
   return (
     <RowBox justifyContent="space-between" width={`${boxWidth}px`} height="47px">
       <Text style={{width: '10%'}}></Text>

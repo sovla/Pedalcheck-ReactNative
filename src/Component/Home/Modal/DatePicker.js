@@ -6,6 +6,7 @@ import {LinkWhiteButton} from '@/assets/global/Button';
 import {modalClose} from '@/Store/modalState';
 import {Picker} from 'react-native-wheel-pick';
 import {SetBirthDate} from '@/Store/birthDateState';
+import {getHeightPixel, getPixel} from '@/Util/pixelChange';
 
 export default function BirthDatePicker() {
   const now = new Date();
@@ -29,7 +30,7 @@ export default function BirthDatePicker() {
     });
   };
 
-  const pickerWidth = (size.screenWidth - 100) / 4;
+  const pickerWidth = getPixel((412 - 100) / 4);
   const onPressConfirm = () => {
     dispatch(SetBirthDate({year: birthDate.year, month: birthDate.month, day: birthDate.day}));
     dispatch(modalClose());
@@ -59,35 +60,35 @@ export default function BirthDatePicker() {
       <ModalTitleBox size={size} title="날짜 선택" padding={32} />
       <RowBox mg="15px 0px 30px">
         <Picker
-          style={{backgroundColor: 'white', width: pickerWidth, height: 120}}
+          style={{backgroundColor: 'white', width: pickerWidth, height: getHeightPixel(120)}}
           value={birthDate.year}
           onValueChange={value => ChangeYear(value, 'year')}
           pickerData={year}
-          itemSpace={40}
+          itemSpace={getPixel(40)}
           selectedValue={now.getFullYear()}
         />
         <Picker
-          style={{backgroundColor: 'white', width: pickerWidth, height: 120}}
+          style={{backgroundColor: 'white', width: pickerWidth, height: getHeightPixel(120)}}
           value={birthDate.month}
           onValueChange={value => ChangeYear(value, 'month')}
           pickerData={month}
-          itemSpace={40}
+          itemSpace={getPixel(40)}
           selectedValue={now.getMonth() + 1}
         />
         <Picker
-          style={{backgroundColor: 'white', width: pickerWidth, height: 120}}
+          style={{backgroundColor: 'white', width: pickerWidth, height: getHeightPixel(120)}}
           value={birthDate.day}
           onValueChange={value => ChangeYear(value, 'day')}
           pickerData={day}
-          itemSpace={40}
+          itemSpace={getPixel(40)}
           selectedValue={1}
         />
         <Picker
-          style={{backgroundColor: 'white', width: pickerWidth, height: 120}}
+          style={{backgroundColor: 'white', width: pickerWidth, height: getHeightPixel(120)}}
           value={birthDate}
           onValueChange={() => {}}
           pickerData={['양력', '음력']}
-          itemSpace={40}
+          itemSpace={getPixel(40)}
           selectedValue={now.getFullYear()}
         />
       </RowBox>

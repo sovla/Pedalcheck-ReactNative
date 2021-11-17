@@ -40,7 +40,7 @@ export default function RepairHome() {
   };
   const dummyImageArray = [ShopDummyImage, ShopDummyImage, ShopDummyImage];
   const onScrollSlide = e => {
-    setSelectImage(scrollSlideNumber(e, size.screenWidth - 36));
+    setSelectImage(scrollSlideNumber(e, 412 - 36));
   };
   const sortArray = [
     {

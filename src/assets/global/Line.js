@@ -4,7 +4,7 @@ import Theme from './Theme';
 
 const DefaultLine = styled.View`
   width: 100%;
-  height: ${p => pixelHeightChange(p.height) ?? '1px'};
+  height: ${p => pixelChange(p.height) ?? '1px'};
   bottom: 0px;
   background-color: ${Theme.borderColor.gray};
 `;

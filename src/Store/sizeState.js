@@ -4,7 +4,7 @@ import {Dimensions} from 'react-native';
 const initialState = {
   screenHeight: Dimensions.get('window').height,
   screenWidth: Dimensions.get('window').width,
-  minusPadding: `${Dimensions.get('window').width - 32}px`,
+  minusPadding: `${412 - 32}px`,
 };
 
 export const sizeSlice = createSlice({

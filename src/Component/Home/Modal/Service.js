@@ -7,6 +7,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {LinkButton} from '@/assets/global/Button';
 import {useDispatch, useSelector} from 'react-redux';
 import ModalTitleBox from '../../Modal/ModalTitleBox';
+import {getPixel} from '@/Util/pixelChange';
 
 export default function Service() {
   const size = useSelector(state => state.size);
@@ -17,7 +18,7 @@ export default function Service() {
       <ScrollView
         style={{
           maxHeight: 370,
-          width: size.screenWidth - 64,
+          width: getPixel(412 - 64),
         }}>
         <Box pd="20px" width="100%" backgroundColor={Theme.color.backgroundBlue} borderRadius="5px">
           <DefaultText

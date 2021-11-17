@@ -18,7 +18,7 @@ export default function ThirdParty() {
       <Box
         style={{
           maxHeight: getHeightPixel(350),
-          width: getPixel(size.screenWidth - 64),
+          width: getPixel(412 - 64),
         }}>
         <Box pd="16px" width="100%" backgroundColor={Theme.color.white} borderRadius="5px">
           <DarkText fontSize={Theme.fontSize.fs14} lineHeight="14px">

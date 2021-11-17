@@ -99,7 +99,7 @@ const DefaultInputStyle = styled.TextInput`
   ${p =>
     p.height &&
     css`
-      height: ${pixelHeightChange(p.height)};
+      height: ${pixelChange(p.height)};
     `}
 `;
 const DisabledInputStyle = styled(DefaultInputStyle)`
@@ -120,7 +120,7 @@ const DefaultInputTextStyle = styled.View`
   ${p =>
     p.height &&
     css`
-      height: ${pixelHeightChange(p.height)};
+      height: ${pixelChange(p.height)};
     `}
 `;
 

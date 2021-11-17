@@ -8,7 +8,7 @@ export const DefaultText = styled.Text`
   color: ${p => p.color ?? Theme.color.white};
   font-size: ${p => pixelChange(p.fontSize) ?? Theme.fontSize.fs16};
   width: ${p => pixelChange(p.width) ?? 'auto'};
-  height: ${p => pixelHeightChange(p.height) ?? 'auto'};
+  height: ${p => pixelChange(p.height) ?? 'auto'};
   letter-spacing: -0.84px;
   padding: ${p => pixelChange(p.pd) ?? '0px'};
   margin: ${p => pixelChange(p.mg) ?? '0px'};

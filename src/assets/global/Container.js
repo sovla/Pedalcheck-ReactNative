@@ -11,7 +11,7 @@ export const Container = styled.View`
   padding: ${p => pixelChange(p.pd) ?? '0px'};
   margin: ${p => pixelChange(p.mg) ?? '0px'};
   width: ${p => pixelChange(p.width) ?? 'auto'};
-  height: ${p => pixelHeightChange(p.height) ?? 'auto'};
+  height: ${p => pixelChange(p.height) ?? 'auto'};
 
   background-color: ${p => p.backgroundColor ?? Theme.color.white};
   z-index: ${p => p.zIndex ?? 0};
@@ -24,7 +24,7 @@ export const Container = styled.View`
   ${p =>
     p.minHeight &&
     css`
-      min-height: ${pixelHeightChange(p.minHeight)};
+      min-height: ${pixelChange(p.minHeight)};
     `};
   ${p =>
     p.flex &&
@@ -61,7 +61,7 @@ export const Box = styled.View`
   ${p =>
     p.minHeight &&
     css`
-      min-height: ${pixelHeightChange(p.minHeight)};
+      min-height: ${pixelChange(p.minHeight)};
     `};
 `;
 
