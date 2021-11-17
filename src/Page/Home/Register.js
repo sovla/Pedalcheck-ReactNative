@@ -1,5 +1,5 @@
 import {LinkButton} from '@/assets/global/Button';
-import {Box, Container, PositionBox} from '@/assets/global/Container';
+import {Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
 import DefaultLine from '@/assets/global/Line';
 import {DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
@@ -63,8 +63,8 @@ export default function Register({navigation}) {
   return (
     <>
       <Header title="회원가입" navigation={navigation}></Header>
-      <Container mg="0px 16px 30px">
-        <Box width={size.minusPadding} alignItems="center" mg="20px 0px">
+      <Container pd="0px 16px 30px">
+        <Box width={size.screenWidth} mg="20px 0px" alignItems="center">
           <DefaultText
             color={Theme.color.black}
             fontSize={Theme.fontSize.fs18}
@@ -113,8 +113,9 @@ export default function Register({navigation}) {
           </DefaultText>
         </Box>
 
-        <PositionBox bottom="0px">
+        <PositionBox bottom="20px" left="16px">
           <LinkButton
+            width={size.minusPadding}
             to={() => {
               navigation.navigate('RegisterInformation');
             }}

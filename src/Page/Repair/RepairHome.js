@@ -164,7 +164,11 @@ export default function RepairHome() {
           />
           <Box>
             <Box height="200px">
-              <ScrollView horizontal pagingEnabled onMomentumScrollEnd={onScrollSlide}>
+              <ScrollView
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                onMomentumScrollEnd={onScrollSlide}>
                 {dummyImageArray.map((item, index) => (
                   <DefaultImage
                     key={`image_${index}`}

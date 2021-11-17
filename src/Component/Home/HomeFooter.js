@@ -8,9 +8,8 @@ import {AppleImage, GoogleImage, KakaoImage, NaverImage} from './Icon/Icon';
 
 export default function HomeFooter({navigation, isShowLogin = true}) {
   const size = useSelector(state => state.size);
-
   return (
-    <PositionBox alignItems="center" bottom="0px" width={size.minusPadding}>
+    <PositionBox alignItems="center" bottom="0px" width="100%">
       <Box pd="16px">
         <TextLinkButton
           to={() => navigation.navigate('Register')}
@@ -42,7 +41,7 @@ export default function HomeFooter({navigation, isShowLogin = true}) {
           content="둘러보기"
           backgroundColor={Theme.color.white}
           color={Theme.color.black}
-          width={size.minusPadding}
+          width={'380px'}
           height="44px"
           borderColor={Theme.borderColor.gray}
         />

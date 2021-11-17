@@ -25,5 +25,30 @@ export default function pixelChange(px) {
 }
 
 export function getPixel(px) {
-  return (px * 412) / Dimensions.get('window').width;
+  return (px * Dimensions.get('window').width) / 412;
+}
+
+export function pixelHeightChange(px) {
+  let result = '';
+  if (typeof px === 'string') {
+    if (px === 'auto' || px.includes('%')) {
+      return px;
+    }
+    const pxSplit = px.split('px');
+
+    for (const item of pxSplit) {
+      if (item !== '') {
+        result += getHeightPixel(parseInt(item)) + 'px ';
+      }
+    }
+    return result;
+  } else if (px === undefined) {
+    return px;
+  } else {
+    return getHeightPixel(px) + 'px';
+  }
+}
+
+export function getHeightPixel(px) {
+  return (px * Dimensions.get('window').height) / 734;
 }

@@ -1,4 +1,4 @@
-import pixelChange from '@/Util/pixelChange';
+import pixelChange, {pixelHeightChange} from '@/Util/pixelChange';
 import React from 'react';
 import {TextInput, TouchableOpacity} from 'react-native';
 import styled, {css} from 'styled-components/native';
@@ -99,7 +99,7 @@ const DefaultInputStyle = styled.TextInput`
   ${p =>
     p.height &&
     css`
-      height: ${pixelChange(p.height)};
+      height: ${pixelHeightChange(p.height)};
     `}
 `;
 const DisabledInputStyle = styled(DefaultInputStyle)`
@@ -120,7 +120,7 @@ const DefaultInputTextStyle = styled.View`
   ${p =>
     p.height &&
     css`
-      height: ${pixelChange(p.height)};
+      height: ${pixelHeightChange(p.height)};
     `}
 `;
 

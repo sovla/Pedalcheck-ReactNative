@@ -41,7 +41,11 @@ export default function Login({navigation}) {
           />
         </Box>
         <Box mg="5px 0px 0px">
-          <LinkButton to={onClickLogin} content="로그인"></LinkButton>
+          <LinkButton
+            to={onClickLogin}
+            content="로그인"
+            width={size.minusPadding}
+            height="44px"></LinkButton>
         </Box>
       </Box>
       <HomeFooter navigation={navigation} isShowLogin={false} />

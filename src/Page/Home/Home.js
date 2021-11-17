@@ -8,7 +8,10 @@ import {useSelector} from 'react-redux';
 
 export default function Home({navigation}) {
   const {size} = useSelector(state => state);
-
+  console.log(size.screenWidth, 'Screen');
+  console.log(size.minusPadding, 'Button');
+  console.log(pixelChange(size.screenWidth), 'Change');
+  console.log(pixelChange(size.minusPadding), 'Change');
   return (
     <Container mg="70px 16px 30px">
       <LogoBox />

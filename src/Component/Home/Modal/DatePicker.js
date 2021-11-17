@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import ModalTitleBox from '../../Modal/ModalTitleBox';
 import {LinkWhiteButton} from '@/assets/global/Button';
 import {modalClose} from '@/Store/modalState';
-// import {Picker} from 'react-native-wheel-pick';
+import {Picker} from 'react-native-wheel-pick';
 import {SetBirthDate} from '@/Store/birthDateState';
 
 export default function BirthDatePicker() {
@@ -58,7 +58,7 @@ export default function BirthDatePicker() {
     <>
       <ModalTitleBox size={size} title="날짜 선택" padding={32} />
       <RowBox mg="15px 0px 30px">
-        {/* <Picker
+        <Picker
           style={{backgroundColor: 'white', width: pickerWidth, height: 120}}
           value={birthDate.year}
           onValueChange={value => ChangeYear(value, 'year')}
@@ -89,7 +89,7 @@ export default function BirthDatePicker() {
           pickerData={['양력', '음력']}
           itemSpace={40}
           selectedValue={now.getFullYear()}
-        /> */}
+        />
       </RowBox>
       <LinkWhiteButton content="확인" to={onPressConfirm} />
     </>

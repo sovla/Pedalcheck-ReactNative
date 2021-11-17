@@ -13,7 +13,6 @@ import {Dimensions} from 'react-native';
 
 export default function ShopIntroduction() {
   const {size} = useSelector(state => state);
-  console.log(Dimensions.get('window').width);
   const shopInfo = [
     {
       image: LocationIcon,
@@ -33,7 +32,6 @@ export default function ShopIntroduction() {
   ];
   const shopDetailContent =
     '매장 소개 영역입니다. 매장 소개 영역입니다. 매장 소개 영역입니다. 매장 소개 영역입니다. 매장 소개 영역입니다. 매장 소개 영역입니다. 매장 소개 영역입니다. 매장 소개 영역입니다. 매장 소개 영역입니다. 매장 소개 영역입니다. 매장 소개 영역입니다. 매장 소개 영역입니다. 매장 소개 영역입니다. 매장 소개 영역입니다. 매장 소개 영역입니다.';
-  console.log(size.minusPadding, size.screenWidth);
   return (
     <Container pd="20px 16px">
       {shopInfo.map(item => {

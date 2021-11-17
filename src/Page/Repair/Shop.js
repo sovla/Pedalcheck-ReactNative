@@ -1,5 +1,5 @@
 import {Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
-import {getPixel} from '@/Util/pixelChange';
+import {getHeightPixel, getPixel} from '@/Util/pixelChange';
 import React, {useState} from 'react';
 import {Dimensions, ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     height: screenHeight - getPixel(50),
   },
   swiper: {
-    height: getPixel(250),
+    height: getHeightPixel(250),
     width: screenWidth,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,

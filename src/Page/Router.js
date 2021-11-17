@@ -63,12 +63,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import ModalBasic from '@/Component/Modal/ModalBasic';
 import {initSetting} from '@/Store/sizeState';
 import ProductDetail from './Repair/ProductDetail';
+import {getPixel} from '@/Util/pixelChange';
 
 const Stack = createNativeStackNavigator();
 
 const withScrollView = WrappedComponent => {
-  const size = useSelector(state => state.size);
-
   return props => {
     return (
       <SafeAreaView style={{flex: 1}}>
@@ -83,14 +82,14 @@ const withScrollView = WrappedComponent => {
 export default function Router() {
   const dispatch = useDispatch();
   const {height, width} = useWindowDimensions();
-  console.log(width, 'width');
   const modalState = useSelector(state => state.modal);
+
   useEffect(() => {
     dispatch(
       initSetting({
-        screenWidth: width,
+        screenWidth: Dimensions.get('window').width,
         screenHeight: height, // Height 값으로 변경해주기 837.71428
-        minusPadding: `${width - 32}px`,
+        minusPadding: `380px`,
       }),
     );
 

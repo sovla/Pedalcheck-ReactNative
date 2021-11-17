@@ -1,14 +1,14 @@
 import styled, {css} from 'styled-components/native';
 import Theme from './Theme';
 import React from 'react';
-import pixelChange from '@/Util/pixelChange';
+import pixelChange, {pixelHeightChange} from '@/Util/pixelChange';
 import numberFormat from '@/Util/numberFormat';
 
 export const DefaultText = styled.Text`
   color: ${p => p.color ?? Theme.color.white};
   font-size: ${p => pixelChange(p.fontSize) ?? Theme.fontSize.fs16};
   width: ${p => pixelChange(p.width) ?? 'auto'};
-  height: ${p => pixelChange(p.height) ?? 'auto'};
+  height: ${p => pixelHeightChange(p.height) ?? 'auto'};
   letter-spacing: -0.84px;
   padding: ${p => pixelChange(p.pd) ?? '0px'};
   margin: ${p => pixelChange(p.mg) ?? '0px'};
@@ -26,7 +26,7 @@ export const DefaultText = styled.Text`
     ${p =>
     p.lineHeight &&
     css`
-      line-height: ${pixelChange(p.lineHeight)};
+      line-height: ${p.lineHeight};
     `}
     ${p =>
     p.textAlign &&

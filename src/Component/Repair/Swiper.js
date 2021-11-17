@@ -2,7 +2,7 @@ import {Box, PositionBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import {DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
-import {getPixel} from '@/Util/pixelChange';
+import {getHeightPixel, getPixel} from '@/Util/pixelChange';
 import React, {useState} from 'react';
 import ArrowLeft from '@assets/image/slide_l.png';
 import ArrowRight from '@assets/image/slide_r.png';
@@ -31,10 +31,11 @@ export default function Swiper({imageArray, width, height, borderRadius = 'Botto
       <ScrollView
         horizontal
         pagingEnabled
+        showsHorizontalScrollIndicator={false}
         style={[
           borderRadiusStyle,
           {
-            height: getPixel(height),
+            height: getHeightPixel(height),
             width: width,
           },
         ]}
@@ -44,7 +45,7 @@ export default function Swiper({imageArray, width, height, borderRadius = 'Botto
             style={[
               borderRadiusStyle,
               {
-                height: getPixel(height),
+                height: getHeightPixel(height),
                 width: width,
               },
             ]}
