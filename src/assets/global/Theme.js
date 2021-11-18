@@ -17,6 +17,8 @@ const Theme = {
   },
   borderColor: {
     gray: '#E5E5E5',
+    whiteGray: '#0054751F',
+    whiteLine: '#F8F8F8',
   },
   fontSize: {
     fs28: '28px',
@@ -30,7 +32,7 @@ const Theme = {
   },
   fontWeight: {
     bold: 'bold',
-    midium: 600,
+    medium: 600,
   },
 };
 

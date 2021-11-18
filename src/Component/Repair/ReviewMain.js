@@ -21,7 +21,7 @@ export default function ReviewMain() {
           <DarkBoldText fontSize={Theme.fontSize.fs15}>리뷰</DarkBoldText>
           <DefaultText
             fontSize={Theme.fontSize.fs15}
-            fontWeight={Theme.fontWeight.midium}
+            fontWeight={Theme.fontWeight.medium}
             color={Theme.color.indigo}>
             {numberFormat(12345)}
           </DefaultText>

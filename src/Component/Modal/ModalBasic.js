@@ -70,7 +70,7 @@ export default function ModalBasic() {
           <PositionBox
             style={{borderTopLeftRadius: 15, borderTopRightRadius: 15}}
             backgroundColor={Theme.color.white}
-            minWidth={size.screenWidth}
+            minWidth={size.designWidth}
             minHeight="300px"
             pd="20px 16px"
             bottom="0px"

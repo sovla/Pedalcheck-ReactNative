@@ -58,7 +58,7 @@ export default function ReviewRecord({itemArray, isSelect = true, pd = '20px 10p
             </DefaultText>
             <MoneyText
               money={showItem.price}
-              fontWeight={Theme.fontWeight.midium}
+              fontWeight={Theme.fontWeight.medium}
               color={Theme.color.black}
               mg="0px 7px 0px 0px"
             />

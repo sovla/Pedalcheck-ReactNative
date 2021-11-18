@@ -57,13 +57,14 @@ import DateChange from './ReservationManagement/DateChange';
 import ReservationManagement from './ReservationManagement/ReservationManagement';
 import ReservationManagementDetail from './ReservationManagement/ReservationManagementDetail';
 import RepairHome from './Repair/RepairHome';
-import {Dimensions, SafeAreaView, ScrollView, useWindowDimensions, View} from 'react-native';
+import {SafeAreaView, useWindowDimensions, View} from 'react-native';
 import Theme from '@/assets/global/Theme';
 import {useDispatch, useSelector} from 'react-redux';
 import ModalBasic from '@/Component/Modal/ModalBasic';
 import {initSetting} from '@/Store/sizeState';
 import ProductDetail from './Repair/ProductDetail';
-import {getPixel} from '@/Util/pixelChange';
+
+const INIT_ROUTER_COMPONENT_NAME = 'Shop';
 
 const Stack = createNativeStackNavigator();
 
@@ -87,7 +88,7 @@ export default function Router() {
   useEffect(() => {
     dispatch(
       initSetting({
-        screenWidth: Dimensions.get('window').width,
+        screenWidth: width,
         screenHeight: height, // Height 값으로 변경해주기 837.71428
         minusPadding: `380px`,
       }),
@@ -99,7 +100,7 @@ export default function Router() {
     <>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Home"
+          initialRouteName={INIT_ROUTER_COMPONENT_NAME}
           screenOptions={{
             headerShown: false,
           }}>

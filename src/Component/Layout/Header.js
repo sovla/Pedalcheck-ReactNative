@@ -6,6 +6,7 @@ import Theme from '@/assets/global/Theme';
 import styled from 'styled-components/native';
 import DefaultImage from '@/assets/global/Image';
 import {useNavigation} from '@react-navigation/core';
+import {DarkBoldText} from '@/assets/global/Text';
 
 export default function Header({title}) {
   const navigation = useNavigation();
@@ -15,16 +16,14 @@ export default function Header({title}) {
         <DefaultImage width="17px" height="17px" source={BackArrow} resizeMode="cover" />
       </TouchStyle>
       <Box width="60%" alignItems="center" justifyContent="center">
-        <Text
+        <DarkBoldText
           style={{
             textAlignVertical: 'center',
             height: '100%',
             textAlign: 'center',
-            fontWeight: 'bold',
-            fontSize: 16,
           }}>
           {title}
-        </Text>
+        </DarkBoldText>
       </Box>
       <Line />
     </RowBox>

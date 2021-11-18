@@ -1,15 +1,14 @@
 import {Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
-import {DarkBoldText, DarkText, DefaultText, TitleText} from '@/assets/global/Text';
+import {DarkText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {Dropdown} from 'react-native-element-dropdown';
 import React, {useState} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, View, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import WhiteSpannerIcon from '@assets/image/menu01_top.png';
 import {WhiteInput} from '@assets/global/Input';
 import SearchIcon from '@assets/image/ic_search.png';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import GradientHeader from '@/Component/Layout/GradientHeader';
 import PlusIcon from '@assets/image/ic_plus.png';
 import BorderBottomBox from '@/Component/Repair/BorderBottomBox';
@@ -19,17 +18,17 @@ import ShopDummyImage from '@assets/image/shop_default.png';
 import EmptyDot from '@assets/image/mainsld_b.png';
 import BlackDot from '@assets/image/mainsld_on.png';
 import FooterButtons from '@/Component/Layout/FooterButtons';
-import pixelChange, {getPixel} from '@/Util/pixelChange';
+import {getPixel} from '@/Util/pixelChange';
 import scrollSlideNumber from '@/Util/scrollSlideNumber';
 
 export default function RepairHome() {
   const [selectItem, setSelectItem] = useState('전체보기');
   const [sortSelectItem, setSortSelectItem] = useState('인기순');
-  const [tag, setTag] = useState([]);
+
   const [selectImage, setSelectImage] = useState(0);
   const {size} = useSelector(state => state);
+  const [tag, setTag] = useState([]);
 
-  const tagList = ['픽업', '출장수리', '피팅전문', '카본수리', '중고거래', '광고'];
   const onPressTag = tagName => {
     // By.Junhan tag에 값이 없다면 넣어주고 있다면 제거
     if (tag.find(item => item === tagName)) {
@@ -38,9 +37,10 @@ export default function RepairHome() {
       setTag(prev => [...prev, tagName]);
     }
   };
+  const tagList = ['픽업', '출장수리', '피팅전문', '카본수리', '중고거래', '광고'];
   const dummyImageArray = [ShopDummyImage, ShopDummyImage, ShopDummyImage];
   const onScrollSlide = e => {
-    setSelectImage(scrollSlideNumber(e, 412 - 36));
+    setSelectImage(scrollSlideNumber(e, size.designWidth - 36));
   };
   const sortArray = [
     {

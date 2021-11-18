@@ -18,7 +18,7 @@ export default function ThirdParty() {
       <Box
         style={{
           maxHeight: getHeightPixel(350),
-          width: getPixel(412 - 64),
+          width: getPixel(size.designWidth - 64),
         }}>
         <Box pd="16px" width="100%" backgroundColor={Theme.color.white} borderRadius="5px">
           <DarkText fontSize={Theme.fontSize.fs14} lineHeight="14px">
@@ -39,13 +39,13 @@ export default function ThirdParty() {
           <DarkText fontSize={Theme.fontSize.fs14} lineHeight="14px">
             이용자 식별자, 닉네임, 프로필사진, 이메일
           </DarkText>
-          <DarkTex
+          <DarkText
             fontSize={Theme.fontSize.fs14}
             lineHeight="14px"
             pd={paddingText}
             fontWeight={Theme.fontWeight.bold}>
             필수 제공 항목
-          </DarkTex>
+          </DarkText>
           <DarkText fontSize={Theme.fontSize.fs14} lineHeight="14px">
             휴대폰번호, 이름, 이메일, 정비 자전거 정보, 지역, 대표 자전거 정보, 주행거리
           </DarkText>
@@ -58,7 +58,7 @@ export default function ThirdParty() {
         mg="20px 0px 0px"
         to={() => dispatch(modalClose())}
         content="확인"
-        width={`${size.screenWidth - 64}px`}
+        width={`${size.designWidth - 64}px`}
         color={Theme.color.black}
         borderColor={Theme.borderColor.gray}
         backgroundColor={Theme.color.white}

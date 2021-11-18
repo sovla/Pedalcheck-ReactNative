@@ -6,11 +6,11 @@ import {modalClose} from '@/Store/modalState';
 import React from 'react';
 import {Text, TouchableOpacity} from 'react-native';
 import CloseIcon from '@assets/image/pop_close.png';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 export default function ModalTitleBox({size, title, padding = 64}) {
   const dispatch = useDispatch();
-  const boxWidth = 412 - padding;
+  const boxWidth = size.designWidth - padding;
   return (
     <RowBox justifyContent="space-between" width={`${boxWidth}px`} height="47px">
       <Text style={{width: '10%'}}></Text>

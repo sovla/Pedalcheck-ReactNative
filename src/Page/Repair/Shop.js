@@ -29,7 +29,7 @@ export default function Shop() {
 
   return (
     <Container>
-      <Box height={size.screenHeight - 50}>
+      <Box height={`${size.screenHeight - 50}px`}>
         <ScrollView style={styles.container}>
           <ShopHeader size={size} />
           <RowBox
@@ -37,8 +37,9 @@ export default function Shop() {
             height="46px"
             justifyContent="center"
             alignItems="center"
-            width={size.screenWidth}>
+            width={size.designWidth}>
             {menu.map(item => {
+              // menu Item 매장소개,상품보기,리뷰
               const isSelect = item === selectMenu;
               return (
                 <TouchableOpacity
@@ -77,7 +78,7 @@ const ShopHeader = ({size}) => {
 
   return (
     <>
-      <Swiper imageArray={dummyImageArray} width={size.screenWidth} height={250} />
+      <Swiper imageArray={dummyImageArray} width={size.designWidth} height={250} />
       <ShopComponent
         shopTitle="인천신스"
         likeCount={1995}
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   mainContainer: {
-    height: screenHeight - getPixel(50),
+    height: screenHeight - getHeightPixel(50),
   },
   swiper: {
     height: getHeightPixel(250),

@@ -8,16 +8,21 @@ import {useSelector} from 'react-redux';
 import RepairReservationIcon from '@assets/image/ic_reservation.png';
 import LikeIcon from '@assets/image/good.png';
 import UnLikeIcon from '@assets/image/good_b.png';
+import {useNavigation} from '@react-navigation/core';
 
 export default function FooterButtons({isRepair = false, isLike = false}) {
   const {size} = useSelector(state => state);
+  const navigation = useNavigation();
+  const onPressRepair = () => {
+    navigation.navigate('ReservationProduct');
+  };
   return (
     <PositionBox bottom="0px">
       <RowBox
-        width={size.screenWidth}
+        width={size.designWidth}
         height="50px"
         style={[styles.borderRight, styles.borderLeft]}>
-        <TouchableOpacity style={styles.touchBox}>
+        <TouchableOpacity style={styles.touchBox} onPress={onPressRepair}>
           {isRepair ? ( // 정비예약 가능
             <RowBox
               width="100%"

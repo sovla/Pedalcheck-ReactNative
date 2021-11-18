@@ -65,7 +65,13 @@ export const GrayText = styled(DefaultText)`
   color: ${Theme.color.gray};
 `;
 
+export const IndigoText = styled(DefaultText)`
+  color: ${Theme.color.indigo};
+`;
 export const MoneyText = props => {
+  if (props?.money === undefined && !props.money) {
+    return null;
+  }
   return props.disabled ? (
     <DefaultText
       textDecoration="line-through"

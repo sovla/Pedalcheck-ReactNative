@@ -23,13 +23,14 @@ export default function ProductsShow() {
   return (
     <Container pd="20px 16px">
       {itemArray.map((item, index) => (
-        <Product key={item.title + index} size={size} item={item}></Product>
+        <Product key={item.title + index} item={item}></Product>
       ))}
     </Container>
   );
 }
 
-export const Product = ({size, item}) => {
+export const Product = ({item}) => {
+  const {size} = useSelector(state => state);
   const navigation = useNavigation();
   return (
     <RowBox width={size.minusPadding} mg="0px 0px 15px" justifytContent="space-between">

@@ -30,7 +30,7 @@ export default function BirthDatePicker() {
     });
   };
 
-  const pickerWidth = getPixel((412 - 100) / 4);
+  const pickerWidth = getPixel((size.designWidth - 100) / 4);
   const onPressConfirm = () => {
     dispatch(SetBirthDate({year: birthDate.year, month: birthDate.month, day: birthDate.day}));
     dispatch(modalClose());

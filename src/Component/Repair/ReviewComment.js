@@ -7,7 +7,7 @@ import {View, Text} from 'react-native';
 import ReplyIcon from '@assets/image/ic_reply.png';
 import DefaultImage from '@/assets/global/Image';
 
-export default function ReviewComment({size}) {
+export default function ReviewComment({size, isDetailPage}) {
   return (
     <Container
       pd="10px 10px 10px 44px"
@@ -23,9 +23,9 @@ export default function ReviewComment({size}) {
       </RowBox>
       <RowBox backgroundColor="#0000">
         <DefaultText
-          numberOfLines={3}
+          numberOfLines={isDetailPage ? 50 : 3}
           color={Theme.color.black}
-          width={412 - 32 - 54}
+          width={size.designWidth - 32 - 54}
           fontSize={Theme.fontSize.fs15}
           lineHeight="22px">
           사장님 댓글 삽입 영역 댓글이 길어질 경우 자세히를 터치하여 자세히 보기 할 수 있다. 사장님

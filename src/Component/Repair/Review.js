@@ -6,12 +6,17 @@ import {DarkBoldText, DarkText, DefaultText, MoneyText} from '@/assets/global/Te
 import Theme from '@/assets/global/Theme';
 import ShopDummyImage from '@assets/image/shop_default.png';
 import {useSelector} from 'react-redux';
-import {Text} from 'react-native';
+import {ScrollView, Text} from 'react-native';
 import ReviewComment from './ReviewComment';
 import {LinkWhiteButton} from '@/assets/global/Button';
+import {useNavigation} from '@react-navigation/core';
+import Swiper from './Swiper';
 
-export default function Review({isDetail}) {
+export default function Review({isDetail = false, isDetailPage = false}) {
   const {size} = useSelector(state => state);
+  const navigation = useNavigation();
+  const imageArray = [ShopDummyImage, ShopDummyImage, ShopDummyImage, ShopDummyImage];
+
   return (
     <Container
       pd="20px 0px"
@@ -48,19 +53,31 @@ export default function Review({isDetail}) {
           money={50000}
           color={Theme.color.black}
           fontSize={Theme.fontSize.fs15}
-          fontWeight={Theme.fontWeight.midium}
+          fontWeight={Theme.fontWeight.medium}
         />
       </RowBox>
       <Box mg="15px 0px 0px" borderRadius="10px">
-        <DefaultImage
-          source={ShopDummyImage}
-          borderRadius="10px"
-          width={size.minusPadding}
-          height="150px"
-        />
+        {isDetailPage ? (
+          <Swiper
+            width={size.minusPadding}
+            height={200}
+            imageArray={imageArray}
+            borderRadius="All"
+          />
+        ) : (
+          <DefaultImage
+            source={ShopDummyImage}
+            borderRadius="10px"
+            width={size.minusPadding}
+            height="150px"
+          />
+        )}
       </Box>
       <Box width={size.minusPadding} mg="15px 0px 20px">
-        <DarkText numberOfLines={3} fontSize={Theme.fontSize.fs15} lineHeight="22px">
+        <DarkText
+          numberOfLines={isDetailPage ? 50 : 3}
+          fontSize={Theme.fontSize.fs15}
+          lineHeight="22px">
           회원 작성 리뷰 영역 리뷰가 길어질 경우 자세히를 터치하여 자세히 보기를 할 수 있다. 회원
           작성 리뷰 영역 리뷰가 길어질 경우 자세히를 터치하여 자세히 보기를 할 수 있다. 회원 작성
           리뷰 영역 리뷰가 길어질 경우 자세히를 터치하여 자세히 보기를 할 수 있다. 리뷰 영역 리뷰가
@@ -69,8 +86,15 @@ export default function Review({isDetail}) {
           자세히 보기를 할 수 있다.
         </DarkText>
       </Box>
-      <ReviewComment size={size} />
-      {isDetail && <LinkWhiteButton mg="15px 0px 0px 0px" content="자세히보기" />}
+      <ReviewComment size={size} isDetailPage={isDetailPage} />
+      {isDetail && (
+        <LinkWhiteButton
+          to={() => navigation.navigate('ReviewDetail')}
+          width={size.minusPadding}
+          mg="15px 0px 0px 0px"
+          content="자세히보기"
+        />
+      )}
     </Container>
   );
 }

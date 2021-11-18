@@ -14,7 +14,7 @@ export default function LocationPicker() {
   const modal = useSelector(state => state.modal);
   const size = useSelector(state => state.size);
   const dispatch = useDispatch();
-  const BoxWidth = 412 - 72;
+  const BoxWidth = size.designWidth - 72;
   const isDetail = modal.modalComponent === 'locationPickerDetail';
   const locationArray = isDetail
     ? [

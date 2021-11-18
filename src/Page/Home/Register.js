@@ -64,7 +64,7 @@ export default function Register({navigation}) {
     <>
       <Header title="회원가입" navigation={navigation}></Header>
       <Container pd="0px 16px 30px">
-        <Box width={size.screenWidth} mg="20px 0px" alignItems="center">
+        <Box width={size.designWidth} mg="20px 0px" alignItems="center">
           <DefaultText
             color={Theme.color.black}
             fontSize={Theme.fontSize.fs18}

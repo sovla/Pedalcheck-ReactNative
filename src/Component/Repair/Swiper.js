@@ -7,15 +7,18 @@ import React, {useState} from 'react';
 import ArrowLeft from '@assets/image/slide_l.png';
 import ArrowRight from '@assets/image/slide_r.png';
 import {useSelector} from 'react-redux';
-import {Dimensions, ScrollView, StyleSheet} from 'react-native';
+import {ScrollView} from 'react-native';
 import {numberCheck} from '@/Page/Repair/RepairHome';
 import scrollSlideNumber from '@/Util/scrollSlideNumber';
 
 export default function Swiper({imageArray, width, height, borderRadius = 'Bottom'}) {
+  const transformWidth = typeof width === 'string' ? parseInt(width.split('px')[0]) : width;
+  const transformHieght = typeof height === 'string' ? parseInt(height.split('px')[0]) : height;
   const [imageNumber, setImageNumber] = useState(0);
   const onScrollSlide = e => {
-    setImageNumber(scrollSlideNumber(e, size.screenWidth));
+    setImageNumber(scrollSlideNumber(e, size.designWidth));
   };
+
   const {size} = useSelector(state => state);
   const borderRadiusStyle =
     borderRadius === 'Bottom'
@@ -27,7 +30,7 @@ export default function Swiper({imageArray, width, height, borderRadius = 'Botto
           borderRadius: 10,
         };
   return (
-    <Box width={`${width}px`}>
+    <Box width={`${transformWidth}px`}>
       <ScrollView
         horizontal
         pagingEnabled
@@ -35,24 +38,18 @@ export default function Swiper({imageArray, width, height, borderRadius = 'Botto
         style={[
           borderRadiusStyle,
           {
-            height: getHeightPixel(height),
-            width: width,
+            height: getHeightPixel(transformHieght),
+            width: getPixel(transformWidth),
           },
         ]}
         onMomentumScrollEnd={onScrollSlide}>
         {imageArray.map((item, index) => (
           <DefaultImage
-            style={[
-              borderRadiusStyle,
-              {
-                height: getHeightPixel(height),
-                width: width,
-              },
-            ]}
+            style={[borderRadiusStyle]}
             key={`image_${index}`}
             source={item}
-            width={width}
-            height={height}></DefaultImage>
+            width={transformWidth}
+            height={transformHieght}></DefaultImage>
         ))}
       </ScrollView>
       <PositionBox
@@ -78,7 +75,3 @@ export default function Swiper({imageArray, width, height, borderRadius = 'Botto
     </Box>
   );
 }
-
-const styles = StyleSheet.create({
-  swiper: {},
-});

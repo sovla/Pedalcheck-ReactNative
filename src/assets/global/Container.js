@@ -11,7 +11,7 @@ export const Container = styled.View`
   padding: ${p => pixelChange(p.pd) ?? '0px'};
   margin: ${p => pixelChange(p.mg) ?? '0px'};
   width: ${p => pixelChange(p.width) ?? 'auto'};
-  height: ${p => pixelChange(p.height) ?? 'auto'};
+  height: ${p => p.height ?? 'auto'};
 
   background-color: ${p => p.backgroundColor ?? Theme.color.white};
   z-index: ${p => p.zIndex ?? 0};
@@ -24,12 +24,18 @@ export const Container = styled.View`
   ${p =>
     p.minHeight &&
     css`
-      min-height: ${pixelChange(p.minHeight)};
+      min-height: ${p.minHeight};
     `};
   ${p =>
     p.flex &&
     css`
       flex: ${p.flex};
+    `};
+
+  ${p =>
+    p.flexWrap &&
+    css`
+      flex-wrap: ${p.flexWrap};
     `};
 `;
 export const Box = styled.View`
@@ -62,6 +68,47 @@ export const Box = styled.View`
     p.minHeight &&
     css`
       min-height: ${pixelChange(p.minHeight)};
+    `};
+  ${p =>
+    p.flexWrap &&
+    css`
+      flex-wrap: ${p.flexWrap};
+    `};
+`;
+
+export const ScrollBox = styled.ScrollView`
+  display: flex;
+  padding: ${p => pixelChange(p.pd) ?? '0px'};
+  margin: ${p => pixelChange(p.mg) ?? '0px'};
+
+  background-color: ${p => p.backgroundColor ?? Theme.color.white};
+  z-index: ${p => p.zIndex ?? 0};
+  border-radius: ${p => p.borderRadius ?? 0};
+
+  ${p =>
+    p.width &&
+    css`
+      width: ${pixelChange(p.width)};
+    `};
+  ${p =>
+    p.height &&
+    css`
+      height: ${p.height};
+    `};
+  ${p =>
+    p.minWidth &&
+    css`
+      min-width: ${pixelChange(p.minWidth)};
+    `};
+  ${p =>
+    p.minHeight &&
+    css`
+      min-height: ${pixelChange(p.minHeight)};
+    `};
+  ${p =>
+    p.flexWrap &&
+    css`
+      flex-wrap: ${p.flexWrap};
     `};
 `;
 

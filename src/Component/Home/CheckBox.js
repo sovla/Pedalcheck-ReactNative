@@ -1,7 +1,6 @@
-import {Box, Container, RowBox} from '@/assets/global/Container';
-import {DefaultText} from '@/assets/global/Text';
+import {RowBox} from '@/assets/global/Container';
 import React from 'react';
-import {Image, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import EmptyCheck from '@assets/image/empty_check.png';
 import Checked from '@assets/image/checked.png';
 import DefaultImage from '@/assets/global/Image';
@@ -44,3 +43,12 @@ export default function CheckBox({
     </RowBox>
   );
 }
+
+export const DefaultCheckBox = ({isCheck, setIsCheck}) => {
+  const imageSource = isCheck ? Checked : EmptyCheck;
+  return (
+    <TouchableOpacity onPress={setIsCheck}>
+      <DefaultImage width="24px" height="24px" source={imageSource} />
+    </TouchableOpacity>
+  );
+};

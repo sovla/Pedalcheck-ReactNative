@@ -16,7 +16,10 @@ export default function HomeFooter({navigation, isShowLogin = true}) {
           content="SNS 계정으로 회원가입/로그인"
         />
       </Box>
-      <RowBox justifyContent="space-between" width={`${412 - 100}px`} pd="0px 0px 10px">
+      <RowBox
+        justifyContent="space-between"
+        width={`${size.designWidth - 100}px`}
+        pd="0px 0px 10px">
         <KakaoImage />
         <GoogleImage />
         <NaverImage />

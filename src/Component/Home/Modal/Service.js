@@ -18,7 +18,7 @@ export default function Service() {
       <ScrollView
         style={{
           maxHeight: 370,
-          width: getPixel(412 - 64),
+          width: getPixel(size.designWidth - 64),
         }}>
         <Box pd="20px" width="100%" backgroundColor={Theme.color.backgroundBlue} borderRadius="5px">
           <DefaultText
@@ -55,7 +55,7 @@ export default function Service() {
         mg="20px 0px 0px"
         to={() => dispatch(modalClose())}
         content="확인"
-        width={`${size.screenWidth - 64}px`}
+        width={`${size.designWidth - 64}px`}
         color={Theme.color.black}
         borderColor={Theme.borderColor.gray}
         backgroundColor={Theme.color.white}

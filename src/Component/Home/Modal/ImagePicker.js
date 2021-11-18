@@ -17,7 +17,7 @@ export default function ImagePicker() {
   const modal = useSelector(state => state.modal);
   const size = useSelector(state => state.size);
   const dispatch = useDispatch();
-  const imageWidth = `${(size.screenWidth - 32 - 60) / 4}px`;
+  const imageWidth = `${(size.designWidth - 32 - 60) / 4}px`;
   return (
     <>
       <ModalTitleBox size={size} title="기본 이미지 선택" padding={32} />
