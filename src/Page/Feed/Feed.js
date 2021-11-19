@@ -28,8 +28,8 @@ export default function Feed() {
           ))}
         </Box>
       </ScrollBox>
-      <Box style={ShadowStyle} backgroundColor={Theme.color.backgroundWhiteGray}>
-        <FooterButtons selectMenu={3} />
+      <Box backgroundColor={Theme.color.backgroundWhiteGray}>
+        <FooterButtons selectMenu={3} backgroundColor={Theme.color.backgroundWhiteGray} />
       </Box>
     </Container>
   );

@@ -14,8 +14,9 @@ import {DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
+import {ShadowStyle} from '@/Page/Feed/Feed';
 
-export default function FooterButtons({selectMenu}) {
+export default function FooterButtons({selectMenu, backgroundColor}) {
   const navigation = useNavigation();
   const {size} = useSelector(state => state);
   const boxWidth = `${(size.designWidth - 32) / 4}px`;
@@ -58,7 +59,7 @@ export default function FooterButtons({selectMenu}) {
         },
         shadowOpacity: 1,
         shadowRadius: 5,
-        elevation: 5,
+        elevation: 8,
       }}
       pd="0px 16px">
       {menuArray.map((item, index) => {
@@ -67,7 +68,7 @@ export default function FooterButtons({selectMenu}) {
           <TouchableOpacity key={item.content} onPress={() => navigation.navigate(item.navigate)}>
             <Box
               width={boxWidth}
-              backgroundColor="rgba(0,0,0)"
+              backgroundColor="rgba(0,0,0,0)"
               height="100%"
               justifyContent="flex-end"
               alignItems="center"
