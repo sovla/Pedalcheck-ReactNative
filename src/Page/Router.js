@@ -64,7 +64,7 @@ import ModalBasic from '@/Component/Modal/ModalBasic';
 import {initSetting} from '@/Store/sizeState';
 import ProductDetail from './Repair/ProductDetail';
 
-const INIT_ROUTER_COMPONENT_NAME = 'Shop';
+const INIT_ROUTER_COMPONENT_NAME = 'ReservationRequest';
 
 const Stack = createNativeStackNavigator();
 

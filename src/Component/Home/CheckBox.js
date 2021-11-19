@@ -44,10 +44,17 @@ export default function CheckBox({
   );
 }
 
-export const DefaultCheckBox = ({isCheck, setIsCheck}) => {
-  const imageSource = isCheck ? Checked : EmptyCheck;
+export const DefaultCheckBox = ({isCheck, setIsCheck, isRadio, isDisabled}) => {
+  const divisionImageSource = () => {
+    if (isRadio) {
+      return isCheck ? Radio : EmptyRadio;
+    } else {
+      return isCheck ? Checked : EmptyCheck;
+    }
+  };
+  const imageSource = divisionImageSource();
   return (
-    <TouchableOpacity onPress={setIsCheck}>
+    <TouchableOpacity onPress={setIsCheck} disabled={isDisabled}>
       <DefaultImage width="24px" height="24px" source={imageSource} />
     </TouchableOpacity>
   );

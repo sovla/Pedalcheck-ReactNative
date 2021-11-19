@@ -20,6 +20,7 @@ export const DefaultInput = ({
   PressText,
   isAlignTop,
   multiline,
+
   pd = '0px 10px 5px',
 }) => {
   let RenderCondition = 'Default';

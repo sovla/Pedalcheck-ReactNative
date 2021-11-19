@@ -5,12 +5,12 @@ import Theme from './Theme';
 import {DefaultText} from './Text';
 import {PositionBox} from './Container';
 import {useSelector} from 'react-redux';
-import pixelChange, {pixelHeightChange} from '@/Util/pixelChange';
+import pixelChange from '@/Util/pixelChange';
 
 export const Button = styled.View`
   background-color: ${p => p.backgroundColor ?? Theme.color.skyBlue};
 
-  width: ${p => pixelChange(p.width) ?? '380px'};
+  width: ${p => pixelChange(p.width) ?? pixelChange(380)};
   height: ${p => p.height ?? '44px'};
   border: ${p => (p.borderColor ? '1px' : '0px')} solid ${p => p.borderColor ?? 'white'};
 
@@ -91,7 +91,7 @@ export const TextLinkButton = ({to, content, pd, mg}) => {
 };
 
 export const BorderButton = styled.Text`
-  border: 1px solid ${Theme.color.skyBlue};
+  border: 1px solid ${p => p.borderColor ?? Theme.color.skyBlue};
   letter-spacing: -0.45px;
   width: ${p => pixelChange(p.width) ?? '41px'};
   height: ${p => p.height ?? '28px'};
@@ -110,17 +110,23 @@ export const FooterButton = ({
   rightContent = '등록하기',
   leftPress,
   rightPress,
+  width,
+  buttonWidth,
 }) => {
   const {size} = useSelector(state => state);
-  const buttonWidth = `${(size.designWidth - 42) / 2}px`;
+  const buttonBoxWidth = width ? width : size.minusPadding;
+  const buttonWidthCalc = buttonWidth ? buttonWidth : `${(size.designWidth - 42) / 2}px`;
   return (
     <PositionBox
       style={{flexDirection: 'row'}}
-      width={size.minusPadding}
+      width={buttonBoxWidth}
       bottom="0px"
       justifyContent="space-between">
-      <LinkWhiteButton width={buttonWidth} content={leftContent} to={leftPress}></LinkWhiteButton>
-      <LinkButton width={buttonWidth} content={rightContent} to={rightPress}></LinkButton>
+      <LinkWhiteButton
+        width={buttonWidthCalc}
+        content={leftContent}
+        to={leftPress}></LinkWhiteButton>
+      <LinkButton width={buttonWidthCalc} content={rightContent} to={rightPress}></LinkButton>
     </PositionBox>
   );
 };

@@ -1,4 +1,4 @@
-import {Box, RowBox, ScrollBox} from '@/assets/global/Container';
+import {Box, Container, RowBox, ScrollBox} from '@/assets/global/Container';
 import DefaultLine from '@/assets/global/Line';
 import {DarkBoldText, DarkText, IndigoText, MoneyText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
@@ -13,9 +13,9 @@ import {getPixel} from '@/Util/pixelChange';
 import {useSelector} from 'react-redux';
 import {ScrollView, TouchableOpacity} from 'react-native';
 import {useState} from 'react';
-import {LinkButton} from '@/assets/global/Button';
+import {BorderButton, LinkButton} from '@/assets/global/Button';
 
-export default function ShopReservationProduct() {
+export default function ShopReservationProduct({navigation}) {
   const {size} = useSelector(state => state);
   const [selectProduct, setSelectProduct] = useState([]);
   const item = [
@@ -32,7 +32,6 @@ export default function ShopReservationProduct() {
     {title: '세차', Question: '세차', price: '50000', salePrice: '50000'},
     {title: '세차', Question: '세차', price: '50000'},
   ];
-  console.log(selectProduct);
   const onPressItem = (index, isCargo) => {
     // by.junhan 상위(main) 하위(cargo) 체크박스  선택 방법  (11-18)
     const findItem = selectProduct?.find(item => item.index === index);
@@ -60,37 +59,43 @@ export default function ShopReservationProduct() {
   return (
     <>
       <Header title="정비예약" />
-      <RepairReservationHeader step={1}></RepairReservationHeader>
-      <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
-      <Box mg="0px 16px">
-        <ScrollBox height={`${size.screenHeight}px`}>
-          <DarkBoldText mg="20px 0px 14px">정비 상품</DarkBoldText>
-          {item.map((innerItem, index) => {
-            return (
-              <ReservationProduct
-                item={innerItem}
-                onPressMain={() => {
-                  onPressItem(index, false);
-                }}
-                onPressCargo={() => {
-                  onPressItem(index, true);
-                }}
-                selectItem={selectProduct.find(item => item.index === index)}
+
+      <Box height={`${size.screenHeight - 50}px`}>
+        <ScrollBox>
+          <RepairReservationHeader step={1} />
+          <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
+          <Box mg="0px 16px">
+            <DarkBoldText mg="20px 0px 14px">정비 상품</DarkBoldText>
+            {item.map((innerItem, index) => {
+              return (
+                <ReservationProduct
+                  item={innerItem}
+                  key={innerItem + index}
+                  onPressMain={() => {
+                    onPressItem(index, false);
+                  }}
+                  onPressCargo={() => {
+                    onPressItem(index, true);
+                  }}
+                  selectItem={selectProduct.find(item => item.index === index)}
+                />
+              );
+            })}
+            <DefaultLine />
+            <DarkBoldText mg="20px 0px 15px">결제금액</DarkBoldText>
+            <RowBox justifyContent="space-between" width={size.minusPadding}>
+              <DarkText>가격</DarkText>
+              <MoneyText
+                money={50000}
+                color={Theme.color.black}
+                fontWeight={Theme.fontWeight.bold}
               />
-            );
-          })}
-          <DefaultLine />
-          <DarkBoldText mg="20px 0px 15px">결제금액</DarkBoldText>
-          <RowBox justifyContent="space-between" width={size.minusPadding}>
-            <DarkText>가격</DarkText>
-            <MoneyText money={50000} color={Theme.color.black} fontWeight={Theme.fontWeight.bold} />
-          </RowBox>
-          <RowBox mg="10px 0px 20px" justifyContent="space-between" width={size.minusPadding}>
-            <DarkText>할인</DarkText>
-            <MoneyText money={-3000} color={Theme.color.black} />
-          </RowBox>
-          <DefaultLine />
-          <Box>
+            </RowBox>
+            <RowBox mg="10px 0px 20px" justifyContent="space-between" width={size.minusPadding}>
+              <DarkText>할인</DarkText>
+              <MoneyText money={-3000} color={Theme.color.black} />
+            </RowBox>
+            <DefaultLine />
             <RowBox mg="10px 0px 20px" justifyContent="space-between" width={size.minusPadding}>
               <IndigoText fontSize={Theme.fontSize.fs12} width="225px">
                 서비스에 따라 현장에서 추가금액 또는 차액이 발생할 수 있습니다.
@@ -102,7 +107,14 @@ export default function ShopReservationProduct() {
                 fontWeight={Theme.fontWeight.bold}
               />
             </RowBox>
-            <LinkButton content="다음"></LinkButton>
+            <Box height="44px" mg="0px 0px 20px" width={size.minusPadding}>
+              <LinkButton
+                widht={size.minusPadding}
+                to={() => {
+                  navigation.navigate('ReservationBike');
+                }}
+                content="다음"></LinkButton>
+            </Box>
           </Box>
         </ScrollBox>
       </Box>

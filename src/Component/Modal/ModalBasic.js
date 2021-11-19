@@ -10,6 +10,7 @@ import ImagePicker from '../Home/Modal/ImagePicker';
 import LocationPicker from '../Home/Modal/LocationPicker';
 import Service from '../Home/Modal/Service';
 import ThirdParty from '../Home/Modal/ThirdParty';
+import PaymentInformationCheck from '../Repair/Modal/PaymentInformationCheck';
 
 export default function ModalBasic() {
   const modal = useSelector(state => state.modal);
@@ -39,6 +40,8 @@ export default function ModalBasic() {
           return ImagePicker();
         case 'slide/birthDate':
           return DatePicker();
+        case 'paymentInformationCheck':
+          return PaymentInformationCheck();
       }
     };
   }
