@@ -1,6 +1,7 @@
 import {Box, Container, PositionBox} from '@/assets/global/Container';
 import Theme from '@/assets/global/Theme';
 import {modalClose} from '@/Store/modalState';
+import {useNavigation} from '@react-navigation/core';
 import React from 'react';
 import {Modal} from 'react-native';
 import {useSelector} from 'react-redux';
@@ -62,7 +63,7 @@ export default function ModalBasic() {
         {!isSlide ? (
           <Box
             backgroundColor={Theme.color.white}
-            minWidth={size.minusPadding}
+            width={size.minusPadding}
             minHeight="300px"
             borderRadius="15px"
             pd="20px 16px"

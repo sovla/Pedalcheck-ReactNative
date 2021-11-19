@@ -41,6 +41,7 @@ export default function ReviewMain() {
       <Review isDetail />
       <Review />
       <Review />
+      <Box mg="60px 0px"></Box>
     </Container>
   );
 }

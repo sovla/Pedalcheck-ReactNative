@@ -6,7 +6,7 @@ import {DarkBoldText, DarkText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import CheckBox, {DefaultCheckBox} from '@/Component/Home/CheckBox';
 import Header from '@/Component/Layout/Header';
-import {modalOpen} from '@/Store/modalState';
+import {modalOpen, setNavigator} from '@/Store/modalState';
 import React from 'react';
 import {useState} from 'react';
 import {TouchableOpacity} from 'react-native';
@@ -81,7 +81,10 @@ export default function ShopReservationRequest({navigation}) {
 
         <PositionBox left="16px" bottom="20px">
           <LinkButton
-            to={() => dispatch(modalOpen('paymentInformationCheck'))}
+            to={() => {
+              dispatch(modalOpen('paymentInformationCheck'));
+              dispatch(setNavigator(navigation));
+            }}
             content="다음"></LinkButton>
         </PositionBox>
       </Box>

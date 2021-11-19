@@ -11,8 +11,15 @@ export const store = configureStore({
     location: locationReducer,
     birthDate: birthDateReducer,
   },
-  //   middleware: (getDefaultMiddleware) =>
-  //     getDefaultMiddleware({
-  //       serializableCheck: false,
-  //     }),
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        // Ignore these action types
+        ignoredActions: ['modal/setNavigator', 'modal/modalClose', 'modal/modalOpen'],
+        // Ignore these field paths in all actions
+        ignoredActionPaths: ['meta.arg', 'payload.timestamp', 'modal'],
+        // Ignore these paths in the state
+        ignoredPaths: ['modal.navigation'],
+      },
+    }),
 });

@@ -112,6 +112,7 @@ export const FooterButton = ({
   rightPress,
   width,
   buttonWidth,
+  isChange,
 }) => {
   const {size} = useSelector(state => state);
   const buttonBoxWidth = width ? width : size.minusPadding;
@@ -122,11 +123,17 @@ export const FooterButton = ({
       width={buttonBoxWidth}
       bottom="0px"
       justifyContent="space-between">
-      <LinkWhiteButton
-        width={buttonWidthCalc}
-        content={leftContent}
-        to={leftPress}></LinkWhiteButton>
-      <LinkButton width={buttonWidthCalc} content={rightContent} to={rightPress}></LinkButton>
+      {isChange ? (
+        <>
+          <LinkButton width={buttonWidthCalc} content={leftContent} to={leftPress} />
+          <LinkWhiteButton width={buttonWidthCalc} content={rightContent} to={rightPress} />
+        </>
+      ) : (
+        <>
+          <LinkWhiteButton width={buttonWidthCalc} content={leftContent} to={leftPress} />
+          <LinkButton width={buttonWidthCalc} content={rightContent} to={rightPress} />
+        </>
+      )}
     </PositionBox>
   );
 };

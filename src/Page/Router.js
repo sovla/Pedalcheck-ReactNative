@@ -64,7 +64,7 @@ import ModalBasic from '@/Component/Modal/ModalBasic';
 import {initSetting} from '@/Store/sizeState';
 import ProductDetail from './Repair/ProductDetail';
 
-const INIT_ROUTER_COMPONENT_NAME = 'ReservationRequest';
+const INIT_ROUTER_COMPONENT_NAME = 'Feed';
 
 const Stack = createNativeStackNavigator();
 
@@ -119,6 +119,10 @@ export default function Router() {
 }
 
 const RouterSetting = [
+  {
+    name: 'ModalBasic',
+    component: ModalBasic,
+  },
   {
     name: 'BikeRegister',
     component: BikeRegister,

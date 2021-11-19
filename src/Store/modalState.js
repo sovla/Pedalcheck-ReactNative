@@ -3,6 +3,7 @@ import {createSlice} from '@reduxjs/toolkit';
 const initialState = {
   isOpenModal: false,
   modalComponent: '',
+  navigator: undefined,
 };
 
 export const modalSlice = createSlice({
@@ -13,6 +14,7 @@ export const modalSlice = createSlice({
       return (state = {
         isOpenModal: true,
         modalComponent: action.payload,
+        navigator: state.navigator,
       });
     },
     modalClose: state => {
@@ -21,9 +23,12 @@ export const modalSlice = createSlice({
         isOpenModal: false,
       });
     },
+    setNavigator: (state, action) => {
+      return {...state, navigator: action.payload};
+    },
   },
 });
 
-export const {modalOpen, modalClose} = modalSlice.actions;
+export const {modalOpen, modalClose, setNavigator} = modalSlice.actions;
 
 export default modalSlice.reducer;

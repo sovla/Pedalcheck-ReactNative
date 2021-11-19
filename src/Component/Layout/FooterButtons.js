@@ -10,7 +10,7 @@ import BikeOffIcon from '@assets/image/menu02.png';
 import FeedOffIcon from '@assets/image/menu03.png';
 import MoreOffIcon from '@assets/image/menu04.png';
 import DefaultImage from '@/assets/global/Image';
-import {DefaultText, GrayText} from '@/assets/global/Text';
+import {DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
@@ -67,7 +67,7 @@ export default function FooterButtons({selectMenu}) {
           <TouchableOpacity key={item.content} onPress={() => navigation.navigate(item.navigate)}>
             <Box
               width={boxWidth}
-              backgroundColor="rgba(0,0,0,0)"
+              backgroundColor="rgba(0,0,0)"
               height="100%"
               justifyContent="flex-end"
               alignItems="center"
