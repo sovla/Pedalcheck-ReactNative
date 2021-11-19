@@ -13,7 +13,7 @@ import scrollSlideNumber from '@/Util/scrollSlideNumber';
 
 export default function Swiper({imageArray, width, height, borderRadius = 'Bottom'}) {
   const transformWidth = typeof width === 'string' ? parseInt(width.split('px')[0]) : width;
-  const transformHieght = typeof height === 'string' ? parseInt(height.split('px')[0]) : height;
+  const transformHeight = typeof height === 'string' ? parseInt(height.split('px')[0]) : height;
   const [imageNumber, setImageNumber] = useState(0);
   const onScrollSlide = e => {
     setImageNumber(scrollSlideNumber(e, size.designWidth));
@@ -30,7 +30,7 @@ export default function Swiper({imageArray, width, height, borderRadius = 'Botto
           borderRadius: 10,
         };
   return (
-    <Box width={`${transformWidth}px`}>
+    <Box width={`${transformWidth}px`} height={`${transformHeight}px`}>
       <ScrollView
         horizontal
         pagingEnabled
@@ -38,7 +38,7 @@ export default function Swiper({imageArray, width, height, borderRadius = 'Botto
         style={[
           borderRadiusStyle,
           {
-            height: getHeightPixel(transformHieght),
+            height: getHeightPixel(transformHeight),
             width: getPixel(transformWidth),
           },
         ]}
@@ -48,13 +48,14 @@ export default function Swiper({imageArray, width, height, borderRadius = 'Botto
             style={[borderRadiusStyle]}
             key={`image_${index}`}
             source={item}
-            width={transformWidth}
-            height={transformHieght}></DefaultImage>
+            width={`${transformWidth}px`}
+            height={`${transformHeight}px`}
+            resizeMode="cover"></DefaultImage>
         ))}
       </ScrollView>
       <PositionBox
         left="16px"
-        bottom="16px"
+        bottom="18px"
         width="128px"
         height="24px"
         borderRadius="50px"

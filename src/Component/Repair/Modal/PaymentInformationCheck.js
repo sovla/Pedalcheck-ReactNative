@@ -2,16 +2,25 @@ import {FooterButton} from '@/assets/global/Button';
 import {Box, RowBox} from '@/assets/global/Container';
 import {DarkBoldText, DarkText} from '@/assets/global/Text';
 import ModalTitleBox from '@/Component/Modal/ModalTitleBox';
+import {modalClose} from '@/Store/modalState';
+import {useNavigation} from '@react-navigation/core';
 import React from 'react';
 import {View, Text} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 export default function PaymentInformationCheck() {
   const {size} = useSelector(state => state);
+  const {modal} = useSelector(state => state);
+  const dispatch = useDispatch();
+  const onPressComplete = () => {
+    modal.navigator.navigate('ReservationPayment');
+    dispatch(modalClose());
+  };
+
   return (
     <>
-      <ModalTitleBox size={size} title="결제정보 확인" padding={32} />
-      <Box width={size.designWidth - 32 - 32}>
+      <ModalTitleBox size={size} title="결제정보 확인" padding={64} />
+      <Box width={'100%'}>
         {paymentInfo.map(item => {
           return (
             <RowBox key={item.title} justifyContent="space-between" mg="0px 0px 10px">
@@ -23,13 +32,18 @@ export default function PaymentInformationCheck() {
         <Box mg="10px 0px" height="50px" />
         <FooterButton
           width={size.designWidth - 64}
-          buttonWidth={(size.designWidth - 74) / 2}></FooterButton>
+          buttonWidth={(size.designWidth - 74) / 2}
+          leftContent="확인"
+          rightContent="취소"
+          leftPress={onPressComplete}
+          rightPress={() => dispatch(modalClose())}
+          isChange></FooterButton>
       </Box>
     </>
   );
 }
 
-const paymentInfo = [
+export const paymentInfo = [
   {title: '매장명', content: '인천신스'},
   {title: '정비상품', content: '정비 - 오버홀'},
   {title: '결제금액', content: '20,000원'},
