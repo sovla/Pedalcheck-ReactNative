@@ -67,6 +67,11 @@ export const GrayText = styled(DefaultText)`
   color: ${Theme.color.gray};
 `;
 
+export const GrayBoldText = styled(DefaultText)`
+  color: ${Theme.color.gray};
+  font-weight: bold;
+`;
+
 export const IndigoText = styled(DefaultText)`
   color: ${Theme.color.indigo};
 `;

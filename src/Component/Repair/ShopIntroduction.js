@@ -59,7 +59,7 @@ export default function ShopIntroduction() {
       <Box mg="20px 0px 10px">
         <DarkBoldText>매장 위치</DarkBoldText>
       </Box>
-      <Box width={size.minusPadding} mg="0px 0px 90px">
+      <Box width={size.minusPadding}>
         <DefaultImage source={Dummy} width={size.minusPadding} height="200px"></DefaultImage>
       </Box>
     </Container>

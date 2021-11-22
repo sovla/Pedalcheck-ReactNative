@@ -64,7 +64,12 @@ const FeedBox = ({item, size}) => {
           <DarkText fontSize={Theme.fontSize.fs15} width="290px" numberOfLines={2}>
             {item.content}
           </DarkText>
-          <RowBox mg="5px 0px 0px" width="290px" justifyContent="space-between" alignItems="center">
+          <RowBox
+            mg="5px 0px 0px"
+            pd="0px 10px 0px 0px"
+            width="290px"
+            justifyContent="space-between"
+            alignItems="center">
             <IndigoText fontSize={Theme.fontSize.fs14} fontWeight={Theme.fontWeight.bold}>
               {item.shopName}
             </IndigoText>
