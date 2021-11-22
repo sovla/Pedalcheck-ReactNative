@@ -8,8 +8,8 @@ export default function Gradient({children}) {
   return (
     <LinearGradient
       style={{
-        width: size.designWidth,
-        minHeight: 86,
+        width: size.screenWidth,
+        minHeight: 65,
         borderBottomLeftRadius: 15,
         borderBottomRightRadius: 15,
         padding: 16,
