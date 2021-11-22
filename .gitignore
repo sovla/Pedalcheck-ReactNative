@@ -61,3 +61,6 @@ buck-out/
 
 # Image
 페달체크/
+
+# history
+.history/
