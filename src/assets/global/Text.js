@@ -13,6 +13,7 @@ export const DefaultText = styled.Text`
   padding: ${p => pixelChange(p.pd) ?? '0px'};
   margin: ${p => pixelChange(p.mg) ?? '0px'};
   text-decoration: ${p => p.textDecoration ?? 'none'};
+
   ${p =>
     p.fontWeight &&
     css`
@@ -38,6 +39,7 @@ export const DefaultText = styled.Text`
     css`
       text-align-vertical: ${p.textAlignVertical};
     `};
+  font-family: ${p => (p.fontWeight === 'bold' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular')};
 `;
 
 export const TitleText = styled.Text`
