@@ -15,7 +15,14 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         // Ignore these action types
-        ignoredActions: ['modal/setNavigator', 'modal/modalClose', 'modal/modalOpen'],
+        ignoredActions: [
+          'modal/setNavigator',
+          'modal/modalClose',
+          'modal/modalOpen',
+          'modal/setModalProp',
+          'modal/setModalSetState',
+          'modal/setState',
+        ],
         // Ignore these field paths in all actions
         ignoredActionPaths: ['meta.arg', 'payload.timestamp', 'modal'],
         // Ignore these paths in the state

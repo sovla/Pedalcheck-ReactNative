@@ -1,16 +1,10 @@
-import {BorderButton, Button, LinkButton} from '@/assets/global/Button';
-import {Box, RowBox, ScrollBox} from '@/assets/global/Container';
-import {DarkBoldText, DefaultText} from '@/assets/global/Text';
-import Theme from '@/assets/global/Theme';
+import {ScrollBox} from '@/assets/global/Container';
 import Header from '@/Component/Layout/Header';
 import MenuNav from '@/Component/Layout/MenuNav';
-import {getPixel} from '@/Util/pixelChange';
 import React from 'react';
 import {useState} from 'react';
-import {FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useSelector} from 'react-redux';
 
-import Bike from '@/Component/BikeManagement/Bike';
 import UseBike from '@/Component/BikeManagement/UseBike';
 import StorageBike from '@/Component/BikeManagement/StorageBike';
 export default function BikeManagement() {

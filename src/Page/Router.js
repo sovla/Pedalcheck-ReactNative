@@ -63,8 +63,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import ModalBasic from '@/Component/Modal/ModalBasic';
 import {initSetting} from '@/Store/sizeState';
 import ProductDetail from './Repair/ProductDetail';
+import BikeRegisterFirst from './BikeManagement/BikeRegisterFirst';
 
-const INIT_ROUTER_COMPONENT_NAME = 'BikeManagement';
+const INIT_ROUTER_COMPONENT_NAME = 'BikeRegisterFirst';
 
 const Stack = createNativeStackNavigator();
 
@@ -119,6 +120,10 @@ export default function Router() {
 }
 
 const RouterSetting = [
+  {
+    name: 'BikeRegisterFirst',
+    component: BikeRegisterFirst,
+  },
   {
     name: 'ModalBasic',
     component: ModalBasic,

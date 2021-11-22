@@ -2,7 +2,6 @@ import {Box, RowBox} from '@/assets/global/Container';
 import {DarkBoldText, DarkText, GrayBoldText, GrayText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import React from 'react';
-import {View, Text} from 'react-native';
 import {useSelector} from 'react-redux';
 
 export default function Bike({item, isUse = true}) {

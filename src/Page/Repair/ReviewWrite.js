@@ -44,7 +44,6 @@ export default function ReviewWrite({navigation}) {
   const checkImageCount = images => {
     // By.junhan 이미지 갯수가 총 5개가 넘으면 true를 반환 (21-11-18)
     const imagesCount = images?.length !== undefined ? images.length : 0;
-    console.log(imagesCount);
     if (imagesCount + imageArray.length > 5) {
       Alert.alert('', '이미지 5장까지 업로드 가능합니다.');
       return true;

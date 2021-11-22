@@ -3,20 +3,26 @@ import {Box, RowBox} from '@/assets/global/Container';
 import {DarkBoldText, DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import Bike from './Bike';
 import PlusIcon from '@assets/image/ic_plus_w.png';
 import DefaultImage from '@assets/global/Image';
+import {useNavigation} from '@react-navigation/core';
 
 export default function UseBike({item, size}) {
+  const navigation = useNavigation();
   const bikeCount = 3;
+
+  const onPressAddBike = () => {
+    navigation.navigate('BikeRegister');
+  };
   return (
     <Box alignItems="center" flex={1}>
       <RowBox pd="20px 16px" justifyContent="space-between" width={size.designWidth}>
         <DarkBoldText>사용중인 자전거</DarkBoldText>
         <DarkBoldText>{bikeCount} 대</DarkBoldText>
       </RowBox>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={onPressAddBike}>
         <Button
           width={size.minusPadding}
           height="44px"
