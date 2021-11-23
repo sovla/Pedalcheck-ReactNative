@@ -16,6 +16,11 @@ export default function UseBike({item, size}) {
   const onPressAddBike = () => {
     navigation.navigate('BikeRegister');
   };
+
+  const onPressBike = () => {
+    navigation.navigate('BikeDetail');
+  };
+
   return (
     <Box alignItems="center" flex={1}>
       <RowBox pd="20px 16px" justifyContent="space-between" width={size.designWidth}>
@@ -33,8 +38,9 @@ export default function UseBike({item, size}) {
           <DefaultText fontWeight={Theme.fontWeight.medium}>등록하기</DefaultText>
         </Button>
       </TouchableOpacity>
-
-      <Bike item={item} />
+      <TouchableOpacity onPress={onPressBike}>
+        <Bike item={item} />
+      </TouchableOpacity>
       <Bike item={item} />
       <Bike item={item} />
     </Box>

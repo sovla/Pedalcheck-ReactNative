@@ -64,17 +64,20 @@ import ModalBasic from '@/Component/Modal/ModalBasic';
 import {initSetting} from '@/Store/sizeState';
 import ProductDetail from './Repair/ProductDetail';
 import BikeRegisterFirst from './BikeManagement/BikeRegisterFirst';
+import {useIsFocused} from '@react-navigation/core';
 
-const INIT_ROUTER_COMPONENT_NAME = 'Home';
+const INIT_ROUTER_COMPONENT_NAME = 'ReservationManagement';
 
 const Stack = createNativeStackNavigator();
 
 const withScrollView = WrappedComponent => {
   return props => {
+    const isFocus = useIsFocused();
     return (
       <SafeAreaView style={{flex: 1}}>
         <View style={{flex: 1, backgroundColor: Theme.color.white}}>
           <WrappedComponent {...props} />
+          {isFocus && <ModalBasic />}
         </View>
       </SafeAreaView>
     );
@@ -84,7 +87,6 @@ const withScrollView = WrappedComponent => {
 export default function Router() {
   const dispatch = useDispatch();
   const {height, width} = useWindowDimensions();
-  const modalState = useSelector(state => state.modal);
 
   useEffect(() => {
     dispatch(
@@ -105,16 +107,15 @@ export default function Router() {
           screenOptions={{
             headerShown: false,
           }}>
-          {RouterSetting.map(item => (
+          {RouterSetting.map((item, index) => (
             <Stack.Screen
               name={item.name}
               component={withScrollView(item.component)}
-              key={item.name}
+              key={item.name + index}
             />
           ))}
         </Stack.Navigator>
       </NavigationContainer>
-      {modalState.isOpenModal && <ModalBasic />}
     </>
   );
 }

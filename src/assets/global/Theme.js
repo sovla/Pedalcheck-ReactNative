@@ -2,11 +2,13 @@ const Theme = {
   color: {
     white: '#FFFFFF',
     black: '#333333',
+    whiteBlack: '#555555',
 
     skyBlue: '#00B7FF',
     indigo: '#005475',
     gray: '#8C8C98',
     darkGray: '#AAAAAA',
+
     backgroundWhiteGray: '#F2F4F8',
     backgroundDarkGray: '#DEDEE3',
     backgroundGray: '#F2F2F2',

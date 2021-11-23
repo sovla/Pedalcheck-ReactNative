@@ -8,7 +8,7 @@ import DefaultImage from '@/assets/global/Image';
 import {useNavigation} from '@react-navigation/core';
 import {DarkBoldText} from '@/assets/global/Text';
 
-export default function Header({title}) {
+export default function Header({title, RightComponent}) {
   const navigation = useNavigation();
   return (
     <RowBox height="50px">
@@ -25,6 +25,7 @@ export default function Header({title}) {
           {title}
         </DarkBoldText>
       </Box>
+      <Box width="20%">{RightComponent && <RightComponent />}</Box>
       <Line />
     </RowBox>
   );

@@ -29,6 +29,7 @@ export const LinkButton = ({
   color,
   backgroundColor,
   fontSize = Theme.fontSize.fs16,
+  fontWeight,
   borderColor,
   borderRadius,
   pd,
@@ -44,7 +45,11 @@ export const LinkButton = ({
         borderColor={borderColor}
         pd={pd}
         mg={mg}>
-        <DefaultText color={color} fontSize={fontSize} borderRadius={borderRadius}>
+        <DefaultText
+          fontWeight={fontWeight}
+          color={color}
+          fontSize={fontSize}
+          borderRadius={borderRadius}>
           {content}
         </DefaultText>
       </Button>
@@ -59,6 +64,7 @@ export const LinkWhiteButton = ({
   color = Theme.color.black,
   backgroundColor = Theme.color.white,
   fontSize = Theme.fontSize.fs16,
+  fontWeight,
   borderColor = Theme.borderColor.gray,
   pd,
   mg,
@@ -72,7 +78,7 @@ export const LinkWhiteButton = ({
         borderColor={borderColor}
         pd={pd}
         mg={mg}>
-        <DefaultText color={color} fontSize={fontSize}>
+        <DefaultText fontWeight={fontWeight} color={color} fontSize={fontSize}>
           {content}
         </DefaultText>
       </Button>
@@ -95,11 +101,12 @@ export const BorderButton = styled.Text`
   letter-spacing: -0.45px;
   width: ${p => pixelChange(p.width) ?? '41px'};
   height: ${p => p.height ?? '28px'};
-  font-size: ${pixelChange(Theme.fontSize.fs15)};
+  font-size: ${p => pixelChange(p.fontSize) ?? pixelChange(Theme.fontSize.fs15)};
+  font-weight: ${p => p.fontWeight ?? 'normal'};
   color: ${p => p.color ?? Theme.color.skyBlue};
   text-align: center;
   padding: ${pixelChange('3px 7px')};
-  border-radius: ${pixelChange('3px')};
+  border-radius: ${p => p.borderRadius ?? pixelChange('3px')};
   background-color: ${p => p.backgroundColor ?? 'white'};
   justify-content: ${p => p.justifyContent ?? 'flex-start'};
   align-items: ${p => p.alignItems ?? 'flex-start'};

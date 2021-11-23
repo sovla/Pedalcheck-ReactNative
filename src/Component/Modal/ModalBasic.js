@@ -55,6 +55,9 @@ export default function ModalBasic() {
     };
   }
   const isSlide = modal?.modalComponent?.split('/')[0] === 'slide';
+  if (modal?.isOpenModal !== true) {
+    return null;
+  }
   return (
     <Modal
       animationType={!isSlide ? 'none' : 'none'}

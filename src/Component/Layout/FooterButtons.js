@@ -9,43 +9,76 @@ import SpannerOffIcon from '@assets/image/menu01.png';
 import BikeOffIcon from '@assets/image/menu02.png';
 import FeedOffIcon from '@assets/image/menu03.png';
 import MoreOffIcon from '@assets/image/menu04.png';
+
+import ReservationOnIcon from '@assets/image/menu06_on.png';
+import CustomerOnIcon from '@assets/image/menu07_on.png';
+
+import ReservationOffIcon from '@assets/image/menu06.png';
+import CustomerOffIcon from '@assets/image/menu07.png';
+
 import DefaultImage from '@/assets/global/Image';
 import {DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
-import {ShadowStyle} from '@/Page/Feed/Feed';
 
-export default function FooterButtons({selectMenu, backgroundColor}) {
+export default function FooterButtons({selectMenu, isAdmin}) {
   const navigation = useNavigation();
   const {size} = useSelector(state => state);
   const boxWidth = `${(size.designWidth - 32) / 4}px`;
-  const menuArray = [
-    {
-      content: '정비소',
-      imageOn: SpannerOnIcon,
-      imageOff: SpannerOffIcon,
-      navigate: 'RepairHome',
-    },
-    {
-      content: '내 자전거',
-      imageOn: BikeOnIcon,
-      imageOff: BikeOffIcon,
-      navigate: 'BikeManagement',
-    },
-    {
-      content: '피드',
-      imageOn: FeedOnIcon,
-      imageOff: FeedOffIcon,
-      navigate: 'Feed',
-    },
-    {
-      content: '더보기',
-      imageOn: MoreOnIcon,
-      imageOff: MoreOffIcon,
-      navigate: 'More',
-    },
-  ];
+  const menuArray = isAdmin
+    ? [
+        {
+          content: '정비내역',
+          imageOn: SpannerOnIcon,
+          imageOff: SpannerOffIcon,
+          navigate: 'RepairHistory',
+        },
+        {
+          content: '예약관리',
+          imageOn: ReservationOnIcon,
+          imageOff: ReservationOffIcon,
+          navigate: 'ReservationManagement',
+        },
+        {
+          content: '고객',
+          imageOn: CustomerOnIcon,
+          imageOff: CustomerOffIcon,
+          navigate: 'Customer',
+        },
+        {
+          content: '더보기',
+          imageOn: MoreOnIcon,
+          imageOff: MoreOffIcon,
+          navigate: 'More',
+        },
+      ]
+    : [
+        {
+          content: '정비소',
+          imageOn: SpannerOnIcon,
+          imageOff: SpannerOffIcon,
+          navigate: 'RepairHome',
+        },
+        {
+          content: '내 자전거',
+          imageOn: BikeOnIcon,
+          imageOff: BikeOffIcon,
+          navigate: 'BikeManagement',
+        },
+        {
+          content: '피드',
+          imageOn: FeedOnIcon,
+          imageOff: FeedOffIcon,
+          navigate: 'Feed',
+        },
+        {
+          content: '더보기',
+          imageOn: MoreOnIcon,
+          imageOff: MoreOffIcon,
+          navigate: 'More',
+        },
+      ];
   return (
     <RowBox
       height="64px"
@@ -77,7 +110,7 @@ export default function FooterButtons({selectMenu, backgroundColor}) {
                 source={isOn ? item.imageOn : item.imageOff}
                 width={index !== 1 ? '22px' : '32px'}
                 height="22px"
-                resizeMode="stretch"
+                resizeMode="contain"
               />
               <DefaultText color={isOn ? Theme.color.skyBlue : Theme.color.gray}>
                 {item.content}
