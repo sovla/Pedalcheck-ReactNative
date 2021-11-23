@@ -52,3 +52,14 @@ export function pixelHeightChange(px) {
 export function getHeightPixel(px) {
   return (px * Dimensions.get('window').height) / 734;
 }
+
+export function fontSizeChange(fontSize) {
+  if (typeof fontSize === 'string') {
+    const fontSizeGetPixel = pixelChange(fontSize);
+    const fontSizeInt = parseInt(fontSizeGetPixel.split('px')[0]);
+    return fontSizeInt * 1.5 + 'px';
+  } else {
+    const fontSizeInt = fontSize;
+    return fontSizeInt * 1.5 + 'px';
+  }
+}

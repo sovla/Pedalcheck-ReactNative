@@ -1,7 +1,7 @@
 import styled, {css} from 'styled-components/native';
 import Theme from './Theme';
 import React from 'react';
-import pixelChange, {pixelHeightChange} from '@/Util/pixelChange';
+import pixelChange, {fontSizeChange, pixelHeightChange} from '@/Util/pixelChange';
 import numberFormat from '@/Util/numberFormat';
 
 export const DefaultText = styled.Text`
@@ -9,34 +9,45 @@ export const DefaultText = styled.Text`
   font-size: ${p => pixelChange(p.fontSize) ?? Theme.fontSize.fs16};
   width: ${p => pixelChange(p.width) ?? 'auto'};
   height: ${p => pixelChange(p.height) ?? 'auto'};
-  letter-spacing: -0.84px;
+  letter-spacing: ${p => p.letterSpacing ?? '-0.84px'};
   padding: ${p => pixelChange(p.pd) ?? '0px'};
   margin: ${p => pixelChange(p.mg) ?? '0px'};
   text-decoration: ${p => p.textDecoration ?? 'none'};
+
   ${p =>
     p.fontWeight &&
     css`
       font-weight: ${p.fontWeight};
-    `}
+    `};
   ${p =>
     (p.fontWeight > 600 || p.fontWeight === 'bold') &&
     css`
       font-family: 'Lato-Bold';
-    `}
-    ${p =>
-    p.lineHeight &&
-    css`
-      line-height: ${p.lineHeight};
-    `}
-    ${p =>
+    `};
+
+  ${p =>
     p.textAlign &&
     css`
       text-align: ${p.textAlign};
-    `}
-    ${p =>
+    `};
+  ${p =>
     p.textAlignVertical &&
     css`
       text-align-vertical: ${p.textAlignVertical};
+    `};
+  font-family: ${p =>
+    p.fontWeight === 'bold'
+      ? 'NotoSansKR-Bold'
+      : p.fontWeight === 600
+      ? 'NotoSansKR-Medium'
+      : 'NotoSansKR-Regular'};
+  include-font-padding: false;
+
+  text-align-vertical: center;
+  ${p =>
+    (p.lineHeight || p.fontSize) &&
+    css`
+      line-height: ${p.lineHeight ?? fontSizeChange(p.fontSize)};
     `};
 `;
 
@@ -63,6 +74,11 @@ export const DarkBoldText = styled(DefaultText)`
 `;
 export const GrayText = styled(DefaultText)`
   color: ${Theme.color.gray};
+`;
+
+export const GrayBoldText = styled(DefaultText)`
+  color: ${Theme.color.gray};
+  font-weight: bold;
 `;
 
 export const IndigoText = styled(DefaultText)`

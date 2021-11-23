@@ -17,6 +17,7 @@ import FooterButtons from '@/Component/Repair/FooterButtons';
 import ProductsShow from '@/Component/Repair/ProductsShow';
 import Swiper from '@/Component/Repair/Swiper';
 import ReviewMain from '@/Component/Repair/ReviewMain';
+import MenuNav from '@/Component/Layout/MenuNav';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -32,40 +33,12 @@ export default function Shop() {
       <Box height={`${size.screenHeight - 50}px`}>
         <ScrollView style={styles.container}>
           <ShopHeader size={size} />
-          <RowBox
-            pd="16px 16px 0px"
-            height="46px"
-            justifyContent="center"
-            alignItems="center"
-            width={size.designWidth}>
-            {menu.map(item => {
-              // menu Item 매장소개,상품보기,리뷰
-              const isSelect = item === selectMenu;
-              return (
-                <TouchableOpacity
-                  key={item}
-                  style={{flex: 1}}
-                  onPress={() => {
-                    setSelectMenu(item);
-                  }}>
-                  <Box
-                    height="30px"
-                    justifyContent="center"
-                    alignItems="center"
-                    style={isSelect ? styles.menuSelectBorder : styles.menuBorder}>
-                    <DefaultText
-                      fontSize={Theme.fontSize.fs15}
-                      color={isSelect ? Theme.color.indigo : Theme.color.gray}>
-                      {item}
-                    </DefaultText>
-                  </Box>
-                </TouchableOpacity>
-              );
-            })}
-          </RowBox>
+          <MenuNav menuItem={menu} select={selectMenu} setSelect={setSelectMenu} />
+
           {selectMenu === '매장소개' && <ShopIntroduction />}
           {selectMenu === '상품보기' && <ProductsShow />}
           {selectMenu === '리뷰' && <ReviewMain />}
+          <Box height="100px"></Box>
         </ScrollView>
       </Box>
       <FooterButtons />

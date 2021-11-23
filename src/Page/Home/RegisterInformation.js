@@ -18,10 +18,10 @@ export default function RegisterInformation({navigation}) {
     tel: '',
     location: '',
   };
-  const location = useSelector(state => state.location);
   const [information, setInformaition] = useState(informationInit);
+  const {size, location} = useSelector(state => state);
   const dispatch = useDispatch();
-  const size = useSelector(state => state.size);
+
   const onChangeInformation = (e, key) => {
     setInformaition(prev => ({...prev, [key]: e}));
   };
