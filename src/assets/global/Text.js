@@ -18,28 +18,25 @@ export const DefaultText = styled.Text`
     p.fontWeight &&
     css`
       font-weight: ${p.fontWeight};
-    `}
+    `};
   ${p =>
     (p.fontWeight > 600 || p.fontWeight === 'bold') &&
     css`
       font-family: 'Lato-Bold';
-    `}
-    ${p =>
-    p.lineHeight &&
-    css`
-      line-height: ${p.lineHeight};
-    `}
-    ${p =>
+    `};
+
+  ${p =>
     p.textAlign &&
     css`
       text-align: ${p.textAlign};
-    `}
-    ${p =>
+    `};
+  ${p =>
     p.textAlignVertical &&
     css`
       text-align-vertical: ${p.textAlignVertical};
     `};
   font-family: ${p => (p.fontWeight === 'bold' ? 'NotoSansKR-Bold' : 'NotoSansKR-Regular')};
+  include-font-padding: false;
 `;
 
 export const TitleText = styled.Text`

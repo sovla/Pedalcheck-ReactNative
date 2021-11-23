@@ -13,39 +13,23 @@ export default function Bike({item, isUse = true}) {
       justifyContent="center"
       style={{borderBottomWidth: 1, borderBottomColor: Theme.borderColor.gray}}>
       <RowBox>
-        {isUse ? (
-          <>
-            <DarkBoldText>{item.brandName}</DarkBoldText>
-            <DarkBoldText mg="0px 10px">{item.modelName}</DarkBoldText>
-          </>
-        ) : (
-          <>
-            <GrayBoldText>{item.brandName}</GrayBoldText>
-            <GrayBoldText mg="0px 10px">{item.modelName}</GrayBoldText>
-          </>
-        )}
+        <DarkBoldText>{item.brandName}</DarkBoldText>
+        <DarkBoldText mg="0px 10px">{item.modelName}</DarkBoldText>
 
         <GrayText>{item.bikeName}</GrayText>
       </RowBox>
       <RowBox>
-        {isUse ? <DarkText>등록일</DarkText> : <GrayText>등록일</GrayText>}
+        <DarkText>등록일</DarkText>
 
         <GrayText mg="0px 10px">{item.date}</GrayText>
       </RowBox>
       <RowBox>
-        {isUse ? (
-          <>
-            <IndigoText>정비횟수</IndigoText>
-            <IndigoText fontWeight={Theme.fontWeight.bold} mg="0px 10px">
-              {item.repairCount}
-            </IndigoText>
-          </>
-        ) : (
-          <>
-            <GrayText>정비횟수</GrayText>
-            <GrayBoldText mg="0px 5px">{item.repairCount}</GrayBoldText>
-          </>
-        )}
+        <IndigoText>정비횟수</IndigoText>
+        <IndigoText fontWeight={Theme.fontWeight.bold} mg="0px 10px">
+          {item.repairCount}
+        </IndigoText>
+        <GrayText>정비횟수</GrayText>
+        <GrayBoldText mg="0px 5px">{item.repairCount}</GrayBoldText>
       </RowBox>
     </Box>
   );

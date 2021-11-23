@@ -4,7 +4,7 @@ const initialState = {
   isOpenModal: false,
   modalComponent: '',
   navigator: undefined,
-  setState: undefined,
+  isDone: false,
   modalProp: undefined,
 };
 
@@ -24,22 +24,19 @@ export const modalSlice = createSlice({
       return (state = {
         ...state,
         isOpenModal: false,
-        modalProp: undefined,
+        isDone: true,
       });
     },
     setNavigator: (state, action) => {
       return {...state, navigator: action.payload};
     },
     setModalProp: (state, action) => {
-      return {...state, modalProp: action.payload};
-    },
-    setModalSetState: (state, action) => {
-      return {...state, setState: action.payload};
+      const {modalProp, isDone} = action.payload;
+      return {...state, modalProp, isDone};
     },
   },
 });
 
-export const {modalOpen, modalClose, setNavigator, setModalProp, setModalSetState} =
-  modalSlice.actions;
+export const {modalOpen, modalClose, setNavigator, setModalProp} = modalSlice.actions;
 
 export default modalSlice.reducer;

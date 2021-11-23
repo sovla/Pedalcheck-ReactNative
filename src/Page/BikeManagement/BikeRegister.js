@@ -12,9 +12,12 @@ import DummyImage from '@assets/image/bicycle_default.png';
 import {DefaultInput} from '@/assets/global/Input';
 import DefaultLine from '@/assets/global/Line';
 import {useDispatch} from 'react-redux';
-import {modalOpen, setModalSetState} from '@/Store/modalState';
+import {modalOpen, setModalProp, setModalSetState} from '@/Store/modalState';
 import {Text, View} from 'react-native';
 import ImageCropPicker from 'react-native-image-crop-picker';
+import {useEffect} from 'react';
+import {useFocusEffect, useIsFocused} from '@react-navigation/core';
+import {useCallback} from 'react';
 
 export default function BikeRegister({navigation}) {
   const [bike, setBike] = useState({
@@ -32,13 +35,19 @@ export default function BikeRegister({navigation}) {
     power: '',
   });
   const [image, setImage] = useState();
-  const {size} = useSelector(state => state);
-
+  const {size, modal} = useSelector(state => state);
   const dispatch = useDispatch();
 
   const setChangeBike = (name, value) => {
     setBike(prev => ({...prev, [name]: value}));
   };
+
+  useEffect(() => {
+    if (modal?.modalProp && modal?.isDone) {
+      setBike(prev => ({...prev, bikeModel: modal.modalProp}));
+    }
+  }, [modal.isDone]);
+
   const onPressAddImage = () => {
     ImageCropPicker.openPicker({
       width: 300,
@@ -48,7 +57,126 @@ export default function BikeRegister({navigation}) {
       setImage(images);
     });
   };
-  console.log('BikeRerender');
+
+  const selectionOption = [
+    {
+      title: '차대번호',
+      placeHolder: '차대번호를 입력해주세요',
+      question: () => {
+        dispatch(modalOpen('vehicleNumber'));
+      },
+      value: 'vehicleNumber',
+      isDropdown: false,
+    },
+    {
+      title: '연식',
+      placeHolder: '연도 2자리를 입력해주세요',
+      question: undefined,
+      value: 'vehicleYear',
+      isDropdown: false,
+    },
+    {
+      title: '타입',
+      placeHolder: '자전거 타입을 입력해주세요',
+      question: undefined,
+      value: 'type',
+      isDropdown: true,
+      dropdownItems: [
+        {label: 'A', value: 'A'},
+        {label: 'B', value: 'B'},
+        {label: 'C', value: 'C'},
+        {label: 'A', value: 'A'},
+        {label: 'B', value: 'B'},
+        {label: 'C', value: 'C'},
+        {label: 'A', value: 'A'},
+        {label: 'B', value: 'B'},
+        {label: 'C', value: 'C'},
+        {label: 'A', value: 'A'},
+        {label: 'B', value: 'B'},
+        {label: 'C', value: 'C'},
+        {label: 'A', value: 'A'},
+        {label: 'B', value: 'B'},
+        {label: 'C', value: 'C'},
+        {label: 'A', value: 'A'},
+        {label: 'B', value: 'B'},
+        {label: 'C', value: 'C'},
+      ],
+    },
+    {
+      title: '모델 상세',
+      placeHolder: '모델 상세를 입력해주세요',
+      question: undefined,
+      value: 'modelDetail',
+      isDropdown: false,
+    },
+    {
+      title: '사이즈',
+      placeHolder: '사이즈(cm)를 입력해주세요',
+      question: undefined,
+      value: 'size',
+      isDropdown: false,
+    },
+    {
+      title: '컬러',
+      placeHolder: '컬러를 입력해주세요',
+      question: undefined,
+      value: 'color',
+      isDropdown: false,
+    },
+    {
+      title: '휠 사이즈',
+      placeHolder: '휠 사이즈를 선택해주세요',
+      question: undefined,
+      value: 'wheelSize',
+      isDropdown: true,
+      dropdownItems: [
+        {label: 'A', value: 'A'},
+        {label: 'B', value: 'B'},
+        {label: 'C', value: 'C'},
+      ],
+    },
+    {
+      title: '구동계',
+      placeHolder: '구동계 입력해주세요',
+      question: undefined,
+      value: 'drivetrain',
+      isDropdown: false,
+    },
+    {
+      title: '모터 제조사',
+      placeHolder: '모터 제조사를 선택해주세요',
+      question: undefined,
+      value: 'motorManufacturer',
+      isDropdown: true,
+      dropdownItems: [
+        {label: 'A', value: 'A'},
+        {label: 'B', value: 'B'},
+        {label: 'C', value: 'C'},
+        {label: 'A', value: 'A'},
+        {label: 'B', value: 'B'},
+        {label: 'C', value: 'C'},
+        {label: 'A', value: 'A'},
+        {label: 'B', value: 'B'},
+        {label: 'C', value: 'C'},
+        {label: 'A', value: 'A'},
+        {label: 'B', value: 'B'},
+        {label: 'C', value: 'C'},
+        {label: 'A', value: 'A'},
+        {label: 'B', value: 'B'},
+        {label: 'C', value: 'C'},
+        {label: 'A', value: 'A'},
+        {label: 'B', value: 'B'},
+        {label: 'C', value: 'C'},
+      ],
+    },
+    {
+      title: '파워',
+      placeHolder: '파워를 입력해주세요',
+      question: undefined,
+      value: 'power',
+      isDropdown: false,
+    },
+  ];
 
   return (
     <>
@@ -86,8 +214,13 @@ export default function BikeRegister({navigation}) {
             width={size.minusPadding}
             value={bike.bikeModel}
             PressText={() => {
+              dispatch(
+                setModalProp({
+                  modalProp: undefined,
+                  isDone: false,
+                }),
+              );
               dispatch(modalOpen('bikeModel'));
-              dispatch(setModalSetState(item => setChangeBike('bikeModel', item)));
             }}
             fontSize={16}
             isText
@@ -126,93 +259,3 @@ export default function BikeRegister({navigation}) {
     </>
   );
 }
-
-const selectionOption = [
-  {
-    title: '차대번호',
-    placeHolder: '차대번호를 입력해주세요',
-    question: () => {
-      dispatch(modalOpen());
-    },
-    value: 'vehicleNumber',
-    isDropdown: false,
-  },
-  {
-    title: '연식',
-    placeHolder: '연도 2자리를 입력해주세요',
-    question: undefined,
-    value: 'vehicleYear',
-    isDropdown: false,
-  },
-  {
-    title: '타입',
-    placeHolder: '자전거 타입을 입력해주세요',
-    question: undefined,
-    value: 'type',
-    isDropdown: true,
-    dropdownItems: [
-      {label: 'A', value: 'A'},
-      {label: 'B', value: 'B'},
-      {label: 'C', value: 'C'},
-    ],
-  },
-  {
-    title: '모델 상세',
-    placeHolder: '모델 상세를 입력해주세요',
-    question: undefined,
-    value: 'modelDetail',
-    isDropdown: false,
-  },
-  {
-    title: '사이즈',
-    placeHolder: '사이즈(cm)를 입력해주세요',
-    question: undefined,
-    value: 'size',
-    isDropdown: false,
-  },
-  {
-    title: '컬러',
-    placeHolder: '컬러를 입력해주세요',
-    question: undefined,
-    value: 'color',
-    isDropdown: false,
-  },
-  {
-    title: '휠 사이즈',
-    placeHolder: '휠 사이즈를 선택해주세요',
-    question: undefined,
-    value: 'wheelSize',
-    isDropdown: true,
-    dropdownItems: [
-      {label: 'A', value: 'A'},
-      {label: 'B', value: 'B'},
-      {label: 'C', value: 'C'},
-    ],
-  },
-  {
-    title: '구동계',
-    placeHolder: '구동계 입력해주세요',
-    question: undefined,
-    value: 'drivetrain',
-    isDropdown: false,
-  },
-  {
-    title: '모터 제조사',
-    placeHolder: '모터 제조사를 선택해주세요',
-    question: undefined,
-    value: 'motorManufacturer',
-    isDropdown: true,
-    dropdownItems: [
-      {label: 'A', value: 'A'},
-      {label: 'B', value: 'B'},
-      {label: 'C', value: 'C'},
-    ],
-  },
-  {
-    title: '파워',
-    placeHolder: '파워를 입력해주세요',
-    question: undefined,
-    value: 'power',
-    isDropdown: false,
-  },
-];

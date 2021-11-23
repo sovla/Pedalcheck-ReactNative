@@ -7,6 +7,7 @@ import {Modal} from 'react-native';
 import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
 import BikeModel from '../BikeManagement/Modal/BikeModel';
+import VehicleNumber from '../BikeManagement/Modal/VehicleNumber';
 import DatePicker from '../Home/Modal/DatePicker';
 import ImagePicker from '../Home/Modal/ImagePicker';
 import LocationPicker from '../Home/Modal/LocationPicker';
@@ -46,6 +47,10 @@ export default function ModalBasic() {
           return PaymentInformationCheck();
         case 'bikeModel':
           return BikeModel();
+        case 'bikeModelStepTwo':
+          return BikeModel();
+        case 'vehicleNumber':
+          return VehicleNumber();
       }
     };
   }

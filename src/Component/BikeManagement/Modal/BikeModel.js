@@ -1,9 +1,8 @@
 import {Box, PositionBox, RowBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
-import DefaultLine from '@/assets/global/Line';
 import ModalTitleBox from '@/Component/Modal/ModalTitleBox';
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import DefaultImage from '@assets/global/Image';
 import SearchIcon from '@assets/image/ic_search.png';
@@ -13,18 +12,31 @@ import {modalClose, modalOpen, setModalProp} from '@/Store/modalState';
 import ArrowRightIcon from '@assets/image/arr_right.png';
 
 export default function BikeModel() {
-  const {size, modal} = useSelector(state => state);
+  const {
+    size,
+    modal: {modalProp},
+  } = useSelector(state => state);
   const dispatch = useDispatch();
-  const isProp = modal?.modalProp !== undefined;
+
+  const isProp = modalProp !== undefined; //
+
   const onPressBrand = item => {
     if (isProp) {
-      console.log(item, modal.modalProp);
-      modal.setState(item);
+      dispatch(
+        setModalProp({
+          modalProp: modalProp + item,
+          isDone: true,
+        }),
+      );
       dispatch(modalClose());
     } else {
-      dispatch(modalClose());
-      dispatch(setModalProp(item));
-      dispatch(modalOpen('bikeModel'));
+      dispatch(
+        setModalProp({
+          modalProp: item,
+          isDone: false,
+        }),
+      );
+      dispatch(modalOpen('bikeModelStepTwo'));
     }
   };
 
@@ -35,7 +47,7 @@ export default function BikeModel() {
         <Box width={`${size.designWidth - 32 - 40}px`}>
           {isProp && (
             <RowBox alignItems="center">
-              <DefaultText color={Theme.color.skyBlue}>{modal.modalProp}</DefaultText>
+              <DefaultText color={Theme.color.skyBlue}>{modalProp}</DefaultText>
               <DefaultImage source={ArrowRightIcon} width="24px" height="24px" />
               <DarkText>모델 선택</DarkText>
             </RowBox>

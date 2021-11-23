@@ -65,7 +65,7 @@ import {initSetting} from '@/Store/sizeState';
 import ProductDetail from './Repair/ProductDetail';
 import BikeRegisterFirst from './BikeManagement/BikeRegisterFirst';
 
-const INIT_ROUTER_COMPONENT_NAME = 'BikeRegisterFirst';
+const INIT_ROUTER_COMPONENT_NAME = 'Home';
 
 const Stack = createNativeStackNavigator();
 

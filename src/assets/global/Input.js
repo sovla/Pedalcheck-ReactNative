@@ -99,7 +99,7 @@ export const DefaultInput = ({
       )}
       {RenderCondition === 'isDropdown' && (
         <Dropdown
-          maxHeight={dropdownItem.length * 56}
+          maxHeight={dropdownItem.length * 60}
           data={dropdownItem}
           labelField="label"
           valueField="value"
@@ -117,16 +117,20 @@ export const DefaultInput = ({
             color: Theme.color.black,
             fontSize: getPixel(15),
             fontFamily: 'NotoSansKR-Regular',
+            lineHeight: 20,
+            height: 20,
           }}
           containerStyle={{
+            //  드롭다운 클릭시 내부 View
             width: getPixel(380),
-            height: 44,
+            height: 10,
             backgroundColor: Theme.color.white,
             borderColor: Theme.borderColor.gray,
             borderWidth: 1,
             borderRadius: 10,
           }}
           style={{
+            //  드롭다운 외면 보여주기
             width: getPixel(380),
             height: 44,
             backgroundColor: Theme.color.white,
