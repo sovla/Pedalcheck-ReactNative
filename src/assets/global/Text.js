@@ -15,11 +15,6 @@ export const DefaultText = styled.Text`
   text-decoration: ${p => p.textDecoration ?? 'none'};
 
   ${p =>
-    p.fontWeight &&
-    css`
-      font-weight: ${p.fontWeight};
-    `};
-  ${p =>
     (p.fontWeight > 600 || p.fontWeight === 'bold') &&
     css`
       font-family: 'Lato-Bold';
@@ -50,6 +45,11 @@ export const DefaultText = styled.Text`
       line-height: ${p.lineHeight ?? fontSizeChange(p.fontSize)};
     `};
 `;
+// ${p =>
+//   p.fontWeight &&
+//   css`
+//     font-weight: ${p.fontWeight};
+//   `};
 
 export const TitleText = styled.Text`
   font-size: ${pixelChange('50px')};
@@ -64,13 +64,26 @@ export const ErrorText = ({children}) => {
   );
 };
 
+export const BoldText = styled(DefaultText)`
+  font-weight: ${Theme.fontWeight.bold};
+  font-family: 'NotoSansKR-Bold';
+`;
+
+export const MediumText = styled(DefaultText)`
+  font-weight: ${Theme.fontWeight.medium};
+  font-family: 'NotoSansKR-Medium';
+`;
+
 export const DarkText = styled(DefaultText)`
   color: ${Theme.color.black};
 `;
 
-export const DarkBoldText = styled(DefaultText)`
+export const DarkBoldText = styled(BoldText)`
   color: ${Theme.color.black};
-  font-weight: bold;
+`;
+
+export const DarkMediumText = styled(MediumText)`
+  color: ${Theme.color.black};
 `;
 export const GrayText = styled(DefaultText)`
   color: ${Theme.color.gray};

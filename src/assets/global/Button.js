@@ -3,7 +3,7 @@ import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import Theme from './Theme';
 import {DefaultText} from './Text';
-import {PositionBox} from './Container';
+import {Box, PositionBox, RowBox} from './Container';
 import {useSelector} from 'react-redux';
 import pixelChange from '@/Util/pixelChange';
 
@@ -120,15 +120,18 @@ export const FooterButton = ({
   width,
   buttonWidth,
   isChange,
+  isRelative,
 }) => {
   const {size} = useSelector(state => state);
   const buttonBoxWidth = width ? width : size.minusPadding;
   const buttonWidthCalc = buttonWidth ? buttonWidth : `${(size.designWidth - 42) / 2}px`;
+  const RenderBox = isRelative ? Box : PositionBox;
+
   return (
-    <PositionBox
+    <RenderBox
       style={{flexDirection: 'row'}}
       width={buttonBoxWidth}
-      bottom="0px"
+      bottom={isRelative ? null : '0px'}
       justifyContent="space-between">
       {isChange ? (
         <>
@@ -141,7 +144,7 @@ export const FooterButton = ({
           <LinkButton width={buttonWidthCalc} content={rightContent} to={rightPress} />
         </>
       )}
-    </PositionBox>
+    </RenderBox>
   );
 };
 
