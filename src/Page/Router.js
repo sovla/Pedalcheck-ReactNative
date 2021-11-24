@@ -66,7 +66,7 @@ import ProductDetail from './Repair/ProductDetail';
 import BikeRegisterFirst from './BikeManagement/BikeRegisterFirst';
 import {useIsFocused} from '@react-navigation/core';
 
-const INIT_ROUTER_COMPONENT_NAME = 'ReservationManagement';
+const INIT_ROUTER_COMPONENT_NAME = 'Approval';
 
 const Stack = createNativeStackNavigator();
 

@@ -14,6 +14,7 @@ import LocationPicker from '../Home/Modal/LocationPicker';
 import Service from '../Home/Modal/Service';
 import ThirdParty from '../Home/Modal/ThirdParty';
 import PaymentInformationCheck from '../Repair/Modal/PaymentInformationCheck';
+import RepairRejection from '../ReservationManagement/Modal/RepairRejection';
 
 export default function ModalBasic() {
   const modal = useSelector(state => state.modal);
@@ -51,6 +52,8 @@ export default function ModalBasic() {
           return BikeModel();
         case 'vehicleNumber':
           return VehicleNumber();
+        case 'repairRejection':
+          return RepairRejection();
       }
     };
   }

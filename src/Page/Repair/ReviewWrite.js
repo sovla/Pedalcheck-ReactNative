@@ -14,64 +14,12 @@ import {BorderButton, Button, LinkButton} from '@/assets/global/Button';
 import {useCallback} from 'react';
 import CameraIcon from '@assets/image/ic_cam.png';
 import ImageCropPicker from 'react-native-image-crop-picker';
+import Photo from '@/Component/Repair/Photo';
 
 export default function ReviewWrite({navigation}) {
   const [content, setContent] = useState('');
   const [imageArray, setImageArray] = useState([]);
   const {size} = useSelector(state => state);
-
-  const onPressAddPhoto = () => {
-    if (checkImageCount()) {
-      return;
-    }
-    ImageCropPicker.openPicker({
-      width: 300,
-      height: 400,
-      cropping: true, // 자르기 활성화
-      includeBase64: true,
-      multiple: true,
-    }).then(images => {
-      if (checkImageCount(images)) {
-        return;
-      }
-      setImageArray(prev => [...prev, ...images]);
-    });
-  };
-  const onPressDelete = deleteIndex => {
-    setImageArray(prev => prev.filter((item, index) => index !== deleteIndex));
-  };
-
-  const checkImageCount = images => {
-    // By.junhan 이미지 갯수가 총 5개가 넘으면 true를 반환 (21-11-18)
-    const imagesCount = images?.length !== undefined ? images.length : 0;
-    if (imagesCount + imageArray.length > 5) {
-      Alert.alert('', '이미지 5장까지 업로드 가능합니다.');
-      return true;
-    }
-  };
-
-  const MapInnerItem = useCallback(
-    props => {
-      const {index, mg, item} = props;
-      return (
-        <Box width="120px" height="80px" mg={mg}>
-          <DefaultImage source={{uri: item?.path}} width="120px" resizeMode="stretch" />
-          <PositionBox
-            top="5px"
-            right="5px"
-            width="24px"
-            height="24px"
-            borderRadius="100px"
-            backgroundColor="#0000">
-            <TouchableOpacity onPress={() => onPressDelete(index)}>
-              <DefaultImage source={CloseIcon} width="24px" height="24px" />
-            </TouchableOpacity>
-          </PositionBox>
-        </Box>
-      );
-    },
-    [imageArray],
-  );
 
   const item = [
     {
@@ -114,33 +62,7 @@ export default function ReviewWrite({navigation}) {
             </DefaultText>
           )}
           <Box mg="4px 0px"></Box>
-          <RowBox width={size.minusPadding} flexWrap="wrap">
-            {imageArray.map((item, index) => {
-              const Result = withNthMap(MapInnerItem);
-              return (
-                <Result
-                  key={`image${index}`}
-                  index={index}
-                  rowNum={3}
-                  betweenMargin="0px 10px 10px 0px"
-                  item={item}
-                />
-              );
-            })}
-            <TouchableOpacity onPress={onPressAddPhoto}>
-              <Button
-                width="120px"
-                height="80px"
-                backgroundColor={Theme.color.white}
-                borderColor={Theme.borderColor.gray}
-                borderRadius="5px">
-                <DefaultImage source={CameraIcon} width="24px" height="24px" />
-                <DarkText fontSize={Theme.fontSize.fs13} fontWeight={Theme.fontWeight.medium}>
-                  사진 추가
-                </DarkText>
-              </Button>
-            </TouchableOpacity>
-          </RowBox>
+          <Photo imageArray={imageArray} setImageArray={setImageArray} />
         </ScrollView>
         <PositionBox bottom="20px">
           <LinkButton

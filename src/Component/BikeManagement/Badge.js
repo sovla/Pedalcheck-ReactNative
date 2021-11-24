@@ -1,4 +1,5 @@
-import {BorderButton} from '@/assets/global/Button';
+import {BorderButton, Button} from '@/assets/global/Button';
+import {DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import React from 'react';
 import {View, Text} from 'react-native';
@@ -9,19 +10,23 @@ export default function Badge({badgeContent}) {
     backgroundColor = Theme.color.indigo;
   } else if (badgeContent === '처리완료') {
     backgroundColor = Theme.color.black;
+  } else if (badgeContent === '승인거부') {
+    backgroundColor = Theme.color.red;
   }
 
   return (
-    <BorderButton
+    <Button
       width="66px"
       height="25px"
       borderRadius="5px"
-      fontSize={Theme.fontSize.fs13}
-      fontWeight={Theme.fontWeight.medium}
-      color={Theme.color.white}
       backgroundColor={backgroundColor}
       borderColor={backgroundColor}>
-      {badgeContent}
-    </BorderButton>
+      <DefaultText
+        fontSize={Theme.fontSize.fs13}
+        fontWeight={Theme.fontWeight.medium}
+        color={Theme.color.white}>
+        {badgeContent}
+      </DefaultText>
+    </Button>
   );
 }
