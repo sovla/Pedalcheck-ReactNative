@@ -116,6 +116,10 @@ export const RowBox = styled(Box)`
   flex-direction: row;
 `;
 
+export const BetweenBox = styled(RowBox)`
+  justify-content: space-between;
+`;
+
 export const PositionBox = styled(Box)`
   ${p =>
     (p.top || p.left || p.right || p.bottom) &&

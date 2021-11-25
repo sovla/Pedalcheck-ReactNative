@@ -1,19 +1,13 @@
-import {Box, PositionBox, RowBox} from '@/assets/global/Container';
+import {Box, PositionBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
-import {DarkText, DefaultText} from '@/assets/global/Text';
+import {DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import ReviewRecord from '@/Component/Repair/ReviewRecord';
 import React, {useState} from 'react';
-import {Alert, ScrollView, TouchableOpacity} from 'react-native';
+import {ScrollView} from 'react-native';
 import {useSelector} from 'react-redux';
-import DefaultImage from '@assets/global/Image';
-import withNthMap from '@/Util/nthMap';
-import CloseIcon from '@assets/image/ic_pic_del.png';
-import {BorderButton, Button, LinkButton} from '@/assets/global/Button';
-import {useCallback} from 'react';
-import CameraIcon from '@assets/image/ic_cam.png';
-import ImageCropPicker from 'react-native-image-crop-picker';
+import {LinkButton} from '@/assets/global/Button';
 import Photo from '@/Component/Repair/Photo';
 
 export default function ReviewWrite({navigation}) {

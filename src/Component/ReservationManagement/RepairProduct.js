@@ -23,12 +23,16 @@ export default function RepairProduct({
           ))}
           <RowBox>
             <DarkText fontSize={Theme.fontSize.fs13}>{customerName}</DarkText>
-            <IndigoText mg="0px 0px 0px 8px" fontSize={Theme.fontSize.fs13}>
-              예약취소{' '}
-            </IndigoText>
-            <IndigoText fontWeight={Theme.fontWeight.bold} fontSize={Theme.fontSize.fs13}>
-              {reservationCancleCount}
-            </IndigoText>
+            {reservationCancleCount && (
+              <>
+                <IndigoText mg="0px 0px 0px 8px" fontSize={Theme.fontSize.fs13}>
+                  예약취소{' '}
+                </IndigoText>
+                <IndigoText fontWeight={Theme.fontWeight.bold} fontSize={Theme.fontSize.fs13}>
+                  {reservationCancleCount}
+                </IndigoText>
+              </>
+            )}
           </RowBox>
           <GrayText fontSize={Theme.fontSize.fs12}>{reservationDate}</GrayText>
         </Box>

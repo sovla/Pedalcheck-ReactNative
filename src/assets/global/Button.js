@@ -105,7 +105,7 @@ export const BorderButton = styled.Text`
   font-weight: ${p => p.fontWeight ?? 'normal'};
   color: ${p => p.color ?? Theme.color.skyBlue};
   text-align: center;
-  padding: ${pixelChange('3px 7px')};
+  padding: ${p => pixelChange(p.pd) ?? pixelChange('3px 7px')};
   border-radius: ${p => p.borderRadius ?? pixelChange('3px')};
   background-color: ${p => p.backgroundColor ?? 'white'};
   justify-content: ${p => p.justifyContent ?? 'flex-start'};

@@ -73,3 +73,5 @@ export const timeList = [
   '20:00',
   '20:30',
 ];
+
+export const disabled = ['09:00', '09:30'];

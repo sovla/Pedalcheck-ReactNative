@@ -6,10 +6,10 @@ import React from 'react';
 import {useSelector} from 'react-redux';
 import Gradient from './Gradient';
 
-export default function GradientHeader({title, children, imageSource}) {
+export default function GradientHeader({title, children, imageSource, height}) {
   const {size} = useSelector(state => state);
   return (
-    <Gradient>
+    <Gradient height={height}>
       <RowBox
         backgroundColor="rgba(0,0,0,0)"
         width={size.minusPadding}

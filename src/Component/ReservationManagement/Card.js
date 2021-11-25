@@ -9,7 +9,7 @@ const Card = ({dateDay, day, count, isSelect}) => {
     <Box
       width="50px"
       height="83px"
-      mg="0px 0px 0px 5px"
+      mg="0px 5px 0px 0px"
       borderRadius="5px"
       alignItems="center"
       style={{borderWidth: 1, borderColor: borderColor}}>
