@@ -57,7 +57,7 @@ import DateChange from './ReservationManagement/DateChange';
 import ReservationManagement from './ReservationManagement/ReservationManagement';
 import ReservationManagementDetail from './ReservationManagement/ReservationManagementDetail';
 import RepairHome from './Repair/RepairHome';
-import {SafeAreaView, useWindowDimensions, View} from 'react-native';
+import {DevSettings, SafeAreaView, useWindowDimensions, View} from 'react-native';
 import Theme from '@/assets/global/Theme';
 import {useDispatch, useSelector} from 'react-redux';
 import ModalBasic from '@/Component/Modal/ModalBasic';
@@ -65,8 +65,12 @@ import {initSetting} from '@/Store/sizeState';
 import ProductDetail from './Repair/ProductDetail';
 import BikeRegisterFirst from './BikeManagement/BikeRegisterFirst';
 import {useIsFocused} from '@react-navigation/core';
+import RepairHistoryDetail from './More/MyInformation/RepairHistoryDetail';
+import {PositionBox} from '@/assets/global/Container';
+import {BorderButton} from '@/assets/global/Button';
+import {DarkBoldText, IndigoText} from '@/assets/global/Text';
 
-const INIT_ROUTER_COMPONENT_NAME = 'Approval';
+const INIT_ROUTER_COMPONENT_NAME = 'More';
 
 const Stack = createNativeStackNavigator();
 
@@ -77,7 +81,18 @@ const withScrollView = WrappedComponent => {
       <SafeAreaView style={{flex: 1}}>
         <View style={{flex: 1, backgroundColor: Theme.color.white}}>
           <WrappedComponent {...props} />
+
           {isFocus && <ModalBasic />}
+          <PositionBox backgroundColor="#0000" flexDirection="row" top="0px" zIndex={3000}>
+            <BorderButton
+              backgroundColor="#0000"
+              color="black"
+              onPress={() => DevSettings.reload()}
+              width="auto">
+              Reload
+            </BorderButton>
+            <DarkBoldText>{props.route.name}</DarkBoldText>
+          </PositionBox>
         </View>
       </SafeAreaView>
     );
@@ -225,6 +240,10 @@ const RouterSetting = [
   {
     name: 'RepairHistory',
     component: RepairHistory,
+  },
+  {
+    name: 'RepairHistoryDetail',
+    component: RepairHistoryDetail,
   },
   {
     name: 'ShopUpdate',

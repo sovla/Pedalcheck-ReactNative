@@ -1,7 +1,6 @@
 import {Box, Container, RowBox, ScrollBox} from '@/assets/global/Container';
 import GradientHeader from '@/Component/Layout/GradientHeader';
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
 import MenuIcon from '@assets/image/menu03_top.png';
 import {useSelector} from 'react-redux';
 import DefaultIcon from '@assets/image/default_4.png';

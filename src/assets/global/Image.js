@@ -7,11 +7,12 @@ const DefaultImageStyle = styled.Image`
   border-radius: ${p => p.borderRadius ?? '0px'};
 `;
 
-const DefaultImage = WrappedComponent => {
+const withResizeMode = WrappedComponent => {
   return props => {
     const resizeMode = props?.resizeMode !== undefined ? props.resizeMode : 'cover';
     return <WrappedComponent {...props} resizeMode={resizeMode} />;
   };
 };
+const DefaultImage = withResizeMode(DefaultImageStyle);
 
-export default DefaultImage(DefaultImageStyle);
+export default DefaultImage;

@@ -2,11 +2,17 @@ import {Box, RowBox} from '@/assets/global/Container';
 import {DarkBoldText, GrayText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import React from 'react';
-import {View, Text} from 'react-native';
 import {useSelector} from 'react-redux';
 import Badge from './Badge';
 
-export default function ShopRepairHistory({item}) {
+export default function ShopRepairHistory({
+  item = {
+    product: '상품-기본값',
+    shopName: '매장-기본값',
+    date: '2021-11-26',
+    status: '승인',
+  },
+}) {
   const {size} = useSelector(state => state);
   return (
     <RowBox

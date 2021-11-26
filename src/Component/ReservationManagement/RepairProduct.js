@@ -6,12 +6,12 @@ import Badge from '@/Component/BikeManagement/Badge';
 import {useSelector} from 'react-redux';
 
 export default function RepairProduct({
-  productName,
-  customerName,
-  reservationCancleCount,
-  reservationDate,
-  status,
-  totalPrice,
+  productName = ['기본값'],
+  customerName = '기본값',
+  reservationCancleCount = '0',
+  reservationDate = new Date().toString(),
+  status = '승인',
+  totalPrice = 30000,
 }) {
   const {size} = useSelector(state => state);
   return (
@@ -23,12 +23,16 @@ export default function RepairProduct({
           ))}
           <RowBox>
             <DarkText fontSize={Theme.fontSize.fs13}>{customerName}</DarkText>
-            <IndigoText mg="0px 0px 0px 8px" fontSize={Theme.fontSize.fs13}>
-              예약취소{' '}
-            </IndigoText>
-            <IndigoText fontWeight={Theme.fontWeight.bold} fontSize={Theme.fontSize.fs13}>
-              {reservationCancleCount}
-            </IndigoText>
+            {reservationCancleCount && (
+              <>
+                <IndigoText mg="0px 0px 0px 8px" fontSize={Theme.fontSize.fs13}>
+                  예약취소{' '}
+                </IndigoText>
+                <IndigoText fontWeight={Theme.fontWeight.bold} fontSize={Theme.fontSize.fs13}>
+                  {reservationCancleCount}
+                </IndigoText>
+              </>
+            )}
           </RowBox>
           <GrayText fontSize={Theme.fontSize.fs12}>{reservationDate}</GrayText>
         </Box>

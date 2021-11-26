@@ -12,6 +12,8 @@ export default function Badge({badgeContent}) {
     backgroundColor = Theme.color.black;
   } else if (badgeContent === '승인거부') {
     backgroundColor = Theme.color.red;
+  } else if (badgeContent === '예약취소') {
+    backgroundColor = Theme.color.yellow;
   }
 
   return (

@@ -73,3 +73,154 @@ export const timeList = [
   '20:00',
   '20:30',
 ];
+
+export const disabled = ['09:00', '09:30'];
+
+export const repairHistoryDropdownList = [
+  {
+    label: '전체',
+    value: '전체',
+  },
+  {
+    label: '예약',
+    value: '예약',
+  },
+  {
+    label: '예약취소',
+    value: '예약취소',
+  },
+  {
+    label: '승인',
+    value: '승인',
+  },
+  {
+    label: '승인거부',
+    value: '승인거부',
+  },
+  {
+    label: '처리완료',
+    value: '처리완료',
+  },
+];
+
+export const initCheckList = [
+  {
+    title: '휠/허브',
+    item: [
+      {
+        itemTitle: '휠 정렬',
+        select: '',
+      },
+      {
+        itemTitle: '구름성',
+        select: '',
+      },
+    ],
+  },
+  {
+    title: '핸들',
+    item: [
+      {
+        itemTitle: '헤드셋 유격',
+        select: '',
+      },
+      {
+        itemTitle: '핸들바 위치',
+        select: '',
+      },
+      {
+        itemTitle: '바테입',
+        select: '',
+      },
+    ],
+  },
+  {
+    title: '프레임',
+    item: [
+      {
+        itemTitle: '세척상태',
+        select: '',
+      },
+      {
+        itemTitle: '녹 발생',
+        select: '',
+      },
+      {
+        itemTitle: '프레임 외관',
+        select: '',
+      },
+    ],
+  },
+  {
+    title: '비비/페달',
+    item: [
+      {
+        itemTitle: '비비 유격',
+        select: '',
+      },
+      {
+        itemTitle: '페달 조립',
+        select: '',
+      },
+      {
+        itemTitle: '구름성',
+        select: '',
+      },
+    ],
+  },
+  {
+    title: '타이어',
+    item: [
+      {
+        itemTitle: '공기압',
+        select: '',
+      },
+      {
+        itemTitle: '마모상태(프론트)',
+        select: '',
+      },
+      {
+        itemTitle: '마모상태(리어)',
+        select: '',
+      },
+    ],
+  },
+  {
+    title: '안장',
+    item: [
+      {
+        itemTitle: '안장 위치',
+        select: '',
+      },
+      {
+        itemTitle: '싯클램프 체결',
+        select: '',
+      },
+    ],
+  },
+  {
+    title: '체인/기어',
+    item: [
+      {
+        itemTitle: '체인 윤활',
+        select: '',
+      },
+      {
+        itemTitle: '체인 수명',
+        select: '',
+      },
+      {
+        itemTitle: '체인 청소상태',
+        select: '',
+      },
+      {
+        itemTitle: '스프라켓 청소상태',
+        select: '',
+      },
+      {
+        itemTitle: '기어 변속',
+        select: '',
+      },
+    ],
+  },
+];

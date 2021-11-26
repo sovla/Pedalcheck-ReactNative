@@ -17,8 +17,10 @@ export const DefaultInput = ({
   changeFn, //        위 값 변경할 함수
   width,
   height = '44px',
+  backgroundColor,
   fontSize = 13, //   상단 제목, placeHolder, 내부 내용 폰트사이트
   disabled,
+  borderColor,
   isText, //          Input이 아닌 Text 의 경우 적용
   PressText, //       텍스트 클릭시 사용 isText 했을경우 사용
   isAlignTop, //      인풋텍스트 상단부터 적히게
@@ -75,7 +77,9 @@ export const DefaultInput = ({
           width={width}
           height={height}
           placeholder={placeHolder}
+          borderColor={borderColor}
           placeholdercolor={Theme.color.gray}
+          backgroundColor={backgroundColor}
           value={value}
           multiline={multiline}
           onChangeText={changeFn}
@@ -165,6 +169,11 @@ const DefaultInputStyle = styled.TextInput`
     css`
       height: ${pixelChange(p.height)};
     `}
+    ${p =>
+    p.borderColor &&
+    css`
+      border: 1px solid ${p.borderColor};
+    `}
 `;
 const DisabledInputStyle = styled(DefaultInputStyle)`
   background-color: ${Theme.color.backgroundDarkGray};
@@ -190,5 +199,7 @@ const DefaultInputTextStyle = styled.View`
 
 export const WhiteInput = styled(DefaultInputStyle)`
   background-color: ${Theme.color.white};
-  border-radius: 10px;
+  border-radius: ${p => p.borderRadius ?? '10px'};
+  align-items: ${p => p.alignItems ?? 'flex-start'};
+  padding: ${p => pixelChange(p.pd) ?? pixelChange('10px 16px')};
 `;
