@@ -4,7 +4,7 @@ import {DefaultCheckBox} from '@/Component/Home/CheckBox';
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
 
-export default function ProductCheckBox({title, item, onPress}) {
+export default function ProductCheckBox({title, item, onPress, disabled}) {
   return (
     <Box>
       <DarkBoldText mg="0px 0px 10px">{title}</DarkBoldText>
@@ -14,6 +14,7 @@ export default function ProductCheckBox({title, item, onPress}) {
           <DarkText width="50%">{innerItem.itemTitle}</DarkText>
           <RowBox justifyContent="space-between" width="50%">
             <TouchableOpacity
+              disabled={disabled}
               onPress={() => {
                 onPress(title, innerItem.itemTitle, '양호');
               }}>
@@ -23,6 +24,7 @@ export default function ProductCheckBox({title, item, onPress}) {
               </RowBox>
             </TouchableOpacity>
             <TouchableOpacity
+              disabled={disabled}
               onPress={() => {
                 onPress(title, innerItem.itemTitle, '정비 요망');
               }}>

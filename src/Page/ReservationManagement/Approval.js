@@ -24,6 +24,7 @@ import ProductCheckBox from '@/Component/ReservationManagement/ProductCheckBox';
 import {FooterButton} from '@/assets/global/Button';
 import {useCallback} from 'react';
 import Photo from '@/Component/Repair/Photo';
+import CheckList from '@/Component/ReservationManagement/CheckList';
 
 export default function Approval({navigation}) {
   const {size} = useSelector(state => state);
@@ -38,43 +39,6 @@ export default function Approval({navigation}) {
   const onPressComfirm = () => {
     navigation.navigate('ReservationManagement');
   };
-
-  const onPressCheckList = (title, itemTitle, value) => {
-    setCheckList(prev => [
-      ...prev.map(mapItem => {
-        let result = mapItem.title !== title && mapItem;
-        if (!result) {
-          result = {
-            title: mapItem.title,
-            item: [
-              ...mapItem.item.map(innerMapItem => {
-                let innerResult = innerMapItem.itemTitle !== itemTitle && innerMapItem;
-                if (!innerResult) {
-                  innerResult = {
-                    itemTitle: innerMapItem.itemTitle,
-                    select: innerMapItem.select === value ? '' : value,
-                  };
-                }
-                return innerResult;
-              }),
-            ],
-          };
-        }
-        return result;
-      }),
-    ]);
-  };
-
-  const CheckListMap = useCallback(() => {
-    return checkList.map(list => (
-      <ProductCheckBox
-        key={list.title}
-        title={list.title}
-        item={list.item}
-        onPress={onPressCheckList}
-      />
-    ));
-  }, [checkList]);
 
   return (
     <>
@@ -163,22 +127,12 @@ export default function Approval({navigation}) {
               multiline
             />
           </Box>
-          <Box mg="20px 0px 0px">
-            <TouchableOpacity onPress={() => setIsShow(!isShow)}>
-              <RowBox>
-                <DarkMediumText mg="0px 10px 20px 0px">정비 체크 리스트</DarkMediumText>
-
-                <DefaultImage
-                  source={ArrowUpIcon}
-                  style={!isShow && {transform: [{rotate: '180deg'}]}}
-                  width="24px"
-                  height="24px"
-                />
-              </RowBox>
-            </TouchableOpacity>
-
-            {isShow && <CheckListMap />}
-          </Box>
+          <CheckList
+            isShow={isShow}
+            setIsShow={setIsShow}
+            checkList={checkList}
+            setCheckList={setCheckList}
+          />
           <Box>
             <FooterButton
               isRelative

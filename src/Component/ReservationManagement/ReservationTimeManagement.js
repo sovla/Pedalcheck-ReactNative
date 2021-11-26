@@ -14,6 +14,7 @@ import TrashIcon from '@assets/image/ic_trash.png';
 import ModifyIcon from '@assets/image/ic_modify.png';
 import {timeList} from '@/assets/global/dummy';
 import {useEffect} from 'react';
+import {useLayoutEffect} from 'react';
 
 export default function ReservationTimeManagement() {
   const {size} = useSelector(state => state);
@@ -42,7 +43,7 @@ export default function ReservationTimeManagement() {
 
 const TimeManagementCheckBox = ({time, isCheck, onUpdate}) => {
   const [reservationTime, setReservationTime] = useState('');
-  useEffect(() => {
+  useLayoutEffect(() => {
     setReservationTime(time);
   }, []);
   return (

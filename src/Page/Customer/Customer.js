@@ -16,6 +16,7 @@ import CustomerCheckIcon from '../../assets/image/menu07_top.png';
 
 export default function Customer({navigation}) {
   const {size} = useSelector(state => state);
+
   const onPressCustomer = () => {
     navigation.navigate('CustomerDetail');
   };

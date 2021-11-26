@@ -22,17 +22,23 @@ import DefaultLine from '@/assets/global/Line';
 import SwitchOnIcon from '@assets/image/toggle_on.png';
 import SwitchOffIcon from '@assets/image/toggle_off.png';
 import CustomerIcon from '@assets/image/ic_myinfo.png';
-import ProductIcon from '@assets/image/ic_myinfo.png';
-import CouponIcon from '@assets/image/ic_myinfo.png';
-import GearIcon from '@assets/image/ic_myinfo.png';
-import NoticeIcon from '@assets/image/ic_myinfo.png';
+
+import ProductIcon from '@assets/image/box_Indigo.png';
+import CouponIcon from '@assets/image/coupon_Indigo.png';
+import GearIcon from '@assets/image/gear_Indigo.png';
+import NoticeIcon from '@assets/image/notice_Indigo.png';
+import ListIcon from '@assets/image/list_SkyBlue.png';
+import HeartIcon from '@assets/image/heart_SkyBlue.png';
 
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import {isLastChild} from '@/Util/nthMap';
+import {BorderButton} from '@/assets/global/Button';
+import {useNavigation} from '@react-navigation/core';
 
 export default function More() {
   const {size} = useSelector(state => state);
   const [isAdmin, setIsAdmin] = useState(false);
+  const navigation = useNavigation();
 
   return (
     <Container>
@@ -56,49 +62,98 @@ export default function More() {
             />
           </TouchableOpacity>
         </BetweenBox>
-        <Box pd="0px 16px">
+        {!isAdmin && <UserButton />}
+        <Box pd="10px 16px 0px">
           {menuItem.map((item, index) => (
-            <RowBox
-              key={item.content}
-              width={size.minusPadding}
-              alignItems="center"
-              pd="0px 16px"
-              style={[
-                borderBottomWhiteGray,
-                !isLastChild(menuItem.length, index)
-                  ? {borderBottomColor: Theme.borderColor.gray}
-                  : {borderBottomColor: Theme.borderColor.whiteLine},
-              ]}>
-              <DefaultImage source={item.icon} width="24px" height="24px" />
-              <DarkMediumText fontSize={Theme.fontSize.fs15} mg="15px 0px 15px 5px">
-                {item.content}
-              </DarkMediumText>
-            </RowBox>
+            <TouchableOpacity key={item.content}>
+              <RowBox
+                width={size.minusPadding}
+                alignItems="center"
+                pd="0px 16px"
+                style={[
+                  borderBottomWhiteGray,
+                  !isLastChild(menuItem.length, index)
+                    ? {borderBottomColor: Theme.borderColor.gray}
+                    : {borderBottomColor: Theme.borderColor.whiteLine},
+                ]}>
+                <DefaultImage source={item.icon} width="24px" height="24px" />
+                <DarkMediumText fontSize={Theme.fontSize.fs15} mg="15px 0px 15px 5px">
+                  {item.content}
+                </DarkMediumText>
+              </RowBox>
+            </TouchableOpacity>
           ))}
         </Box>
-        <Box alignItems="center" flex={1} backgroundColor={Theme.borderColor.whiteLine}>
-          <RowBox backgroundColor={Theme.borderColor.whiteLine} mg="30px 0px 10px">
-            <GrayText fontSize={Theme.fontSize.fs13}>개인정보 처리방침</GrayText>
-            <GrayText fontSize={Theme.fontSize.fs13} mg="0px 10px">
-              |
-            </GrayText>
-            <GrayText fontSize={Theme.fontSize.fs13}>서비스 이용약관</GrayText>
-          </RowBox>
-          <RowBox backgroundColor={Theme.borderColor.whiteLine}>
-            <GrayText mg="0px 5px 0px 0px" fontSize={Theme.fontSize.fs13}>
-              버전 정보
-            </GrayText>
-            <BoldText fontSize={Theme.fontSize.fs13} color={Theme.color.gray}>
-              0.0.00
-            </BoldText>
-          </RowBox>
-        </Box>
+        <MoreFooter />
       </ScrollBox>
 
       <FooterButtons selectMenu={4} isAdmin={isAdmin} />
     </Container>
   );
 }
+const UserButton = () => {
+  return (
+    <BetweenBox pd="0px 16px">
+      <TouchableOpacity onPress={() => navigation.navigate('RepairHistory')}>
+        <BorderButton
+          width="185px"
+          height="43px"
+          justifyContent="center"
+          alignItems="center"
+          borderColor={Theme.borderColor.gray}
+          borderRadius="10px"
+          pd="0px">
+          <RowBox>
+            <DefaultImage source={ListIcon} width="24px" height="24px" />
+            <DarkMediumText fontSize={Theme.fontSize.fs15} mg="0px 0px 0px 5px">
+              정비이력
+            </DarkMediumText>
+          </RowBox>
+        </BorderButton>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate('RepairHistory')}>
+        <BorderButton
+          width="185px"
+          height="43px"
+          justifyContent="center"
+          alignItems="center"
+          borderColor={Theme.borderColor.gray}
+          borderRadius="10px"
+          pd="0px">
+          <RowBox>
+            <DefaultImage source={HeartIcon} width="24px" height="24px" />
+            <DarkMediumText fontSize={Theme.fontSize.fs15} mg="0px 0px 0px 5px">
+              관심매장
+            </DarkMediumText>
+          </RowBox>
+        </BorderButton>
+      </TouchableOpacity>
+    </BetweenBox>
+  );
+};
+
+const MoreFooter = () => {
+  return (
+    <Box alignItems="center" flex={1} backgroundColor={Theme.borderColor.whiteLine}>
+      <RowBox backgroundColor={Theme.borderColor.whiteLine} mg="30px 0px 10px">
+        <GrayText fontSize={Theme.fontSize.fs13}>개인정보 처리방침</GrayText>
+        <GrayText fontSize={Theme.fontSize.fs13} mg="0px 10px">
+          |
+        </GrayText>
+        <GrayText fontSize={Theme.fontSize.fs13}>서비스 이용약관</GrayText>
+      </RowBox>
+      <RowBox backgroundColor={Theme.borderColor.whiteLine}>
+        <GrayText mg="0px 5px 0px 0px" fontSize={Theme.fontSize.fs13}>
+          버전 정보
+        </GrayText>
+        <BoldText fontSize={Theme.fontSize.fs13} color={Theme.color.gray}>
+          0.0.00
+        </BoldText>
+      </RowBox>
+    </Box>
+  );
+};
 
 const menuItem = [
   {

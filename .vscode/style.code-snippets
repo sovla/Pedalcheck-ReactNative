@@ -1,0 +1,98 @@
+{
+  // Place your pedalcheckA workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+  // description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
+  // is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+  // used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+  // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+  // Placeholders with the same ids are connected.
+  // Example:
+  // "Print to console": {
+  // 	"scope": "javascript,typescript",
+  // 	"prefix": "log",
+  // 	"body": [
+  // 		"console.log('$1');",
+  // 		"$2"
+  // 	],
+  // 	"description": "Log output to console"
+  // }
+  "AlignCenter": {
+    "scope": "javascript",
+    "prefix": "ac",
+    "body": ["alignItems='center' "]
+  },
+  "justyfiContentCenter": {
+    "scope": "javascript",
+    "prefix": "jc",
+    "body": ["justifyContent='center' "]
+  },
+  "borderColor": {
+    "scope": "javascript",
+    "prefix": "borC",
+    "body": ["borderColor={Theme.borderColor.gray} "]
+  },
+  "fontSize": {
+    "scope": "javascript",
+    "prefix": "fS",
+    "body": ["fontSize={Theme.fontSize.fs15} "]
+  },
+  "fontWeight": {
+    "scope": "javascript",
+    "prefix": "fW",
+    "body": ["fontWeight={Theme.fontWeight.bold} "]
+  },
+  "color": {
+    "scope": "javascript",
+    "prefix": "c",
+    "body": ["color={Theme.color.black} "]
+  },
+  "letterSpacing": {
+    "scope": "javascript",
+    "prefix": "lS",
+    "body": ["letterSpacing='0px' "]
+  },
+  "sizeSelector": {
+    "scope": "javascript",
+    "prefix": "size",
+    "body": ["const {size} = useSelector(state => state);"]
+  },
+  "useNavigation": {
+    "scope": "javascript",
+    "prefix": "navi",
+    "body": ["const navigation = useNavigation();"]
+  },
+  "width": {
+    "scope": "javascript",
+    "prefix": "w",
+    "body": ["width=''"]
+  },
+  "height": {
+    "scope": "javascript",
+    "prefix": "h",
+    "body": ["height=''"]
+  },
+  "backgroundColor": {
+    "scope": "javascript",
+    "prefix": "backC",
+    "body": ["backgroundColor=''"]
+  },
+  "navigationNavigate": {
+    "scope": "javascript",
+    "prefix": "navigate",
+    "body": ["navigation.navigate('')"]
+  },
+  "sizeMinusPadding": {
+    "scope": "javascript",
+    "prefix": "minus",
+    "body": ["width={size.minusPadding} "]
+  },
+  "DefaultMargin": {
+    "scope": "javascript",
+    "prefix": "dm",
+    "body": ["mg='0px 16px' "]
+  },
+  "DefaultPadding": {
+    "scope": "javascript",
+    "prefix": "dP",
+    "body": ["pd='0px 16px' "]
+  }
+}

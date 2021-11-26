@@ -32,7 +32,7 @@ export default function FooterButtons({selectMenu, isAdmin}) {
           content: '정비내역',
           imageOn: SpannerOnIcon,
           imageOff: SpannerOffIcon,
-          navigate: 'RepairHistory',
+          navigate: 'RepairHistoryHome',
         },
         {
           content: '예약관리',

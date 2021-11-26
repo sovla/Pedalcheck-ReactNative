@@ -6,12 +6,12 @@ import Badge from '@/Component/BikeManagement/Badge';
 import {useSelector} from 'react-redux';
 
 export default function RepairProduct({
-  productName,
-  customerName,
-  reservationCancleCount,
-  reservationDate,
-  status,
-  totalPrice,
+  productName = ['기본값'],
+  customerName = '기본값',
+  reservationCancleCount = '0',
+  reservationDate = new Date().toString(),
+  status = '승인',
+  totalPrice = 30000,
 }) {
   const {size} = useSelector(state => state);
   return (
