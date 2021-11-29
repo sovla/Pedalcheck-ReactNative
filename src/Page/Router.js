@@ -21,7 +21,9 @@ import More from './More/More';
 import Post from './More/Post';
 import PrivacyPolicy from './More/PrivacyPolicy';
 import Question from './More/Question';
+import QuestionWrite from './More/QuestionWrite';
 import Coupon from './More/MyInformation/Coupon';
+import CouponUseBikeSelect from './More/Coupon/CouponUseBikeSelect';
 import Information from './More/MyInformation/Information';
 import LikeShop from './More/MyInformation/LikeShop';
 import RepairHistory from './More/MyInformation/RepairHistory';
@@ -69,6 +71,8 @@ import RepairHistoryDetail from './More/MyInformation/RepairHistoryDetail';
 import {PositionBox} from '@/assets/global/Container';
 import {BorderButton} from '@/assets/global/Button';
 import {DarkBoldText, IndigoText} from '@/assets/global/Text';
+import CouponUseComplete from './More/Coupon/CouponUseComplete';
+import CouponUseDateSelect from './More/Coupon/CouponUseDateSelect';
 
 const INIT_ROUTER_COMPONENT_NAME = 'More';
 
@@ -226,8 +230,24 @@ const RouterSetting = [
     component: Question,
   },
   {
+    name: 'QuestionWrite',
+    component: QuestionWrite,
+  },
+  {
     name: 'Coupon',
     component: Coupon,
+  },
+  {
+    name: 'CouponUseBikeSelect',
+    component: CouponUseBikeSelect,
+  },
+  {
+    name: 'CouponUseDateSelect',
+    component: CouponUseDateSelect,
+  },
+  {
+    name: 'CouponUseComplete',
+    component: CouponUseComplete,
   },
   {
     name: 'Information',

@@ -65,6 +65,7 @@ export const LinkWhiteButton = ({
   backgroundColor = Theme.color.white,
   fontSize = Theme.fontSize.fs16,
   fontWeight,
+  borderRadius,
   borderColor = Theme.borderColor.gray,
   pd,
   mg,
@@ -76,6 +77,7 @@ export const LinkWhiteButton = ({
         height={height}
         backgroundColor={backgroundColor}
         borderColor={borderColor}
+        borderRadius={borderRadius}
         pd={pd}
         mg={mg}>
         <DefaultText fontWeight={fontWeight} color={color} fontSize={fontSize}>

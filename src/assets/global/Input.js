@@ -159,6 +159,7 @@ const DefaultInputStyle = styled.TextInput`
   padding: ${pixelChange('10px 16px')};
   font-size: ${pixelChange(Theme.fontSize.fs15)};
   line-height: 22px;
+  color: ${p => p.color ?? Theme.color.black};
   ${p =>
     p.width &&
     css`

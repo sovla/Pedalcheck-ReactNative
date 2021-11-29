@@ -13,6 +13,7 @@ import ImagePicker from '../Home/Modal/ImagePicker';
 import LocationPicker from '../Home/Modal/LocationPicker';
 import Service from '../Home/Modal/Service';
 import ThirdParty from '../Home/Modal/ThirdParty';
+import DeleteAccount from '../More/Modal/DeleteAccount';
 import ReservationCancle from '../More/Modal/ReservationCancle';
 import PaymentInformationCheck from '../Repair/Modal/PaymentInformationCheck';
 import RepairRejection from '../ReservationManagement/Modal/RepairRejection';
@@ -57,6 +58,8 @@ export default function ModalBasic() {
           return RepairRejection();
         case 'reservationCancle':
           return ReservationCancle();
+        case 'deleteAccount':
+          return DeleteAccount();
       }
     };
   }
