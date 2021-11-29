@@ -25,6 +25,7 @@ export const modalSlice = createSlice({
         ...state,
         isOpenModal: false,
         isDone: true,
+        modalComponent: '',
       });
     },
     setNavigator: (state, action) => {

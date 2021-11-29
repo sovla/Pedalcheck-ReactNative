@@ -1,21 +1,13 @@
 import React from 'react';
-import {StyleSheet, Text, View, ScrollView, TouchableOpacity} from 'react-native';
-import {
-  BetweenBox,
-  Box,
-  Container,
-  PositionBox,
-  RowBox,
-  ScrollBox,
-} from '@/assets/global/Container';
+import {TouchableOpacity} from 'react-native';
+import {BetweenBox, Box, Container, RowBox, ScrollBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import GradientHeader from '@/Component/Layout/GradientHeader';
 import WhiteMoreIcon from '@assets/image/menu04_top.png';
-import userBasicImage from '@assets/image/ic_myinfo.png';
 import FooterButtons from '@/Component/Layout/FooterButtons';
 import DummyIcon from '@assets/image/default_4.png';
 import {useSelector} from 'react-redux';
-import {BoldText, DarkBoldText, DarkMediumText, DarkText, GrayText} from '@/assets/global/Text';
+import {BoldText, DarkBoldText, DarkMediumText, GrayText} from '@/assets/global/Text';
 import {useState} from 'react';
 import Theme from '@/assets/global/Theme';
 import DefaultLine from '@/assets/global/Line';
@@ -29,7 +21,9 @@ import GearIcon from '@assets/image/gear_Indigo.png';
 import NoticeIcon from '@assets/image/notice_Indigo.png';
 import ListIcon from '@assets/image/list_SkyBlue.png';
 import HeartIcon from '@assets/image/heart_SkyBlue.png';
-
+import HeadsetIcon from '@assets/image/ic_inquiry.png';
+import QuestionIcon from '@assets/image/ic_question.png';
+import BoxIcon from '@assets/image/box_Indigo.png';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import {isLastChild} from '@/Util/nthMap';
 import {BorderButton} from '@/assets/global/Button';
@@ -39,6 +33,73 @@ export default function More() {
   const {size} = useSelector(state => state);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigation = useNavigation();
+  const onPressMenu = item => {
+    switch (item) {
+      case '내 정보':
+        return navigation.navigate('Information');
+      case '공지 및 이벤트':
+        return navigation.navigate('Post');
+      case '자주하는 질문':
+        return navigation.navigate('FAQ');
+      case '1:1 문의':
+        return navigation.navigate('Question');
+      case '알림설정':
+        return navigation.navigate('AlarmSetting');
+      // 어드민설정시
+      case '상품 관리':
+        return navigation.navigate('ProductManagement');
+      case '쿠폰 관리':
+        return navigation.navigate('CouponManagement');
+      case '출고 이력 관리':
+        return navigation.navigate('BikeExport');
+    }
+  };
+
+  const menuItem = isAdmin
+    ? [
+        {
+          content: '내 정보',
+          icon: CustomerIcon,
+        },
+        {
+          content: '상품 관리',
+          icon: ProductIcon,
+        },
+        {
+          content: '쿠폰 관리',
+          icon: CouponIcon,
+        },
+        {
+          content: '출고 이력 관리',
+          icon: GearIcon,
+        },
+        {
+          content: '알림설정',
+          icon: NoticeIcon,
+        },
+      ]
+    : [
+        {
+          content: '내 정보',
+          icon: CustomerIcon,
+        },
+        {
+          content: '공지 및 이벤트',
+          icon: BoxIcon,
+        },
+        {
+          content: '자주하는 질문',
+          icon: QuestionIcon,
+        },
+        {
+          content: '1:1 문의',
+          icon: HeadsetIcon,
+        },
+        {
+          content: '알림설정',
+          icon: NoticeIcon,
+        },
+      ];
 
   return (
     <Container>
@@ -65,7 +126,7 @@ export default function More() {
         {!isAdmin && <UserButton />}
         <Box pd="10px 16px 0px">
           {menuItem.map((item, index) => (
-            <TouchableOpacity key={item.content}>
+            <TouchableOpacity onPress={() => onPressMenu(item.content)} key={item.content}>
               <RowBox
                 width={size.minusPadding}
                 alignItems="center"
@@ -91,7 +152,9 @@ export default function More() {
     </Container>
   );
 }
+
 const UserButton = () => {
+  const navigation = useNavigation();
   return (
     <BetweenBox pd="0px 16px">
       <TouchableOpacity onPress={() => navigation.navigate('RepairHistory')}>
@@ -154,26 +217,3 @@ const MoreFooter = () => {
     </Box>
   );
 };
-
-const menuItem = [
-  {
-    content: '내 정보',
-    icon: CustomerIcon,
-  },
-  {
-    content: '상품 관리',
-    icon: ProductIcon,
-  },
-  {
-    content: '쿠폰 관리',
-    icon: CouponIcon,
-  },
-  {
-    content: '출고 이력 관리',
-    icon: GearIcon,
-  },
-  {
-    content: '알림설정',
-    icon: NoticeIcon,
-  },
-];

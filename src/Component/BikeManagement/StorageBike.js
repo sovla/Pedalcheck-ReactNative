@@ -1,12 +1,7 @@
-import {Button} from '@/assets/global/Button';
 import {Box, RowBox} from '@/assets/global/Container';
-import {DarkBoldText, DefaultText} from '@/assets/global/Text';
-import Theme from '@/assets/global/Theme';
+import {DarkBoldText} from '@/assets/global/Text';
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
 import Bike from './Bike';
-import PlusIcon from '@assets/image/ic_plus_w.png';
-import DefaultImage from '@assets/global/Image';
 
 export default function StorageBike({size, item}) {
   const bikeCount = 3;
