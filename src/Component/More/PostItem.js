@@ -1,13 +1,9 @@
-import {BetweenBox, Box, Container, ScrollBox} from '@/assets/global/Container';
+import {BetweenBox, Box} from '@/assets/global/Container';
 import {DarkBoldText, DarkText, GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
-import Header from '@/Component/Layout/Header';
-import MenuNav from '@/Component/Layout/MenuNav';
 import React from 'react';
-import {useState} from 'react';
 
 import ArrowUpIcon from '@assets/image/list_arr_top.png';
-import DummyIcon from '@assets/image/default_5.png';
 import {useSelector} from 'react-redux';
 import DefaultImage from '@/assets/global/Image';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';

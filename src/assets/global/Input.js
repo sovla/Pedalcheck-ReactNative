@@ -78,16 +78,16 @@ export const DefaultInput = ({
           height={height}
           placeholder={placeHolder}
           borderColor={borderColor}
-          placeholdercolor={Theme.color.gray}
+          placeholderTextColor={Theme.color.gray}
           backgroundColor={backgroundColor}
           value={value}
           multiline={multiline}
           onChangeText={changeFn}
-          style={
+          style={[
             isAlignTop && {
               textAlignVertical: 'top',
-            }
-          }
+            },
+          ]}
         />
       )}
       {RenderCondition === 'isText' && ( // 텍스트 형태
@@ -174,7 +174,7 @@ const DefaultInputStyle = styled.TextInput`
     p.borderColor &&
     css`
       border: 1px solid ${p.borderColor};
-    `}
+    `};
 `;
 const DisabledInputStyle = styled(DefaultInputStyle)`
   background-color: ${Theme.color.backgroundDarkGray};

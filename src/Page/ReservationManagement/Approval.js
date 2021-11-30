@@ -25,6 +25,7 @@ import {FooterButton} from '@/assets/global/Button';
 import {useCallback} from 'react';
 import Photo from '@/Component/Repair/Photo';
 import CheckList from '@/Component/ReservationManagement/CheckList';
+import {RequireFieldText} from '../Home/RegisterInformation';
 
 export default function Approval({navigation}) {
   const {size} = useSelector(state => state);
@@ -59,14 +60,7 @@ export default function Approval({navigation}) {
           </Box>
           <Box flex={1} style={borderBottomWhiteGray}>
             <RowBox mg="20px 0px 20px">
-              <DarkText fontSize={Theme.fontSize.fs16} fontWeight={Theme.fontWeight.bold}>
-                필수 입력 항목{' '}
-              </DarkText>
-              <Box>
-                <DefaultText style={{top: 0}} color={Theme.color.skyBlue} lineHeight="20px">
-                  *
-                </DefaultText>
-              </Box>
+              <RequireFieldText />
             </RowBox>
           </Box>
           <Box>
