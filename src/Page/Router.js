@@ -74,7 +74,7 @@ import {DarkBoldText, IndigoText} from '@/assets/global/Text';
 import CouponUseComplete from './More/Coupon/CouponUseComplete';
 import CouponUseDateSelect from './More/Coupon/CouponUseDateSelect';
 
-const INIT_ROUTER_COMPONENT_NAME = 'More';
+const INIT_ROUTER_COMPONENT_NAME = 'ShopUpdate';
 
 const Stack = createNativeStackNavigator();
 

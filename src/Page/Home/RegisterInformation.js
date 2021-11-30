@@ -110,7 +110,7 @@ export const RequireFieldText = () => {
         필수 입력 항목{' '}
       </DarkText>
       <Box>
-        <DefaultText color={Theme.color.skyBlue} lineHeight="22px">
+        <DefaultText color={Theme.color.skyBlue} lineHeight="23px">
           *
         </DefaultText>
       </Box>

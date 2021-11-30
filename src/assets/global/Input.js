@@ -156,7 +156,7 @@ export const DefaultInput = ({
 const DefaultInputStyle = styled.TextInput`
   background-color: ${p => p.backgroundColor ?? Theme.color.backgroundBlue};
   border-radius: 10px;
-  padding: ${pixelChange('10px 16px')};
+  padding: ${pixelChange('10px')};
   font-size: ${pixelChange(Theme.fontSize.fs15)};
   line-height: 22px;
   color: ${p => p.color ?? Theme.color.black};
