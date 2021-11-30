@@ -155,6 +155,7 @@ export default function RepairHome() {
         <Box mg="20px 16px 0px">
           <RecommenderShop totalCount={dummyImageArray.length} count={selectImage + 1} />
           <ShopComponent
+            mg="10px 0px"
             shopTitle="인천신스"
             isPartner
             likeCount={1995}
@@ -194,6 +195,7 @@ export default function RepairHome() {
             </Box>
           </Box>
           <ShopComponent
+            mg="10px 0px"
             shopTitle="인천신스"
             isPartner
             likeCount={1995}
@@ -202,6 +204,7 @@ export default function RepairHome() {
             tagList={['픽업', '피팅전문', '중고거래', '광고']}
           />
           <ShopComponent
+            mg="0px"
             shopTitle="인천신스"
             isPartner
             likeCount={1995}
@@ -210,6 +213,7 @@ export default function RepairHome() {
             tagList={['픽업', '피팅전문', '중고거래', '광고']}
           />
           <ShopComponent
+            mg="10px 0px"
             shopTitle="인천신스"
             isPartner
             likeCount={1995}
@@ -218,6 +222,7 @@ export default function RepairHome() {
             tagList={['픽업', '피팅전문', '중고거래', '광고']}
           />
           <ShopComponent
+            mg="0px 0px 10px"
             shopTitle="인천신스"
             isPartner
             likeCount={1995}
