@@ -37,14 +37,7 @@ export default function RegisterInformation({navigation}) {
       <Header title="정보입력" navigation={navigation}></Header>
       <Container mg="16px">
         <RowBox mg="5px 0px 20px">
-          <DarkText fontSize={Theme.fontSize.fs16} fontWeight={Theme.fontWeight.bold}>
-            필수 입력 항목{' '}
-          </DarkText>
-          <Box>
-            <DefaultText style={{top: -2}} color={Theme.color.skyBlue} lineHeight="20px">
-              *
-            </DefaultText>
-          </Box>
+          <RequireFieldText />
         </RowBox>
         <Box width={size.minusPadding} mg="0px 0px 20px">
           <DefaultLine />
@@ -109,3 +102,18 @@ export default function RegisterInformation({navigation}) {
     </>
   );
 }
+
+export const RequireFieldText = () => {
+  return (
+    <>
+      <DarkText fontSize={Theme.fontSize.fs16} fontWeight={Theme.fontWeight.bold}>
+        필수 입력 항목{' '}
+      </DarkText>
+      <Box>
+        <DefaultText color={Theme.color.skyBlue} lineHeight="23px">
+          *
+        </DefaultText>
+      </Box>
+    </>
+  );
+};

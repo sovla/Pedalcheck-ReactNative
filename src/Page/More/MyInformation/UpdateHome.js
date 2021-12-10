@@ -24,7 +24,7 @@ export default function UpdateHome() {
             </DarkMediumText>
           </Box>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('ShopUpdate')}>
           <Box backgroundColor="#0000" width={size.minusPadding} style={borderBottomWhiteGray}>
             <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
               업체 정보 수정
