@@ -22,7 +22,7 @@ import Post from './More/Post';
 import PrivacyPolicy from './More/PrivacyPolicy';
 import Question from './More/Question';
 import QuestionWrite from './More/QuestionWrite';
-import Coupon from './More/MyInformation/Coupon';
+import Coupon from './More/MyShop/Coupon';
 import CouponUseBikeSelect from './More/Coupon/CouponUseBikeSelect';
 import Information from './More/MyInformation/Information';
 import LikeShop from './More/MyInformation/LikeShop';
@@ -33,7 +33,7 @@ import UpdateHome from './More/MyInformation/UpdateHome';
 import BikeExport from './More/MyShop/BikeExport';
 import CouponDetail from './More/MyShop/CouponDetail';
 import CouponIssue from './More/MyShop/CouponIssue';
-import CouponManagement from './More/MyShop/CouponManagement';
+import CouponManagement from './More/MyInformation/CouponManagement';
 import ExportRegister from './More/MyShop/ExportRegister';
 import ProductManagement from './More/MyShop/ProductManagement';
 import ProductRegister from './More/MyShop/ProductRegister';
@@ -74,7 +74,7 @@ import {DarkBoldText, IndigoText} from '@/assets/global/Text';
 import CouponUseComplete from './More/Coupon/CouponUseComplete';
 import CouponUseDateSelect from './More/Coupon/CouponUseDateSelect';
 
-const INIT_ROUTER_COMPONENT_NAME = 'More';
+const INIT_ROUTER_COMPONENT_NAME = 'Coupon';
 
 const Stack = createNativeStackNavigator();
 

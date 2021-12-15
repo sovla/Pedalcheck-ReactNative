@@ -21,6 +21,20 @@ export const Button = styled.View`
   margin: ${p => pixelChange(p.mg) ?? '0px'};
 `;
 
+export const ButtonTouch = styled.TouchableOpacity`
+  background-color: ${p => p.backgroundColor ?? Theme.color.skyBlue};
+
+  width: ${p => pixelChange(p.width) ?? pixelChange(380)};
+  height: ${p => p.height ?? '44px'};
+  border: ${p => (p.borderColor ? '1px' : '0px')} solid ${p => p.borderColor ?? 'white'};
+
+  border-radius: ${p => p.borderRadius ?? '10px'};
+  justify-content: center;
+  align-items: center;
+  padding: ${p => pixelChange(p.pd) ?? '0px'};
+  margin: ${p => pixelChange(p.mg) ?? '0px'};
+`;
+
 export const LinkButton = ({
   to,
   content,
@@ -156,4 +170,10 @@ export const DisabledBorderButton = styled(BorderButton)`
 
   background-color: ${Theme.color.backgroundGray};
   border: 1px solid ${Theme.color.white};
+`;
+
+export const BlackBorderButton = styled(BorderButton)`
+  color: ${Theme.color.black};
+  background-color: ${Theme.color.white};
+  border: 1px solid ${Theme.borderColor.gray};
 `;

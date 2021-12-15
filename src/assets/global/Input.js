@@ -24,6 +24,7 @@ export const DefaultInput = ({
   isText, //          Input이 아닌 Text 의 경우 적용
   PressText, //       텍스트 클릭시 사용 isText 했을경우 사용
   isAlignTop, //      인풋텍스트 상단부터 적히게
+  isCenter, //        인풋텍스트 가운데에 적히게
   multiline, //       멀티라인
   isDropdown, //      드롭다운 여부
   dropdownItem, //    드롭다운 아이템
@@ -86,6 +87,10 @@ export const DefaultInput = ({
           style={[
             isAlignTop && {
               textAlignVertical: 'top',
+            },
+            isCenter && {
+              textAlign: 'center',
+              textAlignVertical: 'center',
             },
           ]}
         />
@@ -204,3 +209,11 @@ export const WhiteInput = styled(DefaultInputStyle)`
   align-items: ${p => p.alignItems ?? 'flex-start'};
   padding: ${p => pixelChange(p.pd) ?? pixelChange('10px 16px')};
 `;
+
+// export const DefaultDropDown = () => {
+//   return(
+//     <Dropdown
+
+//     />
+//   )
+// }
