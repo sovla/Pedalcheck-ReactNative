@@ -315,3 +315,56 @@ export const couponDummy = [
     value: '200000원',
   },
 ];
+
+export const bikeStats = [
+  {
+    title: '합계',
+    count: '00',
+    rate: '100%',
+  },
+  {
+    title: '로드바이크',
+    count: '33',
+    rate: '67.3%',
+  },
+  {
+    title: 'MTB',
+    count: '8',
+    rate: '16.3%',
+  },
+  {
+    title: '픽시',
+    count: '3',
+    rate: '6.1%',
+  },
+  {
+    title: '정비 상품명',
+    count: '00',
+    rate: '00%',
+  },
+  {
+    title: '정비 상품명',
+    count: '00',
+    rate: '00%',
+  },
+  {
+    title: '정비 상품명',
+    count: '00',
+    rate: '00%',
+  },
+  {
+    title: '정비 상품명',
+    count: '00',
+    rate: '00%',
+  },
+  {
+    title: '정비 상품명',
+    count: '00',
+    rate: '00%',
+  },
+  {
+    title: '정비 상품명',
+    count: '00',
+    rate: '00%',
+  },
+];

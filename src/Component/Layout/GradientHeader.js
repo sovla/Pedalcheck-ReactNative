@@ -6,7 +6,16 @@ import React from 'react';
 import {useSelector} from 'react-redux';
 import Gradient from './Gradient';
 
-export default function GradientHeader({title, children, imageSource, height}) {
+export default function GradientHeader({
+  title,
+  children,
+  imageSource,
+  imageSize = {
+    width: '24px',
+    height: '24px',
+  },
+  height,
+}) {
   const {size} = useSelector(state => state);
   return (
     <Gradient height={height}>
@@ -17,7 +26,10 @@ export default function GradientHeader({title, children, imageSource, height}) {
         justifyContent="space-between"
         alignItems="center">
         <DefaultText fontSize={Theme.fontSize.fs24}>{title}</DefaultText>
-        <DefaultImage source={imageSource} width="24px" height="24px"></DefaultImage>
+        <DefaultImage
+          source={imageSource}
+          width={imageSize.width}
+          height={imageSize.height}></DefaultImage>
       </RowBox>
       {children}
     </Gradient>

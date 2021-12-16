@@ -60,6 +60,8 @@ export default function ModalBasic() {
           return ReservationCancle();
         case 'deleteAccount':
           return DeleteAccount();
+        case 'slide/repairDatePicker':
+          return DatePicker();
       }
     };
   }

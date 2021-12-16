@@ -12,6 +12,7 @@ export default function DefaultDropdown({
   width = 65,
   height = 44,
   pdLeft = 20,
+  isBorder = true,
 }) {
   return (
     <Dropdown
@@ -35,8 +36,9 @@ export default function DefaultDropdown({
         height: getPixel(height),
         color: 'black',
         borderRadius: 10,
-        borderWidth: 1,
-        borderColor: Theme.borderColor.gray,
+        alignItems: 'center',
+        borderWidth: isBorder ? 1 : 0,
+        borderColor: isBorder ? Theme.borderColor.gray : Theme.color.white,
       }}
       maxHeight={data.length * getPixel(height)}
       showsVerticalScrollIndicator={false}

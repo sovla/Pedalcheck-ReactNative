@@ -74,7 +74,7 @@ import {DarkBoldText, IndigoText} from '@/assets/global/Text';
 import CouponUseComplete from './More/Coupon/CouponUseComplete';
 import CouponUseDateSelect from './More/Coupon/CouponUseDateSelect';
 
-const INIT_ROUTER_COMPONENT_NAME = 'Coupon';
+const INIT_ROUTER_COMPONENT_NAME = 'RepairHistoryHome';
 
 const Stack = createNativeStackNavigator();
 
