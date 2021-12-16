@@ -1,4 +1,4 @@
-import {Box, Container, RowBox} from '@/assets/global/Container';
+import {BetweenBox, Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import React from 'react';
 import Default1 from '@assets/image/default_1.png';
@@ -8,11 +8,12 @@ import ShopDummyImage from '@assets/image/shop_default.png';
 import {useSelector} from 'react-redux';
 import {ScrollView, Text} from 'react-native';
 import ReviewComment from './ReviewComment';
-import {LinkWhiteButton} from '@/assets/global/Button';
+import {LinkButton, LinkWhiteButton} from '@/assets/global/Button';
 import {useNavigation} from '@react-navigation/core';
 import Swiper from './Swiper';
+import {DefaultInput} from '@/assets/global/Input';
 
-export default function Review({isDetail = false, isDetailPage = false}) {
+export default function Review({isDetail = false, isDetailPage = false, isRecomment = true}) {
   const {size} = useSelector(state => state);
   const navigation = useNavigation();
   const imageArray = [ShopDummyImage, ShopDummyImage, ShopDummyImage, ShopDummyImage];
@@ -20,7 +21,10 @@ export default function Review({isDetail = false, isDetailPage = false}) {
   return (
     <Container
       pd="20px 0px"
-      style={{borderBottomWidth: 1, borderBottomColor: Theme.color.backgroundWhiteGray}}>
+      style={{
+        borderBottomWidth: isRecomment ? 0 : 1,
+        borderBottomColor: Theme.color.backgroundWhiteGray,
+      }}>
       <RowBox>
         <DefaultImage source={Default1} width="50px" height="50px" />
         <Box mg="0px 0px 0px 5px" justifyContent="center" height="50px">
@@ -65,12 +69,26 @@ export default function Review({isDetail = false, isDetailPage = false}) {
             borderRadius="All"
           />
         ) : (
-          <DefaultImage
-            source={ShopDummyImage}
-            borderRadius="10px"
-            width={size.minusPadding}
-            height="150px"
-          />
+          <Box>
+            <DefaultImage
+              source={ShopDummyImage}
+              borderRadius="10px"
+              width={size.minusPadding}
+              height="150px"
+            />
+            {imageArray.length > 1 && (
+              <PositionBox
+                right="10px"
+                bottom="10px"
+                width="44px"
+                height="24px"
+                borderRadius="12px"
+                alignItems="center"
+                backgroundColor="#3336">
+                <DefaultText>+{imageArray.length - 1}</DefaultText>
+              </PositionBox>
+            )}
+          </Box>
         )}
       </Box>
       <Box width={size.minusPadding} mg="15px 0px 20px">
@@ -86,7 +104,8 @@ export default function Review({isDetail = false, isDetailPage = false}) {
           자세히 보기를 할 수 있다.
         </DarkText>
       </Box>
-      <ReviewComment size={size} isDetailPage={isDetailPage} />
+      {!isRecomment && <ReviewComment size={size} isDetailPage={isDetailPage} />}
+
       {isDetail && (
         <LinkWhiteButton
           to={() => navigation.navigate('ReviewDetail')}

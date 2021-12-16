@@ -20,6 +20,8 @@ export default function QuestionItem({
   adminWriteDate = '2021-10-13',
   isSelect = false,
   onPressItem,
+  onPressUpdate,
+  onPressDelete,
 }) {
   const {size} = useSelector(state => state);
   const color = status === '답변' ? Theme.color.skyBlue : Theme.color.red;
@@ -57,7 +59,7 @@ export default function QuestionItem({
         <Box style={borderBottomWhiteGray}>
           <DarkText fontSize={Theme.fontSize.fs15}>{content}</DarkText>
           <RowBox mg="10px 0px" width="100%" justifyContent="flex-end">
-            <TouchableOpacity>
+            <TouchableOpacity onPress={onPressUpdate}>
               <Box mg="0px 5px">
                 <BorderButton
                   width="44px"
@@ -68,7 +70,7 @@ export default function QuestionItem({
                 </BorderButton>
               </Box>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={onPressDelete}>
               <BorderButton
                 width="44px"
                 height="25px"

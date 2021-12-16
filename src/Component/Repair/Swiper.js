@@ -38,7 +38,7 @@ export default function Swiper({imageArray, width, height, borderRadius = 'Botto
         style={[
           borderRadiusStyle,
           {
-            height: getHeightPixel(transformHeight),
+            height: getPixel(transformHeight),
             width: getPixel(transformWidth),
           },
         ]}
@@ -50,7 +50,8 @@ export default function Swiper({imageArray, width, height, borderRadius = 'Botto
             source={item}
             width={`${transformWidth}px`}
             height={`${transformHeight}px`}
-            resizeMode="cover"></DefaultImage>
+            resizeMode="cover"
+          />
         ))}
       </ScrollView>
       <PositionBox

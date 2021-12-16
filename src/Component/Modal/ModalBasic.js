@@ -14,8 +14,11 @@ import LocationPicker from '../Home/Modal/LocationPicker';
 import Service from '../Home/Modal/Service';
 import ThirdParty from '../Home/Modal/ThirdParty';
 import DeleteAccount from '../More/Modal/DeleteAccount';
+import QuestionDelete from '../More/Modal/QuestionDelete';
 import ReservationCancle from '../More/Modal/ReservationCancle';
 import PaymentInformationCheck from '../Repair/Modal/PaymentInformationCheck';
+import AdjustmentHistory from '../RepairHistory/Modal/AdjustmentHistory';
+import Notice from '../RepairHistory/Modal/Notice';
 import RepairRejection from '../ReservationManagement/Modal/RepairRejection';
 
 export default function ModalBasic() {
@@ -62,10 +65,17 @@ export default function ModalBasic() {
           return DeleteAccount();
         case 'slide/repairDatePicker':
           return DatePicker();
+        case 'fullSize/notice':
+          return Notice();
+        case 'adjustmentHistory':
+          return AdjustmentHistory();
+        case 'questionDelete':
+          return QuestionDelete();
       }
     };
   }
   const isSlide = modal?.modalComponent?.split('/')[0] === 'slide';
+  const isFullSize = modal?.modalComponent?.split('/')[0] === 'fullSize';
   if (modal?.isOpenModal !== true) {
     return null;
   }
@@ -77,34 +87,40 @@ export default function ModalBasic() {
       onRequestClose={() => {
         dispatch(modalClose());
       }}>
-      <Container
-        backgroundColor={Theme.color.dimmer}
-        justifyContent={isSlide ? 'flex-end' : 'center'}
-        alignItems="center"
-        zIndex="200">
-        {!isSlide ? (
-          <Box
-            backgroundColor={Theme.color.white}
-            width={size.minusPadding}
-            minHeight="300px"
-            borderRadius="15px"
-            pd="20px 16px"
-            alignItems="center">
-            {modal?.modalComponent !== undefined && <RenderItem />}
-          </Box>
-        ) : (
-          <PositionBox
-            style={{borderTopLeftRadius: 15, borderTopRightRadius: 15}}
-            backgroundColor={Theme.color.white}
-            minWidth={size.designWidth}
-            minHeight="300px"
-            pd="20px 16px"
-            bottom="0px"
-            alignItems="center">
-            {modal?.modalComponent !== undefined && <RenderItem />}
-          </PositionBox>
-        )}
-      </Container>
+      {isFullSize ? (
+        <Container alignItems="center" zIndex="200">
+          {modal?.modalComponent !== undefined && <RenderItem />}
+        </Container>
+      ) : (
+        <Container
+          backgroundColor={Theme.color.dimmer}
+          justifyContent={isSlide ? 'flex-end' : 'center'}
+          alignItems="center"
+          zIndex="200">
+          {!isSlide ? (
+            <Box
+              backgroundColor={Theme.color.white}
+              width={size.minusPadding}
+              minHeight="200px"
+              borderRadius="15px"
+              pd="20px 16px"
+              alignItems="center">
+              {modal?.modalComponent !== undefined && <RenderItem />}
+            </Box>
+          ) : (
+            <PositionBox
+              style={{borderTopLeftRadius: 15, borderTopRightRadius: 15}}
+              backgroundColor={Theme.color.white}
+              minWidth={size.designWidth}
+              minHeight="300px"
+              pd="20px 16px"
+              bottom="0px"
+              alignItems="center">
+              {modal?.modalComponent !== undefined && <RenderItem />}
+            </PositionBox>
+          )}
+        </Container>
+      )}
     </Modal>
   );
 }

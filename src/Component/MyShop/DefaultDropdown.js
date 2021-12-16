@@ -13,7 +13,9 @@ export default function DefaultDropdown({
   height = 44,
   pdLeft = 20,
   isBorder = true,
+  fontType = 'normal',
 }) {
+  const fontFamliy = fontType === 'normal' ? 'NotoSansKR-Regular' : `NotoSansKR-${fontType}`;
   return (
     <Dropdown
       data={data}
@@ -28,7 +30,7 @@ export default function DefaultDropdown({
         height: getPixel(height),
         color: Theme.color.black,
         fontSize: getPixel(15),
-        fontFamily: 'NotoSansKR-Regular',
+        fontFamily: fontFamliy,
         paddingLeft: getPixel(pdLeft),
       }}
       style={{

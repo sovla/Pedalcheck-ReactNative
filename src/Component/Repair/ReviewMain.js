@@ -1,7 +1,7 @@
 import {BorderButton, LinkWhiteButton} from '@/assets/global/Button';
 import {Box, Container, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
-import {DarkBoldText, DefaultText} from '@/assets/global/Text';
+import {DarkBoldText, DefaultText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import numberFormat from '@/Util/numberFormat';
 import React from 'react';
@@ -19,12 +19,9 @@ export default function ReviewMain() {
       <RowBox justifyContent="space-between" flex={1} width={size.minusPadding} alignItems="center">
         <RowBox>
           <DarkBoldText fontSize={Theme.fontSize.fs15}>리뷰</DarkBoldText>
-          <DefaultText
-            fontSize={Theme.fontSize.fs15}
-            fontWeight={Theme.fontWeight.medium}
-            color={Theme.color.indigo}>
+          <IndigoText fontSize={Theme.fontSize.fs15} fontWeight={Theme.fontWeight.medium}>
             {numberFormat(12345)}
-          </DefaultText>
+          </IndigoText>
         </RowBox>
         <Box>
           <TouchableOpacity
