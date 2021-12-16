@@ -40,18 +40,6 @@ export default function BirthDatePicker() {
       setDay(getBetweenNumber(1, new Date(birthDate?.year, birthDate?.month, 0).getDate()));
   }, [birthDate.month]);
 
-  // const DayPicker = useCallback(() => {
-  //   return (
-  //     <Picker
-  //       style={{backgroundColor: 'white', width: pickerWidth, height: 120}}
-  //       value={birthDate.day}
-  //       onValueChange={value => ChangeYear(value, 'day')}
-  //       pickerData={day}
-  //       itemSpace={40}
-  //       selectedValue={1}
-  //     />
-  //   );
-  // }, [birthDate.month, day]);
   if (day.length === 0) {
     return null;
   }

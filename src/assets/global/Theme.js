@@ -14,6 +14,7 @@ const Theme = {
     backgroundGray: '#F2F2F2',
     backgroundDisabled: '#EFEFEF',
     backgroundBlue: '#F2F4F8',
+    backgroundWhiteBlue: '#F9FAFC',
     backgroundWhiteBlue: '#F2F4F86E',
     red: '#FF6161',
     yellow: '#FFB300',

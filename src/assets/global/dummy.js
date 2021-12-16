@@ -252,3 +252,119 @@ export const bankList = [
   {label: '케이뱅크', value: '케이뱅크'},
   {label: '카카오뱅크', value: '카카오뱅크'},
 ];
+
+export const openTimeList = [
+  {label: '00', value: '00'},
+  {label: '01', value: '01'},
+  {label: '02', value: '02'},
+  {label: '03', value: '03'},
+  {label: '04', value: '04'},
+  {label: '05', value: '05'},
+  {label: '06', value: '06'},
+  {label: '07', value: '07'},
+  {label: '08', value: '08'},
+  {label: '09', value: '09'},
+  {label: '10', value: '10'},
+  {label: '11', value: '11'},
+  {label: '12', value: '12'},
+  {label: '13', value: '13'},
+  {label: '14', value: '14'},
+  {label: '15', value: '15'},
+  {label: '16', value: '16'},
+  {label: '17', value: '17'},
+  {label: '18', value: '18'},
+  {label: '19', value: '19'},
+  {label: '20', value: '20'},
+  {label: '21', value: '21'},
+  {label: '22', value: '22'},
+  {label: '23', value: '23'},
+];
+
+export const minuteList = [
+  {label: '00', value: '00'},
+  {label: '10', value: '10'},
+  {label: '20', value: '20'},
+  {label: '30', value: '30'},
+  {label: '40', value: '40'},
+  {label: '50', value: '50'},
+];
+
+export const couponDummy = [
+  {
+    label: '1000원',
+    value: '1000원',
+  },
+  {
+    label: '2000원',
+    value: '2000원',
+  },
+  {
+    label: '3000원',
+    value: '3000원',
+  },
+  {
+    label: '5000원',
+    value: '5000원',
+  },
+  {
+    label: '10000원',
+    value: '10000원',
+  },
+  {
+    label: '200000원',
+    value: '200000원',
+  },
+];
+
+export const bikeStats = [
+  {
+    title: '합계',
+    count: '00',
+    rate: '100%',
+  },
+  {
+    title: '로드바이크',
+    count: '33',
+    rate: '67.3%',
+  },
+  {
+    title: 'MTB',
+    count: '8',
+    rate: '16.3%',
+  },
+  {
+    title: '픽시',
+    count: '3',
+    rate: '6.1%',
+  },
+  {
+    title: '정비 상품명',
+    count: '00',
+    rate: '00%',
+  },
+  {
+    title: '정비 상품명',
+    count: '00',
+    rate: '00%',
+  },
+  {
+    title: '정비 상품명',
+    count: '00',
+    rate: '00%',
+  },
+  {
+    title: '정비 상품명',
+    count: '00',
+    rate: '00%',
+  },
+  {
+    title: '정비 상품명',
+    count: '00',
+    rate: '00%',
+  },
+  {
+    title: '정비 상품명',
+    count: '00',
+    rate: '00%',
+  },
+];

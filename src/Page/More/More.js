@@ -49,7 +49,7 @@ export default function More() {
       case '상품 관리':
         return navigation.navigate('ProductManagement');
       case '쿠폰 관리':
-        return navigation.navigate('CouponManagement');
+        return navigation.navigate('Coupon');
       case '출고 이력 관리':
         return navigation.navigate('BikeExport');
     }
