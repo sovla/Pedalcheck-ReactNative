@@ -3,6 +3,7 @@ import DefaultImage from '@/assets/global/Image';
 import {DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import React from 'react';
+import {TouchableOpacity, TouchableOpacityBase} from 'react-native';
 import {useSelector} from 'react-redux';
 import Gradient from './Gradient';
 
@@ -15,6 +16,7 @@ export default function GradientHeader({
     height: '24px',
   },
   height,
+  onPressImage,
 }) {
   const {size} = useSelector(state => state);
   return (
@@ -26,10 +28,13 @@ export default function GradientHeader({
         justifyContent="space-between"
         alignItems="center">
         <DefaultText fontSize={Theme.fontSize.fs24}>{title}</DefaultText>
-        <DefaultImage
-          source={imageSource}
-          width={imageSize.width}
-          height={imageSize.height}></DefaultImage>
+        {onPressImage ? (
+          <TouchableOpacity onPress={onPressImage}>
+            <DefaultImage source={imageSource} width={imageSize.width} height={imageSize.height} />
+          </TouchableOpacity>
+        ) : (
+          <DefaultImage source={imageSource} width={imageSize.width} height={imageSize.height} />
+        )}
       </RowBox>
       {children}
     </Gradient>

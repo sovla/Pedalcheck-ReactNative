@@ -73,10 +73,25 @@ import {BorderButton} from '@/assets/global/Button';
 import {DarkBoldText, IndigoText} from '@/assets/global/Text';
 import CouponUseComplete from './More/Coupon/CouponUseComplete';
 import CouponUseDateSelect from './More/Coupon/CouponUseDateSelect';
+import Card from '@/Component/ReservationManagement/Card';
 
 const INIT_ROUTER_COMPONENT_NAME = 'RepairHistoryHome';
 
 const Stack = createNativeStackNavigator();
+
+const forFade = ({current, next}) => {
+  const opacity = Animated.add(current.progress, next ? next.progress : 0).interpolate({
+    inputRange: [0, 1, 2],
+    outputRange: [0, 1, 0],
+  });
+
+  return {
+    leftButtonStyle: {opacity},
+    rightButtonStyle: {opacity},
+    titleStyle: {opacity},
+    backgroundStyle: {opacity},
+  };
+};
 
 const withScrollView = WrappedComponent => {
   return props => {
@@ -86,7 +101,7 @@ const withScrollView = WrappedComponent => {
         <View style={{flex: 1, backgroundColor: Theme.color.white}}>
           <WrappedComponent {...props} />
 
-          {isFocus && <ModalBasic />}
+          {isFocus && <ModalBasic navigation={props?.navigation} />}
           <PositionBox backgroundColor="#0000" flexDirection="row" top="0px" zIndex={3000}>
             <BorderButton
               backgroundColor="#0000"
@@ -125,6 +140,7 @@ export default function Router() {
           initialRouteName={INIT_ROUTER_COMPONENT_NAME}
           screenOptions={{
             headerShown: false,
+            headerStyleInterpolator: forFade,
           }}>
           {RouterSetting.map((item, index) => (
             <Stack.Screen
