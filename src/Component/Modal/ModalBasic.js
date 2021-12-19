@@ -19,6 +19,8 @@ import ReservationCancle from '../More/Modal/ReservationCancle';
 import PaymentInformationCheck from '../Repair/Modal/PaymentInformationCheck';
 import AdjustmentHistory from '../RepairHistory/Modal/AdjustmentHistory';
 import Notice from '../RepairHistory/Modal/Notice';
+import QuestionSubmit from '../RepairHistory/Modal/QuestionSubmit';
+import QuestionUpdate from '../RepairHistory/Modal/QuestionUpdate';
 import RepairRejection from '../ReservationManagement/Modal/RepairRejection';
 
 export default function ModalBasic() {
@@ -71,6 +73,10 @@ export default function ModalBasic() {
           return AdjustmentHistory();
         case 'questionDelete':
           return QuestionDelete();
+        case 'questionUpdate':
+          return QuestionUpdate();
+        case 'questionSubmit':
+          return QuestionSubmit();
       }
     };
   }

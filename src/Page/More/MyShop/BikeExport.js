@@ -69,5 +69,3 @@ export default function BikeExport() {
     </>
   );
 }
-
-const styles = StyleSheet.create({});

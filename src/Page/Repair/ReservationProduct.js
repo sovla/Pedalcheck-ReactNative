@@ -60,64 +60,58 @@ export default function ShopReservationProduct({navigation}) {
     <>
       <Header title="정비예약" />
 
-      <Box height={`${size.screenHeight - 50}px`}>
-        <ScrollBox>
-          <RepairReservationHeader step={1} />
-          <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
-          <Box mg="0px 16px">
-            <DarkBoldText mg="20px 0px 14px">정비 상품</DarkBoldText>
-            {item.map((innerItem, index) => {
-              return (
-                <ReservationProduct
-                  item={innerItem}
-                  key={innerItem + index}
-                  onPressMain={() => {
-                    onPressItem(index, false);
-                  }}
-                  onPressCargo={() => {
-                    onPressItem(index, true);
-                  }}
-                  selectItem={selectProduct.find(item => item.index === index)}
-                />
-              );
-            })}
-            <DefaultLine />
-            <DarkBoldText mg="20px 0px 15px">결제금액</DarkBoldText>
-            <RowBox justifyContent="space-between" width={size.minusPadding}>
-              <DarkText>가격</DarkText>
-              <MoneyText
-                money={50000}
-                color={Theme.color.black}
-                fontWeight={Theme.fontWeight.bold}
-              />
-            </RowBox>
-            <RowBox mg="10px 0px 20px" justifyContent="space-between" width={size.minusPadding}>
-              <DarkText>할인</DarkText>
-              <MoneyText money={-3000} color={Theme.color.black} />
-            </RowBox>
-            <DefaultLine />
-            <RowBox mg="10px 0px 20px" justifyContent="space-between" width={size.minusPadding}>
-              <IndigoText fontSize={Theme.fontSize.fs12} width="225px">
-                서비스에 따라 현장에서 추가금액 또는 차액이 발생할 수 있습니다.
-              </IndigoText>
-              <MoneyText
-                money={47000}
-                color={Theme.color.black}
-                fontSize={Theme.fontSize.fs18}
-                fontWeight={Theme.fontWeight.bold}
-              />
-            </RowBox>
-            <Box height="44px" mg="0px 0px 20px" width={size.minusPadding}>
-              <LinkButton
-                widht={size.minusPadding}
-                to={() => {
-                  navigation.navigate('ReservationBike');
+      <ScrollBox>
+        <RepairReservationHeader step={1} />
+        <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
+        <Box mg="0px 16px">
+          <DarkBoldText mg="20px 0px 14px">정비 상품</DarkBoldText>
+          {item.map((innerItem, index) => {
+            return (
+              <ReservationProduct
+                item={innerItem}
+                key={innerItem + index}
+                onPressMain={() => {
+                  onPressItem(index, false);
                 }}
-                content="다음"></LinkButton>
-            </Box>
+                onPressCargo={() => {
+                  onPressItem(index, true);
+                }}
+                selectItem={selectProduct.find(item => item.index === index)}
+              />
+            );
+          })}
+          <DefaultLine />
+          <DarkBoldText mg="20px 0px 15px">결제금액</DarkBoldText>
+          <RowBox justifyContent="space-between" width={size.minusPadding}>
+            <DarkText>가격</DarkText>
+            <MoneyText money={50000} color={Theme.color.black} fontWeight={Theme.fontWeight.bold} />
+          </RowBox>
+          <RowBox mg="10px 0px 20px" justifyContent="space-between" width={size.minusPadding}>
+            <DarkText>할인</DarkText>
+            <MoneyText money={-3000} color={Theme.color.black} />
+          </RowBox>
+          <DefaultLine />
+          <RowBox mg="10px 0px 20px" justifyContent="space-between" width={size.minusPadding}>
+            <IndigoText fontSize={Theme.fontSize.fs12} width="225px">
+              서비스에 따라 현장에서 추가금액 또는 차액이 발생할 수 있습니다.
+            </IndigoText>
+            <MoneyText
+              money={47000}
+              color={Theme.color.black}
+              fontSize={Theme.fontSize.fs18}
+              fontWeight={Theme.fontWeight.bold}
+            />
+          </RowBox>
+          <Box height="44px" mg="0px 0px 20px" width={size.minusPadding}>
+            <LinkButton
+              widht={size.minusPadding}
+              to={() => {
+                navigation.navigate('ReservationBike');
+              }}
+              content="다음"></LinkButton>
           </Box>
-        </ScrollBox>
-      </Box>
+        </Box>
+      </ScrollBox>
     </>
   );
 }

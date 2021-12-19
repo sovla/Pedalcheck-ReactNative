@@ -9,9 +9,11 @@ import {useSelector} from 'react-redux';
 export default function Home({navigation}) {
   const {size} = useSelector(state => state);
   return (
-    <Container mg="70px 16px 30px">
-      <LogoBox />
+    <>
+      <Container mg="70px 16px 30px">
+        <LogoBox />
+      </Container>
       <HomeFooter navigation={navigation}></HomeFooter>
-    </Container>
+    </>
   );
 }

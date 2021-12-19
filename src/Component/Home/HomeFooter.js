@@ -5,11 +5,22 @@ import {useSelector} from 'react-redux';
 import {LinkButton, TextLinkButton} from '@/assets/global/Button';
 import {Box, PositionBox, RowBox} from '@/assets/global/Container';
 import {AppleImage, GoogleImage, KakaoImage, NaverImage} from './Icon/Icon';
+import {getPixel} from '@/Util/pixelChange';
 
-export default function HomeFooter({navigation, isShowLogin = true}) {
+export default function HomeFooter({navigation, isShowLogin = true, isAbsolute}) {
   const size = useSelector(state => state.size);
   return (
-    <PositionBox alignItems="center" bottom="0px" width="100%">
+    <Box
+      alignItems="center"
+      width="100%"
+      mg="0px 0px 20px"
+      // style={
+      //   isAbsolute && {
+      //     position: 'absolute',
+      //     bottom: getPixel(20),
+      //   }
+      // }
+    >
       <Box pd="16px">
         <TextLinkButton
           to={() => navigation.navigate('Register')}
@@ -46,6 +57,6 @@ export default function HomeFooter({navigation, isShowLogin = true}) {
           borderColor={Theme.borderColor.gray}
         />
       </Box>
-    </PositionBox>
+    </Box>
   );
 }

@@ -75,7 +75,7 @@ import CouponUseComplete from './More/Coupon/CouponUseComplete';
 import CouponUseDateSelect from './More/Coupon/CouponUseDateSelect';
 import Card from '@/Component/ReservationManagement/Card';
 
-const INIT_ROUTER_COMPONENT_NAME = 'RepairHistoryHome';
+const INIT_ROUTER_COMPONENT_NAME = 'Home';
 
 const Stack = createNativeStackNavigator();
 
@@ -102,16 +102,6 @@ const withScrollView = WrappedComponent => {
           <WrappedComponent {...props} />
 
           {isFocus && <ModalBasic navigation={props?.navigation} />}
-          <PositionBox backgroundColor="#0000" flexDirection="row" top="0px" zIndex={3000}>
-            <BorderButton
-              backgroundColor="#0000"
-              color="black"
-              onPress={() => DevSettings.reload()}
-              width="auto">
-              Reload
-            </BorderButton>
-            <DarkBoldText>{props.route.name}</DarkBoldText>
-          </PositionBox>
         </View>
       </SafeAreaView>
     );

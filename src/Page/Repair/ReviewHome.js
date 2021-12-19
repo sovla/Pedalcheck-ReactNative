@@ -8,7 +8,10 @@ import {DarkText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import ShopComponent from '@/Component/Repair/ShopComponent';
 import ReviewRecord from '@/Component/Repair/ReviewRecord';
-export default function ReviewHome({isRapairRecord = true}) {
+import {useState} from 'react';
+import {Button, LinkButton} from '@/assets/global/Button';
+export default function ReviewHome() {
+  const [isRapairRecord, setIsRapairRecord] = useState(true);
   const item = [
     {
       title: '인천신스',
@@ -43,6 +46,11 @@ export default function ReviewHome({isRapairRecord = true}) {
           </Container>
         )}
       </Container>
+      <LinkButton
+        to={() => setIsRapairRecord(prev => !prev)}
+        content="리뷰확인용버튼/테스트"
+        mg="0px 16px 20px"
+      />
     </>
   );
 }

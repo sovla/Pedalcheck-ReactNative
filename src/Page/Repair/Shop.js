@@ -30,17 +30,14 @@ export default function Shop() {
 
   return (
     <Container>
-      <Box height={`${size.screenHeight - 50}px`}>
-        <ScrollView style={styles.container}>
-          <ShopHeader size={size} />
-          <MenuNav menuItem={menu} select={selectMenu} setSelect={setSelectMenu} />
+      <ScrollView style={styles.container}>
+        <ShopHeader size={size} />
+        <MenuNav menuItem={menu} select={selectMenu} setSelect={setSelectMenu} />
 
-          {selectMenu === '매장소개' && <ShopIntroduction />}
-          {selectMenu === '상품보기' && <ProductsShow />}
-          {selectMenu === '리뷰' && <ReviewMain />}
-          <Box height="100px"></Box>
-        </ScrollView>
-      </Box>
+        {selectMenu === '매장소개' && <ShopIntroduction />}
+        {selectMenu === '상품보기' && <ProductsShow />}
+        {selectMenu === '리뷰' && <ReviewMain />}
+      </ScrollView>
       <FooterButtons />
     </Container>
   );
@@ -69,6 +66,7 @@ const ShopHeader = ({size}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginBottom: 50,
   },
   mainContainer: {
     height: screenHeight - getHeightPixel(50),
