@@ -1,5 +1,5 @@
-import {LinkButton} from '@/assets/global/Button';
-import {Box, Container, ScrollBox} from '@/assets/global/Container';
+import {LinkButton, TextLinkButton} from '@/assets/global/Button';
+import {BetweenBox, Box, Container, ScrollBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
 import HomeFooter from '@/Component/Home/HomeFooter';
 import LogoBox from '@/Component/Home/LogoBox';
@@ -7,6 +7,7 @@ import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {KeyboardAvoidingView} from 'react-native';
 import {getPixel} from '@/Util/pixelChange';
+import {AppleImage, GoogleImage, KakaoImage, NaverImage} from '@/Component/Home/Icon/Icon';
 
 export default function Login({navigation}) {
   const size = useSelector(state => state.size);
@@ -53,6 +54,20 @@ export default function Login({navigation}) {
               width={size.minusPadding}
               height="44px"></LinkButton>
           </Box>
+        </Box>
+        <Box alignItems="center">
+          <Box pd="16px">
+            <TextLinkButton
+              to={() => navigation.navigate('Register')}
+              content="SNS 계정으로 회원가입/로그인"
+            />
+          </Box>
+          <BetweenBox width={`${size.designWidth - 100}px`} pd="0px 0px 10px">
+            <KakaoImage />
+            <GoogleImage />
+            <NaverImage />
+            <AppleImage />
+          </BetweenBox>
         </Box>
       </ScrollBox>
       <HomeFooter isAbsolute navigation={navigation} isShowLogin={false} />
