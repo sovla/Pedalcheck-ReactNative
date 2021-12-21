@@ -17,6 +17,8 @@ import ShopRepairHistory from '@/Component/BikeManagement/ShopRepairHistory';
 import BikeInformationHeader from '@/Component/BikeManagement/BikeInformationHeader';
 import {bikeInfo} from '@/assets/global/dummy';
 import BikeInformaitonBody from '@/Component/BikeManagement/BikeInformaitonBody';
+import TrashButton from '@/Component/Buttons/TrashButton';
+import ModifyButton from '@/Component/Buttons/ModifyButton';
 
 export default function BikeDetail() {
   const {size} = useSelector(state => state);
@@ -119,21 +121,8 @@ const shopItem2 = {
 const RightComponent = () => {
   return (
     <RowBox justifyContent="space-between" width="65px" height="100%" alignItems="center">
-      <TouchableOpacity>
-        <BorderButton
-          justifyContent="center"
-          alignItems="center"
-          width="30px"
-          height="30px"
-          borderColor={Theme.borderColor.gray}>
-          <DefaultImage source={TrashIcon} width="20px" height="20px" />
-        </BorderButton>
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <BorderButton justifyContent="center" alignItems="center" width="30px" height="30px">
-          <DefaultImage source={ModifyIcon} width="20px" height="20px" />
-        </BorderButton>
-      </TouchableOpacity>
+      <TrashButton />
+      <ModifyButton />
     </RowBox>
   );
 };

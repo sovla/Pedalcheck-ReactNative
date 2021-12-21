@@ -21,7 +21,7 @@ const ItemStats = ({
 }) => {
   return (
     <Box
-      width={`${width - 32}px`}
+      width={`${width}px`}
       pd="20px 16px 20px"
       borderRadius="10px"
       mg={!isFull && '20px 0px 0px'}>
@@ -65,7 +65,7 @@ const TableRow = ({backgroundColor, width = '348px', height = '40px', itemList})
           key={item + index}
           backgroundColor="#0000"
           height={height}
-          style={{flex: index === 0 ? 2 : 1, textAlign: 'center', textAlignVertical: 'center'}}
+          style={{flex: index === 0 ? 1.5 : 1, textAlign: 'center', textAlignVertical: 'center'}}
           fontSize={Theme.fontSize.fs13}>
           {item}
         </DarkMediumText>

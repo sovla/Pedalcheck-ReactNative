@@ -10,16 +10,7 @@ import {useState} from 'react';
 export default function DateChange({navigation}) {
   const [selectItem, setSelectItem] = useState('');
   const [selectDate, setSelectDate] = useState(null);
-  const onPressDate = day => {
-    const {dateString} = day;
-    const select = {
-      [dateString]: {
-        selected: true,
-      },
-    };
 
-    setSelectDate(select);
-  };
   const disabled = ['09:00', '09:30'];
 
   const onPressSave = () => {
@@ -31,7 +22,7 @@ export default function DateChange({navigation}) {
       <Box flex={1}>
         <ScrollBox flex={1}>
           <Box mg="0px 16px">
-            <ReservationCalendar selectDate={selectDate} onPressDate={onPressDate} />
+            <ReservationCalendar selectDate={selectDate} setSelectDate={setSelectDate} />
           </Box>
           <TimeList
             timeList={timeList}

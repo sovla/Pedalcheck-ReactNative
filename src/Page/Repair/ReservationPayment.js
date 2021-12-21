@@ -16,9 +16,9 @@ export default function ReservationPayment({navigation}) {
   return (
     <>
       <Header title="정비예약" />
-      <Box height={`${size.screenHeight - 50}px`}>
+      <Box style={{flex: 1}}>
         <ScrollBox>
-          <RepairReservationHeader step={5} />
+          <RepairReservationHeader step={5} content="결제완료" />
           <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
           <RowBox justifyContent="center" alignItems="center" mg="33px 0px">
             <DefaultImage source={BorderCheckIcon} width="20px" height="20px" />
@@ -35,13 +35,14 @@ export default function ReservationPayment({navigation}) {
             })}
           </Box>
         </ScrollBox>
-        <PositionBox left="16px" bottom="20px">
-          <LinkWhiteButton content="장비 신청 확인하기"></LinkWhiteButton>
-          <LinkButton
-            mg="10px 0px 0px 0px"
-            to={() => navigation.navigate('RepairHome')}
-            content="홈으로 돌아가기"></LinkButton>
-        </PositionBox>
+      </Box>
+      <Box mg="0px 16px 20px">
+        <LinkWhiteButton content="장비 신청 확인하기"></LinkWhiteButton>
+        <LinkButton
+          mg="10px 0px 0px 0px"
+          to={() => navigation.navigate('RepairHome')}
+          content="홈으로 돌아가기"
+        />
       </Box>
     </>
   );

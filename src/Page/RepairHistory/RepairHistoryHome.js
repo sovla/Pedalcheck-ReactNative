@@ -53,16 +53,24 @@ import ProductCheckBox from '@/Component/ReservationManagement/ProductCheckBox';
 import Review from '@/Component/Repair/Review';
 import {questionList} from '../More/Question';
 import QuestionItem from '@/Component/More/QuestionItem';
+import QuestionRecomment from '@/Component/RepairHistory/QuestionRecomment';
 
 export default function RepairHistoryHome() {
   const [select, setSelect] = useState('홈');
   const [date, setDate] = useState(new Date());
   const [selectDate, setSelectDate] = useState('지난 6개월');
   const [questionSelect, setQuestionSelect] = useState([]);
+  const [selectComment, setSelectComment] = useState([]);
   const dispatch = useDispatch();
 
   const navigation = useNavigation();
-
+  const onPressRecomment = index => {
+    if (selectComment.find(findIndex => findIndex === index)) {
+      setSelectComment(prev => prev.filter(filterItem => filterItem !== index));
+    } else {
+      setSelectComment(prev => [...prev, index]);
+    }
+  };
   const onPressItem = title => {
     if (questionSelect.find(findItem => findItem === title)) {
       setQuestionSelect(prev => prev.filter(filterItem => filterItem !== title));
@@ -130,8 +138,11 @@ export default function RepairHistoryHome() {
             </Box>
             <ShopCustomerStats />
             <ItemStats onPressMore={() => navigation.navigate('BikeStats')} />
-            <ItemStats title="자전거 종류별 통계" />
-            <ItemStats title="브랜드별 통계" />
+            <ItemStats
+              title="자전거 종류별 통계"
+              onPressMore={() => navigation.navigate('BikeStats')}
+            />
+            <ItemStats title="브랜드별 통계" onPressMore={() => navigation.navigate('BikeStats')} />
           </Box>
         )}
         {select === '정비이력' && (
@@ -231,16 +242,18 @@ export default function RepairHistoryHome() {
         )}
         {select === '1:1문의' && (
           <Box pd="0px 16px">
-            {questionList?.map(item => {
-              return (
-                <QuestionItem
-                  {...item}
-                  isAdmin
-                  isSelect={questionSelect.find(findItem => findItem === item.questionTitle)}
-                  onPressItem={() => onPressItem(item.questionTitle)}
-                />
-              );
-            })}
+            {commentList.map((item, index) => (
+              <QuestionRecomment
+                key={index}
+                onPressUpdate={() => dispatch(modalOpen('questionUpdate'))}
+                onPressSubmit={() => dispatch(modalOpen('questionSubmit'))}
+                onPressItem={() => {
+                  onPressRecomment(index);
+                }}
+                isSelect={selectComment.find(findItem => findItem === index) ? true : false}
+                status={index % 2 === 0 ? '미답변' : '답변완료'}
+              />
+            ))}
           </Box>
         )}
       </ScrollBox>
@@ -249,6 +262,7 @@ export default function RepairHistoryHome() {
   );
 }
 
+const commentList = [0, 1, 2, 3, 4];
 const dateDummyList = [
   {label: '지난 6개월', value: '지난 6개월'},
   {label: '지난 12개월', value: '지난 12개월'},

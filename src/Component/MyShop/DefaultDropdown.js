@@ -27,7 +27,7 @@ export default function DefaultDropdown({
       valueField="value"
       selectedTextStyle={{
         width: getPixel(width),
-        height: getPixel(height),
+        height: height,
         color: Theme.color.black,
         fontSize: getPixel(15),
         fontFamily: fontFamliy,
@@ -35,19 +35,20 @@ export default function DefaultDropdown({
       }}
       style={{
         width: getPixel(width),
-        height: getPixel(height),
+        height: height,
         color: 'black',
         borderRadius: 10,
         alignItems: 'center',
         borderWidth: isBorder ? 1 : 0,
         borderColor: isBorder ? Theme.borderColor.gray : Theme.color.white,
       }}
-      maxHeight={data.length * getPixel(height)}
+      maxHeight={data.length * height}
       showsVerticalScrollIndicator={false}
       renderItem={item => {
         const isEqual = item?.value === value;
         return (
           <Box
+            key={item}
             width="auto"
             height={`${height}px`}
             alignItems="center"

@@ -93,12 +93,13 @@ export default function RegisterInformation({navigation}) {
           }}
           pd="0px 0px 5px"
         />
-
+      </Container>
+      <Box mg="0px 16px 20px">
         <FooterButton
           leftPress={() => navigation.navigate('RegisterAdditional')}
           rightPress={onPressComplete}
         />
-      </Container>
+      </Box>
     </>
   );
 }

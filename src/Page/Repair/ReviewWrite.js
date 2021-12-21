@@ -10,7 +10,7 @@ import {useSelector} from 'react-redux';
 import {LinkButton} from '@/assets/global/Button';
 import Photo from '@/Component/Repair/Photo';
 
-export default function ReviewWrite({navigation}) {
+export default function ReviewWrite({navigation, route}) {
   const [content, setContent] = useState('');
   const [imageArray, setImageArray] = useState([]);
   const {size} = useSelector(state => state);
@@ -62,7 +62,7 @@ export default function ReviewWrite({navigation}) {
           <LinkButton
             width={size.minusPadding}
             content="게시"
-            to={() => navigation.navigate('Shop')}></LinkButton>
+            to={() => navigation.navigate(`${route?.params?.navigate ?? 'Shop'}`)}></LinkButton>
         </PositionBox>
       </Box>
     </>

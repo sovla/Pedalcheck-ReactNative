@@ -124,7 +124,7 @@ const DefaultInformation = () => {
           />
         </Box>
         <RowBox width={size.minusPadding} alignItems="flex-end" mg="0px 0px 30px">
-          <BorderButton width="100px" fontSize={Theme.fontSize.fs15}>
+          <BorderButton width="100px" height="auto" fontSize={Theme.fontSize.fs15}>
             통장 사본 등록
           </BorderButton>
           <RowBox

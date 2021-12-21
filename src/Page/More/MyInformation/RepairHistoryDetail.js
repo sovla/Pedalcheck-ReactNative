@@ -13,6 +13,11 @@ import {useNavigation} from '@react-navigation/core';
 import React from 'react';
 import {useState} from 'react';
 import {View, Text} from 'react-native';
+import Dummy1 from '@assets/image/dummy1.png';
+import Dummy2 from '@assets/image/dummy2.png';
+import Dummy3 from '@assets/image/dummy3.png';
+import Dummy4 from '@assets/image/dummy4.png';
+import Dummy5 from '@assets/image/dummy5.png';
 import {useDispatch, useSelector} from 'react-redux';
 
 export default function RepairHistoryDetail() {
@@ -25,7 +30,9 @@ export default function RepairHistoryDetail() {
     dispatch(modalOpen('reservationCancle'));
   };
   const onPressReview = () => {
-    navigation.navigate('ReviewWrite');
+    navigation.navigate('ReviewWrite', {
+      navigate: 'RepairHistory',
+    });
   };
   return (
     <>
@@ -41,7 +48,7 @@ export default function RepairHistoryDetail() {
           />
           <Box mg="20px 16px">
             <DarkBoldText>정비사진</DarkBoldText>
-            <Photo imageArray={[1, 2, 3, 4, 5]} isView />
+            <Photo imageArray={[Dummy1, Dummy2, Dummy3, Dummy4, Dummy5]} isView />
           </Box>
           <Box mg="0px 16px 20px">
             <DarkBoldText>정비노트</DarkBoldText>

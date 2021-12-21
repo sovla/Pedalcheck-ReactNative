@@ -22,8 +22,8 @@ export default function ShopReservationRequest({navigation}) {
   return (
     <>
       <Header title="정비예약" />
-      <Box height={`${size.screenHeight - 50}px`}>
-        <RepairReservationHeader step={4} />
+      <Box style={{flex: 1}}>
+        <RepairReservationHeader step={4} content="요청사항 입력" />
         <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
         <Box mg="20px 16px">
           <DarkBoldText mg="0px 0px 10px">요청사항 (선택)</DarkBoldText>
@@ -78,16 +78,16 @@ export default function ShopReservationRequest({navigation}) {
             </DarkText>
           </CheckBox>
         </Box>
-
-        <PositionBox left="16px" bottom="20px">
-          <LinkButton
-            to={() => {
-              dispatch(modalOpen('paymentInformationCheck'));
-              dispatch(setNavigator(navigation));
-            }}
-            content="다음"></LinkButton>
-        </PositionBox>
       </Box>
+
+      <LinkButton
+        mg="0px 16px 20px"
+        to={() => {
+          dispatch(modalOpen('paymentInformationCheck'));
+          dispatch(setNavigator(navigation));
+        }}
+        content="다음"
+      />
     </>
   );
 }

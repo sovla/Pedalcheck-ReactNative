@@ -19,7 +19,11 @@ export default function ReviewMain() {
       <RowBox justifyContent="space-between" flex={1} width={size.minusPadding} alignItems="center">
         <RowBox>
           <DarkBoldText fontSize={Theme.fontSize.fs15}>리뷰</DarkBoldText>
-          <IndigoText fontSize={Theme.fontSize.fs15} fontWeight={Theme.fontWeight.medium}>
+          <IndigoText
+            mg="0px 0px 0px 5px"
+            fontSize={Theme.fontSize.fs15}
+            fontWeight={Theme.fontWeight.medium}
+            color={Theme.color.indigo}>
             {numberFormat(12345)}
           </IndigoText>
         </RowBox>
@@ -35,10 +39,9 @@ export default function ReviewMain() {
           </TouchableOpacity>
         </Box>
       </RowBox>
-      <Review isDetail />
-      <Review />
-      <Review />
-      <Box mg="60px 0px"></Box>
+      <Review isDetail isRecomment={false} />
+      <Review isRecomment={false} />
+      <Review isRecomment={false} />
     </Container>
   );
 }

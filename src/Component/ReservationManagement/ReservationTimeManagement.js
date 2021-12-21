@@ -15,6 +15,8 @@ import ModifyIcon from '@assets/image/ic_modify.png';
 import {timeList} from '@/assets/global/dummy';
 import {useEffect} from 'react';
 import {useLayoutEffect} from 'react';
+import ModifyButton from '../Buttons/ModifyButton';
+import TrashButton from '../Buttons/TrashButton';
 
 export default function ReservationTimeManagement() {
   const {size} = useSelector(state => state);
@@ -53,35 +55,21 @@ const TimeManagementCheckBox = ({time, isCheck, onUpdate}) => {
         <WhiteInput
           width="70px"
           height="30px"
-          pd="6px 16px"
+          pd="0px"
           value={reservationTime}
           onChangeText={setReservationTime}
           borderColor={Theme.borderColor.gray}
           borderRadius="3px"
+          style={{
+            textAlign: 'center',
+            textAlignVertical: 'center',
+            includeFontPadding: false,
+          }}
         />
       </Box>
       <RowBox justifyContent="space-between" width="65px" height="100%" alignItems="center">
-        <TouchableOpacity>
-          <BorderButton
-            pd="0px"
-            justifyContent="center"
-            alignItems="center"
-            width="30px"
-            height="30px">
-            <DefaultImage source={ModifyIcon} width="20px" height="20px" />
-          </BorderButton>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <BorderButton
-            justifyContent="center"
-            alignItems="center"
-            width="30px"
-            height="30px"
-            pd="0px"
-            borderColor={Theme.borderColor.gray}>
-            <DefaultImage source={TrashIcon} width="20px" height="20px" />
-          </BorderButton>
-        </TouchableOpacity>
+        <ModifyButton />
+        <TrashButton />
       </RowBox>
     </RowBox>
   );

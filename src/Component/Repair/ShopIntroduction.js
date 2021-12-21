@@ -8,7 +8,7 @@ import {DarkBoldText, DarkText} from '@/assets/global/Text';
 import DefaultLine from '@/assets/global/Line';
 import Theme from '@/assets/global/Theme';
 import {useSelector} from 'react-redux';
-import Dummy from '@assets/image/shop_default.png';
+import Dummy from '@assets/image/map.png';
 import {Dimensions} from 'react-native';
 
 export default function ShopIntroduction() {
@@ -59,9 +59,7 @@ export default function ShopIntroduction() {
       <Box mg="20px 0px 10px">
         <DarkBoldText>매장 위치</DarkBoldText>
       </Box>
-      <Box width={size.minusPadding}>
-        <DefaultImage source={Dummy} width={size.minusPadding} height="200px"></DefaultImage>
-      </Box>
+      <DefaultImage source={Dummy} width={size.minusPadding} height="200px"></DefaultImage>
     </Container>
   );
 }
