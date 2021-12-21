@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "574869846797",
+    "project_id": "pedalcheck",
+    "storage_bucket": "pedalcheck.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574869846797:android:e1fbacf4006514c17b8e44",
+        "android_client_info": {
+          "package_name": "com.pedalchecka"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574869846797-vpu4mdn9enqepjdc686rrqcdbln4n9n8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pedalchecka",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "574869846797-38s3ud4d6svhar28qtqkjsditppgui87.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaBiTpEuWcpVeYJyy33v8OvnFzaNJz6RE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574869846797-38s3ud4d6svhar28qtqkjsditppgui87.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
