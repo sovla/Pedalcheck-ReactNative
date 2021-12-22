@@ -129,7 +129,7 @@ export const PositionBox = styled(Box)`
   ${p =>
     p.top &&
     css`
-      top: ${pixelChange(p.top)};
+      top: ${pixelHeightChange(p.top)};
     `}
   ${p =>
     p.left &&
@@ -144,6 +144,6 @@ export const PositionBox = styled(Box)`
     ${p =>
     p.bottom &&
     css`
-      bottom: ${pixelChange(p.bottom)};
+      bottom: ${pixelHeightChange(p.bottom)};
     `}
 `;

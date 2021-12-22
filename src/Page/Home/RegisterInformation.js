@@ -9,8 +9,9 @@ import {DeleteLocation} from '@/Store/locationState';
 import {modalOpen} from '@/Store/modalState';
 import {getHeightPixel} from '@/Util/pixelChange';
 import React, {useLayoutEffect, useState} from 'react';
-import {Dimensions, KeyboardAvoidingView} from 'react-native';
+import {Dimensions, KeyboardAvoidingView, StatusBar} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import {useSelector} from 'react-redux';
 
@@ -84,7 +85,7 @@ export default function RegisterInformation({navigation}) {
 
   useLayoutEffect(() => {
     // 지역 모달 데이터 클릭시 사용
-    if (location?.location) onChangeInformation(location.location, 'location');
+    if (location?.name) onChangeInformation(location.name, 'location');
   }, [location]);
   useLayoutEffect(() => {
     // snsLogin 상태에 이메일 값 얻어오기
@@ -92,80 +93,81 @@ export default function RegisterInformation({navigation}) {
       onChangeInformation(snsLogin.email, 'email');
     }
   }, [snsLogin]);
-
   return (
     <>
       <Header title="정보입력" navigation={navigation}></Header>
       <Box
+        pd="0px 16px"
         style={{
-          minHeight: getHeightPixel(590),
-        }}
-        pd="16px">
-        <RowBox mg="5px 0px 20px">
-          <RequireFieldText />
-        </RowBox>
-        <Box width={size.minusPadding} mg="0px 0px 20px">
-          <DefaultLine />
-        </Box>
-        <DefaultInput
-          title="이름"
-          width={size.minusPadding}
-          fontSize={Theme.fontSize.fs15}
-          placeHolder="이름을 입력해주세요"
-          value={information.name}
-          changeFn={e => onChangeInformation(e, 'name')}
-          errorMessage={errorMessage.name !== '' && errorMessage.name}
-          pd="0px 0px 5px"
-          mg={errorMessage.name === '' && '0px 0px 20px'}
-        />
-        <DefaultInput
-          title="닉네임"
-          width={size.minusPadding}
-          fontSize={Theme.fontSize.fs15}
-          placeHolder="닉네임을 입력해주세요"
-          value={information.nickName}
-          changeFn={e => onChangeInformation(e, 'nickName')}
-          errorMessage={errorMessage.nickName !== '' && errorMessage.nickName}
-          pd="0px 0px 5px"
-          mg={errorMessage.nickName === '' && '0px 0px 20px'}
-        />
-        <DefaultInput
-          title="이메일"
-          width={size.minusPadding}
-          fontSize={Theme.fontSize.fs15}
-          value={information.email}
-          disabled
-          pd="0px 0px 5px"
-          mg="0px 0px 20px"
-        />
-        <DefaultInput
-          title="전화번호"
-          width={size.minusPadding}
-          fontSize={Theme.fontSize.fs15}
-          placeHolder="'-'없이 숫자만 입력하세요"
-          value={information.tel}
-          changeFn={e => onChangeInformation(e, 'tel')}
-          errorMessage={errorMessage.tel !== '' && errorMessage.tel}
-          pd="0px 0px 5px"
-          mg={errorMessage.tel === '' && '0px 0px 20px'}
-        />
-        <DefaultInput
-          title="지역"
-          width={size.minusPadding}
-          fontSize={Theme.fontSize.fs15}
-          placeHolder="지역을 선택해주세요"
-          value={information.location}
-          isText
-          errorMessage={errorMessage.location !== '' && errorMessage.location}
-          mg={errorMessage.location === '' && '0px 0px 20px'}
-          PressText={() => {
-            dispatch(DeleteLocation());
-            dispatch(modalOpen('locationPicker'));
-          }}
-          pd="0px 0px 5px"
-        />
+          flex: 1, // 화면 크기 90% 가량
+        }}>
+        <KeyboardAwareScrollView>
+          <RowBox mg="5px 0px 20px">
+            <RequireFieldText />
+          </RowBox>
+          <Box width={size.minusPadding} mg="0px 0px 20px">
+            <DefaultLine />
+          </Box>
+          <DefaultInput
+            title="이름"
+            width={size.minusPadding}
+            fontSize={Theme.fontSize.fs15}
+            placeHolder="이름을 입력해주세요"
+            value={information.name}
+            changeFn={e => onChangeInformation(e, 'name')}
+            errorMessage={errorMessage.name !== '' && errorMessage.name}
+            pd="0px 0px 5px"
+            mg={errorMessage.name === '' && '0px 0px 20px'}
+          />
+          <DefaultInput
+            title="닉네임"
+            width={size.minusPadding}
+            fontSize={Theme.fontSize.fs15}
+            placeHolder="닉네임을 입력해주세요"
+            value={information.nickName}
+            changeFn={e => onChangeInformation(e, 'nickName')}
+            errorMessage={errorMessage.nickName !== '' && errorMessage.nickName}
+            pd="0px 0px 5px"
+            mg={errorMessage.nickName === '' && '0px 0px 20px'}
+          />
+          <DefaultInput
+            title="이메일"
+            width={size.minusPadding}
+            fontSize={Theme.fontSize.fs15}
+            value={information.email}
+            disabled
+            pd="0px 0px 5px"
+            mg="0px 0px 20px"
+          />
+          <DefaultInput
+            title="전화번호"
+            width={size.minusPadding}
+            fontSize={Theme.fontSize.fs15}
+            placeHolder="'-'없이 숫자만 입력하세요"
+            value={information.tel}
+            changeFn={e => onChangeInformation(e, 'tel')}
+            errorMessage={errorMessage.tel !== '' && errorMessage.tel}
+            pd="0px 0px 5px"
+            mg={errorMessage.tel === '' && '0px 0px 20px'}
+          />
+          <DefaultInput
+            title="지역"
+            width={size.minusPadding}
+            fontSize={Theme.fontSize.fs15}
+            placeHolder="지역을 선택해주세요"
+            value={information.location}
+            isText
+            errorMessage={errorMessage.location !== '' && errorMessage.location}
+            mg={errorMessage.location === '' && '0px 0px 20px'}
+            PressText={() => {
+              dispatch(DeleteLocation());
+              dispatch(modalOpen('locationPicker'));
+            }}
+            pd="0px 0px 5px"
+          />
+        </KeyboardAwareScrollView>
       </Box>
-      <Box mg="0px 16px">
+      <Box mg="0px 16px 20px">
         <FooterButton
           isRelative
           leftPress={() => navigation.navigate('RegisterAdditional')}

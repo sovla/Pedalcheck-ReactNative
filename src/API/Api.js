@@ -15,6 +15,7 @@ export const API = axios.create({
   processData: false,
   contentType: false,
   transformRequest: (data, headers) => {
+    console.log(data);
     const jwt_data = jwt_encode(data, SECRETKEY);
     const result = formFormatter(
       Object.assign(
@@ -30,13 +31,16 @@ export const API = axios.create({
   },
   transformResponse: data => {
     const jsonParseData = JSON.parse(data);
+
     if (jsonParseData.result === 'true') {
       const jwtDecodeData = jwtDecode(jsonParseData.data, SECRETKEY);
+      console.log(jwtDecodeData);
       return {
         ...jsonParseData,
         data: jwtDecodeData,
       };
     } else {
+      console.log(jsonParseData);
       return jsonParseData;
     }
   },

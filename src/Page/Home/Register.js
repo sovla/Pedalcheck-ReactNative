@@ -1,7 +1,7 @@
 import {LinkButton} from '@/assets/global/Button';
 import {Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
 import DefaultLine from '@/assets/global/Line';
-import {DefaultText} from '@/assets/global/Text';
+import {DarkBoldText, DarkText, DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import CheckBox from '@/Component/Home/CheckBox';
 import Header from '@/Component/Layout/Header';
@@ -64,16 +64,9 @@ export default function Register({navigation}) {
     <>
       <Header title="회원가입" navigation={navigation}></Header>
       <Container pd="0px 16px 30px">
-        <Box width={size.designWidth} mg="20px 0px" alignItems="center">
-          <DefaultText
-            color={Theme.color.black}
-            fontSize={Theme.fontSize.fs18}
-            fontWeight={Theme.fontWeight.bold}>
-            페달체크
-          </DefaultText>
-          <DefaultText color={Theme.color.black} fontSize={Theme.fontSize.fs18}>
-            이용 약관 동의
-          </DefaultText>
+        <Box width="380px" mg="20px 0px" alignItems="center">
+          <DarkBoldText fontSize={Theme.fontSize.fs18}>페달체크</DarkBoldText>
+          <DarkText fontSize={Theme.fontSize.fs18}>이용 약관 동의</DarkText>
         </Box>
         <Box
           style={{borderTopWidth: 1, borderBottomWidth: 1}}

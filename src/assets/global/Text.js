@@ -80,6 +80,8 @@ export const DarkText = styled(DefaultText)`
 
 export const DarkBoldText = styled(BoldText)`
   color: ${Theme.color.black};
+  font-family: 'NotoSansKR-Bold';
+  font-weight: bold;
 `;
 
 export const DarkMediumText = styled(MediumText)`

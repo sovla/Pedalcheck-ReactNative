@@ -7,11 +7,12 @@ import styled from 'styled-components/native';
 import DefaultImage from '@/assets/global/Image';
 import {useNavigation} from '@react-navigation/core';
 import {DarkBoldText} from '@/assets/global/Text';
+import {getHeightPixel} from '@/Util/pixelChange';
 
 export default function Header({title, RightComponent}) {
   const navigation = useNavigation();
   return (
-    <RowBox height="50px">
+    <RowBox height={`${getHeightPixel(50)}px`}>
       <TouchStyle onPress={navigation.goBack}>
         <DefaultImage width="17px" height="17px" source={BackArrow} resizeMode="cover" />
       </TouchStyle>
