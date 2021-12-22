@@ -368,3 +368,26 @@ export const bikeStats = [
     rate: '00%',
   },
 ];
+
+export const shopDateHistory = [
+  {
+    label: '2017년',
+    value: 2017,
+  },
+  {
+    label: '2018년',
+    value: 2018,
+  },
+  {
+    label: '2019년',
+    value: 2019,
+  },
+  {
+    label: '2020년',
+    value: 2020,
+  },
+  {
+    label: '2021년',
+    value: 2021,
+  },
+];

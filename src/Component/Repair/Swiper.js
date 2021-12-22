@@ -1,6 +1,6 @@
 import {Box, PositionBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
-import {DefaultText} from '@/assets/global/Text';
+import {DefaultText, GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {getHeightPixel, getPixel} from '@/Util/pixelChange';
 import React, {useState} from 'react';
@@ -30,7 +30,12 @@ export default function Swiper({imageArray, width, height, borderRadius = 'Botto
           borderRadius: 10,
         };
   return (
-    <Box width={`${transformWidth}px`} height={`${transformHeight}px`}>
+    <Box
+      width={`${transformWidth}px`}
+      height={`${transformHeight}px`}
+      style={{
+        maxHeight: getPixel(transformHeight),
+      }}>
       <ScrollView
         horizontal
         pagingEnabled
@@ -38,7 +43,7 @@ export default function Swiper({imageArray, width, height, borderRadius = 'Botto
         style={[
           borderRadiusStyle,
           {
-            height: getHeightPixel(transformHeight),
+            maxHeight: getPixel(transformHeight),
             width: getPixel(transformWidth),
           },
         ]}
@@ -50,7 +55,8 @@ export default function Swiper({imageArray, width, height, borderRadius = 'Botto
             source={item}
             width={`${transformWidth}px`}
             height={`${transformHeight}px`}
-            resizeMode="cover"></DefaultImage>
+            resizeMode="cover"
+          />
         ))}
       </ScrollView>
       <PositionBox
@@ -66,10 +72,7 @@ export default function Swiper({imageArray, width, height, borderRadius = 'Botto
         <DefaultImage source={ArrowLeft} width="24px" height="24px" />
         <DefaultText fontSize={Theme.fontSize.fs12}>
           {numberCheck(imageNumber + 1)}{' '}
-          <DefaultText fontSize={Theme.fontSize.fs12} color={Theme.color.gray}>
-            {' '}
-            / {numberCheck(imageArray.length)}
-          </DefaultText>
+          <GrayText fontSize={Theme.fontSize.fs12}> / {numberCheck(imageArray.length)}</GrayText>
         </DefaultText>
         <DefaultImage source={ArrowRight} width="24px" height="24px" />
       </PositionBox>

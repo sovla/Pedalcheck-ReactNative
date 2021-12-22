@@ -14,11 +14,12 @@ import {useDispatch} from 'react-redux';
 import {modalOpen, setModalProp} from '@/Store/modalState';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import {useEffect} from 'react';
+import {useNavigation} from '@react-navigation/native';
 
 export default function BikeRegisterContainer({bike, setBike, image, setImage}) {
   const {size, modal} = useSelector(state => state);
   const dispatch = useDispatch();
-
+  const navigation = useNavigation();
   const setChangeBike = (name, value) => {
     console.log('여기실행2');
     setBike(prev => ({...prev, [name]: value}));
@@ -236,7 +237,7 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
             );
           })}
 
-          <LinkButton content="등록하기" />
+          <LinkButton content="등록하기" to={() => navigation.goBack()} />
         </Box>
       </ScrollBox>
     </>

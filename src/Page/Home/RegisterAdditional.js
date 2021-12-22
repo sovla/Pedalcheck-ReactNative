@@ -20,11 +20,14 @@ export default function RegisterAdditional({navigation}) {
     <>
       <Header title="추가 정보 입력" navigation={navigation}></Header>
       <RegisterAdditionalBody />
-      <FooterButton
-        leftContent="다음에 입력하기"
-        rightContent="저장하기"
-        leftPress={() => navigation.goBack()}
-        rightPress={onPressSave}></FooterButton>
+      <Box mg="0px 16px 20px">
+        <FooterButton
+          leftContent="다음에 입력하기"
+          rightContent="저장하기"
+          leftPress={() => navigation.goBack()}
+          rightPress={onPressSave}
+        />
+      </Box>
     </>
   );
 }

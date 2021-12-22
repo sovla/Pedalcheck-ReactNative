@@ -50,8 +50,8 @@ const FeedBox = ({item, size}) => {
   return (
     <Box
       width={size.minusPadding}
-      height="300px"
       mg="20px 0px 0px"
+      pd="0px 0px 20px"
       alignItems="center"
       style={{borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}>
       <DefaultImage source={item.bikeImage} width={size.minusPadding} height="200px" />

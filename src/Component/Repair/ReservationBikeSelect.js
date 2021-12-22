@@ -23,7 +23,7 @@ export default function ReservationBikeSelect({
   const navigation = useNavigation();
   return (
     <>
-      <Box mg="0px 16px">
+      <ScrollBox mg="0px 16px">
         <DarkBoldText mg="0px 0px 14px">정비를 맡길 자전거를 선택해주세요</DarkBoldText>
         {bikeArray.map((item, index) => {
           return (
@@ -70,11 +70,13 @@ export default function ReservationBikeSelect({
             />
           </Box>
         </Box>
-      </Box>
+      </ScrollBox>
       {isButton && (
-        <PositionBox left="16px" bottom="20px">
-          <LinkButton to={() => navigation.navigate('ReservationDate')} content="다음" />
-        </PositionBox>
+        <LinkButton
+          mg="0px 16px 20px"
+          to={() => navigation.navigate('ReservationDate')}
+          content="다음"
+        />
       )}
     </>
   );

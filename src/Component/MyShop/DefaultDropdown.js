@@ -13,7 +13,9 @@ export default function DefaultDropdown({
   height = 44,
   pdLeft = 20,
   isBorder = true,
+  fontType = 'normal',
 }) {
+  const fontFamliy = fontType === 'normal' ? 'NotoSansKR-Regular' : `NotoSansKR-${fontType}`;
   return (
     <Dropdown
       data={data}
@@ -25,27 +27,28 @@ export default function DefaultDropdown({
       valueField="value"
       selectedTextStyle={{
         width: getPixel(width),
-        height: getPixel(height),
+        height: height,
         color: Theme.color.black,
         fontSize: getPixel(15),
-        fontFamily: 'NotoSansKR-Regular',
+        fontFamily: fontFamliy,
         paddingLeft: getPixel(pdLeft),
       }}
       style={{
         width: getPixel(width),
-        height: getPixel(height),
+        height: height,
         color: 'black',
         borderRadius: 10,
         alignItems: 'center',
         borderWidth: isBorder ? 1 : 0,
         borderColor: isBorder ? Theme.borderColor.gray : Theme.color.white,
       }}
-      maxHeight={data.length * getPixel(height)}
+      maxHeight={data.length * height}
       showsVerticalScrollIndicator={false}
       renderItem={item => {
         const isEqual = item?.value === value;
         return (
           <Box
+            key={item}
             width="auto"
             height={`${height}px`}
             alignItems="center"

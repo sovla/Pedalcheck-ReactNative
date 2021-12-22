@@ -1,6 +1,6 @@
 import {Box, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
-import {DarkBoldText, DefaultText, MoneyText} from '@/assets/global/Text';
+import {DarkBoldText, DefaultText, GrayText, IndigoText, MoneyText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import React from 'react';
 import ParterIcon from '@assets/image/ic_partner.png';
@@ -18,7 +18,9 @@ export default function ReviewRecord({itemArray, isSelect = true, pd = '20px 10p
   const itemArrayLength = itemArray.length;
   const showItem = itemArray[0];
   const onPressSelect = () => {
-    navigation.navigate('ReviewWrite');
+    navigation.navigate('ReviewWrite', {
+      navigate: 'Shop',
+    });
   };
   return (
     <Box
@@ -44,18 +46,15 @@ export default function ReviewRecord({itemArray, isSelect = true, pd = '20px 10p
             )}
           </RowBox>
           <RowBox mg="3px 0px 5.5px">
-            <DefaultText fontSize={Theme.fontSize.fs13} color={Theme.color.gray}>
-              {showItem.date}
-            </DefaultText>
+            <GrayText fontSize={Theme.fontSize.fs13}>{showItem.date}</GrayText>
           </RowBox>
-          <RowBox>
-            <DefaultText
+          <RowBox alignItems="center">
+            <IndigoText
               fontSize={Theme.fontSize.fs15}
               fontWeight={Theme.fontWeight.bold}
-              color={Theme.color.indigo}
               mg="0px 10px 0px 0px">
               {showItem.product}
-            </DefaultText>
+            </IndigoText>
             <MoneyText
               money={showItem.price}
               fontWeight={Theme.fontWeight.medium}

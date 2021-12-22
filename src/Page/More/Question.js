@@ -1,31 +1,22 @@
-import {BorderButton, Button, LinkWhiteButton} from '@/assets/global/Button';
-import {BetweenBox, Box, RowBox} from '@/assets/global/Container';
+import {Button} from '@/assets/global/Button';
+import {Box, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import Header from '@/Component/Layout/Header';
 import MenuNav from '@/Component/Layout/MenuNav';
 import React from 'react';
 import {useState} from 'react';
-import ArrowUpIcon from '@assets/image/list_arr_top.png';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import PlusIcon from '@assets/image/ic_plus_w.png';
-import ReplyIcon from '@assets/image/ic_reply.png';
-import {
-  DarkBoldText,
-  DarkMediumText,
-  DarkText,
-  DefaultText,
-  GrayText,
-  IndigoText,
-} from '@/assets/global/Text';
-import Theme from '@/assets/global/Theme';
-import {useSelector} from 'react-redux';
-import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
+import {DefaultText} from '@/assets/global/Text';
 import QuestionItem from '@/Component/More/QuestionItem';
 import {useNavigation} from '@react-navigation/core';
+import {useDispatch} from 'react-redux';
+import {modalOpen} from '@/Store/modalState';
 
 export default function Question() {
   const [select, setSelect] = useState('페달체크');
   const [questionSelect, setQuestionSelect] = useState([]);
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const onPressItem = title => {
     if (questionSelect.find(findItem => findItem === title)) {
@@ -36,6 +27,9 @@ export default function Question() {
   };
   const onPressRegister = () => {
     navigation.navigate('QuestionWrite');
+  };
+  const onPressDelete = () => {
+    dispatch(modalOpen('questionDelete'));
   };
   return (
     <>
@@ -56,6 +50,7 @@ export default function Question() {
               {...item}
               isSelect={questionSelect.find(findItem => findItem === item.questionTitle)}
               onPressItem={() => onPressItem(item.questionTitle)}
+              onPressDelete={onPressDelete}
             />
           );
         })}
@@ -64,7 +59,7 @@ export default function Question() {
   );
 }
 
-const questionList = [
+export const questionList = [
   {
     categoryName: '자전거 브랜드 / 모델 추가요청',
     status: '미답변',

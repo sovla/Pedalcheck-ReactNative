@@ -73,8 +73,13 @@ import {BorderButton} from '@/assets/global/Button';
 import {DarkBoldText, IndigoText} from '@/assets/global/Text';
 import CouponUseComplete from './More/Coupon/CouponUseComplete';
 import CouponUseDateSelect from './More/Coupon/CouponUseDateSelect';
+import Card from '@/Component/ReservationManagement/Card';
+import {CardStyleInterpolators} from '@react-navigation/stack';
+import {useCallback} from 'react';
+import {useMemo} from 'react';
+import {current} from '@reduxjs/toolkit';
 
-const INIT_ROUTER_COMPONENT_NAME = 'RepairHistoryHome';
+const INIT_ROUTER_COMPONENT_NAME = 'Home';
 
 const Stack = createNativeStackNavigator();
 
@@ -86,17 +91,7 @@ const withScrollView = WrappedComponent => {
         <View style={{flex: 1, backgroundColor: Theme.color.white}}>
           <WrappedComponent {...props} />
 
-          {isFocus && <ModalBasic />}
-          <PositionBox backgroundColor="#0000" flexDirection="row" top="0px" zIndex={3000}>
-            <BorderButton
-              backgroundColor="#0000"
-              color="black"
-              onPress={() => DevSettings.reload()}
-              width="auto">
-              Reload
-            </BorderButton>
-            <DarkBoldText>{props.route.name}</DarkBoldText>
-          </PositionBox>
+          {isFocus && <ModalBasic navigation={props?.navigation} />}
         </View>
       </SafeAreaView>
     );
@@ -118,6 +113,8 @@ export default function Router() {
 
     return () => {};
   }, [height]);
+  console.log('Router Rendering');
+
   return (
     <>
       <NavigationContainer>
@@ -125,12 +122,18 @@ export default function Router() {
           initialRouteName={INIT_ROUTER_COMPONENT_NAME}
           screenOptions={{
             headerShown: false,
+            gestureDirection: 'horizontal',
           }}>
           {RouterSetting.map((item, index) => (
             <Stack.Screen
               name={item.name}
               component={withScrollView(item.component)}
               key={item.name + index}
+              options={{
+                headerShown: false,
+                cardStyleInterpolator: forFade,
+                // cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+              }}
             />
           ))}
         </Stack.Navigator>
@@ -139,15 +142,18 @@ export default function Router() {
   );
 }
 
+const forFade = ({current}) => {
+  return {
+    cardStyle: {opacity: current.progress},
+  };
+};
+
 const RouterSetting = [
   {
     name: 'BikeRegisterFirst',
     component: BikeRegisterFirst,
   },
-  {
-    name: 'ModalBasic',
-    component: ModalBasic,
-  },
+
   {
     name: 'BikeRegister',
     component: BikeRegister,

@@ -45,39 +45,9 @@ export default function Photo({imageArray, setImageArray, imageCount = 5, isView
     }
   };
 
-  const MapInnerItem = useCallback(
-    props => {
-      const {index, mg, item} = props;
-
-      return (
-        <Box width="120px" height="80px" mg={mg}>
-          <DefaultImage
-            source={item?.path !== undefined ? {uri: item?.path} : item}
-            width="120px"
-            resizeMode="stretch"
-          />
-          {!isView && (
-            <PositionBox
-              top="5px"
-              right="5px"
-              width="24px"
-              height="24px"
-              borderRadius="100px"
-              backgroundColor="#0000">
-              <TouchableOpacity onPress={() => onPressDelete(index)}>
-                <DefaultImage source={CloseIcon} width="24px" height="24px" />
-              </TouchableOpacity>
-            </PositionBox>
-          )}
-        </Box>
-      );
-    },
-    [imageArray, isView],
-  );
   return (
     <RowBox width={size.minusPadding} flexWrap="wrap">
       {imageArray.map((item, index) => {
-        const Result = withNthMap(MapInnerItem);
         return (
           <Result
             key={`image${index}`}
@@ -85,6 +55,8 @@ export default function Photo({imageArray, setImageArray, imageCount = 5, isView
             rowNum={3}
             betweenMargin="0px 10px 10px 0px"
             item={item}
+            onPressDelete={onPressDelete}
+            isView={isView}
           />
         );
       })}
@@ -106,3 +78,29 @@ export default function Photo({imageArray, setImageArray, imageCount = 5, isView
     </RowBox>
   );
 }
+
+const MapInnerItem = ({index, mg, item, onPressDelete, isView}) => {
+  return (
+    <Box width="120px" height="80px" mg={mg}>
+      <DefaultImage
+        source={item?.path !== undefined ? {uri: item?.path} : item}
+        width="120px"
+        resizeMode="stretch"
+      />
+      {!isView && (
+        <PositionBox
+          top="5px"
+          right="5px"
+          width="24px"
+          height="24px"
+          borderRadius="100px"
+          backgroundColor="#0000">
+          <TouchableOpacity onPress={() => onPressDelete(index)}>
+            <DefaultImage source={CloseIcon} width="24px" height="24px" />
+          </TouchableOpacity>
+        </PositionBox>
+      )}
+    </Box>
+  );
+};
+const Result = withNthMap(MapInnerItem);

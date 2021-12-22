@@ -197,10 +197,13 @@ const UserButton = () => {
 };
 
 const MoreFooter = () => {
+  const navigation = useNavigation();
   return (
     <Box alignItems="center" flex={1} backgroundColor={Theme.borderColor.whiteLine}>
       <RowBox backgroundColor={Theme.borderColor.whiteLine} mg="30px 0px 10px">
-        <GrayText fontSize={Theme.fontSize.fs13}>개인정보 처리방침</GrayText>
+        <TouchableOpacity onPress={() => navigation.navigate('PrivacyPolicy')}>
+          <GrayText fontSize={Theme.fontSize.fs13}>개인정보 처리방침</GrayText>
+        </TouchableOpacity>
         <GrayText fontSize={Theme.fontSize.fs13} mg="0px 10px">
           |
         </GrayText>

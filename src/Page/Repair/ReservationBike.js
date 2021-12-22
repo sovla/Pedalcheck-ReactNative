@@ -15,13 +15,11 @@ export default function ShopReservationBike() {
   return (
     <>
       <Header title="정비예약" />
-      <Box>
-        {/* 추후에 아래 박스를 ScrollBox로 변경할 가능성 존재 */}
-        <Box height={`${size.screenHeight - 50}px`}>
-          <RepairReservationHeader step={2} />
-          <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
-          <ReservationBikeSelect setSelectItem={setSelectItem} selectItem={selectItem} />
-        </Box>
+      {/* 추후에 아래 박스를 ScrollBox로 변경할 가능성 존재 */}
+      <Box flex={1}>
+        <RepairReservationHeader step={2} />
+        <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
+        <ReservationBikeSelect setSelectItem={setSelectItem} selectItem={selectItem} />
       </Box>
     </>
   );

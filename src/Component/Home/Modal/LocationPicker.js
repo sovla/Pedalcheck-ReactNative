@@ -79,8 +79,8 @@ export default function LocationPicker() {
               </RowBox>
             </TouchableOpacity>
             {!isDetail
-              ? index % 2 === 0 && <Box width="10px"></Box>
-              : (index + 1) % 3 !== 0 && <Box width="10px"></Box>}
+              ? index % 2 === 0 && <Box width="8px"></Box>
+              : (index + 1) % 3 !== 0 && <Box width="8px"></Box>}
           </Fragment>
         ))}
       </RowBox>
