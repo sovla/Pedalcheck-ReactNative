@@ -1,12 +1,16 @@
 import {FooterButton} from '@/assets/global/Button';
-import {Box, Container, RowBox} from '@/assets/global/Container';
+import {Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
 import DefaultLine from '@/assets/global/Line';
 import {DarkText, DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
+import {DeleteLocation} from '@/Store/locationState';
 import {modalOpen} from '@/Store/modalState';
-import React, {useEffect, useState} from 'react';
+import {getHeightPixel} from '@/Util/pixelChange';
+import React, {useLayoutEffect, useState} from 'react';
+import {Dimensions, KeyboardAvoidingView} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch} from 'react-redux';
 import {useSelector} from 'react-redux';
 
@@ -19,23 +23,84 @@ export default function RegisterInformation({navigation}) {
     location: '',
   };
   const [information, setInformaition] = useState(informationInit);
-  const {size, location} = useSelector(state => state);
+  const [errorMessage, setErrorMessage] = useState(informationInit);
+  const {size, location, snsLogin} = useSelector(state => state);
   const dispatch = useDispatch();
 
-  const onChangeInformation = (e, key) => {
-    setInformaition(prev => ({...prev, [key]: e}));
+  const onChangeInformation = (value, key) => {
+    setInformaition(prev => ({...prev, [key]: value}));
   };
+
+  const RegJoin = () => {
+    let result = false;
+    if (information.name === '') {
+      setErrorMessage(prev => ({
+        ...prev,
+        name: '이름을 입력해주세요.',
+      }));
+      result = true;
+    }
+    if (information.nickName === '') {
+      setErrorMessage(prev => ({
+        ...prev,
+        nickName: '닉네임을 입력해주세요.',
+      }));
+      result = true;
+    }
+    if (information.location === '') {
+      setErrorMessage(prev => ({
+        ...prev,
+        location: '지역을 입력해주세요.',
+      }));
+      result = true;
+    }
+    if (information.tel.length < 9) {
+      setErrorMessage(prev => ({
+        ...prev,
+        tel: '전화번호가 올바르지 않습니다.',
+      }));
+      result = true;
+    }
+    return result;
+  };
+
   const onPressComplete = () => {
     // 등록하기 버튼
-    navigation.navigate('RepairHome');
+    // navigation.navigate('RepairHome');
+    if (RegJoin()) {
+      return;
+    }
+
+    MemberJoin({
+      mt_name: information.name,
+      mt_nickname,
+      mt_id,
+      mt_pwd,
+      mt_app_token,
+      mt_hp,
+      mt_addr,
+    });
   };
-  useEffect(() => {
-    setInformaition(location, 'location');
+
+  useLayoutEffect(() => {
+    // 지역 모달 데이터 클릭시 사용
+    if (location?.location) onChangeInformation(location.location, 'location');
   }, [location]);
+  useLayoutEffect(() => {
+    // snsLogin 상태에 이메일 값 얻어오기
+    if (snsLogin?.email) {
+      onChangeInformation(snsLogin.email, 'email');
+    }
+  }, [snsLogin]);
+
   return (
     <>
       <Header title="정보입력" navigation={navigation}></Header>
-      <Container mg="16px">
+      <Box
+        style={{
+          minHeight: getHeightPixel(590),
+        }}
+        pd="16px">
         <RowBox mg="5px 0px 20px">
           <RequireFieldText />
         </RowBox>
@@ -49,8 +114,9 @@ export default function RegisterInformation({navigation}) {
           placeHolder="이름을 입력해주세요"
           value={information.name}
           changeFn={e => onChangeInformation(e, 'name')}
-          errorMessage={'이름을 입력해주세요'}
+          errorMessage={errorMessage.name !== '' && errorMessage.name}
           pd="0px 0px 5px"
+          mg={errorMessage.name === '' && '0px 0px 20px'}
         />
         <DefaultInput
           title="닉네임"
@@ -59,8 +125,9 @@ export default function RegisterInformation({navigation}) {
           placeHolder="닉네임을 입력해주세요"
           value={information.nickName}
           changeFn={e => onChangeInformation(e, 'nickName')}
-          errorMessage={'닉네임을 입력해주세요'}
+          errorMessage={errorMessage.nickName !== '' && errorMessage.nickName}
           pd="0px 0px 5px"
+          mg={errorMessage.nickName === '' && '0px 0px 20px'}
         />
         <DefaultInput
           title="이메일"
@@ -69,6 +136,7 @@ export default function RegisterInformation({navigation}) {
           value={information.email}
           disabled
           pd="0px 0px 5px"
+          mg="0px 0px 20px"
         />
         <DefaultInput
           title="전화번호"
@@ -77,8 +145,9 @@ export default function RegisterInformation({navigation}) {
           placeHolder="'-'없이 숫자만 입력하세요"
           value={information.tel}
           changeFn={e => onChangeInformation(e, 'tel')}
-          errorMessage={'전화번호가 올바르지 않습니다'}
+          errorMessage={errorMessage.tel !== '' && errorMessage.tel}
           pd="0px 0px 5px"
+          mg={errorMessage.tel === '' && '0px 0px 20px'}
         />
         <DefaultInput
           title="지역"
@@ -87,15 +156,18 @@ export default function RegisterInformation({navigation}) {
           placeHolder="지역을 선택해주세요"
           value={information.location}
           isText
-          errorMessage={'지역을 입력해주세요'}
+          errorMessage={errorMessage.location !== '' && errorMessage.location}
+          mg={errorMessage.location === '' && '0px 0px 20px'}
           PressText={() => {
+            dispatch(DeleteLocation());
             dispatch(modalOpen('locationPicker'));
           }}
           pd="0px 0px 5px"
         />
-      </Container>
-      <Box mg="0px 16px 20px">
+      </Box>
+      <Box mg="0px 16px">
         <FooterButton
+          isRelative
           leftPress={() => navigation.navigate('RegisterAdditional')}
           rightPress={onPressComplete}
         />
