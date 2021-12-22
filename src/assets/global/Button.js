@@ -48,9 +48,10 @@ export const LinkButton = ({
   borderRadius,
   pd,
   mg,
+  disabled,
 }) => {
   return (
-    <TouchableOpacity onPress={to}>
+    <TouchableOpacity onPress={to} disabled={disabled}>
       <Button
         width={width}
         height={height}

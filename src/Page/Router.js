@@ -78,6 +78,8 @@ import {CardStyleInterpolators} from '@react-navigation/stack';
 import {useCallback} from 'react';
 import {useMemo} from 'react';
 import {current} from '@reduxjs/toolkit';
+import messaging from '@react-native-firebase/messaging';
+import {setToken} from '@/Store/tokenState';
 
 const INIT_ROUTER_COMPONENT_NAME = 'Home';
 
@@ -102,7 +104,19 @@ export default function Router() {
   const dispatch = useDispatch();
   const {height, width} = useWindowDimensions();
 
+  const getToken = async () => {
+    try {
+      const token = await messaging().getToken();
+
+      dispatch(setToken(token));
+      console.log(token, '토큰 설정 완료');
+    } catch (error) {
+      console.log(error, 'tokenError');
+    }
+  };
+
   useEffect(() => {
+    getToken();
     dispatch(
       initSetting({
         screenWidth: width,

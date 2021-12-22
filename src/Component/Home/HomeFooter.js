@@ -3,7 +3,7 @@ import React from 'react';
 import Theme from '@/assets/global/Theme';
 import {useSelector} from 'react-redux';
 import {LinkButton, TextLinkButton} from '@/assets/global/Button';
-import {Box, PositionBox, RowBox} from '@/assets/global/Container';
+import {BetweenBox, Box, PositionBox, RowBox} from '@/assets/global/Container';
 import {AppleImage, GoogleImage, KakaoImage, NaverImage} from './Icon/Icon';
 import {getPixel} from '@/Util/pixelChange';
 
@@ -21,21 +21,6 @@ export default function HomeFooter({navigation, isShowLogin = true, isAbsolute})
       //   }
       // }
     >
-      <Box pd="16px">
-        <TextLinkButton
-          to={() => navigation.navigate('Register')}
-          content="SNS 계정으로 회원가입/로그인"
-        />
-      </Box>
-      <RowBox
-        justifyContent="space-between"
-        width={`${size.designWidth - 100}px`}
-        pd="0px 0px 10px">
-        <KakaoImage />
-        <GoogleImage />
-        <NaverImage />
-        <AppleImage />
-      </RowBox>
       {isShowLogin && (
         <Box mg="40px 0px 0px">
           <LinkButton

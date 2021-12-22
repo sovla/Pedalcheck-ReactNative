@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import Kakao from '@assets/image/ic_kakao.png';
@@ -7,30 +7,85 @@ import Naver from '@assets/image/ic_naver.png';
 import Apple from '@assets/image/ic_apple.png';
 import DefaultImage from '@/assets/global/Image';
 
-export function KakaoImage() {
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+import {useDispatch} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import {setSnsInfo} from '@/Store/snsLoginState';
+import {Login} from '@/API/User/Login';
+
+export function KakaoImage({onPress}) {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <DefaultImage source={Kakao} width="60px" height="60px" resizeMode="contain" />
     </TouchableOpacity>
   );
 }
-export function GoogleImage() {
+export function GoogleImage({onPress}) {
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      //    google-services.json/client/oauth_client/client_id
+      webClientId: '574869846797-38s3ud4d6svhar28qtqkjsditppgui87.apps.googleusercontent.com',
+      offlineAccess: true,
+      hostedDomain: '',
+      forceConsentPrompt: true,
+    });
+    try {
+      GoogleSignin.signOut();
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      const {id, email, name} = userInfo.user;
+
+      dispatch(
+        setSnsInfo({
+          id,
+          email,
+          name,
+        }),
+      );
+      navigation.navigate('Register');
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happen-ed
+      }
+    }
+  };
+
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={signIn}>
       <DefaultImage source={Google} width="60px" height="60px" resizeMode="contain" />
     </TouchableOpacity>
   );
 }
-export function NaverImage() {
+export function NaverImage({onPress}) {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <DefaultImage source={Naver} width="60px" height="60px" resizeMode="contain" />
     </TouchableOpacity>
   );
 }
-export function AppleImage() {
+export function AppleImage({onPress}) {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <DefaultImage source={Apple} width="60px" height="60px" resizeMode="contain" />
     </TouchableOpacity>
   );

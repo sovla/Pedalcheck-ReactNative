@@ -16,7 +16,7 @@ export const locationSlice = createSlice({
       }
     },
     DeleteLocation: state => {
-      return (state.location = '');
+      return initialState;
     },
   },
 });
