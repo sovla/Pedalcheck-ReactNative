@@ -16,10 +16,41 @@ import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {setSnsInfo} from '@/Store/snsLoginState';
 import {Login} from '@/API/User/Login';
+import {useState} from 'react';
+
+import {
+  KakaoOAuthToken,
+  KakaoProfile,
+  getProfile as getKakaoProfile,
+  login,
+  logout,
+  unlink,
+} from '@react-native-seoul/kakao-login';
 
 export function KakaoImage({onPress}) {
+  const [result, setResult] = useState();
+
+  const signInWithKakao = async () => {
+    const token = await login();
+
+    setResult(JSON.stringify(token));
+    console.log(token.scopes);
+  };
+
+  const getProfile = async () => {
+    const profile = await getKakaoProfile();
+    console.log(profile);
+    setResult(JSON.stringify(profile));
+  };
+
+  const unlinkKakao = async () => {
+    const message = await unlink();
+
+    setResult(message);
+  };
+
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={() => getProfile()}>
       <DefaultImage source={Kakao} width="60px" height="60px" resizeMode="contain" />
     </TouchableOpacity>
   );
