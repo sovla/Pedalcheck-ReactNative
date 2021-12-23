@@ -1,11 +1,11 @@
 import {Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
-import {DarkText} from '@/assets/global/Text';
+import {DarkMediumText, DarkText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {Dropdown} from 'react-native-element-dropdown';
 import React, {useState} from 'react';
 import {ScrollView, StyleSheet, View, TouchableOpacity} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import WhiteSpannerIcon from '@assets/image/menu01_top.png';
 import {WhiteInput} from '@assets/global/Input';
 import SearchIcon from '@assets/image/ic_search.png';
@@ -17,17 +17,28 @@ import ShopComponent from '@/Component/Repair/ShopComponent';
 import ShopDummyImage from '@assets/image/shop_default.png';
 import EmptyDot from '@assets/image/mainsld_b.png';
 import BlackDot from '@assets/image/mainsld_on.png';
+import LocationIcon from '@assets/image/ic_location.png';
 import FooterButtons from '@/Component/Layout/FooterButtons';
 import {getPixel} from '@/Util/pixelChange';
 import scrollSlideNumber from '@/Util/scrollSlideNumber';
+import {useEffect} from 'react';
+import {getShopList} from '@/API/Shop/Shop';
+import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
+import {modalOpen} from '@/Store/modalState';
+import {DeleteLocation} from '@/Store/locationState';
 
 export default function RepairHome() {
+  const {location} = useSelector(state => state);
+  const dispatch = useDispatch();
+
   const [selectItem, setSelectItem] = useState('전체보기');
   const [sortSelectItem, setSortSelectItem] = useState('인기순');
 
+  const [page, setPage] = useState(1);
   const [selectImage, setSelectImage] = useState(0);
   const {size} = useSelector(state => state);
   const [tag, setTag] = useState([]);
+  const [innerLocation, setInnerLocation] = useState('부산 금정구');
 
   const onPressTag = tagName => {
     // By.Junhan tag에 값이 없다면 넣어주고 있다면 제거
@@ -37,35 +48,28 @@ export default function RepairHome() {
       setTag(prev => [...prev, tagName]);
     }
   };
-  const tagList = ['픽업', '출장수리', '피팅전문', '카본수리', '중고거래', '광고'];
-  const dummyImageArray = [ShopDummyImage, ShopDummyImage, ShopDummyImage];
+
   const onScrollSlide = e => {
     setSelectImage(scrollSlideNumber(e, size.designWidth - 36));
   };
-  const sortArray = [
-    {
-      label: '전체보기',
-      value: '전체보기',
-    },
-    {
-      label: '파트너 매장',
-      value: '파트너 매장',
-    },
-  ];
-  const sortArray1 = [
-    {
-      label: '인기순',
-      value: '인기순',
-    },
-    {
-      label: '정비횟수순',
-      value: '정비횟수순',
-    },
-    {
-      label: '거리순',
-      value: '거리순',
-    },
-  ];
+
+  useEffect(() => {
+    getShopList({
+      _mt_idx: 1,
+      page: page,
+      mst_addr: '', // 위치로 검색
+      mst_name: '', // 검색하는 경우 추가
+      mst_tag: tag.length > 0 ? tag?.reduce((a, b) => a + ',' + b) : '', // , 콤마 더해서 값 보내기
+      mst_type: selectItem === '전체보기' ? '' : '1',
+      sorting: sortSelectItem === '정비횟수순' ? 2 : sortSelectItem === '거리순' ? 3 : 1, // 인기순 1 거리순 2 정비횟수순 3
+    });
+  }, [tag]);
+
+  useEffect(() => {
+    if (location?.name) {
+      setInnerLocation(location.name);
+    }
+  }, [location]);
 
   return (
     <Container>
@@ -94,7 +98,7 @@ export default function RepairHome() {
             shadowColor: '#000',
             shadowOffset: {
               width: 0,
-              height: 5,
+              height: 2,
             },
             shadowOpacity: 0.25,
             shadowRadius: 5,
@@ -112,44 +116,40 @@ export default function RepairHome() {
               ))}
             </ScrollView>
           </Box>
-          <RowBox alignItems="flex-start">
-            <View style={styles.dropdownContainer}>
-              <Dropdown
-                style={styles.dropdown}
-                selectedTextStyle={styles.dropdownSelectItem}
-                maxHeight={sortArray.length * 70}
+          <RowBox height="50px" alignItems="center">
+            <Box>
+              <DefaultDropdown
                 data={sortArray}
-                labelField="label"
-                valueField="value"
-                containerStyle={styles.dropdownContainer}
-                iconColor={Theme.color.gray}
-                onChange={item => {
-                  setSelectItem(item.value);
-                }}
                 value={selectItem}
+                setValue={setSelectItem}
+                isBorder={false}
+                width={selectItem.length * 12 + 40}
+                pdLeft={0}
+                fontType="Medium"
               />
-            </View>
-            <View style={styles.dropdownContainer}>
-              <Dropdown
-                style={styles.dropdown}
-                selectedTextStyle={styles.dropdownSelectItem}
-                maxHeight={sortArray1.length * 70}
+            </Box>
+            <Box mg="0px 0px 0px 5px">
+              <DefaultDropdown
                 data={sortArray1}
                 labelField="label"
                 valueField="value"
-                onChange={item => {
-                  setSortSelectItem(item.value);
-                }}
+                width={sortSelectItem.length * 17 + 25}
+                isBorder={false}
+                setValue={setSortSelectItem}
                 value={sortSelectItem}
+                pdLeft={0}
+                fontType="Medium"
               />
-            </View>
-            <Box justifyContent="center" height="40px" mg="0px 0px 0px 5px">
-              <TouchableOpacity>
-                <DarkText fontSize={Theme.fontSize.fs15} fontWeight={Theme.fontWeight.midium}>
-                  서울시 관악구
-                </DarkText>
-              </TouchableOpacity>
             </Box>
+            <TouchableOpacity
+              onPress={() => {
+                dispatch(modalOpen('locationPicker'));
+              }}>
+              <RowBox height="100%" alignItems="center" mg="0px 0px 0px 5px">
+                <DarkMediumText fontSize={Theme.fontSize.fs15}>{innerLocation}</DarkMediumText>
+                <DefaultImage width="24px" height="24px" source={LocationIcon} />
+              </RowBox>
+            </TouchableOpacity>
           </RowBox>
         </Box>
         <Box mg="20px 16px 0px">
@@ -300,6 +300,7 @@ const styles = StyleSheet.create({
     width: getPixel(100),
   },
   dropdownContainer: {
+    width: 'auto',
     height: 50,
   },
   dropdownSelectItem: {
@@ -309,3 +310,30 @@ const styles = StyleSheet.create({
     letterSpacing: -0.45,
   },
 });
+
+const sortArray = [
+  {
+    label: '전체보기',
+    value: '전체보기',
+  },
+  {
+    label: '파트너 매장',
+    value: '파트너 매장',
+  },
+];
+const sortArray1 = [
+  {
+    label: '인기순',
+    value: '인기순',
+  },
+  {
+    label: '정비횟수순',
+    value: '정비횟수순',
+  },
+  {
+    label: '거리순',
+    value: '거리순',
+  },
+];
+const tagList = ['픽업', '출장수리', '피팅전문', '카본수리', '중고거래', '광고'];
+const dummyImageArray = [ShopDummyImage, ShopDummyImage, ShopDummyImage];

@@ -15,7 +15,7 @@ export const API = axios.create({
   processData: false,
   contentType: false,
   transformRequest: (data, headers) => {
-    console.log(data);
+    console.log('formData :::', data);
     const jwt_data = jwt_encode(data, SECRETKEY);
     const result = formFormatter(
       Object.assign(
@@ -34,13 +34,13 @@ export const API = axios.create({
 
     if (jsonParseData.result === 'true') {
       const jwtDecodeData = jwtDecode(jsonParseData.data, SECRETKEY);
-      console.log(jwtDecodeData);
+      console.log('API Result Success :::', jwtDecodeData);
       return {
         ...jsonParseData,
         data: jwtDecodeData,
       };
     } else {
-      console.log(jsonParseData);
+      console.log('API Result Failed :::', jsonParseData);
       return jsonParseData;
     }
   },

@@ -6,7 +6,7 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import ArrowRightIcon from '@assets/image/arr_right.png';
 import Theme from '@/assets/global/Theme';
-import {AddLocation} from '@/Store/locationState';
+import {AddLocation, DeleteLocation} from '@/Store/locationState';
 import {modalClose, modalOpen} from '@/Store/modalState';
 import ModalTitleBox from '../../Modal/ModalTitleBox';
 import {useEffect} from 'react';
@@ -24,6 +24,10 @@ export default function LocationPicker() {
   console.log(isDetail, 'isDetail');
   console.log(location);
   useEffect(() => {
+    if (!isDetail) {
+      console.log('초기 초기화');
+      dispatch(DeleteLocation());
+    }
     const apiObject = !isDetail
       ? {
           step: 1, // 처음
@@ -41,12 +45,14 @@ export default function LocationPicker() {
   }, []);
 
   const itemWidth = isDetail ? (BoxWidth - 25) / 3 : (BoxWidth - 10) / 2;
-  const pressLocation = location => {
-    dispatch(AddLocation(location));
+  const pressLocation = async location => {
+    await dispatch(AddLocation(location));
     if (!isDetail) {
-      dispatch(modalOpen('locationPickerDetail'));
+      await dispatch(modalOpen('locationPickerDetail'));
     } else {
-      dispatch(modalClose());
+      await dispatch(modalClose());
+      console.log('모달 닫으면서 초기화');
+      await dispatch(DeleteLocation());
     }
   };
   return (

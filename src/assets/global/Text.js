@@ -6,7 +6,7 @@ import numberFormat from '@/Util/numberFormat';
 
 export const DefaultText = styled.Text`
   color: ${p => p.color ?? Theme.color.white};
-  font-size: ${p => pixelChange(p.fontSize) ?? Theme.fontSize.fs16};
+  font-size: ${p => p.fontSize ?? Theme.fontSize.fs16};
   width: ${p => pixelChange(p.width) ?? 'auto'};
   height: ${p => pixelChange(p.height) ?? 'auto'};
   letter-spacing: ${p => p.letterSpacing ?? '-0.84px'};
