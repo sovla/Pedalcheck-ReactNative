@@ -1,7 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-  location: '',
+  code: '',
+  name: '',
 };
 
 export const locationSlice = createSlice({
@@ -9,10 +10,12 @@ export const locationSlice = createSlice({
   initialState,
   reducers: {
     AddLocation: (state, action) => {
-      if (state.location) {
-        state.location += ' ' + action.payload;
+      if (state.name) {
+        state.name += ' ' + action.payload.name;
+        state.code = action.payload.code;
       } else {
-        state.location = action.payload;
+        state.name = action.payload.name;
+        state.code = action.payload.code;
       }
     },
     DeleteLocation: state => {

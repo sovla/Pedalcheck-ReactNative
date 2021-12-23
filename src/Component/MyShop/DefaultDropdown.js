@@ -4,6 +4,8 @@ import React from 'react';
 import {Dropdown} from 'react-native-element-dropdown';
 import {Box} from '@/assets/global/Container';
 import {DarkText} from '@/assets/global/Text';
+import DefaultImage from '@/assets/global/Image';
+import ArrowDownIcon from '@assets/image/arr_down.png';
 
 export default function DefaultDropdown({
   data,
@@ -14,6 +16,7 @@ export default function DefaultDropdown({
   pdLeft = 20,
   isBorder = true,
   fontType = 'normal',
+  fontSize = 15,
 }) {
   const fontFamliy = fontType === 'normal' ? 'NotoSansKR-Regular' : `NotoSansKR-${fontType}`;
   return (
@@ -29,8 +32,9 @@ export default function DefaultDropdown({
         width: getPixel(width),
         height: height,
         color: Theme.color.black,
-        fontSize: getPixel(15),
+        fontSize: fontSize,
         fontFamily: fontFamliy,
+        letterSpacing: -0.45,
         paddingLeft: getPixel(pdLeft),
       }}
       style={{
@@ -59,6 +63,13 @@ export default function DefaultDropdown({
               }
             }>
             <DarkText>{item?.label}</DarkText>
+          </Box>
+        );
+      }}
+      renderRightIcon={() => {
+        return (
+          <Box>
+            <DefaultImage width="24px" height="24px" source={ArrowDownIcon} />
           </Box>
         );
       }}
