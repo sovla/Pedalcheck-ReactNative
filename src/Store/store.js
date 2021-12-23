@@ -3,13 +3,20 @@ import modalReducer from './modalState';
 import sizeReducer from './sizeState';
 import locationReducer from './locationState';
 import birthDateReducer from './birthDateState';
+import tokenReducer from './tokenState';
+import snsLoginReducer from './snsLoginState';
+import loginReducer from './loginState';
 
 export const store = configureStore({
   reducer: {
+    //  리듀서 추가 부분
     modal: modalReducer,
     size: sizeReducer,
     location: locationReducer,
     birthDate: birthDateReducer,
+    token: tokenReducer,
+    snsLogin: snsLoginReducer,
+    login: loginReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

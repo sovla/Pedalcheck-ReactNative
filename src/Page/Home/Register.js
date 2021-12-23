@@ -119,7 +119,9 @@ export default function Register({navigation}) {
             to={() => {
               navigation.navigate('RegisterInformation');
             }}
-            content="다음"></LinkButton>
+            content="다음"
+            disabled={!checkObject.service || !checkObject.privacy || !checkObject.location}
+          />
         </PositionBox>
       </Container>
     </>
