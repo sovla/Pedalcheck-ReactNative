@@ -1,3 +1,4 @@
+import {MemberJoin} from '@/API/User/Login';
 import {FooterButton} from '@/assets/global/Button';
 import {Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
@@ -25,11 +26,31 @@ export default function RegisterInformation({navigation}) {
   };
   const [information, setInformaition] = useState(informationInit);
   const [errorMessage, setErrorMessage] = useState(informationInit);
-  const {size, location, snsLogin} = useSelector(state => state);
+  const {size, location, snsLogin, token} = useSelector(state => state);
   const dispatch = useDispatch();
 
   const onChangeInformation = (value, key) => {
     setInformaition(prev => ({...prev, [key]: value}));
+  };
+
+  const onPressComplete = () => {
+    // 등록하기 버튼
+    // navigation.navigate('RepairHome');
+
+    if (RegJoin()) {
+      return; // 정규식 확인
+    }
+
+    MemberJoin({
+      mt_name: information.name,
+      mt_nickname: information.nickName,
+      mt_id: information.email,
+      mt_app_token: token.token,
+      mt_hp: information.tel,
+      mt_addr: information.location,
+    })
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
   };
 
   const RegJoin = () => {
@@ -65,24 +86,6 @@ export default function RegisterInformation({navigation}) {
     return result;
   };
 
-  const onPressComplete = () => {
-    // 등록하기 버튼
-    // navigation.navigate('RepairHome');
-    if (RegJoin()) {
-      return;
-    }
-
-    MemberJoin({
-      mt_name: information.name,
-      mt_nickname,
-      mt_id,
-      mt_pwd,
-      mt_app_token,
-      mt_hp,
-      mt_addr,
-    });
-  };
-
   useLayoutEffect(() => {
     // 지역 모달 데이터 클릭시 사용
     if (location?.name) onChangeInformation(location.name, 'location');
@@ -93,6 +96,7 @@ export default function RegisterInformation({navigation}) {
       onChangeInformation(snsLogin.email, 'email');
     }
   }, [snsLogin]);
+
   return (
     <>
       <Header title="정보입력" navigation={navigation}></Header>
