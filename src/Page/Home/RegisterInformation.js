@@ -94,6 +94,7 @@ export default function RegisterInformation({navigation}) {
     // snsLogin 상태에 이메일 값 얻어오기
     if (snsLogin?.email) {
       onChangeInformation(snsLogin.email, 'email');
+      onChangeInformation(snsLogin.name, 'name');
     }
   }, [snsLogin]);
 
