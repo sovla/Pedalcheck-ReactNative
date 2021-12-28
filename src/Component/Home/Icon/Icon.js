@@ -12,7 +12,7 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {setSnsInfo} from '@/Store/snsLoginState';
 import {Login} from '@/API/User/Login';
@@ -27,34 +27,68 @@ import {
   unlink,
 } from '@react-native-seoul/kakao-login';
 
+import {NaverLogin, getProfile} from '@react-native-seoul/naver-login';
+
+const iosKeys = {
+  kConsumerKey: 'kkeU9exIGwNDzPGDBBpr',
+  kConsumerSecret: '0mCYc72HgH',
+  kServiceAppName: '테스트앱(iOS)',
+  kServiceAppUrlScheme: 'testapp', // only for iOS
+};
+
+const androidKeys = {
+  kConsumerKey: 'kkeU9exIGwNDzPGDBBpr',
+  kConsumerSecret: '0mCYc72HgH',
+  kServiceAppName: '테스트앱(안드로이드)',
+};
+
+const initials = Platform.OS === 'ios' ? iosKeys : androidKeys;
+// 테스트 키. git hub 우리거 아님
+
 export function KakaoImage({onPress}) {
   const [result, setResult] = useState();
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const signInWithKakao = async () => {
-    const token = await login();
-
-    setResult(JSON.stringify(token));
-    console.log(token.scopes);
+    try {
+      const token = await login();
+      getProfile();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const getProfile = async () => {
-    const profile = await getKakaoProfile();
-    console.log(profile);
-    setResult(JSON.stringify(profile));
+    try {
+      const profile = await getKakaoProfile();
+
+      const {id, email, nickname} = profile;
+      dispatch(
+        setSnsInfo({
+          id,
+          email,
+          name: nickname,
+        }),
+      );
+      navigation.navigate('Register');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const unlinkKakao = async () => {
-    const message = await unlink();
+  // const unlinkKakao = async () => {
+  //   const message = await unlink();
 
-    setResult(message);
-  };
-
+  //   setResult(message);
+  // };
   return (
-    <TouchableOpacity onPress={() => getProfile()}>
+    <TouchableOpacity onPress={() => signInWithKakao()}>
       <DefaultImage source={Kakao} width="60px" height="60px" resizeMode="contain" />
     </TouchableOpacity>
   );
 }
+
 export function GoogleImage({onPress}) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -108,8 +142,44 @@ export function GoogleImage({onPress}) {
   );
 }
 export function NaverImage({onPress}) {
+  const [naverToken, setNaverToken] = useState();
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  const naverLogin = props => {
+    return new Promise((resolve, reject) => {
+      NaverLogin.login(props, (err, token) => {
+        console.log(`\n\n  Token is fetched  :: ${token} \n\n`);
+        getUserProfile(token);
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(token);
+      });
+    });
+  };
+
+  const getUserProfile = async token => {
+    const profileResult = await getProfile(token.accessToken);
+    if (profileResult.resultcode === '024') {
+      Alert.alert('로그인 실패', profileResult.message);
+      return;
+    }
+    const {id, email, name} = profileResult.response;
+    dispatch(
+      setSnsInfo({
+        id,
+        email,
+        name,
+      }),
+    );
+
+    navigation.navigate('Register');
+  };
+
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={() => naverLogin(initials)}>
       <DefaultImage source={Naver} width="60px" height="60px" resizeMode="contain" />
     </TouchableOpacity>
   );

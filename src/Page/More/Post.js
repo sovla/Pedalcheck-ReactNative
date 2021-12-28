@@ -13,11 +13,31 @@ import DefaultImage from '@/assets/global/Image';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import {TouchableOpacity} from 'react-native';
 import PostItem from '@/Component/More/PostItem';
+import Marking from 'react-native-calendars/src/calendar/day/marking';
+import {useEffect} from 'react';
+import {getBoardList} from '@/API/More/More';
 
 export default function Post() {
   const {size} = useSelector(state => state);
   const [select, setSelect] = useState('공지');
   const [selectPost, setSelectPost] = useState([]);
+  const [postData, setPostData] = useState([]);
+
+  const board_list_handle = async () => {
+    try {
+      const response = await getBoardList({
+        view_mode: 'main',
+        board: select === '공지' ? 'notice' : 'event',
+      });
+      setPostData(response.data.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    board_list_handle();
+  }, [select]);
 
   return (
     <>
@@ -29,6 +49,7 @@ export default function Post() {
             const isSelect = selectPost.find(findItem => findItem === item.title);
             return (
               <PostItem
+                key={index}
                 selectPost={selectPost}
                 setSelectPost={setSelectPost}
                 item={item}
