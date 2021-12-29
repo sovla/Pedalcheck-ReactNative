@@ -23,20 +23,11 @@ export default function Post() {
   const [selectPost, setSelectPost] = useState([]);
   const [postData, setPostData] = useState([]);
 
-  const board_list_handle = async () => {
-    try {
-      const response = await getBoardList({
-        view_mode: 'main',
-        board: select === '공지' ? 'notice' : 'event',
-      });
-      setPostData(response.data.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
-    board_list_handle();
+    getBoardList({
+      view_mode: 'main',
+      board: select === '공지' ? 'notice' : 'event',
+    }).then(res => setPostData(res.data.data.data));
   }, [select]);
 
   return (

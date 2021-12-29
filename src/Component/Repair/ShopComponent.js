@@ -1,6 +1,6 @@
 import {Box, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
-import {DarkText, DefaultText, GrayText} from '@/assets/global/Text';
+import {DarkBoldText, DarkText, DefaultText, GrayText} from '@/assets/global/Text';
 import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import ParterIcon from '@assets/image/ic_partner.png';
@@ -9,6 +9,7 @@ import LikeIcon from '@assets/image/ic_good.png';
 import Dummy from '@assets/image/default_4.png';
 import numberFormat from '@/Util/numberFormat';
 import {useNavigation} from '@react-navigation/core';
+import {borderBottomWhiteGray} from '../BikeManagement/ShopRepairHistory';
 
 export default function ShopComponent({
   shopTitle = '인천신스',
@@ -21,17 +22,30 @@ export default function ShopComponent({
   isPress = true,
   isImage = true,
   mg = '10px',
+  pd = '0px',
+  item,
+  titleFontSize,
+  isBorder = true,
 }) {
   const navigation = useNavigation();
   const ShopItem = () => {
     return (
-      <RowBox justifyContent="space-between" width="100%" mg={mg}>
+      <RowBox
+        style={isBorder && borderBottomWhiteGray}
+        justifyContent="space-between"
+        alignItems="center"
+        width="380px"
+        height="100px"
+        mg={mg}
+        pd={pd}>
         <Box height="74px">
           <RowBox height="33.33%" alignItems="center">
-            <DarkText mg="0px 5px 0px 0px">{shopTitle}</DarkText>
+            <DarkBoldText mg="0px 5px 0px 0px" fontSize={titleFontSize ?? Theme.fontSize.fs16}>
+              {shopTitle}
+            </DarkBoldText>
             {isPartner && (
-              <RowBox>
-                <DefaultImage source={ParterIcon} width="12px" height="12px"></DefaultImage>
+              <RowBox alignItems="center">
+                <DefaultImage source={ParterIcon} width="12px" height="12px" />
                 <DefaultText
                   color={Theme.color.indigo}
                   fontSize={Theme.fontSize.fs12}
@@ -42,7 +56,7 @@ export default function ShopComponent({
             )}
           </RowBox>
           <RowBox height="33.33%" alignItems="center">
-            <DefaultImage source={LikeIcon} width="12px" height="12px"></DefaultImage>
+            <DefaultImage source={LikeIcon} width="12px" height="12px" />
             <GrayText fontSize={Theme.fontSize.fs13} mg="0px 10px 0px 3px">
               {numberFormat(likeCount)}
             </GrayText>
@@ -79,7 +93,12 @@ export default function ShopComponent({
   return (
     <>
       {isPress && (
-        <TouchableOpacity onPress={() => navigation.navigate('Shop')}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('Shop', {
+              mst_idx: item?.mst_idx,
+            })
+          }>
           <ShopItem />
         </TouchableOpacity>
       )}

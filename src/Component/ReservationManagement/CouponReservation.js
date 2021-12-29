@@ -19,9 +19,7 @@ export default function CouponReservation() {
   const navigation = useNavigation();
   const {size} = useSelector(state => state);
   const [daySelect, setDaySelect] = useState(new Date());
-  const onPressAllApprove = () => {
-    console.log('나클릭');
-  };
+  const onPressAllApprove = () => {};
   const onPressProduct = () => {
     navigation.navigate('ReservationManagementDetail');
   };

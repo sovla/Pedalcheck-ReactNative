@@ -6,7 +6,7 @@ import birthDateReducer from './birthDateState';
 import tokenReducer from './tokenState';
 import snsLoginReducer from './snsLoginState';
 import loginReducer from './loginState';
-
+import shopInfoReducer from './shopInfoState';
 export const store = configureStore({
   reducer: {
     //  리듀서 추가 부분
@@ -17,6 +17,7 @@ export const store = configureStore({
     token: tokenReducer,
     snsLogin: snsLoginReducer,
     login: loginReducer,
+    shopInfo: shopInfoReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

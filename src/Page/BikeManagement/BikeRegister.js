@@ -19,7 +19,5 @@ export default function BikeRegister() {
     power: '',
   });
   const [image, setImage] = useState();
-  console.log(bike, 'bike');
-  console.log(image?.path, 'image');
   return <BikeRegisterContainer bike={bike} setBike={setBike} image={image} setImage={setImage} />;
 }
