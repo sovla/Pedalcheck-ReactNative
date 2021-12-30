@@ -8,15 +8,15 @@ import React from 'react';
 import PencelIcon from '@assets/image/ic_modify.png';
 import {useSelector} from 'react-redux';
 import Review from './Review';
-import {TouchableOpacity} from 'react-native';
+import {FlatList, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 
 export default function ReviewMain() {
-  const {size} = useSelector(state => state);
+  const {size, shopInfo} = useSelector(state => state);
   const navigation = useNavigation();
   return (
-    <Container pd="20px 16px">
-      <RowBox justifyContent="space-between" flex={1} width={size.minusPadding} alignItems="center">
+    <Box pd="20px 16px 0px">
+      <RowBox justifyContent="space-between" width={size.minusPadding} alignItems="center">
         <RowBox>
           <DarkBoldText fontSize={Theme.fontSize.fs15}>리뷰</DarkBoldText>
           <IndigoText
@@ -24,13 +24,15 @@ export default function ReviewMain() {
             fontSize={Theme.fontSize.fs15}
             fontWeight={Theme.fontWeight.medium}
             color={Theme.color.indigo}>
-            {numberFormat(12345)}
+            {numberFormat(shopInfo?.store_info?.mst_reviews)}
           </IndigoText>
         </RowBox>
         <Box>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('ReviewHome');
+              navigation.navigate('ReviewHome', {
+                mst_idx: shopInfo?.store_info?.mst_idx, // 매장 정보
+              });
             }}>
             <BorderButton width="90px">
               <DefaultImage source={PencelIcon} width="17px" height="17px" />
@@ -39,9 +41,6 @@ export default function ReviewMain() {
           </TouchableOpacity>
         </Box>
       </RowBox>
-      <Review isDetail isRecomment={false} />
-      <Review isRecomment={false} />
-      <Review isRecomment={false} />
-    </Container>
+    </Box>
   );
 }

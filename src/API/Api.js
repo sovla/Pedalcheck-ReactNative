@@ -29,6 +29,7 @@ export const API = axios.create({
     );
     return result;
   },
+
   transformResponse: data => {
     const jsonParseData = JSON.parse(data);
 

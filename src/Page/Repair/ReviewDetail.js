@@ -8,7 +8,6 @@ import {StyleSheet, Text, View} from 'react-native';
 
 export default function ReviewDetail(props) {
   const isRecomment = props?.route?.params?.isRecomment;
-  console.log(props.route);
   return (
     <>
       <Header title="리뷰" />

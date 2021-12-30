@@ -4,7 +4,7 @@ import {DarkMediumText, DarkText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {Dropdown} from 'react-native-element-dropdown';
 import React, {useState} from 'react';
-import {ScrollView, StyleSheet, View, TouchableOpacity} from 'react-native';
+import {ScrollView, StyleSheet, View, TouchableOpacity, FlatList} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import WhiteSpannerIcon from '@assets/image/menu01_top.png';
 import {WhiteInput} from '@assets/global/Input';
@@ -34,11 +34,12 @@ export default function RepairHome() {
   const [selectItem, setSelectItem] = useState('전체보기');
   const [sortSelectItem, setSortSelectItem] = useState('인기순');
 
-  const [page, setPage] = useState(1);
+  const [apiPage, setApiPage] = useState(1); // API Page
   const [selectImage, setSelectImage] = useState(0);
   const {size} = useSelector(state => state);
   const [tag, setTag] = useState([]);
   const [innerLocation, setInnerLocation] = useState('부산 금정구');
+  const [storeList, setStoreList] = useState([]);
 
   const onPressTag = tagName => {
     // By.Junhan tag에 값이 없다면 넣어주고 있다면 제거
@@ -56,13 +57,13 @@ export default function RepairHome() {
   useEffect(() => {
     getShopList({
       _mt_idx: 1,
-      page: page,
+      page: apiPage,
       mst_addr: '', // 위치로 검색
       mst_name: '', // 검색하는 경우 추가
       mst_tag: tag.length > 0 ? tag?.reduce((a, b) => a + ',' + b) : '', // , 콤마 더해서 값 보내기
       mst_type: selectItem === '전체보기' ? '' : '1',
       sorting: sortSelectItem === '정비횟수순' ? 2 : sortSelectItem === '거리순' ? 3 : 1, // 인기순 1 거리순 2 정비횟수순 3
-    });
+    }).then(res => setStoreList(res.data.data.data.store_list));
   }, [tag]);
 
   useEffect(() => {
@@ -73,169 +74,187 @@ export default function RepairHome() {
 
   return (
     <Container>
-      <ScrollView
+      <FlatList
+        ListHeaderComponent={
+          <Header
+            size={size}
+            tag={tag}
+            selectItem={selectItem}
+            setSelectItem={setSelectItem}
+            sortSelectItem={sortSelectItem}
+            setSortSelectItem={setSortSelectItem}
+            innerLocation={innerLocation}
+            selectImage={selectImage}
+            onScrollSlide={onScrollSlide}
+            onPressTag={onPressTag}
+            dispatch={dispatch}
+          />
+        }
+        data={storeList}
+        renderItem={({item, index}) => (
+          <Box width="380px" mg="0px 16px">
+            <ShopComponent
+              mg="0px"
+              pd="14px 10px"
+              item={item}
+              shopTitle={item?.mst_name}
+              isPartner={item?.mst_type === '1'}
+              likeCount={item?.mst_likes ?? 0}
+              reviewCount={item?.mst_reviews ?? 0}
+              repairCount={item?.mst_orders ?? 0}
+              tagList={item.mst_tag.split(',')}
+              isImage
+            />
+          </Box>
+        )}
         style={{
-          height: size.screenHeight - 64,
-          width: '100%',
-        }}>
-        <GradientHeader title="정비소" imageSource={WhiteSpannerIcon}>
-          <Box backgroundColor="rgba(0,0,0,0)" mg="20px 0px 0px">
-            <WhiteInput
-              height="43px"
-              width={size.minusPadding}
-              placeholder="매장명을 입력해주세요."></WhiteInput>
-            <PositionBox top="11px" right="15px">
-              <TouchableOpacity>
-                <DefaultImage source={SearchIcon} width="21px" height="21px"></DefaultImage>
-              </TouchableOpacity>
-            </PositionBox>
-          </Box>
-        </GradientHeader>
-        <Box
-          pd="20px 16px 0px"
-          height="auto"
-          style={{
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 5,
-            elevation: 5,
-          }}>
-          <Event />
-          <Box height="40px">
-            <ScrollView horizontal style={{marginTop: 10}}>
-              {tagList.map(item => (
-                <TagButton
-                  key={`tag_${item}`}
-                  text={item}
-                  isSelect={tag.find(findItem => item === findItem)}
-                  setSelect={() => onPressTag(item)}></TagButton>
-              ))}
-            </ScrollView>
-          </Box>
-          <RowBox height="50px" alignItems="center">
-            <Box>
-              <DefaultDropdown
-                data={sortArray}
-                value={selectItem}
-                setValue={setSelectItem}
-                isBorder={false}
-                width={selectItem.length * 12 + 40}
-                pdLeft={0}
-                fontType="Medium"
-              />
-            </Box>
-            <Box mg="0px 0px 0px 5px">
-              <DefaultDropdown
-                data={sortArray1}
-                labelField="label"
-                valueField="value"
-                width={sortSelectItem.length * 17 + 25}
-                isBorder={false}
-                setValue={setSortSelectItem}
-                value={sortSelectItem}
-                pdLeft={0}
-                fontType="Medium"
-              />
-            </Box>
-            <TouchableOpacity
-              onPress={() => {
-                dispatch(modalOpen('locationPicker'));
-              }}>
-              <RowBox height="100%" alignItems="center" mg="0px 0px 0px 5px">
-                <DarkMediumText fontSize={Theme.fontSize.fs15}>{innerLocation}</DarkMediumText>
-                <DefaultImage width="24px" height="24px" source={LocationIcon} />
-              </RowBox>
-            </TouchableOpacity>
-          </RowBox>
-        </Box>
-        <Box mg="20px 16px 0px">
-          <RecommenderShop totalCount={dummyImageArray.length} count={selectImage + 1} />
-          <ShopComponent
-            mg="10px 0px"
-            shopTitle="인천신스"
-            isPartner
-            likeCount={1995}
-            reviewCount={8491}
-            repairCount={12765}
-            tagList={['픽업', '피팅전문', '중고거래', '광고']}
-          />
-          <Box>
-            <Box height="200px">
-              <ScrollView
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}
-                onMomentumScrollEnd={onScrollSlide}>
-                {dummyImageArray.map((item, index) => (
-                  <DefaultImage
-                    key={`image_${index}`}
-                    source={item}
-                    width={size.minusPadding}
-                    height="200px"></DefaultImage>
-                ))}
-              </ScrollView>
-              <PositionBox
-                style={{flexDirection: 'row'}}
-                right="20px"
-                top="20px"
-                backgroundColor="rgba(0,0,0,0)">
-                {dummyImageArray.map((item, index) => {
-                  const isEqual = selectImage === index;
-                  return isEqual ? (
-                    <DefaultImage key={item + index} source={BlackDot} width="15px" height="15px" />
-                  ) : (
-                    <DefaultImage key={item + index} source={EmptyDot} width="15px" height="15px" />
-                  );
-                })}
-              </PositionBox>
-            </Box>
-          </Box>
-          <ShopComponent
-            mg="10px 0px"
-            shopTitle="인천신스"
-            isPartner
-            likeCount={1995}
-            reviewCount={8491}
-            repairCount={12765}
-            tagList={['픽업', '피팅전문', '중고거래', '광고']}
-          />
-          <ShopComponent
-            mg="0px"
-            shopTitle="인천신스"
-            isPartner
-            likeCount={1995}
-            reviewCount={8491}
-            repairCount={12765}
-            tagList={['픽업', '피팅전문', '중고거래', '광고']}
-          />
-          <ShopComponent
-            mg="10px 0px"
-            shopTitle="인천신스"
-            isPartner
-            likeCount={1995}
-            reviewCount={8491}
-            repairCount={12765}
-            tagList={['픽업', '피팅전문', '중고거래', '광고']}
-          />
-          <ShopComponent
-            mg="0px 0px 10px"
-            shopTitle="인천신스"
-            isPartner
-            likeCount={1995}
-            reviewCount={8491}
-            repairCount={12765}
-            tagList={['픽업', '피팅전문', '중고거래', '광고']}
-          />
-        </Box>
-      </ScrollView>
+          marginBottom: 20,
+        }}
+      />
       <FooterButtons selectMenu={1} />
     </Container>
   );
 }
+const Header = ({
+  size,
+  tag,
+  selectItem,
+  setSelectItem,
+  sortSelectItem,
+  setSortSelectItem,
+  innerLocation,
+  selectImage,
+  onScrollSlide,
+  onPressTag,
+  dispatch,
+}) => {
+  return (
+    <>
+      <GradientHeader title="정비소" imageSource={WhiteSpannerIcon}>
+        <Box backgroundColor="rgba(0,0,0,0)" mg="20px 0px 0px">
+          <WhiteInput
+            height="43px"
+            width={size.minusPadding}
+            placeholder="매장명을 입력해주세요."></WhiteInput>
+          <PositionBox top="11px" right="15px">
+            <TouchableOpacity>
+              <DefaultImage source={SearchIcon} width="21px" height="21px"></DefaultImage>
+            </TouchableOpacity>
+          </PositionBox>
+        </Box>
+      </GradientHeader>
+      <Box
+        pd="20px 16px 0px"
+        height="auto"
+        style={{
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 5,
+          elevation: 5,
+        }}>
+        <Event />
+        <Box height="40px">
+          <ScrollView horizontal style={{marginTop: 10}}>
+            {tagList.map(item => (
+              <TagButton
+                key={`tag_${item}`}
+                text={item}
+                isSelect={tag.find(findItem => item === findItem)}
+                setSelect={() => onPressTag(item)}></TagButton>
+            ))}
+          </ScrollView>
+        </Box>
+        <RowBox height="50px" alignItems="center">
+          <Box>
+            <DefaultDropdown
+              data={sortArray}
+              value={selectItem}
+              setValue={setSelectItem}
+              isBorder={false}
+              width={selectItem.length * 12 + 40}
+              pdLeft={0}
+              fontType="Medium"
+            />
+          </Box>
+          <Box mg="0px 0px 0px 5px">
+            <DefaultDropdown
+              data={sortArray1}
+              labelField="label"
+              valueField="value"
+              width={sortSelectItem.length * 17 + 25}
+              isBorder={false}
+              setValue={setSortSelectItem}
+              value={sortSelectItem}
+              pdLeft={0}
+              fontType="Medium"
+            />
+          </Box>
+          <TouchableOpacity
+            onPress={() => {
+              dispatch(modalOpen('locationPicker'));
+            }}>
+            <RowBox height="100%" alignItems="center" mg="0px 0px 0px 5px">
+              <DarkMediumText fontSize={Theme.fontSize.fs15}>{innerLocation}</DarkMediumText>
+              <DefaultImage width="24px" height="24px" source={LocationIcon} />
+            </RowBox>
+          </TouchableOpacity>
+        </RowBox>
+      </Box>
+      <Box mg="20px 16px 0px">
+        <RecommenderShop totalCount={dummyImageArray.length} count={selectImage + 1} />
+        <Box width="380px">
+          <ShopComponent
+            mg="0px"
+            pd="14px 10px"
+            shopTitle="인천신스"
+            isPartner
+            isImage
+            likeCount={1995}
+            reviewCount={8491}
+            repairCount={12765}
+            tagList={['픽업', '피팅전문', '중고거래', '광고']}
+          />
+        </Box>
+        <Box>
+          <Box height="200px">
+            <ScrollView
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+              onMomentumScrollEnd={onScrollSlide}>
+              {dummyImageArray.map((item, index) => (
+                <DefaultImage
+                  key={`image_${index}`}
+                  resizeMode="stretch"
+                  source={item}
+                  width={size.minusPadding}
+                />
+              ))}
+            </ScrollView>
+            <PositionBox
+              style={{flexDirection: 'row'}}
+              right="20px"
+              top="20px"
+              backgroundColor="rgba(0,0,0,0)">
+              {dummyImageArray.map((item, index) => {
+                const isEqual = selectImage === index;
+                return isEqual ? (
+                  <DefaultImage key={item + index} source={BlackDot} width="15px" height="15px" />
+                ) : (
+                  <DefaultImage key={item + index} source={EmptyDot} width="15px" height="15px" />
+                );
+              })}
+            </PositionBox>
+          </Box>
+        </Box>
+      </Box>
+    </>
+  );
+};
 
 const Event = () => {
   return (
@@ -294,22 +313,6 @@ const RecommenderShop = ({totalCount, count}) => {
     </BorderBottomBox>
   );
 };
-
-const styles = StyleSheet.create({
-  dropdown: {
-    width: getPixel(100),
-  },
-  dropdownContainer: {
-    width: 'auto',
-    height: 50,
-  },
-  dropdownSelectItem: {
-    fontSize: getPixel(15),
-    color: Theme.color.black,
-    fontWeight: '600',
-    letterSpacing: -0.45,
-  },
-});
 
 const sortArray = [
   {

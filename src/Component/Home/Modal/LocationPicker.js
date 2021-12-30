@@ -12,6 +12,7 @@ import ModalTitleBox from '../../Modal/ModalTitleBox';
 import {useEffect} from 'react';
 import {getLocationList} from '@/API/Location/Location';
 import {useState} from 'react';
+import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 
 export default function LocationPicker() {
   const [locationArray, setLocationArray] = useState([]);
@@ -21,11 +22,8 @@ export default function LocationPicker() {
   const dispatch = useDispatch();
   const BoxWidth = size.designWidth - 72;
   const isDetail = modal.modalComponent === 'locationPickerDetail';
-  console.log(isDetail, 'isDetail');
-  console.log(location);
   useEffect(() => {
     if (!isDetail) {
-      console.log('초기 초기화');
       dispatch(DeleteLocation());
     }
     const apiObject = !isDetail
@@ -51,7 +49,6 @@ export default function LocationPicker() {
       await dispatch(modalOpen('locationPickerDetail'));
     } else {
       await dispatch(modalClose());
-      console.log('모달 닫으면서 초기화');
       await dispatch(DeleteLocation());
     }
   };
@@ -67,7 +64,7 @@ export default function LocationPicker() {
               }}>
               <RowBox
                 width={`${itemWidth}px`}
-                style={{borderBottomWidth: 1, borderBottomColor: Theme.borderColor.gray}}
+                style={borderBottomWhiteGray}
                 height="45px"
                 justifyContent="space-between"
                 alignItems="center">

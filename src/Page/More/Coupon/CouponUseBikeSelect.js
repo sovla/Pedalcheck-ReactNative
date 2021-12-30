@@ -16,7 +16,6 @@ export default function CouponUseBikeSelect() {
   const {size} = useSelector(state => state);
   const [selectItem, setSelectItem] = useState('');
   const navigation = useNavigation();
-  console.log(size.screenHeight);
   return (
     <>
       <Header title="쿠폰 사용" />

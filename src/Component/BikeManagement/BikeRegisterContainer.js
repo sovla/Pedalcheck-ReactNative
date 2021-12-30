@@ -21,13 +21,11 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const setChangeBike = (name, value) => {
-    console.log('여기실행2');
     setBike(prev => ({...prev, [name]: value}));
   };
 
   useEffect(() => {
     if (modal?.modalProp && modal?.isDone) {
-      console.log('여기실행');
       setBike(prev => ({...prev, bikeModel: modal.modalProp}));
     }
   }, [modal.isDone]);

@@ -127,7 +127,6 @@ export default function Router() {
 
     return () => {};
   }, [height]);
-  console.log('Router Rendering');
 
   return (
     <>

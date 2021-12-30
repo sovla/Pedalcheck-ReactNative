@@ -1,4 +1,4 @@
-import {Box, Container, RowBox} from '@/assets/global/Container';
+import {BetweenBox, Box, Container, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import {DarkBoldText, DarkText, DefaultText, MoneyText} from '@/assets/global/Text';
 import React from 'react';
@@ -11,37 +11,30 @@ import Icon from '@assets/image/ic_lightning.png';
 import {useNavigation} from '@react-navigation/core';
 
 export default function ProductsShow() {
-  const {size} = useSelector(state => state);
-  const itemArray = [
-    {title: '세차', Question: '세차', price: '50000', salePrice: '50000', isCargo: true},
-    {title: '세차', Question: '세차', price: '50000', salePrice: '50000', isCargo: false},
-    {title: '세차', Question: '세차', price: '50000', salePrice: '50000', isCargo: true},
-    {title: '세차', Question: '세차', price: '50000', salePrice: '50000', isCargo: true},
-    {title: '세차', Question: '세차', price: '50000', salePrice: '50000', isCargo: false},
-    {title: '세차', Question: '세차', price: '50000', isCargo: true},
-  ];
+  const {
+    shopInfo: {pt_list},
+  } = useSelector(state => state);
   return (
-    <Container pd="20px 16px">
-      {itemArray.map((item, index) => (
-        <Product key={item.title + index} item={item}></Product>
+    <Box pd="20px 16px" mg="0px 0px 50px">
+      {pt_list.map((item, index) => (
+        <Product key={item?.title + index} item={item}></Product>
       ))}
-    </Container>
+    </Box>
   );
 }
 
 export const Product = ({item}) => {
-  const {size} = useSelector(state => state);
   const navigation = useNavigation();
   return (
-    <RowBox width={size.minusPadding} mg="0px 0px 15px" justifytContent="space-between">
-      <Box style={{flex: 1}}>
+    <BetweenBox width="380px" mg="0px 0px 15px">
+      <Box>
         <RowBox alignItems="center">
-          <DarkBoldText mg="0px 7px 0px 0px">{item.title}</DarkBoldText>
+          <DarkBoldText mg="0px 7px 0px 0px">{item?.pt_title}</DarkBoldText>
           <TouchableOpacity onPress={() => navigation.navigate('ProductDetail')}>
             <DefaultImage source={QuestionIcon} width="20px" height="20px" />
           </TouchableOpacity>
         </RowBox>
-        {item.isCargo && (
+        {item?.isCargo && (
           <RowBox alignItems="center">
             <DefaultImage source={Icon} width="10px" height="10px" />
             <DefaultText
@@ -54,10 +47,17 @@ export const Product = ({item}) => {
         )}
       </Box>
       <RowBox alignItems="center">
-        {item.salePrice && <MoneyText money={item.salePrice} disabled mg="0px 8px 0px 0px" />}
-
-        <MoneyText color={Theme.color.black} money={item.price} />
+        {item.pt_dc_price ? (
+          <>
+            <MoneyText money={item?.pt_price} disabled mg="0px 8px 0px 0px" />
+            <MoneyText color={Theme.color.black} money={item?.pt_dc_price} />
+          </>
+        ) : (
+          <>
+            <MoneyText color={Theme.color.black} money={item?.pt_price} />
+          </>
+        )}
       </RowBox>
-    </RowBox>
+    </BetweenBox>
   );
 };
