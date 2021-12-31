@@ -8,3 +8,48 @@ export const getBoardList = async args => {
     console.log(error);
   }
 };
+
+export const getPrivacyPolicy = async args => {
+  try {
+    const response = await API.post('get_agree.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getFAQ = async args => {
+  try {
+    const response = await API.post('get_faq.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getQnaList = async args => {
+  try {
+    const response = await API.post('qna_list.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateQna = async args => {
+  try {
+    const response = await API.post('qna_edit.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteQna = async args => {
+  try {
+    const response = await API.post('qna_del.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

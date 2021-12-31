@@ -5,55 +5,40 @@ import Header from '@/Component/Layout/Header';
 import MenuNav from '@/Component/Layout/MenuNav';
 import React from 'react';
 import {useState} from 'react';
-import {TouchableOpacity} from 'react-native';
+import {FlatList, TouchableOpacity} from 'react-native';
 import PlusIcon from '@assets/image/ic_plus_w.png';
 import {DefaultText} from '@/assets/global/Text';
 import QuestionItem from '@/Component/More/QuestionItem';
 import {useNavigation} from '@react-navigation/core';
 import {useDispatch} from 'react-redux';
 import {modalOpen} from '@/Store/modalState';
+import {useEffect} from 'react';
+import {getQnaList} from '@/API/More/More';
+import {getCategoryName} from '@/Util/changeCategory';
+import PedalCheck from '@/Component/More/Question/PedalCheck';
 
 export default function Question() {
-  const [select, setSelect] = useState('페달체크');
-  const [questionSelect, setQuestionSelect] = useState([]);
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const onPressItem = title => {
-    if (questionSelect.find(findItem => findItem === title)) {
-      setQuestionSelect(prev => prev.filter(filterItem => filterItem !== title));
-    } else {
-      setQuestionSelect(prev => [...prev, title]);
-    }
-  };
-  const onPressRegister = () => {
-    navigation.navigate('QuestionWrite');
-  };
-  const onPressDelete = () => {
-    dispatch(modalOpen('questionDelete'));
-  };
+  const isFocus = navigation.isFocused();
+
+  const [select, setSelect] = useState('페달체크');
+  const [pedalChecklist, setPedalCheckList] = useState([]);
+
   return (
     <>
       <Header title="1:1문의" />
-      <MenuNav menuItem={menuItem} select={select} setSelect={setSelect} />
-      <Box mg="16px 16px 0px">
-        <TouchableOpacity onPress={onPressRegister}>
-          <Button>
-            <RowBox backgroundColor="#0000">
-              <DefaultImage source={PlusIcon} width="24px" height="24px" />
-              <DefaultText>등록하기</DefaultText>
-            </RowBox>
-          </Button>
-        </TouchableOpacity>
-        {questionList.map(item => {
-          return (
-            <QuestionItem
-              {...item}
-              isSelect={questionSelect.find(findItem => findItem === item.questionTitle)}
-              onPressItem={() => onPressItem(item.questionTitle)}
-              onPressDelete={onPressDelete}
-            />
-          );
-        })}
+
+      <Box mg="0px">
+        {select === '페달체크' && (
+          <PedalCheck
+            select={select}
+            setSelect={setSelect}
+            menuItem={menuItem}
+            setPedalCheckList={setPedalCheckList}
+            pedalChecklist={pedalChecklist}
+          />
+        )}
       </Box>
     </>
   );

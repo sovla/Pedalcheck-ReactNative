@@ -201,13 +201,19 @@ const MoreFooter = () => {
   return (
     <Box alignItems="center" flex={1} backgroundColor={Theme.borderColor.whiteLine}>
       <RowBox backgroundColor={Theme.borderColor.whiteLine} mg="30px 0px 10px">
-        <TouchableOpacity onPress={() => navigation.navigate('PrivacyPolicy')}>
+        <TouchableOpacity
+          style={{padding: 3}}
+          onPress={() => navigation.navigate('PrivacyPolicy', {st_agree: 1})}>
           <GrayText fontSize={Theme.fontSize.fs13}>개인정보 처리방침</GrayText>
         </TouchableOpacity>
         <GrayText fontSize={Theme.fontSize.fs13} mg="0px 10px">
           |
         </GrayText>
-        <GrayText fontSize={Theme.fontSize.fs13}>서비스 이용약관</GrayText>
+        <TouchableOpacity
+          style={{padding: 3}}
+          onPress={() => navigation.navigate('PrivacyPolicy', {st_agree: 2})}>
+          <GrayText fontSize={Theme.fontSize.fs13}>서비스 이용약관</GrayText>
+        </TouchableOpacity>
       </RowBox>
       <RowBox backgroundColor={Theme.borderColor.whiteLine}>
         <GrayText mg="0px 5px 0px 0px" fontSize={Theme.fontSize.fs13}>

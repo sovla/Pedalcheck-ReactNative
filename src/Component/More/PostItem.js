@@ -20,7 +20,7 @@ export default function PostItem({item, index, selectPost, setSelectPost}) {
   };
   const isSelect = selectPost.find(findItem => findItem === item.title);
   return (
-    <Box key={index} alignItems="center" style={borderBottomWhiteGray}>
+    <Box key={index} alignItems="center" style={isSelect && borderBottomWhiteGray}>
       <TouchableOpacity onPress={() => onPressPost(item.title)}>
         <BetweenBox pd="16p 10px" width={size.minusPadding} style={borderBottomWhiteGray}>
           <Box>

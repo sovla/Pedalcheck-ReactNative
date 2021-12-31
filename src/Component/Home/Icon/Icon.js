@@ -62,6 +62,7 @@ export function KakaoImage({onPress}) {
   const getProfile = async () => {
     try {
       const profile = await getKakaoProfile();
+      console.log(profile, '카카오로그인정보');
 
       const {id, email, nickname} = profile;
       dispatch(
@@ -167,6 +168,7 @@ export function NaverImage({onPress}) {
       return;
     }
     const {id, email, name} = profileResult.response;
+    console.log(profileResult, '네이버 로그인 정보');
     dispatch(
       setSnsInfo({
         id,
