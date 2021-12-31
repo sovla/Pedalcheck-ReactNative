@@ -18,14 +18,14 @@ export default function PostItem({item, index, selectPost, setSelectPost}) {
       setSelectPost(prev => [...prev, title]);
     }
   };
-  const isSelect = selectPost.find(findItem => findItem === item.title);
+  const isSelect = selectPost.find(findItem => findItem === item.bt_title);
   return (
     <Box key={index} alignItems="center" style={isSelect && borderBottomWhiteGray}>
-      <TouchableOpacity onPress={() => onPressPost(item.title)}>
+      <TouchableOpacity onPress={() => onPressPost(item.bt_title)}>
         <BetweenBox pd="16p 10px" width={size.minusPadding} style={borderBottomWhiteGray}>
           <Box>
-            <DarkBoldText fontSize={Theme.fontSize.fs15}>{item.title}</DarkBoldText>
-            <GrayText fontSize={Theme.fontSize.fs12}>{item.date}</GrayText>
+            <DarkBoldText fontSize={Theme.fontSize.fs15}>{item.bt_title}</DarkBoldText>
+            <GrayText fontSize={Theme.fontSize.fs12}>{item.bt_wdate}</GrayText>
           </Box>
           <DefaultImage
             style={
@@ -41,11 +41,22 @@ export default function PostItem({item, index, selectPost, setSelectPost}) {
       </TouchableOpacity>
       {isSelect && (
         <>
-          {item.image && (
+          {item.bt_image1 && (
             <Box mg="15px 0px 0px">
               <DefaultImage
                 style={{borderRadius: 15}}
-                source={item.image}
+                source={item.bt_image1}
+                width="360px"
+                height="150px"
+              />
+            </Box>
+          )}
+
+          {item.bt_image2 && (
+            <Box mg="15px 0px 0px">
+              <DefaultImage
+                style={{borderRadius: 15}}
+                source={item.bt_image2}
                 width="360px"
                 height="150px"
               />
@@ -53,7 +64,7 @@ export default function PostItem({item, index, selectPost, setSelectPost}) {
           )}
 
           <Box width="360px" mg="15px 0px 20px">
-            <DarkText fontSize={Theme.fontSize.fs15}>{item.content}</DarkText>
+            <DarkText fontSize={Theme.fontSize.fs15}>{item.bt_content}</DarkText>
           </Box>
         </>
       )}

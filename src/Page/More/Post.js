@@ -16,27 +16,61 @@ import PostItem from '@/Component/More/PostItem';
 import Marking from 'react-native-calendars/src/calendar/day/marking';
 import {useEffect} from 'react';
 import {getBoardList} from '@/API/More/More';
+import {FlatList} from 'react-native-gesture-handler';
 
 export default function Post() {
   const {size} = useSelector(state => state);
   const [select, setSelect] = useState('공지');
   const [selectPost, setSelectPost] = useState([]);
-  const [postData, setPostData] = useState([]);
+  const [eventData, setEventData] = useState([]);
+  const [noticeData, setNoticeData] = useState([]);
 
   useEffect(() => {
     getBoardList({
-      view_mode: 'main',
+      view_mode: 'list',
       board: select === '공지' ? 'notice' : 'event',
-    }).then(res => setPostData(res.data.data.data));
+    }).then(res =>
+      select === '이벤트'
+        ? res?.data?.data?.data?.board == undefined
+          ? setEventData(null)
+          : setEventData(res?.data?.data?.data?.board)
+        : res?.data?.data?.data?.board == undefined
+        ? setNoticeData(null)
+        : setNoticeData(res?.data?.data?.data?.board),
+    );
   }, [select]);
 
+  console.log(eventData);
   return (
     <>
       <Header title="공지 및 이벤트" />
-      <MenuNav menuItem={menuItem} select={select} setSelect={setSelect} />
+
       <Container>
-        <ScrollBox width={size.designWidth} alignItems="center">
-          {postList.map((item, index) => {
+        {/* <ScrollBox width={size.designWidth} alignItems="center">
+          {postData !== null
+            ? postData.map((item, index) => {
+                const isSelect = selectPost.find(findItem => findItem === item.title);
+                return (
+                  <PostItem
+                    key={index}
+                    selectPost={selectPost}
+                    setSelectPost={setSelectPost}
+                    item={item}
+                    index={index}
+                    isSelect={isSelect}
+                  />
+                );
+              })
+            : null}
+        </ScrollBox> */}
+        <FlatList
+          ListHeaderComponent={
+            <>
+              <MenuNav menuItem={menuItem} select={select} setSelect={setSelect} />
+            </>
+          }
+          data={select === '공지' ? noticeData : eventData}
+          renderItem={({item, index}) => {
             const isSelect = selectPost.find(findItem => findItem === item.title);
             return (
               <PostItem
@@ -48,8 +82,9 @@ export default function Post() {
                 isSelect={isSelect}
               />
             );
-          })}
-        </ScrollBox>
+          }}
+          keyExtractor={({item, index}) => index + item}
+        />
       </Container>
     </>
   );
