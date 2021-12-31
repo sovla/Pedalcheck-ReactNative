@@ -1,80 +1,48 @@
+import {getFAQ} from '@/API/More/More';
 import {Box, ScrollBox} from '@/assets/global/Container';
 import Header from '@/Component/Layout/Header';
 import PostItem from '@/Component/More/PostItem';
+import {getPixel} from '@/Util/pixelChange';
 import React from 'react';
+import {useEffect} from 'react';
 import {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 import {useSelector} from 'react-redux';
 
 export default function FAQ() {
   const {size} = useSelector(state => state);
   const [selectPost, setSelectPost] = useState([]);
+  const [postList, setPostList] = useState([]);
+
+  useEffect(() => {
+    getFAQ().then(res => res.data.result === 'true' && setPostList(res.data.data.data));
+  }, []);
   return (
     <>
       <Header title="자주하는 질문" />
-      <ScrollBox width={size.designWidth} alignItems="center">
-        {postList.map((item, index) => {
+      <FlatList
+        data={postList}
+        style={{
+          width: getPixel(380),
+          marginHorizontal: getPixel(16),
+        }}
+        renderItem={({item, index}) => {
+          const changeItem = {
+            title: item?.ft_title,
+            date: item?.ft_date,
+            content: item?.ft_content,
+            image: item?.ft_image,
+          };
           return (
             <PostItem
-              item={item}
+              item={changeItem}
               index={index}
               selectPost={selectPost}
               setSelectPost={setSelectPost}
             />
           );
-        })}
-      </ScrollBox>
+        }}
+      />
     </>
   );
 }
-
-const postList = [
-  {
-    title: '팀 적립 기능 사용 중지 안내',
-    date: '2021-10-15 14:22',
-    content:
-      '게시물 내용 노출 영역 게시물 내용 노출 영역 게시물 내용 노출 영역 게시물 내용 노출 영역',
-  },
-  {
-    title: '팀 적립 기능 사용 중지 안내1',
-    date: '2021-10-15 14:22',
-    content:
-      '게시물 내용 노출 영역 게시물 내용 노출 영역 게시물 내용 노출 영역 게시물 내용 노출 영역',
-  },
-  {
-    title: '팀 적립 기능 사용 중지 안내2',
-    date: '2021-10-15 14:22',
-    content:
-      '게시물 내용 노출 영역 게시물 내용 노출 영역 게시물 내용 노출 영역 게시물 내용 노출 영역',
-  },
-  {
-    title: '팀 적립 기능 사용 중지 안내3',
-    date: '2021-10-15 14:22',
-    content:
-      '게시물 내용 노출 영역 게시물 내용 노출 영역 게시물 내용 노출 영역 게시물 내용 노출 영역',
-  },
-  {
-    title: '팀 적립 기능 사용 중지 안내4',
-    date: '2021-10-15 14:22',
-    content:
-      '게시물 내용 노출 영역 게시물 내용 노출 영역 게시물 내용 노출 영역 게시물 내용 노출 영역',
-  },
-  {
-    title: '팀 적립 기능 사용 중지 안내5',
-    date: '2021-10-15 14:22',
-    content:
-      '게시물 내용 노출 영역 게시물 내용 노출 영역 게시물 내용 노출 영역 게시물 내용 노출 영역',
-  },
-  {
-    title: '팀 적립 기능 사용 중지 안내6',
-    date: '2021-10-15 14:22',
-    content:
-      '게시물 내용 노출 영역 게시물 내용 노출 영역 게시물 내용 노출 영역 게시물 내용 노출 영역',
-  },
-  {
-    title: '팀 적립 기능 사용 중지 안내7',
-    date: '2021-10-15 14:22',
-    content:
-      '게시물 내용 노출 영역 게시물 내용 노출 영역 게시물 내용 노출 영역 게시물 내용 노출 영역',
-  },
-];

@@ -3,6 +3,7 @@ import {BetweenBox, Box, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import React from 'react';
 import ArrowUpIcon from '@assets/image/list_arr_top.png';
+import ArrowDownIcon from '@assets/image/arr_down.png';
 import {TouchableOpacity} from 'react-native';
 import ReplyIcon from '@assets/image/ic_reply.png';
 import {DarkBoldText, DarkMediumText, DarkText, GrayText, IndigoText} from '@/assets/global/Text';
@@ -11,13 +12,13 @@ import {useSelector} from 'react-redux';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 
 export default function QuestionItem({
-  categoryName = '개선제안',
-  status = '답변',
-  questionTitle = '파이크 없어요',
-  writeDate = '2021-10-15 14:22',
-  content = '게시물 내용 노출 영역 게시물 내용 노출 영역 게시물 내용 노출 영역 게시물 내용 노출 영역 게시물 내용 노출 영역',
-  adminContent = '관리자 댓글 삽입 영역 댓글이 길어질 경우 자세히를 터치하여 자세히보기 할 수 있다. 관리자 댓글 삽입 영역 댓글이 길어질 경우 자세히를 터치하여 자세히보기 할 수 있다.',
-  adminWriteDate = '2021-10-13',
+  categoryName = '',
+  status = '',
+  questionTitle = '',
+  writeDate = '',
+  content = '',
+  adminContent = '',
+  adminWriteDate = '',
   isSelect = false,
   onPressItem,
   onPressUpdate,
@@ -49,13 +50,17 @@ export default function QuestionItem({
                 {status}
               </BorderButton>
               <Box mg="0px 0px 0px 10px">
-                <DefaultImage source={ArrowUpIcon} width="24px" height="24px" />
+                <DefaultImage
+                  source={isSelect ? ArrowUpIcon : ArrowDownIcon}
+                  width="24px"
+                  height="24px"
+                />
               </Box>
             </RowBox>
           </BetweenBox>
         </Box>
       </TouchableOpacity>
-      {isSelect && (
+      {isSelect && status === '답변' && (
         <Box style={borderBottomWhiteGray}>
           <DarkText fontSize={Theme.fontSize.fs15}>{content}</DarkText>
           <RowBox mg="10px 0px" width="100%" justifyContent="flex-end">

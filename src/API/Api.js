@@ -18,14 +18,20 @@ export const API = axios.create({
     console.log('formData :::', data);
     const jwt_data = jwt_encode(data, SECRETKEY);
     const result = formFormatter(
-      Object.assign(
-        {
-          jwt_data,
-        },
-        {
-          secretKey: SECRETKEY,
-        },
-      ),
+      data
+        ? Object.assign(
+            // 데이터가 있는경우
+            {
+              jwt_data,
+            },
+            {
+              secretKey: SECRETKEY,
+            },
+          )
+        : {
+            // 데이터가 없는경우
+            secretKey: SECRETKEY,
+          },
     );
     return result;
   },

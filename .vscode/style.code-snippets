@@ -94,5 +94,19 @@
     "scope": "javascript",
     "prefix": "dP",
     "body": ["pd='0px 16px' "]
+  },
+  "ApiSetting": {
+    "scope": "javascript",
+    "prefix": "api",
+    "body": [
+      "export const $0 = async args => {",
+      "   try {",
+      "       const response = await API.post('$1', args);",
+      "       return response;",
+      "   } catch (error) {",
+      "       console.log(error);",
+      "   }",
+      "};"
+    ]
   }
 }
