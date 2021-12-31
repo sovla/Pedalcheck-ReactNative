@@ -15,6 +15,7 @@ import {modalOpen} from '@/Store/modalState';
 import {useEffect} from 'react';
 import {getQnaList} from '@/API/More/More';
 import {getCategoryName} from '@/Util/changeCategory';
+import {getPixel} from '@/Util/pixelChange';
 
 export default function PedalCheck({
   pedalChecklist,
@@ -66,10 +67,11 @@ export default function PedalCheck({
   return (
     <>
       <FlatList
+        style={{marginBottom: 50}}
         ListHeaderComponent={
           <>
             <MenuNav menuItem={menuItem} select={select} setSelect={setSelect} />
-            <TouchableOpacity onPress={onPressRegister}>
+            <TouchableOpacity onPress={onPressRegister} style={{marginHorizontal: getPixel(16)}}>
               <Button>
                 <RowBox backgroundColor="#0000">
                   <DefaultImage source={PlusIcon} width="24px" height="24px" />

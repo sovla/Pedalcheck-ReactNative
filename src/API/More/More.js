@@ -53,3 +53,12 @@ export const deleteQna = async args => {
     console.log(error);
   }
 };
+
+export const setPushNotice = async args => {
+  try {
+    const response = await API.post('set_push.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

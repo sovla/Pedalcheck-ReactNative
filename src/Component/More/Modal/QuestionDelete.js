@@ -8,7 +8,7 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import {useDispatch} from 'react-redux';
 
-export default function QuestionDelete() {
+export default function QuestionDelete({leftPress}) {
   const dispatch = useDispatch();
   return (
     <>
@@ -25,7 +25,7 @@ export default function QuestionDelete() {
           leftContent="확인"
           rightContent="취소"
           rightPress={() => dispatch(modalClose())}
-          leftPress={() => dispatch(modalClose())}
+          leftPress={leftPress}
         />
       </RowBox>
     </>
