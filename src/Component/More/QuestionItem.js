@@ -32,10 +32,12 @@ export default function QuestionItem({
         <Box pd="0px 0px 0px 10px" style={borderBottomWhiteGray} width={size.minusPadding}>
           <BetweenBox width="370px" mg="16px 0px">
             <Box>
-              <IndigoText fontSize={Theme.fontSize.fs14}>{categoryName}</IndigoText>
+              {categoryName && (
+                <IndigoText fontSize={Theme.fontSize.fs14}>{categoryName}</IndigoText>
+              )}
+
               <DarkBoldText fontSize={Theme.fontSize.fs15}>{questionTitle}</DarkBoldText>
               <GrayText fontSize={Theme.fontSize.fs12} letterSpacing="0px">
-                {' '}
                 {writeDate}
               </GrayText>
             </Box>
@@ -60,9 +62,11 @@ export default function QuestionItem({
           </BetweenBox>
         </Box>
       </TouchableOpacity>
-      {isSelect && status === '답변' && (
+      {isSelect && (
         <Box style={borderBottomWhiteGray}>
-          <DarkText fontSize={Theme.fontSize.fs15}>{content}</DarkText>
+          <DarkText fontSize={Theme.fontSize.fs15} mg="15px 0px 0px">
+            {content}
+          </DarkText>
           <RowBox mg="10px 0px" width="100%" justifyContent="flex-end">
             <TouchableOpacity onPress={onPressUpdate}>
               <Box mg="0px 5px">
@@ -85,39 +89,43 @@ export default function QuestionItem({
               </BorderButton>
             </TouchableOpacity>
           </RowBox>
-          <RowBox
-            pd="13px 10px 13px 0px"
-            width={size.minusPadding}
-            backgroundColor={Theme.color.backgroundBlue}
-            borderRadius="10px">
-            <RowBox
-              width="44px"
-              pd="0px 11px 0px 0px"
-              justifyContent="flex-end"
-              backgroundColor="#0000">
-              <DefaultImage source={ReplyIcon} width="24px" height="24px" />
-            </RowBox>
-            <Box backgroundColor="#0000">
-              <RowBox backgroundColor="#0000" alignItems="center">
-                <DarkBoldText fontSize={Theme.fontSize.fs15}>관리자</DarkBoldText>
-                <GrayText mg="0px 0px 0px 5px" fontSize={Theme.fontSize.fs12}>
-                  {adminWriteDate}
-                </GrayText>
+          {status === '답변' && (
+            <>
+              <RowBox
+                pd="13px 10px 13px 0px"
+                width={size.minusPadding}
+                backgroundColor={Theme.color.backgroundBlue}
+                borderRadius="10px">
+                <RowBox
+                  width="44px"
+                  pd="0px 11px 0px 0px"
+                  justifyContent="flex-end"
+                  backgroundColor="#0000">
+                  <DefaultImage source={ReplyIcon} width="24px" height="24px" />
+                </RowBox>
+                <Box backgroundColor="#0000">
+                  <RowBox backgroundColor="#0000" alignItems="center">
+                    <DarkBoldText fontSize={Theme.fontSize.fs15}>관리자</DarkBoldText>
+                    <GrayText mg="0px 0px 0px 5px" fontSize={Theme.fontSize.fs12}>
+                      {adminWriteDate}
+                    </GrayText>
+                  </RowBox>
+                  <DarkText numberOfLines={3} width="325px">
+                    {adminContent}
+                  </DarkText>
+                </Box>
               </RowBox>
-              <DarkText numberOfLines={3} width="325px">
-                {adminContent}
-              </DarkText>
-            </Box>
-          </RowBox>
-          <RowBox>
-            <LinkWhiteButton
-              mg="15px 0px"
-              content="자세히보기"
-              width="380px"
-              height="35px"
-              borderRadius="3px"
-            />
-          </RowBox>
+              <RowBox>
+                <LinkWhiteButton
+                  mg="15px 0px"
+                  content="자세히보기"
+                  width="380px"
+                  height="35px"
+                  borderRadius="3px"
+                />
+              </RowBox>
+            </>
+          )}
         </Box>
       )}
     </Box>

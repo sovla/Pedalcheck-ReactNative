@@ -34,7 +34,7 @@ export const store = configureStore({
         // Ignore these field paths in all actions
         ignoredActionPaths: ['meta.arg', 'payload.timestamp', 'modal'],
         // Ignore these paths in the state
-        ignoredPaths: ['modal.navigation'],
+        ignoredPaths: ['modal.navigation', 'modal.modalProp'],
       },
     }),
 });

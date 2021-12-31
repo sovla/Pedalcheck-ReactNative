@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "storybook": "start-storybook -p 7007",
     "build-storybook": "build-storybook",
-    "adb": "adb connect 192.168.0.24 && yarn android",
+    "adb": "adb connect 192.168.0.30 && yarn android",
     "adb1": "adb connect 192.168.0.66 && yarn android"
   },
   "dependencies": {

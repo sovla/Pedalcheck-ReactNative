@@ -26,6 +26,7 @@ const initialState = {
   mt_name: null,
   mt_nickname: null,
   mt_pushing: '',
+  mt_sms: '',
   mt_pwd: '',
   mt_rdate: '',
   mt_retire_memo: '',
