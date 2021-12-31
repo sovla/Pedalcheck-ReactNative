@@ -13,10 +13,21 @@ export default function FAQ() {
   const {size} = useSelector(state => state);
   const [selectPost, setSelectPost] = useState([]);
   const [postList, setPostList] = useState([]);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
-    getFAQ().then(res => res.data.result === 'true' && setPostList(res.data.data.data));
+    apiGetFAQ();
   }, []);
+
+  const apiGetFAQ = () => {
+    getFAQ({page: page}).then(res => {
+      if (res?.data?.result === 'true' && res?.data?.data?.data) {
+        console.log(res, 'resres');
+        setPostList(prev => [...prev, ...res?.data?.data?.data]);
+        setPage(prev => prev + 1);
+      }
+    });
+  };
   return (
     <>
       <Header title="자주하는 질문" />
@@ -26,10 +37,11 @@ export default function FAQ() {
           width: getPixel(380),
           marginHorizontal: getPixel(16),
         }}
+        onEndReached={() => apiGetFAQ()}
         renderItem={({item, index}) => {
           const changeItem = {
             title: item?.ft_title,
-            date: item?.ft_date,
+            date: item?.ft_wdate,
             content: item?.ft_content,
             image: item?.ft_image,
           };

@@ -9,11 +9,28 @@ import SwitchOffIcon from '@assets/image/toggle_off.png';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import Theme from '@/assets/global/Theme';
+import {useEffect} from 'react';
+import {setPushNotice} from '@/API/More/More';
+import useUpdateEffect from '@/Hooks/useUpdateEffect';
 
 export default function AlarmSetting() {
-  const {size} = useSelector(state => state);
+  const {size, login} = useSelector(state => state);
   const [pushAlarm, setPushAlarm] = useState(false);
   const [messageAlarm, setMessageAlarm] = useState(false);
+
+  useEffect(() => {
+    setPushAlarm(login?.mt_pushing === 'Y');
+    setMessageAlarm(login?.mt_agree === 'Y');
+  }, []);
+
+  useUpdateEffect(() => {
+    setPushNotice({
+      _mt_idx: login?.idx || 4, // 수정필요
+      mt_pushing: pushAlarm ? 'Y' : 'N',
+      mt_agree: messageAlarm ? 'Y' : 'N',
+    }).then(res => console.log(res));
+  }, [pushAlarm, messageAlarm]);
+
   return (
     <>
       <Header title="알림 설정" />
@@ -21,7 +38,10 @@ export default function AlarmSetting() {
         <Box>
           <BetweenBox pd="20px 16px 15px" width={size.designWidth} alignItems="center">
             <DarkMediumText>푸쉬 알림</DarkMediumText>
-            <TouchableOpacity onPress={() => setPushAlarm(prev => !prev)}>
+            <TouchableOpacity
+              onPress={() => {
+                setPushAlarm(prev => !prev);
+              }}>
               <DefaultImage
                 source={pushAlarm ? SwitchOnIcon : SwitchOffIcon}
                 width="61px"

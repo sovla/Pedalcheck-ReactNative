@@ -11,11 +11,14 @@ import {DefaultText} from '@/assets/global/Text';
 import QuestionItem from '@/Component/More/QuestionItem';
 import {useNavigation} from '@react-navigation/core';
 import {useDispatch} from 'react-redux';
-import {modalOpen} from '@/Store/modalState';
+import {modalClose, modalOpen, setModalProp} from '@/Store/modalState';
 import {useEffect} from 'react';
-import {getQnaList} from '@/API/More/More';
+import {deleteQna, getQnaList} from '@/API/More/More';
 import {getCategoryName} from '@/Util/changeCategory';
 import PedalCheck from '@/Component/More/Question/PedalCheck';
+import {getPixel} from '@/Util/pixelChange';
+import QuestionAddition from '@/Component/More/Question/QuestionAddition';
+import useUpdateEffect from '@/Hooks/useUpdateEffect';
 
 export default function Question() {
   const dispatch = useDispatch();
@@ -23,23 +26,142 @@ export default function Question() {
   const isFocus = navigation.isFocused();
 
   const [select, setSelect] = useState('페달체크');
-  const [pedalChecklist, setPedalCheckList] = useState([]);
+  const [pedalCheckList, setPedalCheckList] = useState([]); // 페달체크 문의내역
+  const [shopList, setShopList] = useState([]); // 정비소 문의내역
+
+  const [questionSelect, setQuestionSelect] = useState([]);
+  const [page, setPage] = useState(1);
+  const [shopPage, setShopPage] = useState(1);
+
+  const [isLastPage, setIsLastPage] = useState({
+    pedalCheck: false,
+    shop: false,
+  });
+
+  const onPressItem = idx => {
+    //  idx 값으로 선택여부 배열에 추가해줌
+    if (questionSelect.find(findItem => findItem === idx)) {
+      setQuestionSelect(prev => prev.filter(filterItem => filterItem !== idx));
+    } else {
+      setQuestionSelect(prev => [...prev, idx]);
+    }
+  };
+
+  const onPressDelete = async idx => {
+    await dispatch(
+      setModalProp({
+        modalProp: {
+          leftPress: () => questionDelete(idx),
+        },
+      }),
+    );
+    await dispatch(modalOpen('questionDelete'));
+  };
+
+  const questionDelete = idx => {
+    deleteQna({
+      _mt_idx: 4, // 수정필요
+      qt_idx: idx,
+    }).then(async res => {
+      console.log(res, '삭제완료');
+      if (res.data.result === 'true') {
+        if (select === '페달체크') {
+          await setPage(1);
+          await setPedalCheckList([]);
+        } else {
+          await setShopPage(1);
+          await setShopList([]);
+        }
+        await dispatch(modalClose());
+        await apiGetQnaList(1);
+      }
+    });
+  };
+  const onPressUpdate = () => {
+    return null;
+  };
+
+  const apiGetQnaList = paramPage => {
+    const type = select === '페달체크' ? 'pedalCheck' : 'shop';
+    if (!isLastPage[type])
+      getQnaList({
+        _mt_idx: 4,
+        qt_type: select === '페달체크' ? 2 : 1,
+        page: paramPage ?? select === '페달체크' ? page : shopPage,
+      }).then(res => {
+        if (res.data.result === 'true' && res?.data?.data?.data?.qna_list) {
+          if (res?.data?.data?.data?.qna_list?.length > 0) {
+            if (select === '페달체크') {
+              setPage(prev => prev + 1);
+              setPedalCheckList(prev => [...prev, ...res?.data?.data?.data?.qna_list]);
+            } else {
+              setShopPage(prev => prev + 1);
+              setShopList(prev => [...prev, ...res?.data?.data?.data?.qna_list]);
+            }
+          }
+        } else if (res.data.result === 'true') {
+          setIsLastPage(prev => ({
+            ...prev,
+            [type]: true,
+          }));
+        }
+      });
+  };
+
+  useEffect(() => {
+    console.log('here1');
+    apiGetQnaList();
+  }, [isFocus]);
+
+  useUpdateEffect(() => {
+    // menu 이동시 선택값 초기화
+    console.log('here');
+    setQuestionSelect([]);
+    apiGetQnaList();
+  }, [select]);
 
   return (
     <>
       <Header title="1:1문의" />
 
-      <Box mg="0px">
-        {select === '페달체크' && (
-          <PedalCheck
-            select={select}
-            setSelect={setSelect}
-            menuItem={menuItem}
-            setPedalCheckList={setPedalCheckList}
-            pedalChecklist={pedalChecklist}
-          />
-        )}
-      </Box>
+      <FlatList
+        style={{flex: 1}}
+        ListHeaderComponent={
+          <>
+            <MenuNav menuItem={menuItem} select={select} setSelect={setSelect} />
+            {select === '페달체크' && <QuestionAddition />}
+          </>
+        }
+        onEndReached={() => {
+          apiGetQnaList();
+        }}
+        data={select === '페달체크' ? pedalCheckList : shopList}
+        renderItem={({item, index}) => {
+          const changeItem = {
+            categoryName: item?.qt_ca ?? item?.mst_name,
+            status: item?.qt_answer ? '답변' : '미답변',
+            questionTitle: item?.qt_title,
+            writeDate: item?.qt_wdate,
+            content: item?.qt_content,
+            adminContent: item?.qt_answer,
+            adminWriteDate: item?.qt_adate,
+          };
+          return (
+            <Box mg="0px 16px">
+              <QuestionItem
+                {...changeItem}
+                isSelect={questionSelect.find(findItem => findItem === item?.qt_idx)}
+                onPressItem={() => onPressItem(item?.qt_idx)}
+                onPressDelete={() => onPressDelete(item?.qt_idx)}
+                onPressUpdate={() => onPressUpdate(item?.qt_idx)}
+              />
+            </Box>
+          );
+        }}
+        keyExtractor={(item, index) => {
+          return select + index;
+        }}
+      />
     </>
   );
 }
