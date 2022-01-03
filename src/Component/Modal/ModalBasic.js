@@ -1,7 +1,6 @@
 import {Box, Container, PositionBox} from '@/assets/global/Container';
 import Theme from '@/assets/global/Theme';
 import {modalClose} from '@/Store/modalState';
-import {useNavigation} from '@react-navigation/core';
 import React from 'react';
 import {Modal} from 'react-native';
 import {useSelector} from 'react-redux';
@@ -22,6 +21,7 @@ import Notice from '../RepairHistory/Modal/Notice';
 import QuestionSubmit from '../RepairHistory/Modal/QuestionSubmit';
 import QuestionUpdate from '../RepairHistory/Modal/QuestionUpdate';
 import RepairRejection from '../ReservationManagement/Modal/RepairRejection';
+import AlertModal from './AlertModal';
 
 export default function ModalBasic() {
   const modal = useSelector(state => state.modal);
@@ -76,6 +76,8 @@ export default function ModalBasic() {
         return QuestionUpdate;
       case 'questionSubmit':
         return QuestionSubmit;
+      case 'alertModal':
+        return AlertModal;
     }
   };
 

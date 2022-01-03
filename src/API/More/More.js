@@ -80,3 +80,12 @@ export const getLikeShopList = async args => {
     console.log(error);
   }
 };
+
+export const deleteLikeShop = async args => {
+  try {
+    const response = await API.post('store_like_edit.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
