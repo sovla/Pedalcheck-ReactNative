@@ -87,8 +87,8 @@ export default function Question() {
       }
     });
   };
-  const onPressUpdate = () => {
-    return null;
+  const onPressUpdate = item => {
+    navigation.navigate('QuestionWrite', {item});
   };
 
   const apiGetQnaList = paramPage => {
@@ -166,7 +166,7 @@ export default function Question() {
                 isSelect={questionSelect.find(findItem => findItem === item?.qt_idx)}
                 onPressItem={() => onPressItem(item?.qt_idx)}
                 onPressDelete={() => onPressDelete(item?.qt_idx)}
-                onPressUpdate={() => onPressUpdate(item?.qt_idx)}
+                onPressUpdate={() => onPressUpdate(item)}
               />
             </Box>
           );

@@ -13,7 +13,7 @@ export const getCategoryNumber = string => {
 };
 
 const categoryTypeList = [
-  '개선제안',
+  '개선 제안',
   '기타',
   '불편사항/오류',
   '우리동네 자전거 매장을 추천합니다',

@@ -1,4 +1,4 @@
-import {sendPedalCheckQuestion} from '@/API/More/More';
+import {sendPedalCheckQuestion, updateQna} from '@/API/More/More';
 import {LinkButton} from '@/assets/global/Button';
 import {Box, Container, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
@@ -6,31 +6,56 @@ import {DarkText, DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import Header from '@/Component/Layout/Header';
-import {getCategoryNumber} from '@/Util/changeCategory';
+import {getCategoryName, getCategoryNumber} from '@/Util/changeCategory';
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
+import {useEffect} from 'react';
 import {useState} from 'react';
 import {View, Text} from 'react-native';
 import {useSelector} from 'react-redux';
 
-export default function QuestionWrite() {
+export default function QuestionWrite({route: {params}}) {
   const navigation = useNavigation();
   const {size, login} = useSelector(state => state);
-  const [category, setCategory] = useState('개선제안');
+  const isFocused = navigation.isFocused();
+
+  const [category, setCategory] = useState('개선 제안');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+
+  const item = params?.item;
+  const isUpdate = item?.qt_idx ? true : false;
 
   const [errorMessage, setErrorMessage] = useState({
     title: '',
     content: '',
   });
 
+  const checkContents = () => {
+    let result = true;
+    if (title === '') {
+      setErrorMessage(prev => ({...prev, title: '제목을 입력해주세요.'}));
+      result = false;
+    }
+    if (content === '') {
+      setErrorMessage(prev => ({...prev, content: '내용을 입력해주세요.'}));
+      result = false;
+    }
+
+    if (content.length < 10) {
+      setErrorMessage(prev => ({...prev, content: '내용을 10자 이상 입력해주세요.'}));
+      result = false;
+    }
+    return result;
+  };
+
   const onPressSubmit = () => {
     setErrorMessage({
       title: '',
       content: '',
     });
-    if (title !== '' && content !== '' && content.length >= 10) {
+
+    if (checkContents()) {
       sendPedalCheckQuestion({
         _mt_idx: login.idx,
         qt_ca: getCategoryNumber(category),
@@ -42,18 +67,37 @@ export default function QuestionWrite() {
         }
       });
     } else {
-      if (title === '') {
-        setErrorMessage(prev => ({...prev, title: '제목을 입력해주세요.'}));
-      }
-      if (content === '') {
-        setErrorMessage(prev => ({...prev, content: '내용을 입력해주세요.'}));
-      }
-
-      if (content.length < 10) {
-        setErrorMessage(prev => ({...prev, content: '내용을 10자 이상 입력해주세요.'}));
-      }
     }
   };
+
+  const onPressUpdate = () => {
+    setErrorMessage({
+      title: '',
+      content: '',
+    });
+    if (checkContents()) {
+      updateQna({
+        _mt_idx: login.idx,
+        qt_idx: item?.qt_idx,
+        qt_type: 2,
+        qt_ca: getCategoryNumber(category),
+        qt_title: title,
+        qt_content: content,
+      }).then(res => {
+        if (res.data?.result === 'true') {
+          navigation.navigate('Question');
+        }
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (isUpdate) {
+      setCategory(item.qt_ca);
+      setTitle(item?.qt_title);
+      setContent(item?.qt_content);
+    }
+  }, [isFocused]);
 
   return (
     <Container>
@@ -106,7 +150,11 @@ export default function QuestionWrite() {
           />
         </ScrollBox>
         <PositionBox bottom="0px">
-          <LinkButton to={onPressSubmit} content="등록하기" mg="0px 16px 20px" />
+          <LinkButton
+            to={isUpdate ? onPressUpdate : onPressSubmit}
+            content={isUpdate ? '수정하기' : '등록하기'}
+            mg="0px 16px 20px"
+          />
         </PositionBox>
       </Container>
     </Container>
@@ -115,8 +163,8 @@ export default function QuestionWrite() {
 
 const categoryList = [
   {
-    label: '개선제안',
-    value: '개선제안',
+    label: '개선 제안',
+    value: '개선 제안',
   },
   {
     label: '기타',
