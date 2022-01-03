@@ -1,0 +1,28 @@
+import {API} from '../Api';
+
+export const getBikeList = async args => {
+  try {
+    const response = await API.post('bike_list.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getBikeModel = async args => {
+  try {
+    const response = await API.post('get_bike.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const addBike = async args => {
+  try {
+    const response = await API.post('bike_add.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

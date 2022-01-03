@@ -1,6 +1,6 @@
 import {Box, Container, RowBox, ScrollBox} from '@/assets/global/Container';
 import GradientHeader from '@/Component/Layout/GradientHeader';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import MenuIcon from '@assets/image/menu03_top.png';
 import {useSelector} from 'react-redux';
 import DefaultIcon from '@assets/image/default_4.png';
@@ -9,24 +9,38 @@ import DefaultImage from '@assets/global/Image';
 import {DarkText, GrayText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import FooterButtons from '@/Component/Layout/FooterButtons';
+import {FlatList, Linking} from 'react-native';
+import {getFeedList} from '@/API/Feed/Feed';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export default function Feed() {
   const {size} = useSelector(state => state);
+  const [feedList, setFeedList] = useState([]);
+  const [page, setPage] = useState(1);
+  useEffect(() => {
+    getFeedListHandle();
+  }, []);
+
+  const getFeedListHandle = () => {
+    getFeedList({
+      page: page,
+    }).then(res => setFeedList(res?.data?.data?.data));
+    setPage(prev => prev + 1);
+  };
+
   return (
     <Container>
-      <ScrollBox
-        backgroundColor={Theme.color.backgroundWhiteGray}
-        style={{
-          height: size.screenHeight - 64,
-          width: '100%',
-        }}>
-        <GradientHeader title="피드" imageSource={MenuIcon} />
-        <Box mg="0px 16px 20px" backgroundColor="#0000">
-          {FeedList.map((item, index) => (
-            <FeedBox key={item.shopName + index} item={item} size={size} />
-          ))}
-        </Box>
-      </ScrollBox>
+      <FlatList
+        ListHeaderComponent={<GradientHeader title="피드" imageSource={MenuIcon} />}
+        data={feedList}
+        keyExtractor={(item, index) => index.toString()}
+        onEndReached={() => {
+          getFeedListHandle();
+        }}
+        renderItem={({item, index}) => {
+          return <FeedBox item={item} size={size} />;
+        }}
+      />
       <Box backgroundColor={Theme.color.backgroundWhiteGray}>
         <FooterButtons selectMenu={3} backgroundColor={Theme.color.backgroundWhiteGray} />
       </Box>
@@ -54,14 +68,18 @@ const FeedBox = ({item, size}) => {
       pd="0px 0px 20px"
       alignItems="center"
       style={{borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}>
-      <DefaultImage source={item.bikeImage} width={size.minusPadding} height="200px" />
+      {item.ft_store_img && (
+        <TouchableOpacity onPress={() => Linking.openURL(item.ft_link)}>
+          <DefaultImage source={item.bikeImage} width={size.minusPadding} height="200px" />
+        </TouchableOpacity>
+      )}
       <RowBox mg="15px 15px 0px" justifyContent="space-between">
         <Box width="75px" alignItems="center">
           <DefaultImage source={item.userImage} width="45px" height="45px" borderRadius="100px" />
         </Box>
         <Box>
           <DarkText fontSize={Theme.fontSize.fs15} width="290px" numberOfLines={2}>
-            {item.content}
+            {item.ft_title}
           </DarkText>
           <RowBox
             mg="5px 0px 0px"
@@ -70,39 +88,12 @@ const FeedBox = ({item, size}) => {
             justifyContent="space-between"
             alignItems="center">
             <IndigoText fontSize={Theme.fontSize.fs14} fontWeight={Theme.fontWeight.bold}>
-              {item.shopName}
+              {item.ft_store_name}
             </IndigoText>
-            <GrayText fontSize={Theme.fontSize.fs13}>{item.writeDate}</GrayText>
+            <GrayText fontSize={Theme.fontSize.fs13}>{item.ft_wdate}</GrayText>
           </RowBox>
         </Box>
       </RowBox>
     </Box>
   );
 };
-
-const FeedList = [
-  {
-    userImage: DefaultIcon,
-    bikeImage: DummyImage,
-    shopName: '인천신스',
-    content:
-      '자전거 구매시 필수 확인 내용 자전거 구매시 필수 확인 내용 자전거 구매시 필수 확인 내용 자전거',
-    writeDate: '2021-10-13 15:44',
-  },
-  {
-    userImage: DefaultIcon,
-    bikeImage: DummyImage,
-    shopName: '인천신스',
-    content:
-      '자전거 구매시 필수 확인 내용 자전거 구매시 필수 확인 내용 자전거 구매시 필수 확인 내용 자전거',
-    writeDate: '2021-10-13 15:44',
-  },
-  {
-    userImage: DefaultIcon,
-    bikeImage: DummyImage,
-    shopName: '인천신스',
-    content:
-      '자전거 구매시 필수 확인 내용 자전거 구매시 필수 확인 내용 자전거 구매시 필수 확인 내용 자전거',
-    writeDate: '2021-10-13 15:44',
-  },
-];

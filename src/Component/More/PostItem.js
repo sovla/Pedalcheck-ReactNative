@@ -2,7 +2,6 @@ import {BetweenBox, Box} from '@/assets/global/Container';
 import {DarkBoldText, DarkText, GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import React from 'react';
-
 import ArrowUpIcon from '@assets/image/list_arr_top.png';
 import {useSelector} from 'react-redux';
 import DefaultImage from '@/assets/global/Image';
@@ -18,6 +17,7 @@ export default function PostItem({item, index, selectPost, setSelectPost}) {
       setSelectPost(prev => [...prev, title]);
     }
   };
+
   const isSelect = selectPost.find(findItem => findItem === item.title);
   return (
     <Box key={index} alignItems="center" style={isSelect && borderBottomWhiteGray}>

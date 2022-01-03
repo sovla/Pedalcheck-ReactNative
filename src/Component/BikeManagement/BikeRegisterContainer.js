@@ -15,6 +15,8 @@ import {modalOpen, setModalProp} from '@/Store/modalState';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {addBike} from '@/API/Bike/Bike';
+import {useState} from 'react';
 
 export default function BikeRegisterContainer({bike, setBike, image, setImage}) {
   const {size, modal} = useSelector(state => state);
@@ -37,6 +39,25 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
       cropping: true, // 자르기 활성화
     }).then(images => {
       setImage(images);
+    });
+  };
+
+  const addBikeHandle = () => {
+    addBike({
+      _mt_idx: 4, // 수정 필요
+      mbt_flag: 'Y',
+      mbt_nick: bike.bikeName,
+      mbt_brand: bike.bikeModel.split('  ')[0],
+      mbt_model: bike.bikeModel.split('  ')[1],
+      mbt_serial: bike.vehicleNumber,
+      mbt_year: bike.vehicleYear,
+      mbt_size: bike.size,
+      mbt_color: bike.color,
+      mbt_wheel: bike.wheelSize,
+      mbt_drive: bike.drivetrain,
+      mbt_motor: bike.motorManufacturer,
+      mbt_power: bike.power,
+      mbt_type: bike.type,
     });
   };
 
@@ -64,24 +85,13 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
       value: 'type',
       isDropdown: true,
       dropdownItems: [
-        {label: 'A', value: 'A'},
-        {label: 'B', value: 'B'},
-        {label: 'C', value: 'C'},
-        {label: 'A', value: 'A'},
-        {label: 'B', value: 'B'},
-        {label: 'C', value: 'C'},
-        {label: 'A', value: 'A'},
-        {label: 'B', value: 'B'},
-        {label: 'C', value: 'C'},
-        {label: 'A', value: 'A'},
-        {label: 'B', value: 'B'},
-        {label: 'C', value: 'C'},
-        {label: 'A', value: 'A'},
-        {label: 'B', value: 'B'},
-        {label: 'C', value: 'C'},
-        {label: 'A', value: 'A'},
-        {label: 'B', value: 'B'},
-        {label: 'C', value: 'C'},
+        {label: '로드바이크', value: '로드바이크'},
+        {label: '미니벨로', value: '미니벨로'},
+        {label: 'MTB', value: 'MTB'},
+        {label: '전기자전거', value: '전기자전거'},
+        {label: '하이브리드', value: '하이브리드'},
+        {label: '펫바이크', value: '펫바이크'},
+        {label: '픽시', value: '픽시'},
       ],
     },
     {
@@ -112,9 +122,14 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
       value: 'wheelSize',
       isDropdown: true,
       dropdownItems: [
-        {label: 'A', value: 'A'},
-        {label: 'B', value: 'B'},
-        {label: 'C', value: 'C'},
+        {label: '16', value: '16'},
+        {label: '18', value: '18'},
+        {label: '20', value: '20'},
+        {label: '24', value: '24'},
+        {label: '26', value: '26'},
+        {label: '27', value: '27'},
+        {label: '700C', value: '700C'},
+        {label: '29', value: '29'},
       ],
     },
     {
@@ -131,24 +146,8 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
       value: 'motorManufacturer',
       isDropdown: true,
       dropdownItems: [
-        {label: 'A', value: 'A'},
-        {label: 'B', value: 'B'},
-        {label: 'C', value: 'C'},
-        {label: 'A', value: 'A'},
-        {label: 'B', value: 'B'},
-        {label: 'C', value: 'C'},
-        {label: 'A', value: 'A'},
-        {label: 'B', value: 'B'},
-        {label: 'C', value: 'C'},
-        {label: 'A', value: 'A'},
-        {label: 'B', value: 'B'},
-        {label: 'C', value: 'C'},
-        {label: 'A', value: 'A'},
-        {label: 'B', value: 'B'},
-        {label: 'C', value: 'C'},
-        {label: 'A', value: 'A'},
-        {label: 'B', value: 'B'},
-        {label: 'C', value: 'C'},
+        {label: '시마노', value: '시마노'},
+        {label: '보쉬', value: '보쉬'},
       ],
     },
     {
@@ -184,7 +183,7 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
             title="별명"
             placeHolder="별명을 입력해주세요"
             width={size.minusPadding}
-            fontSize={16}
+            fontSize={Theme.fontSize.fs16}
             value={bike.bikeName}
             changeFn={item => setChangeBike('bikeName', item)}
             mg="0px 0px 20px"
@@ -222,7 +221,7 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
                 title={item.title}
                 placeHolder={item.placeHolder}
                 width={size.minusPadding}
-                fontSize={16}
+                fontSize={Theme.fontSize.fs16}
                 mg="0px 0px 20px"
                 pd="0px 0px 5px"
                 value={bike[item.value]}
@@ -235,7 +234,12 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
             );
           })}
 
-          <LinkButton content="등록하기" to={() => navigation.goBack()} />
+          <LinkButton
+            content="등록하기"
+            to={() => {
+              addBikeHandle();
+            }}
+          />
         </Box>
       </ScrollBox>
     </>
