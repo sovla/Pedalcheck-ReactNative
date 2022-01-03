@@ -1,24 +1,21 @@
-import {Button} from '@/assets/global/Button';
-import {Box, RowBox} from '@/assets/global/Container';
-import DefaultImage from '@/assets/global/Image';
+import {Box} from '@/assets/global/Container';
 import Header from '@/Component/Layout/Header';
 import MenuNav from '@/Component/Layout/MenuNav';
 import React from 'react';
 import {useState} from 'react';
-import {FlatList, TouchableOpacity} from 'react-native';
-import PlusIcon from '@assets/image/ic_plus_w.png';
-import {DefaultText} from '@/assets/global/Text';
+import {FlatList} from 'react-native';
 import QuestionItem from '@/Component/More/QuestionItem';
 import {useNavigation} from '@react-navigation/core';
 import {useDispatch} from 'react-redux';
 import {modalClose, modalOpen, setModalProp} from '@/Store/modalState';
 import {useEffect} from 'react';
 import {deleteQna, getQnaList} from '@/API/More/More';
-import {getCategoryName} from '@/Util/changeCategory';
-import PedalCheck from '@/Component/More/Question/PedalCheck';
-import {getPixel} from '@/Util/pixelChange';
 import QuestionAddition from '@/Component/More/Question/QuestionAddition';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
+
+// 2022-01-03 10:51:16
+// Junhan
+// 1:1 문의 페이지
 
 export default function Question() {
   const dispatch = useDispatch();
@@ -37,6 +34,19 @@ export default function Question() {
     pedalCheck: false,
     shop: false,
   });
+
+  const initState = () => {
+    setSelect('페달체크');
+    setPedalCheckList([]);
+    setShopList([]);
+    setQuestionSelect([]);
+    setPage(1);
+    setShopPage(1);
+    setIsLastPage({
+      pedalCheck: false,
+      shop: false,
+    });
+  };
 
   const onPressItem = idx => {
     //  idx 값으로 선택여부 배열에 추가해줌
@@ -66,38 +76,38 @@ export default function Question() {
       console.log(res, '삭제완료');
       if (res.data.result === 'true') {
         if (select === '페달체크') {
-          await setPage(1);
-          await setPedalCheckList([]);
+          await setPedalCheckList(prev => prev.filter(item => item.qt_idx !== idx));
         } else {
-          await setShopPage(1);
-          await setShopList([]);
+          await setShopList(prev => prev.filter(item => item.qt_idx !== idx));
         }
         await dispatch(modalClose());
-        await apiGetQnaList(1);
       }
     });
   };
-  const onPressUpdate = () => {
-    return null;
+  const onPressUpdate = item => {
+    if (select === '페달체크') {
+      navigation.navigate('QuestionWrite', {item});
+    } else {
+      navigation.navigate('RepairQuestion', {item});
+    }
   };
 
   const apiGetQnaList = paramPage => {
     const type = select === '페달체크' ? 'pedalCheck' : 'shop';
-    if (!isLastPage[type])
+    if (!isLastPage[type]) {
       getQnaList({
         _mt_idx: 4,
         qt_type: select === '페달체크' ? 2 : 1,
         page: paramPage ?? select === '페달체크' ? page : shopPage,
       }).then(res => {
-        if (res.data.result === 'true' && res?.data?.data?.data?.qna_list) {
-          if (res?.data?.data?.data?.qna_list?.length > 0) {
-            if (select === '페달체크') {
-              setPage(prev => prev + 1);
-              setPedalCheckList(prev => [...prev, ...res?.data?.data?.data?.qna_list]);
-            } else {
-              setShopPage(prev => prev + 1);
-              setShopList(prev => [...prev, ...res?.data?.data?.data?.qna_list]);
-            }
+        const qna_list = res?.data?.data?.data?.qna_list;
+        if (res.data.result === 'true' && qna_list) {
+          if (select === '페달체크') {
+            setPage(prev => prev + 1);
+            setPedalCheckList(prev => [...prev, ...qna_list]);
+          } else {
+            setShopPage(prev => prev + 1);
+            setShopList(prev => [...prev, ...qna_list]);
           }
         } else if (res.data.result === 'true') {
           setIsLastPage(prev => ({
@@ -106,18 +116,23 @@ export default function Question() {
           }));
         }
       });
+    }
   };
 
   useEffect(() => {
-    console.log('here1');
-    apiGetQnaList();
+    if (isFocus) {
+      apiGetQnaList();
+    } else {
+      initState();
+    }
   }, [isFocus]);
 
   useUpdateEffect(() => {
     // menu 이동시 선택값 초기화
-    console.log('here');
-    setQuestionSelect([]);
-    apiGetQnaList();
+    if (isFocus) {
+      setQuestionSelect([]);
+      apiGetQnaList();
+    }
   }, [select]);
 
   return (
@@ -153,7 +168,7 @@ export default function Question() {
                 isSelect={questionSelect.find(findItem => findItem === item?.qt_idx)}
                 onPressItem={() => onPressItem(item?.qt_idx)}
                 onPressDelete={() => onPressDelete(item?.qt_idx)}
-                onPressUpdate={() => onPressUpdate(item?.qt_idx)}
+                onPressUpdate={() => onPressUpdate(item)}
               />
             </Box>
           );

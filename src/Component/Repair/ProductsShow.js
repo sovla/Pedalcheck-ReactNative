@@ -17,7 +17,7 @@ export default function ProductsShow() {
   return (
     <Box pd="20px 16px" mg="0px 0px 50px">
       {pt_list.map((item, index) => (
-        <Product key={item?.title + index} item={item}></Product>
+        <Product key={index} item={item}></Product>
       ))}
     </Box>
   );

@@ -175,7 +175,7 @@ const UserButton = () => {
         </BorderButton>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('RepairHistory')}>
+      <TouchableOpacity onPress={() => navigation.navigate('LikeShop')}>
         <BorderButton
           width="185px"
           height="43px"

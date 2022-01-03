@@ -37,7 +37,7 @@ import CouponManagement from './More/MyInformation/CouponManagement';
 import ExportRegister from './More/MyShop/ExportRegister';
 import ProductManagement from './More/MyShop/ProductManagement';
 import ProductRegister from './More/MyShop/ProductRegister';
-import RepairQuestion from './Repair/Question';
+import RepairQuestion from './Repair/RepairQuestion';
 import ReservationBike from './Repair/ReservationBike';
 import ReservationDate from './Repair/ReservationDate';
 import ReservationPayment from './Repair/ReservationPayment';

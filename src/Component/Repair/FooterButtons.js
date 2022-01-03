@@ -10,7 +10,7 @@ import LikeIcon from '@assets/image/good.png';
 import UnLikeIcon from '@assets/image/good_b.png';
 import {useNavigation} from '@react-navigation/core';
 
-export default function FooterButtons({isRepair = false, isLike = false}) {
+export default function FooterButtons({isRepair = false, isLike = false, onPressLike = () => {}}) {
   const {size} = useSelector(state => state);
   const navigation = useNavigation();
   const onPressRepair = () => {
@@ -48,7 +48,7 @@ export default function FooterButtons({isRepair = false, isLike = false}) {
             </RowBox>
           )}
         </TouchableOpacity>
-        <TouchableOpacity style={styles.touchBox}>
+        <TouchableOpacity style={styles.touchBox} onPress={onPressLike}>
           {isLike ? (
             // 좋아요 누른 후
             <RowBox

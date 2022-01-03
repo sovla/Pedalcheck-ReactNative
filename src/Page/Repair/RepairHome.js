@@ -36,7 +36,7 @@ export default function RepairHome() {
 
   const [apiPage, setApiPage] = useState(1); // API Page
   const [selectImage, setSelectImage] = useState(0);
-  const {size} = useSelector(state => state);
+  const {size, login} = useSelector(state => state);
   const [tag, setTag] = useState([]);
   const [innerLocation, setInnerLocation] = useState('부산 금정구');
   const [storeList, setStoreList] = useState([]);
@@ -56,7 +56,7 @@ export default function RepairHome() {
 
   useEffect(() => {
     getShopList({
-      _mt_idx: 1,
+      _mt_idx: login.idx,
       page: apiPage,
       mst_addr: '', // 위치로 검색
       mst_name: '', // 검색하는 경우 추가

@@ -28,6 +28,14 @@ export const modalSlice = createSlice({
         modalComponent: '',
       });
     },
+    modalOpenAndProp: (state, action) => {
+      return (state = {
+        ...state,
+        isOpenModal: true,
+        modalComponent: action?.payload?.modalComponent ?? 'alertModal',
+        modalProp: action?.payload,
+      });
+    },
     setNavigator: (state, action) => {
       return {...state, navigator: action.payload};
     },
@@ -38,6 +46,7 @@ export const modalSlice = createSlice({
   },
 });
 
-export const {modalOpen, modalClose, setNavigator, setModalProp} = modalSlice.actions;
+export const {modalOpen, modalClose, setNavigator, setModalProp, modalOpenAndProp} =
+  modalSlice.actions;
 
 export default modalSlice.reducer;

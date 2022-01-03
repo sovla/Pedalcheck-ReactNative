@@ -25,7 +25,7 @@ export default function AlarmSetting() {
 
   useUpdateEffect(() => {
     setPushNotice({
-      _mt_idx: login?.idx || 4, // 수정필요
+      _mt_idx: login?.idx,
       mt_pushing: pushAlarm ? 'Y' : 'N',
       mt_agree: messageAlarm ? 'Y' : 'N',
     }).then(res => console.log(res));

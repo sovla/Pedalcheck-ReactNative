@@ -17,7 +17,7 @@ export default function PostItem({item, index, selectPost, setSelectPost}) {
       setSelectPost(prev => [...prev, title]);
     }
   };
-  console.log(item);
+
   const isSelect = selectPost.find(findItem => findItem === item.title);
   return (
     <Box key={index} alignItems="center" style={isSelect && borderBottomWhiteGray}>
