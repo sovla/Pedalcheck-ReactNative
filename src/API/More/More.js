@@ -62,3 +62,12 @@ export const setPushNotice = async args => {
     console.log(error);
   }
 };
+
+export const sendPedalCheckQuestion = async args => {
+  try {
+    const response = await API.post('qna_add.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

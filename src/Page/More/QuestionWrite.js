@@ -1,3 +1,4 @@
+import {sendPedalCheckQuestion} from '@/API/More/More';
 import {LinkButton} from '@/assets/global/Button';
 import {Box, Container, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
@@ -5,14 +6,55 @@ import {DarkText, DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import Header from '@/Component/Layout/Header';
+import {getCategoryNumber} from '@/Util/changeCategory';
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {useState} from 'react';
 import {View, Text} from 'react-native';
 import {useSelector} from 'react-redux';
 
 export default function QuestionWrite() {
-  const {size} = useSelector(state => state);
-  const [category, setCategory] = useState('개선 제안');
+  const navigation = useNavigation();
+  const {size, login} = useSelector(state => state);
+  const [category, setCategory] = useState('개선제안');
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+
+  const [errorMessage, setErrorMessage] = useState({
+    title: '',
+    content: '',
+  });
+
+  const onPressSubmit = () => {
+    setErrorMessage({
+      title: '',
+      content: '',
+    });
+    if (title !== '' && content !== '' && content.length >= 10) {
+      sendPedalCheckQuestion({
+        _mt_idx: login.idx,
+        qt_ca: getCategoryNumber(category),
+        qt_title: title,
+        qt_content: content,
+      }).then(res => {
+        if (res?.data?.result === 'true') {
+          navigation.navigate('Question');
+        }
+      });
+    } else {
+      if (title === '') {
+        setErrorMessage(prev => ({...prev, title: '제목을 입력해주세요.'}));
+      }
+      if (content === '') {
+        setErrorMessage(prev => ({...prev, content: '내용을 입력해주세요.'}));
+      }
+
+      if (content.length < 10) {
+        setErrorMessage(prev => ({...prev, content: '내용을 10자 이상 입력해주세요.'}));
+      }
+    }
+  };
+
   return (
     <Container>
       <Header title="문의하기" />
@@ -43,6 +85,10 @@ export default function QuestionWrite() {
             pd="20px 0px 5px"
             placeHolder="제목을 입력하세요"
             width="380px"
+            value={title}
+            changeFn={setTitle}
+            maxLength={20}
+            errorMessage={errorMessage.title !== '' && errorMessage.title}
           />
           <DefaultInput
             fontSize={Theme.fontSize.fs15}
@@ -53,10 +99,14 @@ export default function QuestionWrite() {
             height="300px"
             isAlignTop
             multiline
+            value={content}
+            maxLength={2000}
+            changeFn={setContent}
+            errorMessage={errorMessage.content !== '' && errorMessage.content}
           />
         </ScrollBox>
         <PositionBox bottom="0px">
-          <LinkButton content="등록하기" mg="0px 16px 20px" />
+          <LinkButton to={onPressSubmit} content="등록하기" mg="0px 16px 20px" />
         </PositionBox>
       </Container>
     </Container>
@@ -65,8 +115,8 @@ export default function QuestionWrite() {
 
 const categoryList = [
   {
-    label: '개선 제안',
-    value: '개선 제안',
+    label: '개선제안',
+    value: '개선제안',
   },
   {
     label: '기타',
@@ -77,8 +127,8 @@ const categoryList = [
     value: '불편사항/오류',
   },
   {
-    label: '우리동네 자전거 매장을 추천합니다.',
-    value: '우리동네 자전거 매장을 추천합니다.',
+    label: '우리동네 자전거 매장을 추천합니다',
+    value: '우리동네 자전거 매장을 추천합니다',
   },
   {
     label: '자전거 브랜드/모델 추가요청',

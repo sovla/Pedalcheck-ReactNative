@@ -38,6 +38,19 @@ export default function Question() {
     shop: false,
   });
 
+  const initState = () => {
+    setSelect('페달체크');
+    setPedalCheckList([]);
+    setShopList([]);
+    setQuestionSelect([]);
+    setPage(1);
+    setShopPage(1);
+    setIsLastPage({
+      pedalCheck: false,
+      shop: false,
+    });
+  };
+
   const onPressItem = idx => {
     //  idx 값으로 선택여부 배열에 추가해줌
     if (questionSelect.find(findItem => findItem === idx)) {
@@ -105,13 +118,19 @@ export default function Question() {
   };
 
   useEffect(() => {
-    apiGetQnaList();
+    if (isFocus) {
+      apiGetQnaList();
+    } else {
+      initState();
+    }
   }, [isFocus]);
 
   useUpdateEffect(() => {
     // menu 이동시 선택값 초기화
-    setQuestionSelect([]);
-    apiGetQnaList();
+    if (isFocus) {
+      setQuestionSelect([]);
+      apiGetQnaList();
+    }
   }, [select]);
 
   return (
