@@ -14,6 +14,11 @@ import {useState} from 'react';
 import {View, Text} from 'react-native';
 import {useSelector} from 'react-redux';
 
+// 2022-01-03 10:49:58
+// Junhan
+// 정비소 리뷰 작성,수정 페이지
+// Toast 메시지 추가 필요
+
 export default function RepairQuestion({route: {params}}) {
   const navigation = useNavigation();
   const {size, login} = useSelector(state => state);
@@ -162,30 +167,3 @@ export default function RepairQuestion({route: {params}}) {
     </Container>
   );
 }
-
-const categoryList = [
-  {
-    label: '개선 제안',
-    value: '개선 제안',
-  },
-  {
-    label: '기타',
-    value: '기타',
-  },
-  {
-    label: '불편사항/오류',
-    value: '불편사항/오류',
-  },
-  {
-    label: '우리동네 자전거 매장을 추천합니다',
-    value: '우리동네 자전거 매장을 추천합니다',
-  },
-  {
-    label: '자전거 브랜드/모델 추가요청',
-    value: '자전거 브랜드/모델 추가요청',
-  },
-  {
-    label: '자전거 관련 무엇이든 물어보세요',
-    value: '자전거 관련 무엇이든 물어보세요',
-  },
-];

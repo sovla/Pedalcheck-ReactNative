@@ -26,6 +26,7 @@ export default function ShopComponent({
   item,
   titleFontSize,
   isBorder = true,
+  width = '380px',
 }) {
   const navigation = useNavigation();
   const ShopItem = () => {
@@ -34,7 +35,7 @@ export default function ShopComponent({
         style={isBorder && borderBottomWhiteGray}
         justifyContent="space-between"
         alignItems="center"
-        width="380px"
+        width={width}
         height="100px"
         mg={mg}
         pd={pd}>

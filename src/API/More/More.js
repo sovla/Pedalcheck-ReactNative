@@ -71,3 +71,12 @@ export const sendPedalCheckQuestion = async args => {
     console.log(error);
   }
 };
+
+export const getLikeShopList = async args => {
+  try {
+    const response = await API.post('store_like_list.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -6,13 +6,18 @@ import {DarkText, DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import Header from '@/Component/Layout/Header';
-import {getCategoryName, getCategoryNumber} from '@/Util/changeCategory';
+import {getCategoryNumber} from '@/Util/changeCategory';
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {useEffect} from 'react';
 import {useState} from 'react';
-import {View, Text} from 'react-native';
+
 import {useSelector} from 'react-redux';
+
+// 2022-01-03 10:49:58
+// Junhan
+// 리뷰 작성,수정 페이지
+// Toast 메시지 추가 필요
 
 export default function QuestionWrite({route: {params}}) {
   const navigation = useNavigation();

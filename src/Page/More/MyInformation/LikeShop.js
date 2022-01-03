@@ -3,7 +3,7 @@ import DefaultImage from '@/assets/global/Image';
 import Header from '@/Component/Layout/Header';
 import {useNavigation} from '@react-navigation/core';
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import ModifyIcon from '@assets/image/ic_modify.png';
 import {Box, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
@@ -12,12 +12,19 @@ import ShopComponent from '@/Component/Repair/ShopComponent';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import {useState} from 'react';
 import {DefaultCheckBox} from '@/Component/Home/CheckBox';
+import {useEffect} from 'react';
+import {login} from '@react-native-seoul/kakao-login';
+import {getLikeShopList} from '@/API/More/More';
+import {getPixel} from '@/Util/pixelChange';
 
 export default function LikeShop() {
+  const {size, login} = useSelector(state => state);
+  const navigation = useNavigation();
+  const isFocused = navigation.isFocused();
+
+  const [likeShopList, setLikeShopList] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [deleteList, setDeleteList] = useState([]);
-  const {size} = useSelector(state => state);
-  const navigation = useNavigation();
 
   const onPressDelete = index => {
     if (deleteList.find(item => item === index)) {
@@ -57,29 +64,38 @@ export default function LikeShop() {
       </Box>
     );
   };
+
+  useEffect(() => {
+    getLikeShopList({
+      _mt_idx: login?.idx,
+    }).then(res => {
+      if (res?.data?.result === 'true') {
+        //
+        setLikeShopList(res?.data?.data?.data?.like_list);
+      }
+    });
+  }, [isFocused]);
+  console.log(likeShopList);
   return (
     <>
       <Header title="관심매장" RightComponent={!isEdit && RightComponent} />
 
-      <Box flex={1}>
-        <ScrollBox flex={1} pd="0px 16px" backgroundColor="#0000">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(item => (
-            <RowBox key={item} style={borderBottomWhiteGray} width="380px">
-              {isEdit && (
-                <Box width="34px" mg="20px 0px">
-                  <DefaultCheckBox
-                    setIsCheck={() => onPressDelete(item)}
-                    isCheck={deleteList.find(findItem => findItem === item)}
-                  />
-                </Box>
-              )}
-              <RowBox width={isEdit ? '346px' : '380px'} height="100px" alignItems="center">
-                <ShopComponent mg="0px" isPress={false} />
-              </RowBox>
-            </RowBox>
-          ))}
-          <Box mg="40px 0px"></Box>
-        </ScrollBox>
+      <Box style={{flex: 1}}>
+        <FlatList
+          style={{paddingHorizontal: getPixel(16), marginBottom: isEdit ? 70 : 0}}
+          data={likeShopList}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({item, index}) =>
+            isEdit ? (
+              <TouchableOpacity onPress={() => onPressDelete(item?.mt_idx)}>
+                <LikeShopItem item={item} isEdit={isEdit} deleteList={deleteList} />
+              </TouchableOpacity>
+            ) : (
+              <LikeShopItem item={item} isEdit={isEdit} deleteList={deleteList} />
+            )
+          }
+        />
+
         {isEdit && (
           <PositionBox backgroundColor="#0000" bottom="20px" justifyContent="center" mg="0px 16px">
             <LinkWhiteButton content="삭제" to={onPressDeleteButton} />
@@ -89,3 +105,28 @@ export default function LikeShop() {
     </>
   );
 }
+
+const LikeShopItem = ({item, isEdit, deleteList}) => {
+  return (
+    <RowBox key={item} style={borderBottomWhiteGray} width="380px">
+      {isEdit && (
+        <Box width="34px" mg="20px 0px">
+          <DefaultCheckBox
+            isDisabled
+            isCheck={deleteList.find(findItem => {
+              return findItem === item?.mt_idx;
+            })}
+          />
+        </Box>
+      )}
+      <RowBox width={isEdit ? '346px' : '380px'} height="100px" alignItems="center">
+        <ShopComponent
+          mg="0px"
+          isPress={false}
+          width={isEdit ? '346px' : '380px'}
+          isBorder={false}
+        />
+      </RowBox>
+    </RowBox>
+  );
+};
