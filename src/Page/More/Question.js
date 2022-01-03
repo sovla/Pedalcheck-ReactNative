@@ -66,14 +66,11 @@ export default function Question() {
       console.log(res, '삭제완료');
       if (res.data.result === 'true') {
         if (select === '페달체크') {
-          await setPage(1);
-          await setPedalCheckList([]);
+          await setPedalCheckList(prev => prev.filter(item => item.qt_idx !== idx));
         } else {
-          await setShopPage(1);
-          await setShopList([]);
+          await setShopList(prev => prev.filter(item => item.qt_idx !== idx));
         }
         await dispatch(modalClose());
-        await apiGetQnaList(1);
       }
     });
   };
@@ -83,21 +80,19 @@ export default function Question() {
 
   const apiGetQnaList = paramPage => {
     const type = select === '페달체크' ? 'pedalCheck' : 'shop';
-    if (!isLastPage[type])
+    if (!isLastPage[type]) {
       getQnaList({
         _mt_idx: 4,
         qt_type: select === '페달체크' ? 2 : 1,
         page: paramPage ?? select === '페달체크' ? page : shopPage,
       }).then(res => {
         if (res.data.result === 'true' && res?.data?.data?.data?.qna_list) {
-          if (res?.data?.data?.data?.qna_list?.length > 0) {
-            if (select === '페달체크') {
-              setPage(prev => prev + 1);
-              setPedalCheckList(prev => [...prev, ...res?.data?.data?.data?.qna_list]);
-            } else {
-              setShopPage(prev => prev + 1);
-              setShopList(prev => [...prev, ...res?.data?.data?.data?.qna_list]);
-            }
+          if (select === '페달체크') {
+            setPage(prev => prev + 1);
+            setPedalCheckList(prev => [...prev, ...res?.data?.data?.data?.qna_list]);
+          } else {
+            setShopPage(prev => prev + 1);
+            setShopList(prev => [...prev, ...res?.data?.data?.data?.qna_list]);
           }
         } else if (res.data.result === 'true') {
           setIsLastPage(prev => ({
@@ -106,16 +101,15 @@ export default function Question() {
           }));
         }
       });
+    }
   };
 
   useEffect(() => {
-    console.log('here1');
     apiGetQnaList();
   }, [isFocus]);
 
   useUpdateEffect(() => {
     // menu 이동시 선택값 초기화
-    console.log('here');
     setQuestionSelect([]);
     apiGetQnaList();
   }, [select]);
