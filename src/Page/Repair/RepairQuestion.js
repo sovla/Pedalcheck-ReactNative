@@ -14,17 +14,18 @@ import {useState} from 'react';
 import {View, Text} from 'react-native';
 import {useSelector} from 'react-redux';
 
-export default function QuestionWrite({route: {params}}) {
+export default function RepairQuestion({route: {params}}) {
   const navigation = useNavigation();
   const {size, login} = useSelector(state => state);
   const isFocused = navigation.isFocused();
 
-  const [category, setCategory] = useState('개선 제안');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
   const item = params?.item;
   const isUpdate = item?.qt_idx ? true : false;
+
+  console.log(item);
 
   const [errorMessage, setErrorMessage] = useState({
     title: '',
@@ -58,12 +59,12 @@ export default function QuestionWrite({route: {params}}) {
     if (checkContents()) {
       sendPedalCheckQuestion({
         _mt_idx: login.idx,
-        qt_ca: getCategoryNumber(category),
+        qt_ca: '',
         qt_title: title,
         qt_content: content,
       }).then(res => {
         if (res?.data?.result === 'true') {
-          navigation.navigate('Question');
+          navigation.goBack();
         }
       });
     } else {
@@ -79,13 +80,13 @@ export default function QuestionWrite({route: {params}}) {
       updateQna({
         _mt_idx: login.idx,
         qt_idx: item?.qt_idx,
-        qt_type: 2,
-        qt_ca: getCategoryNumber(category),
+        qt_type: 1,
+        mst_idx: item?.mst_idx,
         qt_title: title,
         qt_content: content,
       }).then(res => {
         if (res.data?.result === 'true') {
-          navigation.navigate('Question');
+          navigation.goBack();
         }
       });
     }
@@ -93,12 +94,10 @@ export default function QuestionWrite({route: {params}}) {
 
   useEffect(() => {
     if (isUpdate) {
-      setCategory(item.qt_ca);
       setTitle(item?.qt_title);
       setContent(item?.qt_content);
     }
   }, [isFocused]);
-
   return (
     <Container>
       <Header title="문의하기" />
@@ -118,11 +117,14 @@ export default function QuestionWrite({route: {params}}) {
             </Box>
           </RowBox>
           <DefaultInput
-            value={category}
-            changeFn={setCategory}
-            isDropdown
-            dropdownItem={categoryList}
+            fontSize={Theme.fontSize.fs15}
+            title="업체명"
+            pd="0px 0px 10px"
+            disabled
+            value={item.mst_name}
+            width="380px"
           />
+
           <DefaultInput
             fontSize={Theme.fontSize.fs15}
             title="제목"

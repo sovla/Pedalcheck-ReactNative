@@ -88,7 +88,11 @@ export default function Question() {
     });
   };
   const onPressUpdate = item => {
-    navigation.navigate('QuestionWrite', {item});
+    if (select === '페달체크') {
+      navigation.navigate('QuestionWrite', {item});
+    } else {
+      navigation.navigate('RepairQuestion', {item});
+    }
   };
 
   const apiGetQnaList = paramPage => {
