@@ -30,6 +30,7 @@ export const store = configureStore({
           'modal/setModalProp',
           'modal/setModalSetState',
           'modal/setState',
+          'modal/modalOpenAndProp',
         ],
         // Ignore these field paths in all actions
         ignoredActionPaths: ['meta.arg', 'payload.timestamp', 'modal'],

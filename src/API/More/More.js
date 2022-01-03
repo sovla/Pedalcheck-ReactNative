@@ -62,3 +62,48 @@ export const setPushNotice = async args => {
     console.log(error);
   }
 };
+
+export const sendPedalCheckQuestion = async args => {
+  try {
+    const response = await API.post('qna_add.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getLikeShopList = async args => {
+  try {
+    const response = await API.post('store_like_list.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteLikeShop = async args => {
+  try {
+    const response = await API.post('store_like_edit.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getRepairHistory = async args => {
+  try {
+    const response = await API.post('order_list.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getRepairHistoryDetail = async args => {
+  try {
+    const response = await API.post('order_view.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

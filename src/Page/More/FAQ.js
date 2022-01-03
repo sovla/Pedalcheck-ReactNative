@@ -14,17 +14,20 @@ export default function FAQ() {
   const [selectPost, setSelectPost] = useState([]);
   const [postList, setPostList] = useState([]);
   const [page, setPage] = useState(1);
+  const [isResult, setIsResult] = useState(false);
 
   useEffect(() => {
     apiGetFAQ();
   }, []);
 
   const apiGetFAQ = () => {
+    if (isResult) return;
     getFAQ({page: page}).then(res => {
       if (res?.data?.result === 'true' && res?.data?.data?.data) {
-        console.log(res, 'resres');
         setPostList(prev => [...prev, ...res?.data?.data?.data]);
         setPage(prev => prev + 1);
+      } else {
+        setIsResult(true);
       }
     });
   };

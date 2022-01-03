@@ -30,6 +30,7 @@ export const DefaultInput = ({
   dropdownItem, //    드롭다운 아이템
   isQuestion, //      ? 여부
   questionPress, //   ? 눌럿을때 Function
+  maxLength, //        문자열 최대길이
   mg = '0px',
   pd = '0px 10px 5px',
 }) => {
@@ -76,6 +77,7 @@ export const DefaultInput = ({
       {RenderCondition === 'Default' && ( // 기본 인풋
         <DefaultInputStyle
           width={width}
+          maxLength={maxLength}
           height={height}
           placeholder={placeHolder}
           borderColor={borderColor}

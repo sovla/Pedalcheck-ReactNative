@@ -6,30 +6,31 @@ import {DarkText, DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import Header from '@/Component/Layout/Header';
-import {getCategoryNumber} from '@/Util/changeCategory';
+import {getCategoryName, getCategoryNumber} from '@/Util/changeCategory';
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {useEffect} from 'react';
 import {useState} from 'react';
-
+import {View, Text} from 'react-native';
 import {useSelector} from 'react-redux';
 
 // 2022-01-03 10:49:58
 // Junhan
-// 리뷰 작성,수정 페이지
+// 정비소 리뷰 작성,수정 페이지
 // Toast 메시지 추가 필요
 
-export default function QuestionWrite({route: {params}}) {
+export default function RepairQuestion({route: {params}}) {
   const navigation = useNavigation();
   const {size, login} = useSelector(state => state);
   const isFocused = navigation.isFocused();
 
-  const [category, setCategory] = useState('개선 제안');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
   const item = params?.item;
   const isUpdate = item?.qt_idx ? true : false;
+
+  console.log(item);
 
   const [errorMessage, setErrorMessage] = useState({
     title: '',
@@ -63,12 +64,12 @@ export default function QuestionWrite({route: {params}}) {
     if (checkContents()) {
       sendPedalCheckQuestion({
         _mt_idx: login.idx,
-        qt_ca: getCategoryNumber(category),
+        qt_ca: '',
         qt_title: title,
         qt_content: content,
       }).then(res => {
         if (res?.data?.result === 'true') {
-          navigation.navigate('Question');
+          navigation.goBack();
         }
       });
     } else {
@@ -84,13 +85,13 @@ export default function QuestionWrite({route: {params}}) {
       updateQna({
         _mt_idx: login.idx,
         qt_idx: item?.qt_idx,
-        qt_type: 2,
-        qt_ca: getCategoryNumber(category),
+        qt_type: 1,
+        mst_idx: item?.mst_idx,
         qt_title: title,
         qt_content: content,
       }).then(res => {
         if (res.data?.result === 'true') {
-          navigation.navigate('Question');
+          navigation.goBack();
         }
       });
     }
@@ -98,12 +99,10 @@ export default function QuestionWrite({route: {params}}) {
 
   useEffect(() => {
     if (isUpdate) {
-      setCategory(item.qt_ca);
       setTitle(item?.qt_title);
       setContent(item?.qt_content);
     }
   }, [isFocused]);
-
   return (
     <Container>
       <Header title="문의하기" />
@@ -123,11 +122,14 @@ export default function QuestionWrite({route: {params}}) {
             </Box>
           </RowBox>
           <DefaultInput
-            value={category}
-            changeFn={setCategory}
-            isDropdown
-            dropdownItem={categoryList}
+            fontSize={Theme.fontSize.fs15}
+            title="업체명"
+            pd="0px 0px 10px"
+            disabled
+            value={item.mst_name}
+            width="380px"
           />
+
           <DefaultInput
             fontSize={Theme.fontSize.fs15}
             title="제목"
@@ -165,30 +167,3 @@ export default function QuestionWrite({route: {params}}) {
     </Container>
   );
 }
-
-const categoryList = [
-  {
-    label: '개선 제안',
-    value: '개선 제안',
-  },
-  {
-    label: '기타',
-    value: '기타',
-  },
-  {
-    label: '불편사항/오류',
-    value: '불편사항/오류',
-  },
-  {
-    label: '우리동네 자전거 매장을 추천합니다',
-    value: '우리동네 자전거 매장을 추천합니다',
-  },
-  {
-    label: '자전거 브랜드/모델 추가요청',
-    value: '자전거 브랜드/모델 추가요청',
-  },
-  {
-    label: '자전거 관련 무엇이든 물어보세요',
-    value: '자전거 관련 무엇이든 물어보세요',
-  },
-];
