@@ -38,6 +38,7 @@ export const API = axios.create({
 
   transformResponse: data => {
     const jsonParseData = JSON.parse(data);
+
     try {
       if (jsonParseData.result === 'true') {
         const jwtDecodeData =

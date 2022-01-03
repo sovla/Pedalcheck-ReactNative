@@ -15,12 +15,13 @@ import {FlatList, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 
 export default function RepairHistory() {
-  const {size} = useSelector(state => state);
+  const {size, login} = useSelector(state => state);
   const navigation = useNavigation();
   const isFocused = navigation.isFocused();
 
   const [historyList, setHistoryList] = useState([]);
   const [select, setSelect] = useState('전체');
+  const [isScroll, setIsScroll] = useState(false);
 
   const onPressHistory = item => {
     navigation.navigate('RepairHistoryDetail', {item});
@@ -28,13 +29,14 @@ export default function RepairHistory() {
 
   const getHistoryListApi = () => {
     getRepairHistory({
-      _mt_idx: 10,
+      _mt_idx: 10, // 수정필요 login?.idx
     })
       .then(res => res?.data?.result === 'true' && res.data.data.data)
       .then(data => setHistoryList(data));
   };
 
   useEffect(() => {
+    console.log(isFocused);
     getHistoryListApi();
   }, [isFocused]);
 
@@ -43,6 +45,7 @@ export default function RepairHistory() {
       <Header title="정비이력" />
       <Container>
         <FlatList
+          keyExtractor={(item, index) => index.toString()}
           ListHeaderComponent={
             <Box mg="20px 16px 10px">
               <DefaultInput
@@ -79,7 +82,14 @@ export default function RepairHistory() {
               : historyList.filter(filterItem => filterItem.ot_status === select)
           }
           onEndReached={() => {
-            getHistoryListApi();
+            if (isScroll) {
+              getHistoryListApi();
+              setIsScroll(false);
+            }
+          }}
+          onEndReachedThreshold={0.1}
+          onMomentumScrollBegin={() => {
+            setIsScroll(true);
           }}
         />
       </Container>

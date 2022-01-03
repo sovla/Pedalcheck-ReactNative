@@ -26,3 +26,12 @@ export const shopLike = async args => {
     console.log(error);
   }
 };
+
+export const sendLikeShop = async args => {
+  try {
+    const response = await API.post('store_like_proc.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

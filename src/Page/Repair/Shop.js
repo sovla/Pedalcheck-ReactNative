@@ -19,17 +19,16 @@ import Swiper from '@/Component/Repair/Swiper';
 import ReviewMain from '@/Component/Repair/ReviewMain';
 import MenuNav from '@/Component/Layout/MenuNav';
 import {useEffect} from 'react';
-import {getShopDetail} from '@/API/Shop/Shop';
+import {getShopDetail, sendLikeShop} from '@/API/Shop/Shop';
 import Review from '@/Component/Repair/Review';
-import {setShopInfo} from '@/Store/shopInfoState';
-
-const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
+import {ResetShopInfo, setShopInfo} from '@/Store/shopInfoState';
 
 export default function Shop({route}) {
-  const {mst_idx} = route.params;
+  const {mt_idx} = route.params;
   const [selectMenu, setSelectMenu] = useState('매장소개');
   const {size, login, shopInfo} = useSelector(state => state);
+
+  const [isLike, setIsLike] = useState(false);
 
   const menu = ['매장소개', '상품보기', '리뷰'];
   const dispatch = useDispatch();
@@ -37,14 +36,26 @@ export default function Shop({route}) {
   useEffect(() => {
     if (shopInfo?.pt_list?.length === 0)
       getShopDetail({
-        _mt_idx: mst_idx,
-        mt_idx: login?.idx || 2, // 고정값 수정필요
-      })
-        .then(res => dispatch(setShopInfo(res.data.data.data)))
-        .finally(() => setLoading(false));
+        _mt_idx: login?.idx,
+        mt_idx: mt_idx, // 고정값 수정필요
+      }).then(res => {
+        dispatch(setShopInfo(res.data.data.data));
+        console.log(res.data.data.data);
+        setIsLike(res?.data?.data?.data?.store_info?.like_on === 'on');
+      });
 
-    return () => {};
+    return () => {
+      dispatch(ResetShopInfo());
+    };
   }, []);
+
+  const onPressLike = () => {
+    sendLikeShop({
+      _mt_idx: login?.idx,
+      mt_idx: mt_idx,
+    });
+    setIsLike(prev => !prev);
+  };
 
   return (
     <Container>
@@ -69,10 +80,10 @@ export default function Shop({route}) {
             isRecomment={!item?.srt_res_content}
           />
         )}
-        keyExtractor={({item, index}) => index + item}
-        ListFooterComponent={<View style={{marginBottom: 100}}></View>}
+        keyExtractor={(item, index) => index.toString()}
+        ListFooterComponent={<View style={{marginBottom: 70}}></View>}
       />
-      <FooterButtons />
+      <FooterButtons isLike={isLike} onPressLike={onPressLike} />
     </Container>
   );
 }

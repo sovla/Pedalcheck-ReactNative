@@ -98,3 +98,12 @@ export const getRepairHistory = async args => {
     console.log(error);
   }
 };
+
+export const getRepairHistoryDetail = async args => {
+  try {
+    const response = await API.post('order_view.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

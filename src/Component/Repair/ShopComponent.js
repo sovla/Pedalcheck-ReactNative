@@ -97,7 +97,7 @@ export default function ShopComponent({
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('Shop', {
-              mst_idx: item?.mst_idx,
+              mt_idx: item?.mt_idx,
             })
           }>
           <ShopItem />
