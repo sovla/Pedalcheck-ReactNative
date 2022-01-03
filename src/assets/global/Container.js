@@ -103,12 +103,17 @@ export const ScrollBox = styled.ScrollView`
   ${p =>
     p.minHeight &&
     css`
-      min-height: ${pixelChange(p.minHeight)};
+      min-height: ${p.minHeight};
     `};
   ${p =>
     p.flexWrap &&
     css`
       flex-wrap: ${p.flexWrap};
+    `};
+  ${p =>
+    p.maxHeight &&
+    css`
+      max-height: ${p.maxHeight};
     `};
 `;
 

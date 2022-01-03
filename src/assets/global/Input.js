@@ -108,7 +108,7 @@ export const DefaultInput = ({
       )}
       {RenderCondition === 'isDropdown' && (
         <Dropdown
-          maxHeight={dropdownItem.length * 60}
+          maxHeight={dropdownItem.length * 44}
           data={dropdownItem}
           labelField="label"
           valueField="value"
@@ -119,12 +119,12 @@ export const DefaultInput = ({
           }}
           placeholderStyle={{
             color: Theme.color.black,
-            fontSize: getPixel(15),
+            fontSize: 15,
             fontFamily: 'NotoSansKR-Regular',
           }}
           selectedTextStyle={{
             color: Theme.color.black,
-            fontSize: getPixel(15),
+            fontSize: 15,
             fontFamily: 'NotoSansKR-Regular',
             lineHeight: 20,
             height: 20,

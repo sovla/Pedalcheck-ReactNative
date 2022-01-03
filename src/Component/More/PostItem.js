@@ -2,7 +2,6 @@ import {BetweenBox, Box} from '@/assets/global/Container';
 import {DarkBoldText, DarkText, GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import React from 'react';
-
 import ArrowUpIcon from '@assets/image/list_arr_top.png';
 import {useSelector} from 'react-redux';
 import DefaultImage from '@/assets/global/Image';
@@ -18,14 +17,15 @@ export default function PostItem({item, index, selectPost, setSelectPost}) {
       setSelectPost(prev => [...prev, title]);
     }
   };
-  const isSelect = selectPost.find(findItem => findItem === item.bt_title);
+  console.log(item);
+  const isSelect = selectPost.find(findItem => findItem === item.title);
   return (
     <Box key={index} alignItems="center" style={isSelect && borderBottomWhiteGray}>
-      <TouchableOpacity onPress={() => onPressPost(item.bt_title)}>
+      <TouchableOpacity onPress={() => onPressPost(item.title)}>
         <BetweenBox pd="16p 10px" width={size.minusPadding} style={borderBottomWhiteGray}>
           <Box>
-            <DarkBoldText fontSize={Theme.fontSize.fs15}>{item.bt_title}</DarkBoldText>
-            <GrayText fontSize={Theme.fontSize.fs12}>{item.bt_wdate}</GrayText>
+            <DarkBoldText fontSize={Theme.fontSize.fs15}>{item.title}</DarkBoldText>
+            <GrayText fontSize={Theme.fontSize.fs12}>{item.date}</GrayText>
           </Box>
           <DefaultImage
             style={
@@ -41,22 +41,11 @@ export default function PostItem({item, index, selectPost, setSelectPost}) {
       </TouchableOpacity>
       {isSelect && (
         <>
-          {item.bt_image1 && (
+          {item.image && (
             <Box mg="15px 0px 0px">
               <DefaultImage
                 style={{borderRadius: 15}}
-                source={item.bt_image1}
-                width="360px"
-                height="150px"
-              />
-            </Box>
-          )}
-
-          {item.bt_image2 && (
-            <Box mg="15px 0px 0px">
-              <DefaultImage
-                style={{borderRadius: 15}}
-                source={item.bt_image2}
+                source={item.image}
                 width="360px"
                 height="150px"
               />
@@ -64,7 +53,7 @@ export default function PostItem({item, index, selectPost, setSelectPost}) {
           )}
 
           <Box width="360px" mg="15px 0px 20px">
-            <DarkText fontSize={Theme.fontSize.fs15}>{item.bt_content}</DarkText>
+            <DarkText fontSize={Theme.fontSize.fs15}>{item.content}</DarkText>
           </Box>
         </>
       )}

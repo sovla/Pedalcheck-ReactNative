@@ -9,8 +9,9 @@ import DefaultImage from '@assets/global/Image';
 import {DarkText, GrayText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import FooterButtons from '@/Component/Layout/FooterButtons';
-import {FlatList} from 'react-native';
+import {FlatList, Linking} from 'react-native';
 import {getFeedList} from '@/API/Feed/Feed';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export default function Feed() {
   const {size} = useSelector(state => state);
@@ -24,30 +25,18 @@ export default function Feed() {
     getFeedList({
       page: page,
     }).then(res => setFeedList(res?.data?.data?.data));
+    setPage(prev => prev + 1);
   };
-
-  console.log('feedList ::::', feedList);
 
   return (
     <Container>
-      {/* <ScrollBox
-        backgroundColor={Theme.color.backgroundWhiteGray}
-        style={{
-          height: size.screenHeight - 64,
-          width: '100%',
-        }}>
-        <GradientHeader title="피드" imageSource={MenuIcon} />
-        <Box mg="0px 16px 20px" backgroundColor="#0000">
-          {FeedList.map((item, index) => (
-            <FeedBox key={item.shopName + index} item={item} size={size} />
-          ))}
-        </Box>
-      </ScrollBox> */}
-
       <FlatList
         ListHeaderComponent={<GradientHeader title="피드" imageSource={MenuIcon} />}
         data={feedList}
         keyExtractor={(item, index) => index.toString()}
+        onEndReached={() => {
+          getFeedListHandle();
+        }}
         renderItem={({item, index}) => {
           return <FeedBox item={item} size={size} />;
         }}
@@ -80,7 +69,9 @@ const FeedBox = ({item, size}) => {
       alignItems="center"
       style={{borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}>
       {item.ft_store_img && (
-        <DefaultImage source={item.bikeImage} width={size.minusPadding} height="200px" />
+        <TouchableOpacity onPress={() => Linking.openURL(item.ft_link)}>
+          <DefaultImage source={item.bikeImage} width={size.minusPadding} height="200px" />
+        </TouchableOpacity>
       )}
       <RowBox mg="15px 15px 0px" justifyContent="space-between">
         <Box width="75px" alignItems="center">

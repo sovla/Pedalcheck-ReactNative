@@ -24,8 +24,13 @@ export default function Post() {
   const [selectPost, setSelectPost] = useState([]);
   const [eventData, setEventData] = useState([]);
   const [noticeData, setNoticeData] = useState([]);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
+    getBoardListHandle();
+  }, [select]);
+
+  const getBoardListHandle = () => {
     getBoardList({
       view_mode: 'list',
       board: select === '공지' ? 'notice' : 'event',
@@ -38,9 +43,9 @@ export default function Post() {
         ? setNoticeData(null)
         : setNoticeData(res?.data?.data?.data?.board),
     );
-  }, [select]);
+    setPage(prev => prev + 1);
+  };
 
-  console.log(eventData);
   return (
     <>
       <Header title="공지 및 이벤트" />
@@ -72,18 +77,27 @@ export default function Post() {
           data={select === '공지' ? noticeData : eventData}
           renderItem={({item, index}) => {
             const isSelect = selectPost.find(findItem => findItem === item.title);
+            const changeItem = {
+              title: select === '공지' ? item?.ft_title : item?.bt_title,
+              date: select === '공지' ? item?.ft_wdate : item?.bt_wdate,
+              content: select === '공지' ? item?.ft_content : item?.bt_content,
+              image: select === '공지' ? item?.ft_image1 : item?.bt_image1,
+            };
             return (
               <PostItem
                 key={index}
                 selectPost={selectPost}
                 setSelectPost={setSelectPost}
-                item={item}
+                item={changeItem}
                 index={index}
                 isSelect={isSelect}
               />
             );
           }}
-          keyExtractor={({item, index}) => index + item}
+          keyExtractor={({item, index}) => index}
+          onEndReached={() => {
+            getBoardListHandle();
+          }}
         />
       </Container>
     </>
