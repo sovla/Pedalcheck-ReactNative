@@ -1,3 +1,4 @@
+import {getRepairHistory} from '@/API/More/More';
 import {Box, Container, ScrollBox} from '@/assets/global/Container';
 import {repairHistoryDropdownList} from '@/assets/global/dummy';
 import {DefaultInput} from '@/assets/global/Input';
@@ -5,42 +6,82 @@ import ShopRepairHistory from '@/Component/BikeManagement/ShopRepairHistory';
 import Header from '@/Component/Layout/Header';
 import RepairHistoryItem from '@/Component/More/RepairHistoryItem';
 import RepairProduct from '@/Component/ReservationManagement/RepairProduct';
+import {getPixel} from '@/Util/pixelChange';
 import {useNavigation} from '@react-navigation/core';
 import React from 'react';
+import {useEffect} from 'react';
 import {useState} from 'react';
-import {TouchableOpacity} from 'react-native';
+import {FlatList, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 
 export default function RepairHistory() {
   const {size} = useSelector(state => state);
   const navigation = useNavigation();
+  const isFocused = navigation.isFocused();
+
+  const [historyList, setHistoryList] = useState([]);
   const [select, setSelect] = useState('전체');
-  const onPressHistory = () => {
-    navigation.navigate('RepairHistoryDetail');
+
+  const onPressHistory = item => {
+    navigation.navigate('RepairHistoryDetail', {item});
   };
+
+  const getHistoryListApi = () => {
+    getRepairHistory({
+      _mt_idx: 10,
+    })
+      .then(res => res?.data?.result === 'true' && res.data.data.data)
+      .then(data => setHistoryList(data));
+  };
+
+  useEffect(() => {
+    getHistoryListApi();
+  }, [isFocused]);
+
   return (
     <>
       <Header title="정비이력" />
       <Container>
-        <ScrollBox flex={1}>
-          <Box mg="20px 16px 10px">
-            <DefaultInput
-              value={select}
-              changeFn={setSelect}
-              isDropdown
-              dropdownItem={repairHistoryDropdownList}
-            />
-          </Box>
-          <Box mg="0px 16px">
-            <TouchableOpacity onPress={onPressHistory}>
-              <RepairHistoryItem />
-            </TouchableOpacity>
-            <RepairHistoryItem status="승인" />
-            <RepairHistoryItem status="승인거부" />
-            <RepairHistoryItem status="처리완료" isReview />
-            <RepairHistoryItem status="예약취소" />
-          </Box>
-        </ScrollBox>
+        <FlatList
+          ListHeaderComponent={
+            <Box mg="20px 16px 10px">
+              <DefaultInput
+                value={select}
+                changeFn={setSelect}
+                isDropdown
+                dropdownItem={repairHistoryDropdownList}
+              />
+            </Box>
+          }
+          style={{flex: 1}}
+          renderItem={({item, index}) => {
+            const changeItem = {
+              shopName: item?.mst_name,
+              productNames: [item?.pt_title],
+              bikeName: item?.ot_bike_nick,
+              date: `${item?.ot_pt_date} ${item?.ot_pt_time}`,
+              status: item?.ot_status,
+              isReview: item?.ot_review === 'Y' && item?.ot_status === '처리완료',
+              onPressReview: () => {},
+            };
+
+            return (
+              <TouchableOpacity
+                style={{marginHorizontal: getPixel(16)}}
+                onPress={() => onPressHistory(item)}>
+                <RepairHistoryItem {...changeItem} />
+              </TouchableOpacity>
+            );
+          }}
+          data={
+            select === '전체'
+              ? historyList
+              : historyList.filter(filterItem => filterItem.ot_status === select)
+          }
+          onEndReached={() => {
+            getHistoryListApi();
+          }}
+        />
       </Container>
     </>
   );

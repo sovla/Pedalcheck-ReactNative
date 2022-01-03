@@ -89,3 +89,12 @@ export const deleteLikeShop = async args => {
     console.log(error);
   }
 };
+
+export const getRepairHistory = async args => {
+  try {
+    const response = await API.post('order_list.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
