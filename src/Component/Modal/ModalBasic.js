@@ -29,7 +29,8 @@ export default function ModalBasic() {
   const dispatch = useDispatch();
   let RenderItem = <></>;
 
-  const childrenProps = modal.modalProp;
+  const childrenProps = modal?.modalProp; // 모달 프롭 넣는 부분
+
   const selectRenderItem = () => {
     switch (modal?.modalComponent) {
       case 'service':

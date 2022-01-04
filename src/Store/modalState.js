@@ -26,6 +26,7 @@ export const modalSlice = createSlice({
         isOpenModal: false,
         isDone: true,
         modalComponent: '',
+        modalProp: undefined,
       });
     },
     modalOpenAndProp: (state, action) => {

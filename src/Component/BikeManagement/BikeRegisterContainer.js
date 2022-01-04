@@ -11,11 +11,11 @@ import DummyImage from '@assets/image/bicycle_default.png';
 import {DefaultInput} from '@/assets/global/Input';
 import DefaultLine from '@/assets/global/Line';
 import {useDispatch} from 'react-redux';
-import {modalOpen, setModalProp} from '@/Store/modalState';
+import {modalClose, modalOpen, modalOpenAndProp, setModalProp} from '@/Store/modalState';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {addBike} from '@/API/Bike/Bike';
+import {addBike, bikeSerialCheck} from '@/API/Bike/Bike';
 import {useState} from 'react';
 
 export default function BikeRegisterContainer({bike, setBike, image, setImage}) {
@@ -61,6 +61,44 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
     });
   };
 
+  const bikeSerialCheckHandle = () => {
+    bikeSerialCheck({
+      _mt_idx: 4, // 수정 필요
+      mbt_serial: bike.vehicleNumber,
+    }).then(
+      res =>
+        res?.data?.result == 'true' &&
+        dispatch(
+          modalOpenAndProp({
+            content: '기존에 등록된 정보가 있습니다. 이 정보롤 사용하시겠습니까?',
+            leftContent: '확인',
+            rightContent: '취소',
+            rightPress: () => {
+              dispatch(modalClose());
+            },
+            leftPress: () => {
+              setBike({
+                bikeName: res?.data?.data?.data?.mbt_nick,
+                bikeModel:
+                  res?.data?.data?.data?.mbt_brand + '  ' + res?.data?.data?.data?.mbt_model,
+                vehicleNumber: res?.data?.data?.data?.mbt_serial,
+                vehicleYear: res?.data?.data?.data?.mbt_year,
+                size: res?.data?.data?.data?.mbt_size,
+                color: res?.data?.data?.data?.mbt_color,
+                wheelSize: res?.data?.data?.data?.mbt_wheel,
+                drivetrain: res?.data?.data?.data?.mbt_drive,
+                motorManufacturer: res?.data?.data?.data?.mbt_motor,
+                power: res?.data?.data?.data?.mbt_power,
+                type: res?.data?.data?.data?.mbt_type,
+              });
+              dispatch(modalClose());
+            },
+          }),
+        ),
+    );
+  };
+  console.log(bike);
+
   const selectionOption = [
     {
       title: '차대번호',
@@ -70,6 +108,9 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
       },
       value: 'vehicleNumber',
       isDropdown: false,
+      onBlur: () => {
+        bikeSerialCheckHandle();
+      },
     },
     {
       title: '연식',
@@ -224,6 +265,7 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
                 fontSize={Theme.fontSize.fs16}
                 mg="0px 0px 20px"
                 pd="0px 0px 5px"
+                onBlur={item?.onBlur}
                 value={bike[item.value]}
                 changeFn={text => setChangeBike(item.value, text)}
                 isQuestion={item.question !== undefined}
