@@ -1,4 +1,5 @@
 import {sendPedalCheckQuestion, updateQna} from '@/API/More/More';
+import {sendShopQuestion} from '@/API/Repair/Repair';
 import {LinkButton} from '@/assets/global/Button';
 import {Box, Container, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
@@ -34,8 +35,6 @@ export default function RepairQuestion({route: {params}}) {
   const item = params?.item;
   const isUpdate = item?.qt_idx ? true : false;
 
-  console.log(item);
-
   const [errorMessage, setErrorMessage] = useState({
     title: '',
     content: '',
@@ -66,9 +65,10 @@ export default function RepairQuestion({route: {params}}) {
     });
 
     if (checkContents()) {
-      sendPedalCheckQuestion({
+      sendShopQuestion({
         _mt_idx: login.idx,
-        qt_ca: '',
+        mst_idx: store_info?.mst_idx,
+        mst_name: store_info?.mst_name,
         qt_title: title,
         qt_content: content,
       }).then(res => {
