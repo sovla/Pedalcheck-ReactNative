@@ -22,14 +22,18 @@ import FooterButtons from '@/Component/Layout/FooterButtons';
 import {getPixel} from '@/Util/pixelChange';
 import scrollSlideNumber from '@/Util/scrollSlideNumber';
 import {useEffect} from 'react';
-import {getShopList} from '@/API/Shop/Shop';
+import {getShopList, shopLike} from '@/API/Shop/Shop';
 import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
 import {modalOpen} from '@/Store/modalState';
 import {DeleteLocation} from '@/Store/locationState';
+import {getEventList} from '@/API/Repair/Repair';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {is} from 'immer/dist/internal';
 
 export default function RepairHome() {
   const {location} = useSelector(state => state);
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
 
   const [selectItem, setSelectItem] = useState('전체보기');
   const [sortSelectItem, setSortSelectItem] = useState('인기순');
@@ -40,6 +44,8 @@ export default function RepairHome() {
   const [tag, setTag] = useState([]);
   const [innerLocation, setInnerLocation] = useState('부산 금정구');
   const [storeList, setStoreList] = useState([]);
+
+  const [isScroll, setIsScroll] = useState(false);
 
   const onPressTag = tagName => {
     // By.Junhan tag에 값이 없다면 넣어주고 있다면 제거
@@ -55,16 +61,17 @@ export default function RepairHome() {
   };
 
   useEffect(() => {
-    getShopList({
-      _mt_idx: login.idx,
-      page: apiPage,
-      mst_addr: '', // 위치로 검색
-      mst_name: '', // 검색하는 경우 추가
-      mst_tag: tag.length > 0 ? tag?.reduce((a, b) => a + ',' + b) : '', // , 콤마 더해서 값 보내기
-      mst_type: selectItem === '전체보기' ? '' : '1',
-      sorting: sortSelectItem === '정비횟수순' ? 2 : sortSelectItem === '거리순' ? 3 : 1, // 인기순 1 거리순 2 정비횟수순 3
-    }).then(res => setStoreList(res.data.data.data.store_list));
-  }, [tag]);
+    if (isFocused && !storeList?.length)
+      getShopList({
+        _mt_idx: login.idx,
+        page: apiPage,
+        mst_addr: '', // 위치로 검색
+        mst_name: '', // 검색하는 경우 추가
+        mst_tag: tag.length > 0 ? tag?.reduce((a, b) => a + ',' + b) : '', // , 콤마 더해서 값 보내기
+        mst_type: selectItem === '전체보기' ? '' : '1',
+        sorting: sortSelectItem === '정비횟수순' ? 2 : sortSelectItem === '거리순' ? 3 : 1, // 인기순 1 거리순 2 정비횟수순 3
+      }).then(res => setStoreList(res.data.data.data.store_list));
+  }, [isFocused]);
 
   useEffect(() => {
     if (location?.name) {
@@ -257,20 +264,47 @@ const Header = ({
 };
 
 const Event = () => {
+  const [eventList, setEventList] = useState([]);
+  const isFocused = useIsFocused();
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if (isFocused && !eventList?.length) {
+      getEventList({
+        view_mode: 'main',
+        board: 'event',
+      })
+        .then(res => res.data.result === 'true' && res.data.data.data)
+        .then(data => setEventList(data?.board));
+    }
+  }, [isFocused]);
   return (
-    <BorderBottomBox
-      title="EVENT"
-      height="28px"
-      titleColor={Theme.color.skyBlue}
-      borderColor={Theme.color.skyBlue}>
-      <DarkText numberOfLines={1} width="80%">
-        2020.03.16 페달체크 인스타그램 4월
-        #해시태그#해시태그#해시태그#해시태그#해시태그#해시태그#해시태그.
-      </DarkText>
-      <TouchableOpacity>
-        <DefaultImage source={PlusIcon} width="12px" height="12px" style={{marginRight: 10}} />
-      </TouchableOpacity>
-    </BorderBottomBox>
+    <>
+      <BorderBottomBox
+        title="EVENT"
+        height="28px"
+        titleColor={Theme.color.skyBlue}
+        borderColor={Theme.color.skyBlue}>
+        <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false}>
+          {eventList.map((item, index) => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Post', {...item, select: '이벤트'})}>
+              <DarkText numberOfLines={1} style={{width: getPixel(272)}}>
+                {item?.bt_title}
+              </DarkText>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+        <TouchableOpacity onPress={() => navigation.navigate('Post', {select: '이벤트'})}>
+          <DefaultImage
+            source={PlusIcon}
+            width="12px"
+            height="12px"
+            style={{marginRight: getPixel(10)}}
+          />
+        </TouchableOpacity>
+      </BorderBottomBox>
+    </>
   );
 };
 

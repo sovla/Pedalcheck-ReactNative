@@ -23,6 +23,12 @@ import QuestionUpdate from '../RepairHistory/Modal/QuestionUpdate';
 import RepairRejection from '../ReservationManagement/Modal/RepairRejection';
 import AlertModal from './AlertModal';
 
+// 2022-01-04 08:31:15
+// Junhan
+// 모달 키는 곳 3가지 타입이 있다
+// slide, fullSize, default
+// 사용법 modal.modalComponent에 원하는 값을 넣고 switch문을 추가하면 됩니다.
+
 export default function ModalBasic() {
   const modal = useSelector(state => state.modal);
   const size = useSelector(state => state.size);
@@ -110,7 +116,7 @@ export default function ModalBasic() {
               <Box
                 backgroundColor={Theme.color.white}
                 width={size.minusPadding}
-                minHeight="200px"
+                minHeight="150px"
                 borderRadius="15px"
                 pd="20px 16px"
                 alignItems="center">

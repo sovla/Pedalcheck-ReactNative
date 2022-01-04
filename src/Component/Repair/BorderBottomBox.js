@@ -16,11 +16,13 @@ export default function BorderBottomBox({
   leftWidth = 20,
 }) {
   const {size} = useSelector(state => state);
+
+  const deviceLeftWidth = (380 * leftWidth) / 100;
   return (
     <RowBox widht={size.minusPadding} height={height} backgroundColor="rgba(0,0,0,0)">
       <Box
         backgroundColor="rgba(0,0,0,0)"
-        width={`${leftWidth}%`}
+        width={`${deviceLeftWidth}px`}
         height="100%"
         justifyContent="center"
         alignItems="center"
@@ -34,7 +36,7 @@ export default function BorderBottomBox({
         style={{borderBottomWidth: 1, borderBottomColor: Theme.borderColor.gray}}
         pd="0px 0px 0px 10px"
         justifyContent="space-between"
-        width={`${100 - leftWidth}%`}
+        width={`${380 - deviceLeftWidth}px`}
         height="100%">
         {children}
       </RowBox>

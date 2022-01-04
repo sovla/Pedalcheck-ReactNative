@@ -13,6 +13,7 @@ import {useEffect} from 'react';
 import {getShopDetail, sendLikeShop} from '@/API/Shop/Shop';
 import Review from '@/Component/Repair/Review';
 import {ResetShopInfo, setShopInfo} from '@/Store/shopInfoState';
+import ShopHeader from '@/Component/Repair/ShopHeader';
 
 export default function Shop({route}) {
   const {mt_idx} = route.params;
