@@ -28,6 +28,7 @@ import {
 } from '@react-native-seoul/kakao-login';
 
 import {NaverLogin, getProfile} from '@react-native-seoul/naver-login';
+import {useSnsLogin} from '../../../Hooks/useSnsLogin';
 
 const iosKeys = {
   kConsumerKey: 'kkeU9exIGwNDzPGDBBpr',
@@ -65,14 +66,25 @@ export function KakaoImage({onPress}) {
       console.log(profile, '카카오로그인정보');
 
       const {id, email, nickname} = profile;
+
+      const SnsLoginResult = await useSnsLogin(id, nickname, email, 2);
       dispatch(
         setSnsInfo({
           id,
           email,
           name: nickname,
+          mt_idx: SnsLoginResult?.data?.data,
         }),
       );
-      navigation.navigate('Register');
+      if (SnsLoginResult?.data?.result === 'true') {
+        navigation.navigate('RepairHome');
+      }
+      // else if(false) {
+
+      // }
+      else {
+        navigation.navigate('Register');
+      }
     } catch (error) {
       console.log(error);
     }
@@ -114,15 +126,6 @@ export function GoogleImage({onPress}) {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       const {id, email, name} = userInfo.user;
-
-      dispatch(
-        setSnsInfo({
-          id,
-          email,
-          name,
-        }),
-      );
-      navigation.navigate('Register');
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -146,11 +149,11 @@ export function NaverImage({onPress}) {
   const [naverToken, setNaverToken] = useState();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const snsLogin = useSnsLogin();
 
   const naverLogin = props => {
     return new Promise((resolve, reject) => {
       NaverLogin.login(props, (err, token) => {
-        console.log(`\n\n  Token is fetched  :: ${token} \n\n`);
         getUserProfile(token);
         if (err) {
           reject(err);
@@ -168,16 +171,8 @@ export function NaverImage({onPress}) {
       return;
     }
     const {id, email, name} = profileResult.response;
-    console.log(profileResult, '네이버 로그인 정보');
-    dispatch(
-      setSnsInfo({
-        id,
-        email,
-        name,
-      }),
-    );
 
-    navigation.navigate('Register');
+    snsLogin(id, name, email, 3);
   };
 
   return (

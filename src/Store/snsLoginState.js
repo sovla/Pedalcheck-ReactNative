@@ -4,6 +4,7 @@ const initialState = {
   email: '',
   id: '',
   name: '',
+  mt_idx: '',
 };
 
 export const snsLoginSlice = createSlice({
@@ -11,11 +12,12 @@ export const snsLoginSlice = createSlice({
   initialState,
   reducers: {
     setSnsInfo: (state, action) => {
-      const {email, id, name} = action.payload;
+      const {email, id, name, mt_idx} = action.payload;
       return (state = {
         email,
         id,
         name,
+        mt_idx,
       });
     },
   },

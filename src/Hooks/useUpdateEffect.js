@@ -1,5 +1,4 @@
-import {useEffect} from 'react';
-import {useRef} from 'react';
+import {useEffect, useRef} from 'react';
 
 export default function useUpdateEffect(effect, dependencies = []) {
   const isInitialMount = useRef(true);
