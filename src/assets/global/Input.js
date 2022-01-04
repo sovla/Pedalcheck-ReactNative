@@ -33,6 +33,7 @@ export const DefaultInput = ({
   maxLength, //        문자열 최대길이
   mg = '0px',
   pd = '0px 10px 5px',
+  onBlur = () => {},
 }) => {
   let RenderCondition = 'Default';
   if (disabled && !isText && !isDropdown) {
@@ -86,6 +87,7 @@ export const DefaultInput = ({
           value={value}
           multiline={multiline}
           onChangeText={changeFn}
+          onBlur={onBlur}
           style={[
             isAlignTop && {
               textAlignVertical: 'top',
