@@ -15,19 +15,30 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export default function Feed() {
   const {size} = useSelector(state => state);
+
   const [feedList, setFeedList] = useState([]);
   const [page, setPage] = useState(1);
+
+  const [isLast, setIsLast] = useState(false);
+
   useEffect(() => {
     getFeedListHandle();
   }, []);
 
   const getFeedListHandle = () => {
+    if (isLast) return;
     getFeedList({
       page: page,
-    }).then(res => setFeedList(res?.data?.data?.data));
-    setPage(prev => prev + 1);
+    }).then(res => {
+      if (res?.data?.result === 'true' && res?.data?.data?.data) {
+        setFeedList(prev => [...prev, ...res?.data?.data?.data]);
+        setPage(prev => prev + 1);
+      } else {
+        setIsLast(true);
+      }
+    });
   };
-
+  console.log(feedList);
   return (
     <Container>
       <FlatList
@@ -68,18 +79,18 @@ const FeedBox = ({item, size}) => {
       pd="0px 0px 20px"
       alignItems="center"
       style={{borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}>
-      {item.ft_store_img && (
-        <TouchableOpacity onPress={() => Linking.openURL(item.ft_link)}>
-          <DefaultImage source={item.bikeImage} width={size.minusPadding} height="200px" />
+      {item?.ft_store_img && (
+        <TouchableOpacity onPress={() => Linking.openURL(item?.ft_link)}>
+          <DefaultImage source={item?.bikeImage} width={size.minusPadding} height="200px" />
         </TouchableOpacity>
       )}
       <RowBox mg="15px 15px 0px" justifyContent="space-between">
         <Box width="75px" alignItems="center">
-          <DefaultImage source={item.userImage} width="45px" height="45px" borderRadius="100px" />
+          <DefaultImage source={item?.userImage} width="45px" height="45px" borderRadius="100px" />
         </Box>
         <Box>
           <DarkText fontSize={Theme.fontSize.fs15} width="290px" numberOfLines={2}>
-            {item.ft_title}
+            {item?.ft_title}
           </DarkText>
           <RowBox
             mg="5px 0px 0px"
@@ -88,9 +99,9 @@ const FeedBox = ({item, size}) => {
             justifyContent="space-between"
             alignItems="center">
             <IndigoText fontSize={Theme.fontSize.fs14} fontWeight={Theme.fontWeight.bold}>
-              {item.ft_store_name}
+              {item?.ft_store_name}
             </IndigoText>
-            <GrayText fontSize={Theme.fontSize.fs13}>{item.ft_wdate}</GrayText>
+            <GrayText fontSize={Theme.fontSize.fs13}>{item?.ft_wdate}</GrayText>
           </RowBox>
         </Box>
       </RowBox>

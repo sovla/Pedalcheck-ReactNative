@@ -21,6 +21,7 @@ export default function FAQ() {
   }, []);
 
   const apiGetFAQ = () => {
+    console.log('FAQ API 부름');
     if (isResult) return;
     getFAQ({page: page}).then(res => {
       if (res?.data?.result === 'true' && res?.data?.data?.data) {
