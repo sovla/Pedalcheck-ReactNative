@@ -21,7 +21,11 @@ import {useSelector} from 'react-redux';
 
 export default function RepairQuestion({route: {params}}) {
   const navigation = useNavigation();
-  const {size, login} = useSelector(state => state);
+  const {
+    size,
+    login,
+    shopInfo: {store_info},
+  } = useSelector(state => state);
   const isFocused = navigation.isFocused();
 
   const [title, setTitle] = useState('');
@@ -126,7 +130,7 @@ export default function RepairQuestion({route: {params}}) {
             title="업체명"
             pd="0px 0px 10px"
             disabled
-            value={item.mst_name}
+            value={item?.mst_name ?? store_info?.mst_name}
             width="380px"
           />
 
