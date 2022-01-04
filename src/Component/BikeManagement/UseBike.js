@@ -21,7 +21,6 @@ export default function UseBike({item, size}) {
   const onPressBike = () => {
     navigation.navigate('BikeDetail');
   };
-
   return (
     <Box alignItems="center" flex={1}>
       <RowBox pd="20px 16px" justifyContent="space-between" width={size.designWidth}>
@@ -41,7 +40,7 @@ export default function UseBike({item, size}) {
       </TouchableOpacity>
       <FlatList
         nestedScrollEnabled
-        keyExtractor={({item, index}) => index}
+        keyExtractor={(item, index) => index.toString()}
         data={item}
         renderItem={({item, index}) => {
           const changeItem = {

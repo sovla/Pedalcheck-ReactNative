@@ -26,3 +26,12 @@ export const addBike = async args => {
     console.log(error);
   }
 };
+
+export const bikeSerialCheck = async args => {
+  try {
+    const response = await API.post('bike_serial_chk.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

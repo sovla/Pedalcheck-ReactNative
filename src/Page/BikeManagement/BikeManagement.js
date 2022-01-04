@@ -9,6 +9,7 @@ import UseBike from '@/Component/BikeManagement/UseBike';
 import StorageBike from '@/Component/BikeManagement/StorageBike';
 import {getBikeList} from '@/API/Bike/Bike';
 import {useEffect} from 'react';
+import {Alert} from 'react-native';
 export default function BikeManagement() {
   const {size} = useSelector(state => state);
   const [select, setSelect] = useState('사용중인 자전거');
@@ -37,5 +38,4 @@ export default function BikeManagement() {
     </>
   );
 }
-
 const menuItem = ['사용중인 자전거', '보관 자전거'];
