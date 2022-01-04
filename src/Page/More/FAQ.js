@@ -47,6 +47,7 @@ export default function FAQ() {
             date: item?.ft_wdate,
             content: item?.ft_content,
             image: item?.ft_image,
+            idx: item?.ft_idx,
           };
           return (
             <PostItem

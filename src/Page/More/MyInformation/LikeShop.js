@@ -3,7 +3,7 @@ import DefaultImage from '@/assets/global/Image';
 import Header from '@/Component/Layout/Header';
 import {useNavigation} from '@react-navigation/core';
 import React from 'react';
-import {FlatList, TouchableOpacity} from 'react-native';
+import {Alert, FlatList, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import ModifyIcon from '@assets/image/ic_modify.png';
 import {Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
@@ -72,14 +72,15 @@ export default function LikeShop() {
           rightContent: '취소',
           leftPress: () => {
             deleteApi();
+            setIsEdit(!isEdit);
           },
           rightPress: () => {
             dispatch(modalClose());
+            setIsEdit(!isEdit);
           },
         }),
       );
     }
-    setIsEdit(!isEdit);
   };
 
   const getLikeShopListApi = () => {
