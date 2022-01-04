@@ -5,6 +5,7 @@ import pixelChange, {fontSizeChange, pixelHeightChange} from '@/Util/pixelChange
 import numberFormat from '@/Util/numberFormat';
 
 export const DefaultText = styled.Text`
+  font-family: 'NotoSansKR-Regular';
   color: ${p => p.color ?? Theme.color.white};
   font-size: ${p => p.fontSize ?? Theme.fontSize.fs16};
   width: ${p => pixelChange(p.width) ?? 'auto'};
@@ -30,12 +31,17 @@ export const DefaultText = styled.Text`
     css`
       text-align-vertical: ${p.textAlignVertical};
     `};
-  font-family: ${p =>
-    p.fontWeight === 'bold'
-      ? 'NotoSansKR-Bold'
-      : p.fontWeight === 600
-      ? 'NotoSansKR-Medium'
-      : 'NotoSansKR-Regular'};
+  ${p =>
+    p.fontWeight &&
+    css`
+      font-family: ${p =>
+        p.fontWeight === 'bold'
+          ? 'NotoSansKR-Bold'
+          : p.fontWeight === 600
+          ? 'NotoSansKR-Medium'
+          : 'NotoSansKR-Regular'};
+    `};
+
   include-font-padding: false;
 
   text-align-vertical: center;
@@ -65,12 +71,12 @@ export const ErrorText = ({children}) => {
 };
 
 export const BoldText = styled(DefaultText)`
-  font-weight: ${Theme.fontWeight.bold};
+  /* font-weight: ${Theme.fontWeight.bold}; */
   font-family: 'NotoSansKR-Bold';
 `;
 
 export const MediumText = styled(DefaultText)`
-  font-weight: ${Theme.fontWeight.medium};
+  /* font-weight: ${Theme.fontWeight.medium}; */
   font-family: 'NotoSansKR-Medium';
 `;
 
@@ -80,8 +86,6 @@ export const DarkText = styled(DefaultText)`
 
 export const DarkBoldText = styled(BoldText)`
   color: ${Theme.color.black};
-  font-family: 'NotoSansKR-Bold';
-  font-weight: bold;
 `;
 
 export const DarkMediumText = styled(MediumText)`

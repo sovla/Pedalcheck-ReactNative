@@ -73,13 +73,7 @@ export default function Register({navigation}) {
           width={size.minusPadding}
           pd="6px 0px 20px">
           <CheckBox isCheck={isAllCheck} setIsCheck={onPressAllCheck}>
-            <DefaultText
-              fontSize={Theme.fontSize.fs16}
-              color={Theme.color.black}
-              fontWeight={Theme.fontWeight.bold}
-              mg="0px 0px 0px 10px">
-              전체 동의하기
-            </DefaultText>
+            <DarkBoldText mg="0px 0px 0px 10px">전체 동의하기</DarkBoldText>
           </CheckBox>
           <DefaultLine style={{marginTop: 20, marginBottom: 14}} />
           {itemArray.map(item => {

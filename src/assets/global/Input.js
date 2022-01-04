@@ -168,7 +168,10 @@ const DefaultInputStyle = styled.TextInput`
   padding: ${pixelChange('10px')};
   font-size: ${pixelChange(Theme.fontSize.fs15)};
   line-height: 22px;
+  include-font-padding: false;
   color: ${p => p.color ?? Theme.color.black};
+  font-family: 'NotoSansKR-Regular';
+
   ${p =>
     p.width &&
     css`
