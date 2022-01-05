@@ -22,7 +22,7 @@ export const SnsLogin = async (id, name, email, type, dispatch, navigation, toke
     mt_app_token: token,
   });
 
-  console.log(result);
+  console.log('result:::', result);
 
   dispatch(
     setSnsInfo({
