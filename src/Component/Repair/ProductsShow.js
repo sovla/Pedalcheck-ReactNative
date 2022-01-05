@@ -1,9 +1,8 @@
-import {BetweenBox, Box, Container, RowBox} from '@/assets/global/Container';
+import {BetweenBox, Box, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
-import {DarkBoldText, DarkText, DefaultText, MoneyText} from '@/assets/global/Text';
+import {DarkBoldText, DefaultText, MoneyText} from '@/assets/global/Text';
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
-import CheckBox from '../Home/CheckBox';
+import {TouchableOpacity} from 'react-native';
 import QuestionIcon from '@assets/image/btn_detail.png';
 import Theme from '@/assets/global/Theme';
 import {useSelector} from 'react-redux';

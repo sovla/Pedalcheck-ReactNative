@@ -5,8 +5,11 @@ import LogoBox from '@/Component/Home/LogoBox';
 import HomeFooter from '@/Component/Home/HomeFooter';
 import pixelChange from '@/Util/pixelChange';
 import {useSelector} from 'react-redux';
-import {AppleImage, GoogleImage, KakaoImage, NaverImage} from '@/Component/Home/Icon/Icon';
 import {TextLinkButton} from '@/assets/global/Button';
+import KakaoImage from '@/Component/Home/Icon/KakaoImage';
+import GoogleImage from '@/Component/Home/Icon/GoogleImage';
+import NaverImage from '@/Component/Home/Icon/NaverImage';
+import AppleImage from '@/Component/Home/Icon/AppleImage';
 
 export default function Home({navigation}) {
   const {size} = useSelector(state => state);

@@ -11,7 +11,7 @@ import {getBikeList} from '@/API/Bike/Bike';
 import {useEffect} from 'react';
 import {Alert} from 'react-native';
 export default function BikeManagement() {
-  const {size} = useSelector(state => state);
+  const {size, login} = useSelector(state => state);
   const [select, setSelect] = useState('사용중인 자전거');
   const [page, setPage] = useState(1);
   const [bikeList, setBikeList] = useState([]);
@@ -22,7 +22,7 @@ export default function BikeManagement() {
 
   const getBikeListHandle = () => {
     getBikeList({
-      _mt_idx: 4, // 수정 필요
+      _mt_idx: login?.idx, // 수정 필요
       mbt_flag: select === '사용중인 자전거' ? 'Y' : 'N',
       page: page,
     }).then(res => setBikeList(res?.data?.data?.data));
