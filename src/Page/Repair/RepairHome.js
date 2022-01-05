@@ -250,9 +250,19 @@ const Header = ({
               {dummyImageArray.map((item, index) => {
                 const isEqual = selectImage === index;
                 return isEqual ? (
-                  <DefaultImage key={item + index} source={BlackDot} width="15px" height="15px" />
+                  <DefaultImage
+                    key={index + 'images'}
+                    source={BlackDot}
+                    width="15px"
+                    height="15px"
+                  />
                 ) : (
-                  <DefaultImage key={item + index} source={EmptyDot} width="15px" height="15px" />
+                  <DefaultImage
+                    key={index + 'images'}
+                    source={EmptyDot}
+                    width="15px"
+                    height="15px"
+                  />
                 );
               })}
             </PositionBox>
@@ -288,6 +298,7 @@ const Event = () => {
         <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false}>
           {eventList.map((item, index) => (
             <TouchableOpacity
+              key={index + 'Event'}
               onPress={() => navigation.navigate('Post', {...item, select: '이벤트'})}>
               <DarkText numberOfLines={1} style={{width: getPixel(272)}}>
                 {item?.bt_title}

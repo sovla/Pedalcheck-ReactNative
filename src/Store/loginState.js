@@ -1,7 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-  idx: '4',
+  idx: '10',
   mt_account: null,
   mt_ad: '',
   mt_addr: '',
@@ -42,6 +42,7 @@ export const loginSlice = createSlice({
   reducers: {
     setUserInfo: (state, action) => {
       return (state = {
+        ...state,
         ...action.payload,
       });
     },
