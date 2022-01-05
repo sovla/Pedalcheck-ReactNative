@@ -11,12 +11,15 @@ import {useSelector} from 'react-redux';
 import Dummy from '@assets/image/map.png';
 import {Dimensions} from 'react-native';
 import {borderBottomWhiteGray} from '../BikeManagement/ShopRepairHistory';
+import MapView, {Marker} from 'react-native-maps';
+import {getPixel} from '@/Util/pixelChange';
 
 export default function ShopIntroduction() {
   const {
     size,
     shopInfo: {store_info},
   } = useSelector(state => state);
+
   const shopInformation = [
     {
       image: LocationIcon,
@@ -34,15 +37,22 @@ export default function ShopIntroduction() {
       content: store_info?.mst_brand || '',
     },
   ];
+
+  const storeRegion = {
+    latitude: store_info?.mst_lat ?? '35.244125',
+    longitude: store_info?.mst_lng ?? '129.088150',
+  };
+  console.log(storeRegion);
+
   return (
     <Box pd="20px 16px">
       <Box style={borderBottomWhiteGray} width="380px">
-        {shopInformation.map(item => {
+        {shopInformation.map((item, index) => {
           if (item.content === '') {
             return;
           }
           return (
-            <RowBox key={item.title} mg="0px 0px 15px 0px">
+            <RowBox key={index + 'Shop'} mg="0px 0px 15px 0px">
               <RowBox width="127px" alignItems="center">
                 <DefaultImage source={item.image} width="15px" height="15px" />
                 <DarkBoldText fontSize={Theme.fontSize.fs15} mg="0px 0px 0px 8px">
@@ -66,7 +76,30 @@ export default function ShopIntroduction() {
       <Box mg="20px 0px 10px">
         <DarkBoldText>매장 위치</DarkBoldText>
       </Box>
-      <DefaultImage source={Dummy} width={size.minusPadding} height="200px"></DefaultImage>
+      <Box borderRadius="10px" style={{overflow: 'hidden'}}>
+        <MapView
+          initialRegion={{
+            latitude: parseFloat(storeRegion.latitude),
+            longitude: parseFloat(storeRegion.longitude),
+            latitudeDelta: 0.0031,
+            longitudeDelta: 0.0031,
+          }}
+          region={{
+            latitude: parseFloat(storeRegion.latitude),
+            longitude: parseFloat(storeRegion.longitude),
+            latitudeDelta: 0.0031,
+            longitudeDelta: 0.0031,
+          }}
+          style={{width: getPixel(380), height: 200, borderRadius: 10}}>
+          <Marker
+            coordinate={{
+              latitude: parseFloat(storeRegion.latitude),
+              longitude: parseFloat(storeRegion.longitude),
+            }}
+          />
+        </MapView>
+      </Box>
+      {/* <DefaultImage source={Dummy} width={size.minusPadding} height="200px"></DefaultImage> */}
     </Box>
   );
 }
