@@ -10,16 +10,41 @@ import {DefaultInput} from '@/assets/global/Input';
 import {useDispatch, useSelector} from 'react-redux';
 import Theme from '@/assets/global/Theme';
 import {TouchableOpacity} from 'react-native';
-import {modalOpen} from '@/Store/modalState';
+import {modalOpen, modalOpenAndProp} from '@/Store/modalState';
+import {AddInformation} from '@/API/User/Login';
+import {charImage} from '@/assets/global/dummy';
 
-export default function RegisterAdditional({navigation}) {
-  const onPressSave = () => {
-    navigation.navigate('RepairHome');
+export default function RegisterAdditional({navigation, route}) {
+  const {snsLogin, token, birthDate} = useSelector(state => state);
+
+  const [selectImage, setSelectImage] = useState();
+
+  const [sex, setSex] = useState('man');
+
+  const birthDateValue =
+    birthDate?.year !== '' ? `${birthDate.year}-${birthDate.month}-${birthDate.day}` : '';
+
+  const onPressSave = async () => {
+    const response = await AddInformation({
+      mt_idx: snsLogin.mt_idx,
+      mt_image_type: 1, // 수정 필요
+      mt_image_num: selectImage,
+      mt_gender: sex === 'man' ? 'M' : 'F',
+      mt_birth: birthDateValue,
+    });
+    if (response.data.result === 'true') {
+      navigation.navigate('RepairHome');
+    }
   };
   return (
     <>
       <Header title="추가 정보 입력" navigation={navigation}></Header>
-      <RegisterAdditionalBody />
+      <RegisterAdditionalBody
+        sex={sex}
+        setSelectImage={setSelectImage}
+        selectImage={selectImage}
+        setSex={setSex}
+      />
       <Box mg="0px 16px 20px">
         <FooterButton
           leftContent="다음에 입력하기"
@@ -32,9 +57,9 @@ export default function RegisterAdditional({navigation}) {
   );
 }
 
-export const RegisterAdditionalBody = () => {
+export const RegisterAdditionalBody = ({sex, setSex, setSelectImage, selectImage}) => {
   const {size} = useSelector(state => state);
-  const [sex, setSex] = useState('man');
+
   const dispatch = useDispatch();
 
   const {birthDate} = useSelector(state => state);
@@ -42,15 +67,25 @@ export const RegisterAdditionalBody = () => {
   const birthDateValue =
     birthDate?.year !== '' ? `${birthDate.year}년 ${birthDate.month}월 ${birthDate.day}일` : '';
 
+  const image = selectImage ? charImage[selectImage] : ProfileImage;
+
   return (
     <Container mg="0px 16px 30px">
       <Box mg="20px 0px 10px">
         <DarkText>회원 이미지</DarkText>
       </Box>
       <RowBox mg="0px 0px 20px">
-        <DefaultImage source={ProfileImage} width="80px" height="80px" />
+        <DefaultImage source={image} width="80px" height="80px" />
         <Box mg="7px 0px 7px 10px" height="66px" justifyContent="space-between">
-          <TouchableOpacity onPress={() => dispatch(modalOpen('slide/selectImage'))}>
+          <TouchableOpacity
+            onPress={() => {
+              dispatch(
+                modalOpenAndProp({
+                  modalComponent: 'slide/selectImage',
+                  setSelectImage: setSelectImage,
+                }),
+              );
+            }}>
             <BorderButton fontSize={Theme.fontSize.fs15} width="120px">
               기본 이미지 선택
             </BorderButton>

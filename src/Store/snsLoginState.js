@@ -20,9 +20,12 @@ export const snsLoginSlice = createSlice({
         mt_idx,
       });
     },
+    resetSnsInfo: () => {
+      initialState;
+    },
   },
 });
 
-export const {setSnsInfo} = snsLoginSlice.actions;
+export const {setSnsInfo, resetSnsInfo} = snsLoginSlice.actions;
 
 export default snsLoginSlice.reducer;

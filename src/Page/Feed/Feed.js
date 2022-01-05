@@ -15,7 +15,6 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export default function Feed() {
   const {size} = useSelector(state => state);
-
   const [feedList, setFeedList] = useState([]);
   const [page, setPage] = useState(1);
 
