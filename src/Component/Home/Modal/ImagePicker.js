@@ -11,13 +11,15 @@ import Default5 from '@assets/image/default_5.png';
 import {LinkWhiteButton} from '@/assets/global/Button';
 import {TouchableOpacity} from 'react-native';
 import {modalClose} from '@/Store/modalState';
+import {useEffect} from 'react';
 
-export default function ImagePicker() {
+export default function ImagePicker({setSelectImage}) {
   const [selectNumber, setSelectNumber] = useState(0);
   const modal = useSelector(state => state.modal);
   const size = useSelector(state => state.size);
   const dispatch = useDispatch();
   const imageWidth = `${(size.designWidth - 32 - 60) / 4}px`;
+
   return (
     <>
       <ModalTitleBox size={size} title="기본 이미지 선택" padding={32} />
@@ -71,6 +73,7 @@ export default function ImagePicker() {
       <LinkWhiteButton
         content="확인"
         to={() => {
+          setSelectImage(selectNumber);
           dispatch(modalClose());
         }}
       />

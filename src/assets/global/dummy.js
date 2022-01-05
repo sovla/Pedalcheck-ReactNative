@@ -1,3 +1,11 @@
+import Default1 from '@assets/image/default_1.png';
+import Default2 from '@assets/image/default_2.png';
+import Default3 from '@assets/image/default_3.png';
+import Default4 from '@assets/image/default_4.png';
+import Default5 from '@assets/image/default_5.png';
+
+export const charImage = ['', Default1, Default2, Default3, Default4, Default5];
+
 export const bikeInfo = {
   brand: 'APPALANCHIA',
   modelName: 'Momentum',

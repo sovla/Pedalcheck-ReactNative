@@ -1,4 +1,5 @@
 import {GoogleLogin, KakaoLogin, NaverLogin} from '@/API/User/Login';
+import {setUserInfo} from '@/Store/loginState';
 import {setSnsInfo} from '@/Store/snsLoginState';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -22,8 +23,6 @@ export const SnsLogin = async (id, name, email, type, dispatch, navigation, toke
     mt_app_token: token,
   });
 
-  console.log(result);
-
   dispatch(
     setSnsInfo({
       id,
@@ -34,12 +33,13 @@ export const SnsLogin = async (id, name, email, type, dispatch, navigation, toke
   );
 
   if (result?.data?.result === 'true') {
-    return navigation.navigate('RepairHome');
-  }
-  // else if(false) {
-
-  // }
-  else {
+    if (result?.data?.data?.data?.mt_status === 'Y') {
+      dispatch(setUserInfo(result?.data?.data?.data));
+      return navigation.navigate('Register');
+    } else {
+      return navigation.navigate('Register');
+    }
+  } else {
     return navigation.navigate('Register');
   }
 };

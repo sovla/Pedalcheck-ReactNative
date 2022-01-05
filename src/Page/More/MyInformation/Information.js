@@ -8,12 +8,15 @@ import {DarkBoldText, DarkMediumText, DarkText, GrayText} from '@/assets/global/
 import Theme from '@/assets/global/Theme';
 import DefaultLine from '@/assets/global/Line';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/core';
+import {resetSnsInfo} from '@/Store/snsLoginState';
+import {resetUserInfo} from '@/Store/loginState';
 
 export default function Information() {
   const {size} = useSelector(state => state);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -56,7 +59,12 @@ export default function Information() {
               </DarkMediumText>
             </RowBox>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              dispatch(resetSnsInfo());
+              dispatch(resetUserInfo());
+              navigation.reset({routes: [{name: 'Home'}]});
+            }}>
             <RowBox backgroundColor="#0000" style={borderBottomWhiteGray} width={size.minusPadding}>
               <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
                 로그아웃
