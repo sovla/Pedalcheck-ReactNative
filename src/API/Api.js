@@ -5,8 +5,10 @@ import jwtDecode from 'jwt-decode';
 
 const SECRETKEY = '3B9027B713FABE0C75AD3A1F9F7646CB1514DE99';
 
+const baseURL = 'https://dmonster1744.cafe24.com/api/';
+
 export const API = axios.create({
-  baseURL: 'https://dmonster1744.cafe24.com/api/',
+  baseURL: baseURL,
   timeout: 3000,
   timeoutErrorMessage: '시간초과',
   headers: {
@@ -53,8 +55,47 @@ export const API = axios.create({
         return jsonParseData;
       }
     } catch (error) {
-      console.log('API Error :::', error, jsonParseData);
+      console.log('API Error :::', error, data, jsonParseData);
       return jsonParseData;
     }
   },
 });
+
+export const ImageAPI = async (data, field, url) => {
+  // 이미지 API 2022-01-05 16:40:31 Junhan
+  //
+  try {
+    let cloneData = Object.assign({}, data);
+    delete cloneData[field];
+
+    const jwt_data = jwt_encode(cloneData, SECRETKEY);
+
+    let imageResult = {};
+    let index = 1;
+    for (const imageItem of data[field]) {
+      Object.assign(imageResult, {
+        [`${field}${index}`]: {
+          key: 'poto' + new Date().getTime(),
+          uri: Platform.OS === 'android' ? imageItem.path : imageItem.path.replace('file://', ''),
+          type: imageItem.mime,
+          name: 'auto.jpg',
+        },
+      });
+      index++;
+    }
+    const formData = formFormatter({
+      jwt_data,
+      secretKey: SECRETKEY,
+      ...imageResult,
+    });
+    console.log('formData :::', data);
+    const response = await axios.post(`${baseURL}${url}`, formData, {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    });
+    console.log('response:::', response);
+
+    return response;
+  } catch (error) {
+    console.log('API Error :::', error);
+  }
+};

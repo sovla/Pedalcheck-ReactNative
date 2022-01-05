@@ -23,6 +23,7 @@ export const SnsLogin = async (id, name, email, type, dispatch, navigation, toke
     mt_app_token: token,
   });
 
+
   dispatch(
     setSnsInfo({
       id,
