@@ -5,15 +5,18 @@ import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import ReviewRecord from '@/Component/Repair/ReviewRecord';
 import React, {useState} from 'react';
-import {ScrollView} from 'react-native';
+import {Alert, ScrollView} from 'react-native';
 import {useSelector} from 'react-redux';
 import {LinkButton} from '@/assets/global/Button';
 import Photo from '@/Component/Repair/Photo';
+import {sendReview} from '@/API/Shop/Shop';
 
 export default function ReviewWrite({navigation, route}) {
   const [content, setContent] = useState('');
   const [imageArray, setImageArray] = useState([]);
-  const {size} = useSelector(state => state);
+  const {size, login, shopInfo} = useSelector(state => state);
+
+  const shopItem = route.params.item;
 
   const item = [
     {
@@ -34,10 +37,26 @@ export default function ReviewWrite({navigation, route}) {
 
   const errorMessage = '리뷰를 입력해주세요.';
 
+  const onPressSend = () => {
+    sendReview({
+      _mt_idx: login?.idx,
+      mst_idx: shopInfo?.store_info?.mst_idx,
+      od_idx: shopItem?.od_idx,
+      srt_content: content,
+      srt_img: imageArray,
+    }).then(res => {
+      if (res.data.result === 'true') {
+        navigation.navigate(`${route?.params?.navigate ?? 'Shop'}`);
+      } else {
+        Alert.alert('', res.data.msg);
+      }
+    });
+  };
+
   return (
     <>
       <Header title="리뷰 작성" />
-      <ReviewRecord itemArray={item} isSelect={false} pd="20px 16px" />
+      <ReviewRecord itemArray={[shopItem]} isSelect={false} pd="20px 16px" />
       <Box width={size.minusPadding} mg="0px 16px" flex={1}>
         <ScrollView style={{width: '100%', height: size.screenHeight}}>
           <DefaultInput
@@ -59,10 +78,7 @@ export default function ReviewWrite({navigation, route}) {
           <Photo imageArray={imageArray} setImageArray={setImageArray} />
         </ScrollView>
         <PositionBox bottom="20px">
-          <LinkButton
-            width={size.minusPadding}
-            content="게시"
-            to={() => navigation.navigate(`${route?.params?.navigate ?? 'Shop'}`)}></LinkButton>
+          <LinkButton width={size.minusPadding} content="게시" to={onPressSend}></LinkButton>
         </PositionBox>
       </Box>
     </>

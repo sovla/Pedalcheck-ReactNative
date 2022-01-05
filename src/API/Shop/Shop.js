@@ -35,3 +35,21 @@ export const sendLikeShop = async args => {
     console.log(error);
   }
 };
+
+export const getReviewList = async args => {
+  try {
+    const response = await API.post('store_review_sel.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const sendReview = async args => {
+  try {
+    const response = await API.post('store_review_add.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

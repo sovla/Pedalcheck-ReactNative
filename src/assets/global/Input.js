@@ -88,6 +88,7 @@ export const DefaultInput = ({
           multiline={multiline}
           onChangeText={changeFn}
           onBlur={onBlur}
+          returnKeyType="done" // 완료버튼
           style={[
             isAlignTop && {
               textAlignVertical: 'top',

@@ -47,7 +47,6 @@ export default function Shop({route}) {
     });
     setIsLike(prev => !prev);
   };
-
   return (
     <Container>
       <FlatList
@@ -74,7 +73,11 @@ export default function Shop({route}) {
         keyExtractor={(item, index) => index.toString()}
         ListFooterComponent={<View style={{marginBottom: 70}}></View>}
       />
-      <FooterButtons isLike={isLike} onPressLike={onPressLike} />
+      <FooterButtons
+        isRepair={shopInfo?.store_info?.mst_type === '1'}
+        isLike={isLike}
+        onPressLike={onPressLike}
+      />
     </Container>
   );
 }
