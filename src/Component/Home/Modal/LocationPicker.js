@@ -15,28 +15,29 @@ import {useState} from 'react';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 
 export default function LocationPicker() {
-  const [locationArray, setLocationArray] = useState([]);
-  const modal = useSelector(state => state.modal);
-  const size = useSelector(state => state.size);
-  const location = useSelector(state => state.location);
+  const {modal, size, location} = useSelector(state => state);
   const dispatch = useDispatch();
+
+  const [locationArray, setLocationArray] = useState([]);
+
   const BoxWidth = size.designWidth - 72;
   const isDetail = modal.modalComponent === 'locationPickerDetail';
+  const apiObject = !isDetail
+    ? {
+        step: 1, // 처음
+      }
+    : {
+        step: 2, // 두번째
+        code: location?.code,
+      };
+
   useEffect(() => {
     if (!isDetail) {
       dispatch(DeleteLocation());
     }
-    const apiObject = !isDetail
-      ? {
-          step: 1, // 처음
-        }
-      : {
-          step: 2, // 두번째
-          code: location?.code,
-        };
 
     getLocationList(apiObject).then(res => {
-      if (res.data.result === 'true') {
+      if (res.data?.result === 'true') {
         setLocationArray(res.data.data.data);
       }
     });
@@ -46,6 +47,7 @@ export default function LocationPicker() {
   const pressLocation = async location => {
     await dispatch(AddLocation(location));
     if (!isDetail) {
+      await dispatch(modalClose());
       await dispatch(modalOpen('locationPickerDetail'));
     } else {
       await dispatch(modalClose());

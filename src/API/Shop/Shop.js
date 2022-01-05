@@ -1,4 +1,5 @@
-import {API} from '../Api';
+import axios from 'axios';
+import {API, ImageAPI} from '../Api';
 
 export const getShopList = async args => {
   try {
@@ -46,8 +47,12 @@ export const getReviewList = async args => {
 };
 
 export const sendReview = async args => {
+  // 2022-01-05 17:10:31
+  // Junhan
+  // 리뷰 작성시 이미지와 함께 전달
   try {
-    const response = await API.post('store_review_add.php', args);
+    const data = args;
+    const response = await ImageAPI(data, 'srt_img', 'store_review_add.php');
     return response;
   } catch (error) {
     console.log(error);

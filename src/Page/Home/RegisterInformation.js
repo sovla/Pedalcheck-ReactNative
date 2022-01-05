@@ -48,7 +48,7 @@ export default function RegisterInformation({navigation}) {
       mt_hp: information.tel,
       mt_addr: information.location,
       mt_idx: snsLogin.mt_idx,
-      mt_app_token: token.token, // 수정 필요
+      mt_app_token: token.token,
     })
       .then(res => {
         if (res?.data?.data?.result !== 'false') {

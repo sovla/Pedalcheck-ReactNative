@@ -4,12 +4,13 @@ import {DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import ReviewRecord from '@/Component/Repair/ReviewRecord';
-import React, {useState} from 'react';
-import {Alert, ScrollView} from 'react-native';
-import {useSelector} from 'react-redux';
 import {LinkButton} from '@/assets/global/Button';
 import Photo from '@/Component/Repair/Photo';
 import {sendReview} from '@/API/Shop/Shop';
+
+import React, {useState} from 'react';
+import {useSelector} from 'react-redux';
+import {Alert, ScrollView} from 'react-native';
 
 export default function ReviewWrite({navigation, route}) {
   const [content, setContent] = useState('');
@@ -17,23 +18,6 @@ export default function ReviewWrite({navigation, route}) {
   const {size, login, shopInfo} = useSelector(state => state);
 
   const shopItem = route.params.item;
-
-  const item = [
-    {
-      title: '인천신스',
-      isPartner: true,
-      date: '2021-10-13',
-      product: '정비-기본점검',
-      price: 20000,
-    },
-    {
-      title: '인천신스',
-      isPartner: true,
-      date: '2021-10-13',
-      product: '정비-기본점검',
-      price: 20000,
-    },
-  ];
 
   const errorMessage = '리뷰를 입력해주세요.';
 
