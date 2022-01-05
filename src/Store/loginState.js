@@ -46,9 +46,12 @@ export const loginSlice = createSlice({
         ...action.payload,
       });
     },
+    resetUserInfo: () => {
+      initialState;
+    },
   },
 });
 
-export const {setUserInfo} = loginSlice.actions;
+export const {setUserInfo, resetUserInfo} = loginSlice.actions;
 
 export default loginSlice.reducer;

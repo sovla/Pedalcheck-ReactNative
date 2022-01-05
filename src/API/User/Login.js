@@ -44,3 +44,12 @@ export const GoogleLogin = async args => {
     console.log(error);
   }
 };
+
+export const AddInformation = async args => {
+  try {
+    const response = await API.post('member_join2.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

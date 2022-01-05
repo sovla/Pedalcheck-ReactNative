@@ -45,14 +45,25 @@ export default function RegisterInformation({navigation}) {
       mt_name: information.name,
       mt_nickname: information.nickName,
       mt_id: information.email,
-      mt_app_token: token.token,
       mt_hp: information.tel,
       mt_addr: information.location,
       mt_idx: snsLogin.mt_idx,
       mt_app_token: token.token,
     })
-      .then(res => (res?.data?.data?.result !== 'false' ? navigation.navigate('RepairHome') : null))
+      .then(res => {
+        if (res?.data?.data?.result !== 'false') {
+          dispatch(setUserInfo(res?.data?.data?.data?.data));
+          navigation.navigate('RepairHome');
+        }
+      })
       .catch(err => console.log(err));
+  };
+
+  const onPressAddInformation = () => {
+    if (RegJoin()) {
+      return;
+    }
+    navigation.navigate('RegisterAdditional', {information: information});
   };
 
   const RegJoin = () => {
@@ -175,11 +186,7 @@ export default function RegisterInformation({navigation}) {
         </KeyboardAwareScrollView>
       </Box>
       <Box mg="0px 16px 20px">
-        <FooterButton
-          isRelative
-          leftPress={() => navigation.navigate('RegisterAdditional')}
-          rightPress={onPressComplete}
-        />
+        <FooterButton isRelative leftPress={onPressAddInformation} rightPress={onPressComplete} />
       </Box>
     </>
   );
