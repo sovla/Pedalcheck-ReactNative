@@ -2,10 +2,8 @@ import React from 'react';
 
 import Theme from '@/assets/global/Theme';
 import {useSelector} from 'react-redux';
-import {LinkButton, TextLinkButton} from '@/assets/global/Button';
-import {BetweenBox, Box, PositionBox, RowBox} from '@/assets/global/Container';
-import {AppleImage, GoogleImage, KakaoImage, NaverImage} from './Icon/Icon';
-import {getPixel} from '@/Util/pixelChange';
+import {LinkButton} from '@/assets/global/Button';
+import {Box} from '@/assets/global/Container';
 
 export default function HomeFooter({navigation, isShowLogin = true, isAbsolute}) {
   const size = useSelector(state => state.size);

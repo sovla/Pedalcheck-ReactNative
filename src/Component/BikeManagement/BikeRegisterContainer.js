@@ -19,7 +19,7 @@ import {addBike, bikeSerialCheck} from '@/API/Bike/Bike';
 import {useState} from 'react';
 
 export default function BikeRegisterContainer({bike, setBike, image, setImage}) {
-  const {size, modal} = useSelector(state => state);
+  const {size, modal, login} = useSelector(state => state);
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const setChangeBike = (name, value) => {
@@ -44,7 +44,7 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
 
   const addBikeHandle = () => {
     addBike({
-      _mt_idx: 4, // 수정 필요
+      _mt_idx: login?.idx, // 수정 필요
       mbt_flag: 'Y',
       mbt_nick: bike.bikeName,
       mbt_brand: bike.bikeModel.split('  ')[0],
@@ -63,7 +63,7 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
 
   const bikeSerialCheckHandle = () => {
     bikeSerialCheck({
-      _mt_idx: 4, // 수정 필요
+      _mt_idx: login?.idx, // 수정 필요
       mbt_serial: bike.vehicleNumber,
     }).then(
       res =>

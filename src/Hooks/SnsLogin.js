@@ -1,12 +1,12 @@
 import {GoogleLogin, KakaoLogin, NaverLogin} from '@/API/User/Login';
+import {setSnsInfo} from '@/Store/snsLoginState';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
-export const useSnsLogin = async (id, name, email, type) => {
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
+export const SnsLogin = async (id, name, email, type, dispatch, navigation, token) => {
   // 2:카카오/3:네이버/4:구글/5:애플
-  let LoginApi;
+
+  let LoginApi = () => {};
   if (type === 2) {
     LoginApi = KakaoLogin;
   } else if (type === 3) {
@@ -14,21 +14,22 @@ export const useSnsLogin = async (id, name, email, type) => {
   } else if (type === 4) {
     LoginApi = GoogleLogin;
   }
-
-  const result = LoginApi({
+  const result = await LoginApi({
     sns_id: id,
     sns_name: name,
     sns_email: email,
     mt_login_type: type,
-    mt_app_token: 'test', // 수정 필요
-  }).then(res => res?.data?.result === 'true');
+    mt_app_token: token,
+  });
+
+  console.log(result);
 
   dispatch(
     setSnsInfo({
       id,
       email,
-      name: nickname,
-      mt_idx: SnsLoginResult?.data?.data,
+      name,
+      mt_idx: result?.data?.data,
     }),
   );
 
@@ -42,3 +43,5 @@ export const useSnsLogin = async (id, name, email, type) => {
     return navigation.navigate('Register');
   }
 };
+
+export default SnsLogin;
