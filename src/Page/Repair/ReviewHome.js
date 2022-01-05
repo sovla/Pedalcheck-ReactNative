@@ -10,33 +10,45 @@ import ShopComponent from '@/Component/Repair/ShopComponent';
 import ReviewRecord from '@/Component/Repair/ReviewRecord';
 import {useState} from 'react';
 import {Button, LinkButton} from '@/assets/global/Button';
+import {useFocusEffect} from '@react-navigation/native';
+import {getReviewList} from '@/API/Shop/Shop';
+import {useSelector} from 'react-redux';
 export default function ReviewHome() {
-  const [isRapairRecord, setIsRapairRecord] = useState(true);
-  const item = [
-    {
-      title: '인천신스',
-      isPartner: true,
-      date: '2021-10-13',
-      product: '정비-기본점검',
-      price: 20000,
-    },
-    {
-      title: '인천신스',
-      isPartner: true,
-      date: '2021-10-13',
-      product: '정비-기본점검',
-      price: 20000,
-    },
-  ];
+  const {login, shopInfo} = useSelector(state => state);
+
+  const [reviewList, setReviewList] = useState([]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getReviewList({
+        _mt_idx: login?.idx,
+        mst_idx: shopInfo?.store_info?.mst_idx, //shopInfo?.store_info?.mst_idx
+      })
+        .then(res => res.data.result === 'true' && res.data.data.data)
+        .then(data => {
+          if (data) {
+            setReviewList(data);
+          }
+        });
+    }, []),
+  );
+
   return (
     <>
       <Header title="리뷰 작성" />
       <Container pd="0px 16px">
-        {isRapairRecord ? (
-          <>
-            <ReviewRecord itemArray={[item[0]]} />
-            <ReviewRecord itemArray={item} />
-          </>
+        {reviewList.length ? (
+          reviewList.map(item => {
+            const changeItem = {
+              title: item?.mst_name,
+              isPartner: true,
+              date: item?.ot_pt_date,
+              product: item?.ot_pt_title,
+              price: 20000,
+              od_idx: item?.od_idx,
+            };
+            return <ReviewRecord itemArray={[changeItem]} />;
+          })
         ) : (
           <Container alignItems="center" width="100%">
             <Box mg="70px 0px 30px">
@@ -46,13 +58,6 @@ export default function ReviewHome() {
           </Container>
         )}
       </Container>
-      <LinkButton
-        to={() => setIsRapairRecord(prev => !prev)}
-        content="리뷰확인용버튼/테스트"
-        mg="0px 16px 20px"
-      />
     </>
   );
 }
-
-const styles = StyleSheet.create({});

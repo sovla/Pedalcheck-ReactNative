@@ -19,6 +19,7 @@ export default function ReviewRecord({itemArray, isSelect = true, pd = '20px 10p
   const showItem = itemArray[0];
   const onPressSelect = () => {
     navigation.navigate('ReviewWrite', {
+      item: showItem,
       navigate: 'Shop',
     });
   };
