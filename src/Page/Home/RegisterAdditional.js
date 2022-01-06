@@ -11,20 +11,35 @@ import {useDispatch, useSelector} from 'react-redux';
 import Theme from '@/assets/global/Theme';
 import {TouchableOpacity} from 'react-native';
 import {modalOpen, modalOpenAndProp} from '@/Store/modalState';
-import {AddInformation} from '@/API/User/Login';
+import {AddInformation, MemberJoin} from '@/API/User/Login';
 import {charImage} from '@/assets/global/dummy';
+import SnsLogin from '@/Hooks/SnsLogin';
+import {setUserInfo} from '@/Store/loginState';
 
 export default function RegisterAdditional({navigation, route}) {
   const {snsLogin, token, birthDate} = useSelector(state => state);
-
   const [selectImage, setSelectImage] = useState();
-
   const [sex, setSex] = useState('man');
-
+  const dispatch = useDispatch();
+  const information = route.params.information;
   const birthDateValue =
     birthDate?.year !== '' ? `${birthDate.year}-${birthDate.month}-${birthDate.day}` : '';
 
   const onPressSave = async () => {
+    const joinResponse = await MemberJoin({
+      mt_name: information.name,
+      mt_nickname: information.nickName,
+      mt_id: information.email,
+      mt_hp: information.tel,
+      mt_addr: information.location,
+      mt_idx: snsLogin.mt_idx,
+      mt_app_token: token.token, // 수정 필요
+    }).then(res => {
+      if (res?.data?.data?.result !== 'false') {
+        dispatch(setUserInfo(res?.data?.data?.data?.data));
+      }
+    });
+
     const response = await AddInformation({
       mt_idx: snsLogin.mt_idx,
       mt_image_type: 1, // 수정 필요

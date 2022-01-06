@@ -7,6 +7,7 @@ import {DarkText, DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import {DeleteLocation} from '@/Store/locationState';
+import {setUserInfo} from '@/Store/loginState';
 import {modalOpen} from '@/Store/modalState';
 import {getHeightPixel} from '@/Util/pixelChange';
 import React, {useLayoutEffect, useState} from 'react';
@@ -52,7 +53,7 @@ export default function RegisterInformation({navigation}) {
     })
       .then(res => {
         if (res?.data?.data?.result !== 'false') {
-          dispatch(setUserInfo(res?.data?.data?.data?.data));
+          dispatch(setUserInfo(res?.data?.data?.data));
           navigation.navigate('RepairHome');
         }
       })
