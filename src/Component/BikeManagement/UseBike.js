@@ -10,22 +10,21 @@ import DefaultImage from '@assets/global/Image';
 import {useNavigation} from '@react-navigation/core';
 import {FlatList} from 'react-native-gesture-handler';
 
-export default function UseBike({item, size}) {
+export default function UseBike({items, size}) {
   const navigation = useNavigation();
-  const bikeCount = 3;
 
   const onPressAddBike = () => {
     navigation.navigate('BikeRegister');
   };
 
-  const onPressBike = () => {
-    navigation.navigate('BikeDetail');
+  const onPressBike = idx => {
+    navigation.navigate('BikeDetail', {mbt_idx: idx});
   };
   return (
     <Box alignItems="center" flex={1}>
       <RowBox pd="20px 16px" justifyContent="space-between" width={size.designWidth}>
         <DarkBoldText>사용중인 자전거</DarkBoldText>
-        <DarkBoldText>{item === null ? 0 : item?.length} 대</DarkBoldText>
+        <DarkBoldText>{items?.length ? items?.length : 0} 대</DarkBoldText>
       </RowBox>
       <TouchableOpacity onPress={onPressAddBike}>
         <Button
@@ -41,7 +40,7 @@ export default function UseBike({item, size}) {
       <FlatList
         nestedScrollEnabled
         keyExtractor={(item, index) => index.toString()}
-        data={item}
+        data={items}
         renderItem={({item, index}) => {
           const changeItem = {
             brandname: item.mbt_brand,
@@ -51,7 +50,7 @@ export default function UseBike({item, size}) {
             repairCount: item.mbt_orders,
           };
           return (
-            <TouchableOpacity onPress={onPressBike}>
+            <TouchableOpacity onPress={() => onPressBike(item.mbt_idx)}>
               <Bike item={changeItem} />
             </TouchableOpacity>
           );

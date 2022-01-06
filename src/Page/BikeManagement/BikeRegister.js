@@ -18,6 +18,9 @@ export default function BikeRegister() {
     motorManufacturer: '',
     power: '',
   });
+
+  console.log(bike, 'bike :::::');
+
   const [image, setImage] = useState();
   return <BikeRegisterContainer bike={bike} setBike={setBike} image={image} setImage={setImage} />;
 }

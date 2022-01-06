@@ -35,3 +35,21 @@ export const bikeSerialCheck = async args => {
     console.log(error);
   }
 };
+
+export const getBikeDetail = async args => {
+  try {
+    const response = await API.post('bike_view.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteBike = async args => {
+  try {
+    const response = await API.post('bike_del.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

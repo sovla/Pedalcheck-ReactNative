@@ -10,30 +10,36 @@ import StorageBike from '@/Component/BikeManagement/StorageBike';
 import {getBikeList} from '@/API/Bike/Bike';
 import {useEffect} from 'react';
 import {Alert} from 'react-native';
+import {useIsFocused} from '@react-navigation/native';
 export default function BikeManagement() {
   const {size, login} = useSelector(state => state);
   const [select, setSelect] = useState('사용중인 자전거');
   const [page, setPage] = useState(1);
   const [bikeList, setBikeList] = useState([]);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     getBikeListHandle();
-  }, [select]);
+  }, [select, isFocused]);
 
   const getBikeListHandle = () => {
     getBikeList({
       _mt_idx: login?.idx, // 수정 필요
       mbt_flag: select === '사용중인 자전거' ? 'Y' : 'N',
       page: page,
-    }).then(res => setBikeList(res?.data?.data?.data));
+    }).then(res => {
+      setBikeList(res?.data?.data?.data);
+    });
   };
+
+  console.log(bikeList, 'bikeList :::');
 
   return (
     <>
       <Header title="자전거 관리" />
 
       <MenuNav menuItem={menuItem} setSelect={setSelect} select={select} />
-      {select === '사용중인 자전거' && <UseBike size={size} item={bikeList} />}
+      {select === '사용중인 자전거' && <UseBike size={size} items={bikeList} />}
       {select === '보관 자전거' && <StorageBike size={size} item={bikeList} />}
     </>
   );

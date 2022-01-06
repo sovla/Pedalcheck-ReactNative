@@ -17,6 +17,7 @@ import {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {addBike, bikeSerialCheck} from '@/API/Bike/Bike';
 import {useState} from 'react';
+import {Alert} from 'react-native';
 
 export default function BikeRegisterContainer({bike, setBike, image, setImage}) {
   const {size, modal, login} = useSelector(state => state);
@@ -42,10 +43,10 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
     });
   };
 
-  const addBikeHandle = () => {
-    addBike({
-      _mt_idx: login?.idx, // 수정 필요
-      mbt_flag: 'Y',
+  const addBikeHandle = async () => {
+    const response = await addBike({
+      _mt_idx: login?.idx,
+      mbt_flag: 'Y', // 수정 필요
       mbt_nick: bike.bikeName,
       mbt_brand: bike.bikeModel.split('  ')[0],
       mbt_model: bike.bikeModel.split('  ')[1],
@@ -58,7 +59,12 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
       mbt_motor: bike.motorManufacturer,
       mbt_power: bike.power,
       mbt_type: bike.type,
+      // 모델 상세
     });
+    if (response.data.result === 'true') {
+      Alert.alert('등록 되었습니다.');
+      navigation.goBack();
+    }
   };
 
   const bikeSerialCheckHandle = () => {
@@ -77,19 +83,23 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
               dispatch(modalClose());
             },
             leftPress: () => {
+              const {
+                data: {
+                  data: {data},
+                },
+              } = res;
               setBike({
-                bikeName: res?.data?.data?.data?.mbt_nick,
-                bikeModel:
-                  res?.data?.data?.data?.mbt_brand + '  ' + res?.data?.data?.data?.mbt_model,
-                vehicleNumber: res?.data?.data?.data?.mbt_serial,
-                vehicleYear: res?.data?.data?.data?.mbt_year,
-                size: res?.data?.data?.data?.mbt_size,
-                color: res?.data?.data?.data?.mbt_color,
-                wheelSize: res?.data?.data?.data?.mbt_wheel,
-                drivetrain: res?.data?.data?.data?.mbt_drive,
-                motorManufacturer: res?.data?.data?.data?.mbt_motor,
-                power: res?.data?.data?.data?.mbt_power,
-                type: res?.data?.data?.data?.mbt_type,
+                bikeName: data.mbt_nick,
+                bikeModel: data.mbt_brand + '  ' + data.mbt_model,
+                vehicleNumber: data.mbt_serial,
+                vehicleYear: data.mbt_year,
+                size: data.mbt_size,
+                color: data.mbt_color,
+                wheelSize: data.mbt_wheel,
+                drivetrain: data.mbt_drive,
+                motorManufacturer: data.mbt_motor,
+                power: data.mbt_power,
+                type: data.mbt_type,
               });
               dispatch(modalClose());
             },
