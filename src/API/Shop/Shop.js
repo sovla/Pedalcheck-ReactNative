@@ -58,3 +58,21 @@ export const sendReview = async args => {
     console.log(error);
   }
 };
+
+export const getMyBikeList = async args => {
+  try {
+    const response = await API.post('get_my_bike.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getReservationTimeList = async args => {
+  try {
+    const response = await API.post('get_ordertime.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

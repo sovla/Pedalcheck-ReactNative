@@ -37,7 +37,6 @@ export default function Feed() {
       }
     });
   };
-  console.log(feedList);
   return (
     <Container>
       <FlatList

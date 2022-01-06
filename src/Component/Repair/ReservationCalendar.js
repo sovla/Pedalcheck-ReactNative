@@ -1,7 +1,7 @@
 import Theme from '@/assets/global/Theme';
 import {getPixel} from '@/Util/pixelChange';
 import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {Alert, Text, TouchableOpacity, View} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import CheckIcon from '@assets/image/ic_check_cal.png';
 import DefaultImage from '@assets/global/Image';
@@ -11,20 +11,28 @@ CalendarLocalConfig;
 export default function ReservationCalendar({selectDate, setSelectDate}) {
   const {size} = useSelector(state => state);
 
-  const onPressDate = day => {
-    const {dateString} = day;
-    const select = {
-      [dateString]: {
-        selected: true,
-      },
-    };
+  const dayTime = 1000 * 60 * 60 * 24;
 
-    setSelectDate(select);
+  const onPressDate = day => {
+    const now = new Date();
+    // console.log(dayTime);
+    // console.log(new Date(day.timestamp - dayTime), now);
+    // console.log(new Date(day.timestamp - dayTime) < now);
+    if (new Date(day.timestamp - dayTime) < now) {
+      return null;
+    }
+    const {dateString} = day;
+
+    setSelectDate(dateString);
   };
   return (
     <Calendar
       markingType={'custom'}
-      markedDates={{...selectDate}}
+      markedDates={{
+        [selectDate]: {
+          selected: true,
+        },
+      }}
       // 캘린더 제목의 월 형식. 값 형식 지정: http://arshaw.com/xdate/#Formatting
       monthFormat={'yyyy년 MM월'}
       // 비활성화된 날의 모든 터치 이벤트를 비활성화합니다. MarkDates에서 disableTouchEvent로 재정의할 수 있습니다.

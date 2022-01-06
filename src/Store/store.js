@@ -7,6 +7,8 @@ import tokenReducer from './tokenState';
 import snsLoginReducer from './snsLoginState';
 import loginReducer from './loginState';
 import shopInfoReducer from './shopInfoState';
+import {composeWithDevTools} from 'redux-devtools-extension';
+
 export const store = configureStore({
   reducer: {
     //  리듀서 추가 부분
