@@ -19,7 +19,7 @@ export default function TimeList({timeList, disabled, selectItem, setSelectItem}
               rowNum={4}
               index={index}
               time={item}
-              isDisabled={disabled.find(findItem => item === findItem)}
+              isDisabled={disabled?.find(findItem => item === findItem)}
               isSelect={selectItem === item}
               betweenMargin="0px 10px 10px 0px"
               onPress={() => setSelectItem(item)}

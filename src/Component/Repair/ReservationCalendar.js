@@ -15,25 +15,24 @@ export default function ReservationCalendar({selectDate, setSelectDate}) {
 
   const onPressDate = day => {
     const now = new Date();
-    console.log(dayTime);
-    console.log(new Date(day.timestamp - dayTime), now);
-    console.log(new Date(day.timestamp - dayTime) < now);
+    // console.log(dayTime);
+    // console.log(new Date(day.timestamp - dayTime), now);
+    // console.log(new Date(day.timestamp - dayTime) < now);
     if (new Date(day.timestamp - dayTime) < now) {
       return null;
     }
     const {dateString} = day;
-    const select = {
-      [dateString]: {
-        selected: true,
-      },
-    };
 
-    setSelectDate(select);
+    setSelectDate(dateString);
   };
   return (
     <Calendar
       markingType={'custom'}
-      markedDates={{...selectDate}}
+      markedDates={{
+        [selectDate]: {
+          selected: true,
+        },
+      }}
       // 캘린더 제목의 월 형식. 값 형식 지정: http://arshaw.com/xdate/#Formatting
       monthFormat={'yyyy년 MM월'}
       // 비활성화된 날의 모든 터치 이벤트를 비활성화합니다. MarkDates에서 disableTouchEvent로 재정의할 수 있습니다.
