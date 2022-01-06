@@ -1,7 +1,7 @@
 import Theme from '@/assets/global/Theme';
 import {getPixel} from '@/Util/pixelChange';
 import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {Alert, Text, TouchableOpacity, View} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import CheckIcon from '@assets/image/ic_check_cal.png';
 import DefaultImage from '@assets/global/Image';
@@ -11,7 +11,16 @@ CalendarLocalConfig;
 export default function ReservationCalendar({selectDate, setSelectDate}) {
   const {size} = useSelector(state => state);
 
+  const dayTime = 1000 * 60 * 60 * 24;
+
   const onPressDate = day => {
+    const now = new Date();
+    console.log(dayTime);
+    console.log(new Date(day.timestamp - dayTime), now);
+    console.log(new Date(day.timestamp - dayTime) < now);
+    if (new Date(day.timestamp - dayTime) < now) {
+      return null;
+    }
     const {dateString} = day;
     const select = {
       [dateString]: {

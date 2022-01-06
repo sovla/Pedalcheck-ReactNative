@@ -18,6 +18,7 @@ export default function ReservationBikeSelect({
   setSelectItem,
   selectItem,
   isButton = true,
+  type = 'mbt_',
 }) {
   const {size} = useSelector(state => state);
   const navigation = useNavigation();
@@ -26,8 +27,14 @@ export default function ReservationBikeSelect({
       <ScrollBox mg="0px 16px">
         <DarkBoldText mg="0px 0px 14px">정비를 맡길 자전거를 선택해주세요</DarkBoldText>
         {bikeArray.map((item, index) => {
+          const changeItem = {
+            brand: item[`${type}brand`],
+            model: item[`${type}model`],
+            idx: item[`${type}idx`],
+            nick: item[`${type}nick`],
+          };
           return (
-            <RowBox mg="0px 0px 10px" key={item.bikeName + index} alignItems="center">
+            <RowBox mg="0px 0px 10px" key={changeItem.idx + index} alignItems="center">
               <DefaultCheckBox
                 setIsCheck={() => setSelectItem(index)}
                 isCheck={parseInt(selectItem) === index}
@@ -36,16 +43,16 @@ export default function ReservationBikeSelect({
                 mg="0px 0px 0px 10px"
                 fontSize={Theme.fontSize.fs15}
                 fontWeight={Theme.fontWeight.medium}>
-                {item.brand}
+                {changeItem.brand}
               </DarkText>
               <DarkText
                 mg="0px 10px"
                 fontSize={Theme.fontSize.fs15}
                 fontWeight={Theme.fontWeight.medium}>
-                {item.modelName}
+                {changeItem.model}
               </DarkText>
               <GrayText fontSize={Theme.fontSize.fs15} fontWeight={Theme.fontWeight.medium}>
-                {item.bikeName}
+                {changeItem.nick}
               </GrayText>
             </RowBox>
           );

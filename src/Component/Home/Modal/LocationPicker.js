@@ -57,7 +57,7 @@ export default function LocationPicker() {
   return (
     <>
       <ModalTitleBox size={size} title="지역 선택"></ModalTitleBox>
-      <RowBox style={{flexWrap: 'wrap'}} width={`${BoxWidth}px`}>
+      <RowBox style={{flexWrap: 'wrap', maxHeight: 300}} width={`${BoxWidth}px`}>
         {locationArray.map((item, index) => (
           <Fragment key={item.code + index}>
             <TouchableOpacity

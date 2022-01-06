@@ -13,7 +13,7 @@ import {timeList} from '@assets/global/dummy';
 export default function ReservationDate({navigation}) {
   const [selectItem, setSelectItem] = useState('');
   const [selectDate, setSelectDate] = useState(null);
-
+  console.log(selectDate);
   const disabled = ['09:00', '09:30'];
   return (
     <>

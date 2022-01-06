@@ -35,7 +35,7 @@ export const Product = ({item}) => {
         </RowBox>
         {item?.isCargo && (
           <RowBox alignItems="center">
-            <DefaultImage source={Icon} width="10px" height="10px" />
+            <DefaultImage source={Icon} width="15px" height="15px" />
             <DefaultText
               fontSize={Theme.fontSize.fs13}
               color={Theme.color.skyBlue}
