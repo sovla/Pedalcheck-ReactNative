@@ -6,6 +6,11 @@ import {useSelector} from 'react-redux';
 
 export default function BikeInformaitonBody({bikeInfoDetail}) {
   const {size} = useSelector(state => state);
+
+  if (!bikeInfoDetail?.length) {
+    return null;
+  }
+
   return (
     <Box
       width={size.designWidth - 32}

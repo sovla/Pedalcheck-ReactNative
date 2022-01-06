@@ -67,7 +67,7 @@ export default function RepairHome() {
         page: apiPage,
         mst_addr: '', // 위치로 검색
         mst_name: '', // 검색하는 경우 추가
-        mst_tag: tag.length > 0 ? tag?.reduce((a, b) => a + ',' + b) : '', // , 콤마 더해서 값 보내기
+        mst_tag: tag?.length > 0 ? tag?.reduce((a, b) => a + ',' + b) : '', // , 콤마 더해서 값 보내기
         mst_type: selectItem === '전체보기' ? '' : '1',
         sorting: sortSelectItem === '정비횟수순' ? 2 : sortSelectItem === '거리순' ? 3 : 1, // 인기순 1 거리순 2 정비횟수순 3
       }).then(res => setStoreList(res.data.data.data.store_list));
@@ -182,7 +182,7 @@ const Header = ({
               value={selectItem}
               setValue={setSelectItem}
               isBorder={false}
-              width={selectItem.length * 12 + 40}
+              width={selectItem?.length * 12 + 40}
               pdLeft={0}
               fontType="Medium"
             />
@@ -192,7 +192,7 @@ const Header = ({
               data={sortArray1}
               labelField="label"
               valueField="value"
-              width={sortSelectItem.length * 17 + 25}
+              width={sortSelectItem?.length * 17 + 25}
               isBorder={false}
               setValue={setSortSelectItem}
               value={sortSelectItem}
@@ -212,7 +212,7 @@ const Header = ({
         </RowBox>
       </Box>
       <Box mg="20px 16px 0px">
-        <RecommenderShop totalCount={dummyImageArray.length} count={selectImage + 1} />
+        <RecommenderShop totalCount={dummyImageArray?.length} count={selectImage + 1} />
         <Box width="380px">
           <ShopComponent
             mg="0px"

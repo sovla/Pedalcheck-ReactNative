@@ -15,13 +15,40 @@ import RepairCycle from '@/Component/BikeManagement/RepairCycle';
 import ArrowRightIcon from '@assets/image/arr_right.png';
 import ShopRepairHistory from '@/Component/BikeManagement/ShopRepairHistory';
 import BikeInformationHeader from '@/Component/BikeManagement/BikeInformationHeader';
-import {bikeInfo} from '@/assets/global/dummy';
 import BikeInformaitonBody from '@/Component/BikeManagement/BikeInformaitonBody';
 import TrashButton from '@/Component/Buttons/TrashButton';
 import ModifyButton from '@/Component/Buttons/ModifyButton';
+import {deleteBike, getBikeDetail} from '@/API/Bike/Bike';
+import {useEffect} from 'react';
+import {useState} from 'react';
 
-export default function BikeDetail() {
-  const {size} = useSelector(state => state);
+export default function BikeDetail({navigation, route}) {
+  const {size, login} = useSelector(state => state);
+  const [bikeInformation, setBikeInformation] = useState([]);
+
+  useEffect(() => {
+    getBikeDetailHandle();
+  }, []);
+
+  const getBikeDetailHandle = async () => {
+    const response = await getBikeDetail({
+      _mt_idx: login?.mt_idx,
+      mbt_idx: route?.params?.mbt_idx,
+    });
+    if (response?.data?.result === 'true') {
+      setBikeInformation(response?.data?.data?.data);
+    }
+  };
+
+  const deleteBikeHandle = async () => {
+    const response = await deleteBike({
+      _mt_idx: login.mt_idx,
+      mbt_idx: route?.params?.mbt_idx,
+    });
+    if (response.data.result === 'true') {
+      navigation.goBack();
+    }
+  };
 
   const dummyItem = {
     title: '체인 윤활 주기',
@@ -35,6 +62,56 @@ export default function BikeDetail() {
     lastChange: 550,
     changeCycle: 1200,
   };
+
+  const {bike} = bikeInformation;
+
+  const bikeInfo = bikeInformation?.bike
+    ? {
+        brand: bike?.mbt_brand,
+        modelName: bike?.mbt_model,
+        bikeName: bike?.mbt_nick,
+        detail: [
+          {
+            title: '차대번호',
+            value: bike?.mbt_serial,
+          },
+          {
+            title: '연식',
+            value: bike?.mbt_year + '연식',
+          },
+          {
+            title: '타입',
+            value: bike?.mbt_type,
+          },
+          {
+            title: '구동계',
+            value: bike.mbt_drive,
+          },
+          {
+            title: '사이즈',
+            value: bike.mbt_wheel,
+          },
+          {
+            title: '컬러',
+            value: bike.mbt_color,
+          },
+          {
+            title: '모델상세',
+            value: '모델 상세 노출 영역', // 수정 필요
+          },
+        ],
+      }
+    : {};
+
+  const RightComponent = () => {
+    return (
+      <RowBox justifyContent="space-between" width="65px" height="100%" alignItems="center">
+        <TrashButton onPress={() => deleteBikeHandle()} />
+        <ModifyButton />
+      </RowBox>
+    );
+  };
+
   return (
     <>
       <Header title="자전거 상세" RightComponent={RightComponent} />
@@ -116,13 +193,4 @@ const shopItem2 = {
   product: '정비 - 오버홀',
   date: '2021-10-07 16:00',
   status: '처리완료',
-};
-
-const RightComponent = () => {
-  return (
-    <RowBox justifyContent="space-between" width="65px" height="100%" alignItems="center">
-      <TrashButton />
-      <ModifyButton />
-    </RowBox>
-  );
 };
