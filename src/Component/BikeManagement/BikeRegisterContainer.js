@@ -15,11 +15,11 @@ import {modalClose, modalOpen, modalOpenAndProp, setModalProp} from '@/Store/mod
 import ImageCropPicker from 'react-native-image-crop-picker';
 import {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {addBike, bikeSerialCheck} from '@/API/Bike/Bike';
+import {addBike, bikeEdit, bikeSerialCheck} from '@/API/Bike/Bike';
 import {useState} from 'react';
 import {Alert} from 'react-native';
 
-export default function BikeRegisterContainer({bike, setBike, image, setImage}) {
+export default function BikeRegisterContainer({isUpdate, bike, setBike, image, setImage}) {
   const {size, modal, login} = useSelector(state => state);
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -44,8 +44,9 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
   };
 
   const addBikeHandle = async () => {
-    const response = await addBike({
+    const sendData = {
       _mt_idx: login?.idx,
+      mbt_idx: bike.mbt_idx,
       mbt_flag: 'Y', // 수정 필요
       mbt_nick: bike.bikeName,
       mbt_brand: bike.bikeModel.split('  ')[0],
@@ -61,10 +62,19 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
       mbt_type: bike.type,
       mbt_model_detail: bike.modelDetail,
       mbt_image: image,
-    });
-    if (response.data.result === 'true') {
-      Alert.alert('등록 되었습니다.');
-      navigation.goBack();
+    };
+    if (isUpdate) {
+      const response = await bikeEdit(sendData);
+      if (response.data.result === 'true') {
+        Alert.alert('수정 되었습니다.');
+        navigation.navigate('BikeManageMent');
+      }
+    } else {
+      const response = await addBike(sendData);
+      if (response.data.result === 'true') {
+        Alert.alert('등록 되었습니다.');
+        navigation.goBack();
+      }
     }
   };
 

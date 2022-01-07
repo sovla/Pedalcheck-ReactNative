@@ -54,3 +54,12 @@ export const deleteBike = async args => {
     console.log(error);
   }
 };
+
+export const changeBikeStatus = async args => {
+  try {
+    const response = await API.post('bike_flag_proc.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

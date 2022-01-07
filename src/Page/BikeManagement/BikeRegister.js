@@ -2,9 +2,11 @@ import React from 'react';
 
 import {useState} from 'react';
 import BikeRegisterContainer from '@/Component/BikeManagement/BikeRegisterContainer';
+import {useEffect} from 'react';
 
-export default function BikeRegister() {
+export default function BikeRegister({route}) {
   const [bike, setBike] = useState({
+    idx: '',
     bikeName: '',
     bikeModel: '',
     vehicleNumber: '',
@@ -18,9 +20,37 @@ export default function BikeRegister() {
     motorManufacturer: '',
     power: '',
   });
+  const [isUpdate, setIsUpdate] = useState(false);
 
-  console.log(bike, 'bike :::::');
+  useEffect(() => {
+    if (route?.params?.bike) {
+      const data = route.params.bike;
+      setBike({
+        bikeName: data.mbt_nick,
+        bikeModel: data.mbt_brand + '  ' + data.mbt_model,
+        vehicleNumber: data.mbt_serial,
+        vehicleYear: data.mbt_year,
+        size: data.mbt_size,
+        color: data.mbt_color,
+        wheelSize: data.mbt_wheel,
+        drivetrain: data.mbt_drive,
+        motorManufacturer: data.mbt_motor,
+        power: data.mbt_power,
+        type: data.mbt_type,
+        modelDetail: data.mbt_model_detail,
+      });
+      setIsUpdate(true);
+    }
+  }, []);
 
   const [image, setImage] = useState();
-  return <BikeRegisterContainer bike={bike} setBike={setBike} image={image} setImage={setImage} />;
+  return (
+    <BikeRegisterContainer
+      isUpdate={isUpdate}
+      bike={bike}
+      setBike={setBike}
+      image={image}
+      setImage={setImage}
+    />
+  );
 }

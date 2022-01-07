@@ -18,7 +18,7 @@ import BikeInformationHeader from '@/Component/BikeManagement/BikeInformationHea
 import BikeInformaitonBody from '@/Component/BikeManagement/BikeInformaitonBody';
 import TrashButton from '@/Component/Buttons/TrashButton';
 import ModifyButton from '@/Component/Buttons/ModifyButton';
-import {deleteBike, getBikeDetail} from '@/API/Bike/Bike';
+import {changeBikeStatus, deleteBike, getBikeDetail} from '@/API/Bike/Bike';
 import {useEffect} from 'react';
 import {useState} from 'react';
 
@@ -32,7 +32,7 @@ export default function BikeDetail({navigation, route}) {
 
   const getBikeDetailHandle = async () => {
     const response = await getBikeDetail({
-      _mt_idx: login?.mt_idx,
+      _mt_idx: login?.idx,
       mbt_idx: route?.params?.mbt_idx,
     });
     if (response?.data?.result === 'true') {
@@ -52,7 +52,7 @@ export default function BikeDetail({navigation, route}) {
         text: '확인',
         onPress: async () => {
           const response = await deleteBike({
-            _mt_idx: login.mt_idx,
+            _mt_idx: login?.idx,
             mbt_idx: route?.params?.mbt_idx,
           });
           if (response.data.result === 'true') {
@@ -61,6 +61,14 @@ export default function BikeDetail({navigation, route}) {
         },
       },
     ]);
+  };
+
+  const changeBikeStatusHandle = async bikeStatus => {
+    const response = await changeBikeStatus({
+      _mt_idx: login.idx,
+      mbt_idx: route?.params?.mbt_idx,
+      mbt_flag: bikeStatus,
+    });
   };
 
   const dummyItem = {
@@ -120,7 +128,7 @@ export default function BikeDetail({navigation, route}) {
     return (
       <RowBox justifyContent="space-between" width="65px" height="100%" alignItems="center">
         <TrashButton onPress={() => deleteBikeHandle()} />
-        <ModifyButton />
+        <ModifyButton onPress={() => navigation.navigate('BikeRegister', {bike: bike})} />
       </RowBox>
     );
   };
@@ -136,11 +144,11 @@ export default function BikeDetail({navigation, route}) {
               <DarkText fontWeight={Theme.fontWeight.medium}>자전거 정보</DarkText>
               <RowBox>
                 <Box mg="0px 5px 0px 0px">
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => changeBikeStatusHandle('N')}>
                     <BorderButton width="87px">자전거 보관</BorderButton>
                   </TouchableOpacity>
                 </Box>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => changeBikeStatusHandle('Y')}>
                   <BorderButton width="87px">자전거 사용</BorderButton>
                 </TouchableOpacity>
               </RowBox>
