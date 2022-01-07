@@ -3,9 +3,14 @@ import Theme from './Theme';
 import React from 'react';
 import pixelChange, {fontSizeChange, pixelHeightChange} from '@/Util/pixelChange';
 import numberFormat from '@/Util/numberFormat';
+import { Platform } from 'react-native';
+
+
+
+
 
 export const DefaultText = styled.Text`
-  font-family: 'NotoSansKR-Regular';
+fontFamily: ${Platform.OS === "android" ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF'}
   color: ${p => p.color ?? Theme.color.white};
   font-size: ${p => p.fontSize ?? Theme.fontSize.fs16};
   width: ${p => pixelChange(p.width) ?? 'auto'};
@@ -36,10 +41,10 @@ export const DefaultText = styled.Text`
     css`
       font-family: ${p =>
         p.fontWeight === 'bold'
-          ? 'NotoSansKR-Bold'
+          ? Platform.OS === 'android' ? 'NotoSansKR-Bold': 'NotoSansCJKkr-BoldTTF'
           : p.fontWeight === 600
-          ? 'NotoSansKR-Medium'
-          : 'NotoSansKR-Regular'};
+          ? Platform.OS === 'android' ? 'NotoSansKR-Medium': 'NotoSansCJKkr-MediumTTF'
+          : Platform.OS === 'android' ? 'NotoSansKR-Regular': 'NotoSansCJKkr-RegularTTF'};
     `};
 
   include-font-padding: false;
@@ -72,12 +77,12 @@ export const ErrorText = ({children}) => {
 
 export const BoldText = styled(DefaultText)`
   /* font-weight: ${Theme.fontWeight.bold}; */
-  font-family: 'NotoSansKR-Bold';
+  font-family: ${Platform.OS === 'android' ? 'NotoSansKR-Bold': 'NotoSansCJKkr-BoldTTF'};
 `;
 
 export const MediumText = styled(DefaultText)`
   /* font-weight: ${Theme.fontWeight.medium}; */
-  font-family: 'NotoSansKR-Medium';
+  font-family: ${Platform.OS === 'android' ? 'NotoSansKR-Medium': 'NotoSansCJKkr-MediumTTF'};
 `;
 
 export const DarkText = styled(DefaultText)`

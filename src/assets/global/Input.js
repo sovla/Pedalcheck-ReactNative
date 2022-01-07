@@ -1,6 +1,6 @@
 import pixelChange, {getPixel, pixelHeightChange} from '@/Util/pixelChange';
 import React from 'react';
-import {TextInput, TouchableOpacity} from 'react-native';
+import {Platform, TextInput, TouchableOpacity} from 'react-native';
 import styled, {css} from 'styled-components/native';
 import {Box, RowBox} from './Container';
 import {DefaultText, ErrorText} from './Text';
@@ -125,12 +125,12 @@ export const DefaultInput = ({
           placeholderStyle={{
             color: Theme.color.black,
             fontSize: 15,
-            fontFamily: 'NotoSansKR-Regular',
+            fontFamily: Platform.OS === "android" ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF',
           }}
           selectedTextStyle={{
             color: Theme.color.black,
             fontSize: 15,
-            fontFamily: 'NotoSansKR-Regular',
+            fontFamily: Platform.OS === "android" ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF',
             lineHeight: 20,
             height: 20,
           }}
@@ -171,7 +171,7 @@ const DefaultInputStyle = styled.TextInput`
   line-height: 22px;
   include-font-padding: false;
   color: ${p => p.color ?? Theme.color.black};
-  font-family: 'NotoSansKR-Regular';
+  font-family: ${Platform.OS === "android" ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF'};
 
   ${p =>
     p.width &&

@@ -10,7 +10,6 @@
     "lint": "eslint .",
     "storybook": "start-storybook -p 7007",
     "build-storybook": "build-storybook",
-    "postinstall": "rndebugger-open",
     "adb": "adb connect 192.168.0.30 && yarn android",
     "adb1": "adb connect 192.168.0.117 && yarn android"
   },
@@ -36,7 +35,6 @@
     "react-native": "0.66.3",
     "react-native-calendars": "1.1269.0",
     "react-native-debugger": "1.1.0",
-    "react-native-debugger-open": "0.3.25",
     "react-native-element-dropdown": "1.4.8",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-image-crop-picker": "0.37.2",

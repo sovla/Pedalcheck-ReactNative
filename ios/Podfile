@@ -2,6 +2,17 @@ require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 platform :ios, '11.0'
+# use_frameworks!
+
+pod 'naveridlogin-sdk-ios'
+
+post_install do |pi|
+  pi.pods_project.targets.each do |t|
+      t.build_configurations.each do |bc|
+         bc.build_settings['ARCHS[sdk=iphonesimulator*]'] =  `uname -m`
+      end
+  end
+end
 
 target 'pedalcheckA' do
   config = use_native_modules!
@@ -21,10 +32,20 @@ target 'pedalcheckA' do
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and
   # you should disable the next line.
-  use_flipper!()
-
-  post_install do |installer|
-    react_native_post_install(installer)
-    __apply_Xcode_12_5_M1_post_install_workaround(installer)
-  end
+  # use_flipper!({'Flipper-Folly' => '2.6'})
+  # use_flipper!({'Flipper' => '0.92.0', 'Flipper-Folly' => '2.6.7'})
+  # post_install do |installer|
+  #   installer.pods_project.targets.each do |target|
+  #     if ['RNFBApp', 'RNFBMessaging'].include?(target.name)
+  #       target.add_system_framework(installer.pods_project.targets.find{|target| target.name == 'GoogleUtilities'})
+  #       end
+  #     if ['RNFBCrashlytics'].include?(target.name)
+  #       target.add_system_framework(installer.pods_project.targets.find{|target| target.name == 'Fabric'})
+  #       target.add_system_framework(installer.pods_project.targets.find{|target| target.name == 'Crashlytics'})
+  #       end
+  #   end
+  #   react_native_post_install(installer)
+  #   __apply_Xcode_12_5_M1_post_install_workaround(installer)
+  # end
+  
 end

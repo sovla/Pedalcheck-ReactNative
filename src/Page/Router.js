@@ -89,6 +89,8 @@ const withScrollView = WrappedComponent => {
   return props => {
     const isFocus = useIsFocused();
     return (
+      <>
+      <SafeAreaView style={{flex:0,backgroundColor:"#fff"}} />
       <SafeAreaView style={{flex: 1}}>
         <View style={{flex: 1, backgroundColor: Theme.color.white}}>
           <WrappedComponent {...props} />
@@ -104,6 +106,8 @@ const withScrollView = WrappedComponent => {
           </PositionBox>
         </View>
       </SafeAreaView>
+      <SafeAreaView style={{flex:0,backgroundColor:"#fff"}} />
+      </>
     );
   };
 };
