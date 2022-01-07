@@ -76,3 +76,11 @@ export const getReservationTimeList = async args => {
     console.log(error);
   }
 };
+export const getdisabledReservationDayList = async args => {
+  try {
+    const response = await API.post('get_orderdate.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

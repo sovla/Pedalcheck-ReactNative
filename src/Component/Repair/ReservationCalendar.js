@@ -8,7 +8,7 @@ import DefaultImage from '@assets/global/Image';
 import CalendarLocalConfig from '@Util/CalendarLocalConfig';
 import {useSelector} from 'react-redux';
 CalendarLocalConfig;
-export default function ReservationCalendar({selectDate, setSelectDate}) {
+export default function ReservationCalendar({selectDate, setSelectDate, onChangeMonth = () => {}}) {
   const {size} = useSelector(state => state);
 
   const dayTime = 1000 * 60 * 60 * 24;
@@ -38,6 +38,7 @@ export default function ReservationCalendar({selectDate, setSelectDate}) {
       // 비활성화된 날의 모든 터치 이벤트를 비활성화합니다. MarkDates에서 disableTouchEvent로 재정의할 수 있습니다.
       disableAllTouchEventsForDisabledDays={true}
       onDayPress={day => onPressDate(day)}
+      onMonthChange={day => onChangeMonth(day?.dateString?.substr(0, 7))}
       style={{
         width: getPixel(size.designWidth - 32),
       }}

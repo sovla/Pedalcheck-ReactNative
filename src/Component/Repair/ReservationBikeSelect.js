@@ -26,7 +26,7 @@ export default function ReservationBikeSelect({
     <>
       <ScrollBox mg="0px 16px">
         <DarkBoldText mg="0px 0px 14px">정비를 맡길 자전거를 선택해주세요</DarkBoldText>
-        {bikeArray.map((item, index) => {
+        {bikeArray?.map((item, index) => {
           const changeItem = {
             brand: item[`${type}brand`],
             model: item[`${type}model`],

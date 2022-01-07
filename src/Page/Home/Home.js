@@ -10,9 +10,12 @@ import KakaoImage from '@/Component/Home/Icon/KakaoImage';
 import GoogleImage from '@/Component/Home/Icon/GoogleImage';
 import NaverImage from '@/Component/Home/Icon/NaverImage';
 import AppleImage from '@/Component/Home/Icon/AppleImage';
+import {useEffect} from 'react';
+import {ToastAndroid} from 'react-native';
 
 export default function Home({navigation}) {
   const {size} = useSelector(state => state);
+
   return (
     <>
       <Container mg="70px 16px 30px">
