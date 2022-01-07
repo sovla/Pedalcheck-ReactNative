@@ -9,8 +9,12 @@ import RepairReservationHeader from './RepairReservationHeader';
 import TimeList from '@/Component/Repair/TimeList';
 import ReservationCalendar from '@/Component/Repair/ReservationCalendar';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
-import {getReservationTimeList} from '@/API/Shop/Shop';
+import {getdisabledReservationDayList, getReservationTimeList} from '@/API/Shop/Shop';
 import {useSelector} from 'react-redux';
+import {useFocusEffect} from '@react-navigation/native';
+import {ToastAndroid} from 'react-native';
+import {useEffect} from 'react';
+import {useCallback} from 'react';
 
 export default function ReservationDate({navigation}) {
   const {shopInfo} = useSelector(state => state);
@@ -18,6 +22,7 @@ export default function ReservationDate({navigation}) {
   const [selectDate, setSelectDate] = useState(null);
   const [disabledTimeList, setDisabledTimeList] = useState([]);
   const [timeList, setTimeList] = useState([]);
+  const now = new Date();
 
   useUpdateEffect(() => {
     setDisabledTimeList([]);
@@ -43,6 +48,28 @@ export default function ReservationDate({navigation}) {
         }
       });
   }, [selectDate]);
+
+  useFocusEffect(
+    useCallback(() => {
+      getdisabledReservationDayList({
+        ot_pt_month:
+          selectDate?.substr(0, 7) ??
+          `${now.getFullYear()}-${
+            now.getMonth() + 1 < 10 ? '0' + (now.getMonth() + 1) : now.getMonth() + 1
+          }`,
+        mt_idx: shopInfo?.store_info?.mt_idx,
+      });
+    }, []),
+  );
+
+  const onChangeMonth = day => {
+    getdisabledReservationDayList({
+      ot_pt_month: day,
+
+      mt_idx: shopInfo?.store_info?.mt_idx,
+    });
+  };
+
   return (
     <>
       <Header title="정비예약" />
@@ -51,7 +78,11 @@ export default function ReservationDate({navigation}) {
           <RepairReservationHeader step={3} />
           <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
           <Box mg="20px 16px">
-            <ReservationCalendar selectDate={selectDate} setSelectDate={setSelectDate} />
+            <ReservationCalendar
+              selectDate={selectDate}
+              setSelectDate={setSelectDate}
+              onChangeMonth={onChangeMonth}
+            />
           </Box>
           <TimeList
             timeList={timeList}
