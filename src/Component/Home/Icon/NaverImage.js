@@ -11,15 +11,15 @@ import {NaverLogin, getProfile} from '@react-native-seoul/naver-login';
 import {SnsLogin} from '../../../Hooks/SnsLogin';
 
 const iosKeys = {
-  kConsumerKey: 'kkeU9exIGwNDzPGDBBpr',
-  kConsumerSecret: '0mCYc72HgH',
+  kConsumerKey: 'ITpjZ2KbbItwBYgm1Kjh',
+  kConsumerSecret: '2Ue9R_kQzN',
   kServiceAppName: '테스트앱(iOS)',
   kServiceAppUrlScheme: 'testapp', // only for iOS
 };
 
 const androidKeys = {
-  kConsumerKey: 'kkeU9exIGwNDzPGDBBpr',
-  kConsumerSecret: '0mCYc72HgH',
+  kConsumerKey: 'ITpjZ2KbbItwBYgm1Kjh',
+  kConsumerSecret: '2Ue9R_kQzN',
   kServiceAppName: '테스트앱(안드로이드)',
 };
 

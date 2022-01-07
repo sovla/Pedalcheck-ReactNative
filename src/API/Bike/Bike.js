@@ -1,4 +1,4 @@
-import {API} from '../Api';
+import {API, ImageAPI} from '../Api';
 
 export const getBikeList = async args => {
   try {
@@ -20,7 +20,8 @@ export const getBikeModel = async args => {
 
 export const addBike = async args => {
   try {
-    const response = await API.post('bike_add.php', args);
+    const data = args;
+    const response = await ImageAPI(data, 'mbt_image', 'bike_add.php');
     return response;
   } catch (error) {
     console.log(error);

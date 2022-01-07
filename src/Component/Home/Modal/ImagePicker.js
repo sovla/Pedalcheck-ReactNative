@@ -1,4 +1,4 @@
-import {Box, Container, RowBox} from '@/assets/global/Container';
+import {Box, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
@@ -7,15 +7,12 @@ import Default1 from '@assets/image/default_1.png';
 import Default2 from '@assets/image/default_2.png';
 import Default3 from '@assets/image/default_3.png';
 import Default4 from '@assets/image/default_4.png';
-import Default5 from '@assets/image/default_5.png';
 import {LinkWhiteButton} from '@/assets/global/Button';
 import {TouchableOpacity} from 'react-native';
 import {modalClose} from '@/Store/modalState';
-import {useEffect} from 'react';
 
 export default function ImagePicker({setSelectImage}) {
   const [selectNumber, setSelectNumber] = useState(0);
-  const modal = useSelector(state => state.modal);
   const size = useSelector(state => state.size);
   const dispatch = useDispatch();
   const imageWidth = `${(size.designWidth - 32 - 60) / 4}px`;
@@ -57,16 +54,6 @@ export default function ImagePicker({setSelectImage}) {
             width={imageWidth}
             height="80px"
             style={selectNumber === 4 && selectBorder}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setSelectNumber(5)}
-          style={{marginTop: 10, marginBottom: 10}}>
-          <DefaultImage
-            source={Default5}
-            width={imageWidth}
-            height="80px"
-            style={selectNumber === 5 && selectBorder}
           />
         </TouchableOpacity>
       </RowBox>

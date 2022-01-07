@@ -59,7 +59,8 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
       mbt_motor: bike.motorManufacturer,
       mbt_power: bike.power,
       mbt_type: bike.type,
-      // 모델 상세
+      mbt_model_detail: bike.modelDetail,
+      mbt_image: image,
     });
     if (response.data.result === 'true') {
       Alert.alert('등록 되었습니다.');
@@ -73,16 +74,15 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
       mbt_serial: bike.vehicleNumber,
     }).then(
       res =>
-        res?.data?.result == 'true' &&
-        dispatch(
-          modalOpenAndProp({
-            content: '기존에 등록된 정보가 있습니다. 이 정보롤 사용하시겠습니까?',
-            leftContent: '확인',
-            rightContent: '취소',
-            rightPress: () => {
-              dispatch(modalClose());
-            },
-            leftPress: () => {
+        res?.data?.data?.data !== '' &&
+        Alert.alert('', '기존에 등록된 정보가 있습니다. 이 정보를 사용하시겠습니까?', [
+          {
+            text: '취소',
+            onPress: null,
+          },
+          {
+            text: '확인',
+            onPress: () => {
               const {
                 data: {
                   data: {data},
@@ -100,14 +100,13 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
                 motorManufacturer: data.mbt_motor,
                 power: data.mbt_power,
                 type: data.mbt_type,
+                modelDetail: data.mbt_model_detail,
               });
-              dispatch(modalClose());
             },
-          }),
-        ),
+          },
+        ]),
     );
   };
-  console.log(bike);
 
   const selectionOption = [
     {
@@ -136,13 +135,13 @@ export default function BikeRegisterContainer({bike, setBike, image, setImage}) 
       value: 'type',
       isDropdown: true,
       dropdownItems: [
-        {label: '로드바이크', value: '로드바이크'},
-        {label: '미니벨로', value: '미니벨로'},
-        {label: 'MTB', value: 'MTB'},
-        {label: '전기자전거', value: '전기자전거'},
-        {label: '하이브리드', value: '하이브리드'},
-        {label: '펫바이크', value: '펫바이크'},
-        {label: '픽시', value: '픽시'},
+        {label: '로드바이크', value: '1'},
+        {label: '미니벨로', value: '2'},
+        {label: 'MTB', value: '3'},
+        {label: '전기자전거', value: '4'},
+        {label: '하이브리드', value: '5'},
+        {label: '펫바이크', value: '6'},
+        {label: '픽시', value: '7'},
       ],
     },
     {

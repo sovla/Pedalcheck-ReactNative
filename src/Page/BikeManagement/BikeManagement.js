@@ -11,7 +11,9 @@ import {getBikeList} from '@/API/Bike/Bike';
 import {useEffect} from 'react';
 import {Alert} from 'react-native';
 import {useIsFocused} from '@react-navigation/native';
-export default function BikeManagement() {
+import BikeRegisterFirst from './BikeRegisterFirst';
+
+export default function BikeManagement({navigation}) {
   const {size, login} = useSelector(state => state);
   const [select, setSelect] = useState('사용중인 자전거');
   const [page, setPage] = useState(1);
@@ -36,11 +38,17 @@ export default function BikeManagement() {
 
   return (
     <>
-      <Header title="자전거 관리" />
+      {bikeList?.length ? (
+        <>
+          <Header title="자전거 관리" />
 
-      <MenuNav menuItem={menuItem} setSelect={setSelect} select={select} />
-      {select === '사용중인 자전거' && <UseBike size={size} items={bikeList} />}
-      {select === '보관 자전거' && <StorageBike size={size} item={bikeList} />}
+          <MenuNav menuItem={menuItem} setSelect={setSelect} select={select} />
+          {select === '사용중인 자전거' && <UseBike size={size} items={bikeList} />}
+          {select === '보관 자전거' && <StorageBike size={size} item={bikeList} />}
+        </>
+      ) : (
+        <BikeRegisterFirst navigation={navigation} />
+      )}
     </>
   );
 }

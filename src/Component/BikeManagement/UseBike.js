@@ -43,7 +43,7 @@ export default function UseBike({items, size}) {
         data={items}
         renderItem={({item, index}) => {
           const changeItem = {
-            brandname: item.mbt_brand,
+            brandName: item.mbt_brand,
             modelName: item.mbt_model,
             bikeName: item.mbt_nick,
             date: item.mbt_wdate,

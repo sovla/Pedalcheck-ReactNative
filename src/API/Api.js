@@ -65,6 +65,7 @@ export const ImageAPI = async (data, field, url) => {
   // 이미지 API 2022-01-05 16:40:31 Junhan
   //
   try {
+    console.log('formData :::', data);
     let cloneData = Object.assign({}, data);
     delete cloneData[field];
 
@@ -72,23 +73,36 @@ export const ImageAPI = async (data, field, url) => {
 
     let imageResult = {};
     let index = 1;
-    for (const imageItem of data[field]) {
-      Object.assign(imageResult, {
-        [`${field}${index}`]: {
+    if (Array.isArray(data[field])) {
+      for (const imageItem of data[field]) {
+        Object.assign(imageResult, {
+          [`${field}${index}`]: {
+            key: 'poto' + new Date().getTime(),
+            uri: Platform.OS === 'android' ? imageItem.path : imageItem.path.replace('file://', ''),
+            type: imageItem.mime,
+            name: 'auto.jpg',
+          },
+        });
+        index++;
+      }
+    } else {
+      const imageItem = data[field];
+      imageResult = {
+        [field]: {
           key: 'poto' + new Date().getTime(),
           uri: Platform.OS === 'android' ? imageItem.path : imageItem.path.replace('file://', ''),
           type: imageItem.mime,
           name: 'auto.jpg',
         },
-      });
-      index++;
+      };
     }
+    console.log(imageResult);
     const formData = formFormatter({
       jwt_data,
       secretKey: SECRETKEY,
       ...imageResult,
     });
-    console.log('formData :::', data);
+
     const response = await axios.post(`${baseURL}${url}`, formData, {
       'Content-Type': 'application/x-www-form-urlencoded',
     });

@@ -29,6 +29,7 @@ import {DeleteLocation} from '@/Store/locationState';
 import {getEventList} from '@/API/Repair/Repair';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {is} from 'immer/dist/internal';
+import {login} from '@react-native-seoul/kakao-login';
 
 export default function RepairHome() {
   const {location} = useSelector(state => state);
