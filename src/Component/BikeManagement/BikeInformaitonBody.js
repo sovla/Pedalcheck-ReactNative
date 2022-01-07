@@ -20,6 +20,10 @@ export default function BikeInformaitonBody({bikeInfoDetail}) {
       mg="10px 0px">
       <RowBox width="100%" flexWrap="wrap" backgroundColor="#0000">
         {bikeInfoDetail.map(item => {
+          if (!item?.value) {
+            return null;
+          }
+
           const innerMargin = item.title !== '모델상세' ? '0px 0px 10px' : '0px';
           return (
             <RowBox

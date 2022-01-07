@@ -1,7 +1,7 @@
 import {Box, RowBox, ScrollBox} from '@/assets/global/Container';
 import Header from '@/Component/Layout/Header';
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import {Alert, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import DefaultImage from '@assets/global/Image';
 import {BorderButton, LinkButton} from '@/assets/global/Button';
@@ -41,13 +41,26 @@ export default function BikeDetail({navigation, route}) {
   };
 
   const deleteBikeHandle = async () => {
-    const response = await deleteBike({
-      _mt_idx: login.mt_idx,
-      mbt_idx: route?.params?.mbt_idx,
-    });
-    if (response.data.result === 'true') {
-      navigation.goBack();
-    }
+    Alert.alert('', '자전거를 삭제하시겠습니까? 삭제하면 복구 할 수 없습니다.', [
+      {
+        text: '취소',
+        onPress: () => {
+          return null;
+        },
+      },
+      {
+        text: '확인',
+        onPress: async () => {
+          const response = await deleteBike({
+            _mt_idx: login.mt_idx,
+            mbt_idx: route?.params?.mbt_idx,
+          });
+          if (response.data.result === 'true') {
+            navigation.goBack();
+          }
+        },
+      },
+    ]);
   };
 
   const dummyItem = {
@@ -63,7 +76,7 @@ export default function BikeDetail({navigation, route}) {
     changeCycle: 1200,
   };
 
-  const {bike} = bikeInformation;
+  const {bike, order, bike_km} = bikeInformation;
 
   const bikeInfo = bikeInformation?.bike
     ? {
@@ -77,7 +90,7 @@ export default function BikeDetail({navigation, route}) {
           },
           {
             title: '연식',
-            value: bike?.mbt_year + '연식',
+            value: bike?.mbt_year ? bike.mbt_year + '년식' : '',
           },
           {
             title: '타입',
@@ -97,7 +110,7 @@ export default function BikeDetail({navigation, route}) {
           },
           {
             title: '모델상세',
-            value: '모델 상세 노출 영역', // 수정 필요
+            value: bike.mbt_model_detail, // 수정 필요
           },
         ],
       }
