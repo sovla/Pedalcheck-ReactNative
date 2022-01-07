@@ -6,7 +6,7 @@ import {Box} from '@/assets/global/Container';
 import {DarkText} from '@/assets/global/Text';
 import DefaultImage from '@/assets/global/Image';
 import ArrowDownIcon from '@assets/image/arr_down.png';
-import { Platform } from 'react-native';
+import {Platform} from 'react-native';
 
 export default function DefaultDropdown({
   data,
@@ -20,10 +20,11 @@ export default function DefaultDropdown({
   fontSize = 15,
 }) {
   let fontFamily = '';
-  if(Platform.OS === "android"){
-    fontFamliy = fontType === 'normal' ? 'NotoSansKR-Regular' : `NotoSansKR-${fontType}`;
-  }else{
-    fontFamliy = fontType === 'normal' ? 'NotoSansCJKkr-RegularTTF' : `NotoSansCJKkr-${fontType}TTF`;
+  if (Platform.OS === 'android') {
+    fontFamily = fontType === 'normal' ? 'NotoSansKR-Regular' : `NotoSansKR-${fontType}`;
+  } else {
+    fontFamily =
+      fontType === 'normal' ? 'NotoSansCJKkr-RegularTTF' : `NotoSansCJKkr-${fontType}TTF`;
   }
   return (
     <Dropdown
@@ -39,9 +40,9 @@ export default function DefaultDropdown({
         height: height,
         color: Theme.color.black,
         fontSize: fontSize,
-        fontFamily: fontFamliy,
+        fontFamily: fontFamily,
         letterSpacing: -0.45,
-        justifyContent:'center',
+        justifyContent: 'center',
         paddingLeft: getPixel(pdLeft),
       }}
       style={{
@@ -50,7 +51,7 @@ export default function DefaultDropdown({
         color: 'black',
         borderRadius: 10,
         alignItems: 'center',
-        justifyContent:'center', 
+        justifyContent: 'center',
         borderWidth: isBorder ? 1 : 0,
         borderColor: isBorder ? Theme.borderColor.gray : Theme.color.white,
       }}
