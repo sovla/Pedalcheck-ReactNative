@@ -36,13 +36,23 @@ export default function RepairCycle({item}) {
         </RowBox>
         <RowBox mg="6px 0px 0px">
           <DarkText fontSize={Theme.fontSize.fs14}>
-            마치막 교체 후 <DarkBoldText>{item.lastChange} km </DarkBoldText>
+            마치막 교체 후{' '}
+            <DarkBoldText>
+              {item.title === '바테이프 교체 주기'
+                ? item.lastChange + ' 일'
+                : item.lastChange + ' km'}{' '}
+            </DarkBoldText>
             주행
           </DarkText>
         </RowBox>
         <RowBox mg="0px 0px 16px">
           <DarkText fontSize={Theme.fontSize.fs14}>
-            교체 권장 시기까지 <DarkBoldText>{item.changeCycle - item.lastChange} km </DarkBoldText>
+            교체 권장 시기까지{' '}
+            <DarkBoldText>
+              {item.title === '바테이프 교체 주기'
+                ? item.changeCycle - item.lastChange + ' 일'
+                : item.changeCycle - item.lastChange + ' km'}{' '}
+            </DarkBoldText>
             남음
           </DarkText>
         </RowBox>

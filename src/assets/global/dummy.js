@@ -399,3 +399,16 @@ export const shopDateHistory = [
     value: 2021,
   },
 ];
+
+// const dummyItem = {
+//   title: '체인 윤활 주기',
+//   image: DummyIcon,
+//   lastChange: 400,
+//   changeCycle: 1000,
+// };
+// const dummyItem1 = {
+//   title: '체인 교체 주기',
+//   image: DummyIcon,
+//   lastChange: 550,
+//   changeCycle: 1200,
+// };

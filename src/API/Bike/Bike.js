@@ -28,6 +28,16 @@ export const addBike = async args => {
   }
 };
 
+export const bikeEdit = async args => {
+  try {
+    const data = args;
+    const response = await ImageAPI(data, 'mbt_image', 'bike_edit.php');
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const bikeSerialCheck = async args => {
   try {
     const response = await API.post('bike_serial_chk.php', args);
@@ -58,6 +68,15 @@ export const deleteBike = async args => {
 export const changeBikeStatus = async args => {
   try {
     const response = await API.post('bike_flag_proc.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const setBikeDistacne = async args => {
+  try {
+    const response = await API.post('bike_km_add.php', args);
     return response;
   } catch (error) {
     console.log(error);
