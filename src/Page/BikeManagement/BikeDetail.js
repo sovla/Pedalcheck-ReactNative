@@ -9,6 +9,12 @@ import TrashIcon from '@assets/image/ic_trash.png';
 import ModifyIcon from '@assets/image/ic_modify.png';
 import Theme from '@/assets/global/Theme';
 import DummyIcon from '@assets/image/default_5.png';
+import chainOil from '@assets/image/chainOil.png';
+import chain from '@assets/image/chain.png';
+import tire from '@assets/image/tire.png';
+import cable from '@assets/image/cable.png';
+import handle from '@assets/image/handle.png';
+
 import {DarkText} from '@/assets/global/Text';
 import {DefaultInput} from '@/assets/global/Input';
 import RepairCycle from '@/Component/BikeManagement/RepairCycle';
@@ -18,13 +24,15 @@ import BikeInformationHeader from '@/Component/BikeManagement/BikeInformationHea
 import BikeInformaitonBody from '@/Component/BikeManagement/BikeInformaitonBody';
 import TrashButton from '@/Component/Buttons/TrashButton';
 import ModifyButton from '@/Component/Buttons/ModifyButton';
-import {changeBikeStatus, deleteBike, getBikeDetail} from '@/API/Bike/Bike';
+import {changeBikeStatus, deleteBike, getBikeDetail, setBikeDistacne} from '@/API/Bike/Bike';
 import {useEffect} from 'react';
 import {useState} from 'react';
+import BikeChangeCycle from '@/Util/BikeChangeCycle';
 
 export default function BikeDetail({navigation, route}) {
   const {size, login} = useSelector(state => state);
   const [bikeInformation, setBikeInformation] = useState([]);
+  const [bikeDistanceText, setBikeDistacneText] = useState('');
 
   useEffect(() => {
     getBikeDetailHandle();
@@ -71,20 +79,30 @@ export default function BikeDetail({navigation, route}) {
     });
   };
 
-  const dummyItem = {
-    title: '체인 윤활 주기',
-    image: DummyIcon,
-    lastChange: 400,
-    changeCycle: 1000,
-  };
-  const dummyItem1 = {
-    title: '체인 교체 주기',
-    image: DummyIcon,
-    lastChange: 550,
-    changeCycle: 1200,
+  const setBikeDistacneHandle = async bikeStatus => {
+    const response = await setBikeDistacne({
+      _mt_idx: login.idx,
+      mbt_idx: route?.params?.mbt_idx,
+      mbt_km: bikeDistanceText,
+    });
+    getBikeDetailHandle();
   };
 
+  const bikeType = [
+    {},
+    {label: '로드바이크', value: '1'},
+    {label: '미니벨로', value: '2'},
+    {label: 'MTB', value: '3'},
+    {label: '전기자전거', value: '4'},
+    {label: '하이브리드', value: '5'},
+    {label: '펫바이크', value: '6'},
+    {label: '픽시', value: '7'},
+  ];
+
   const {bike, order, bike_km} = bikeInformation;
+  const bikeAddDate = new Date(bike?.mbt_wdate);
+  const today = new Date();
+  const dateDiff = Math.ceil((today.getTime() - bikeAddDate.getTime()) / (1000 * 3600 * 24));
 
   const bikeInfo = bikeInformation?.bike
     ? {
@@ -102,7 +120,7 @@ export default function BikeDetail({navigation, route}) {
           },
           {
             title: '타입',
-            value: bike?.mbt_type,
+            value: bikeType[bike?.mbt_type].label,
           },
           {
             title: '구동계',
@@ -123,6 +141,39 @@ export default function BikeDetail({navigation, route}) {
         ],
       }
     : {};
+
+  const dummyItem = [
+    {
+      title: '체인 윤활 주기',
+      image: chainOil,
+      lastChange: BikeChangeCycle(bike_km, 400),
+      changeCycle: 400,
+    },
+    {
+      title: '체인 교체 주기',
+      image: chain,
+      lastChange: BikeChangeCycle(bike_km, 3000),
+      changeCycle: 3000,
+    },
+    {
+      title: '타이어 교체 주기',
+      image: tire,
+      lastChange: BikeChangeCycle(bike_km, 3000),
+      changeCycle: 3000,
+    },
+    {
+      title: '케이블 교체 주기',
+      image: cable,
+      lastChange: BikeChangeCycle(bike_km, 8000),
+      changeCycle: 8000,
+    },
+    {
+      title: '바테이프 교체 주기',
+      image: handle,
+      lastChange: BikeChangeCycle(dateDiff, 365),
+      changeCycle: 365,
+    },
+  ];
 
   const RightComponent = () => {
     return (
@@ -161,20 +212,25 @@ export default function BikeDetail({navigation, route}) {
             </RowBox>
             <RowBox mg="10px 0px 20px">
               <DefaultInput
+                value={bikeDistanceText}
+                changeFn={text => setBikeDistacneText(text)}
                 width="310px"
                 placeHolder="주행거리를 입력하세요"
                 mg="0px 10px 0px 0px"
               />
-              <LinkButton width="60px" height="44px" content="저장" />
+              <LinkButton
+                width="60px"
+                height="44px"
+                content="저장"
+                to={() => setBikeDistacneHandle()}
+              />
             </RowBox>
           </Box>
           <Box>
             <DarkText fontWeight={Theme.fontWeight.medium}>정비 주기</DarkText>
-            <RepairCycle item={dummyItem} />
-            <RepairCycle item={dummyItem1} />
-            <RepairCycle item={dummyItem} />
-            <RepairCycle item={dummyItem} />
-            <RepairCycle item={dummyItem} />
+            {dummyItem.map((item, index) => {
+              return <RepairCycle key={index} item={item} />;
+            })}
           </Box>
           <Box>
             <RowBox
@@ -186,9 +242,27 @@ export default function BikeDetail({navigation, route}) {
               <DefaultImage source={ArrowRightIcon} width="24px" height="24px" />
             </RowBox>
             <Box>
-              <ShopRepairHistory item={shopItem} />
-              <ShopRepairHistory item={shopItem1} />
-              <ShopRepairHistory item={shopItem2} />
+              {order?.length ? (
+                order?.map((item, index) => {
+                  const shopItem = bikeInformation?.order
+                    ? {
+                        shopName: item.mst_name,
+                        product: item.pt_title,
+                        date: item.ot_pt_date + ' ' + item.ot_pt_time.slice(0, 4),
+                        status: item.ot_status,
+                      }
+                    : {};
+                  return <ShopRepairHistory item={shopItem} />;
+                })
+              ) : (
+                <Box
+                  alignItems="center"
+                  justifyContent="space-between"
+                  width="380px"
+                  mg="30px 0px 30px 0px">
+                  <DarkText>정비이력이 없습니다.</DarkText>
+                </Box>
+              )}
             </Box>
           </Box>
         </ScrollBox>
@@ -197,21 +271,21 @@ export default function BikeDetail({navigation, route}) {
   );
 }
 
-const shopItem = {
-  shopName: '인천신스',
-  product: '정비 - 오버홀',
-  date: '2021-10-07 16:00',
-  status: '예약',
-};
-const shopItem1 = {
-  shopName: '인천신스',
-  product: '정비 - 오버홀',
-  date: '2021-10-07 16:00',
-  status: '승인',
-};
-const shopItem2 = {
-  shopName: '인천신스',
-  product: '정비 - 오버홀',
-  date: '2021-10-07 16:00',
-  status: '처리완료',
-};
+// const shopItem = {
+//   shopName: '인천신스',
+//   product: '정비 - 오버홀',
+//   date: '2021-10-07 16:00',
+//   status: '예약',
+// };
+// const shopItem1 = {
+//   shopName: '인천신스',
+//   product: '정비 - 오버홀',
+//   date: '2021-10-07 16:00',
+//   status: '승인',
+// };
+// const shopItem2 = {
+//   shopName: '인천신스',
+//   product: '정비 - 오버홀',
+//   date: '2021-10-07 16:00',
+//   status: '처리완료',
+// };

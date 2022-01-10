@@ -15,6 +15,7 @@ import ThirdParty from '../Home/Modal/ThirdParty';
 import DeleteAccount from '../More/Modal/DeleteAccount';
 import QuestionDelete from '../More/Modal/QuestionDelete';
 import ReservationCancle from '../More/Modal/ReservationCancle';
+import DaumPostMadal from '../MyInformation/DaumPostMadal';
 import PaymentInformationCheck from '../Repair/Modal/PaymentInformationCheck';
 import AdjustmentHistory from '../RepairHistory/Modal/AdjustmentHistory';
 import Notice from '../RepairHistory/Modal/Notice';
@@ -85,6 +86,8 @@ export default function ModalBasic() {
         return QuestionSubmit;
       case 'alertModal':
         return AlertModal;
+      case 'daumPostModal':
+        return DaumPostMadal;
     }
   };
 

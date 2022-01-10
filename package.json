@@ -11,9 +11,10 @@
     "storybook": "start-storybook -p 7007",
     "build-storybook": "build-storybook",
     "adb": "adb connect 192.168.0.30 && yarn android",
-    "adb1": "adb connect 192.168.0.117 && yarn android"
+    "adb1": "adb connect 192.168.0.64 && yarn android"
   },
   "dependencies": {
+    "@actbase/react-daum-postcode": "1.0.1",
     "@react-native-community/datetimepicker": "^3.5.2",
     "@react-native-firebase/app": "14.1.0",
     "@react-native-firebase/messaging": "14.1.0",

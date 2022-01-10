@@ -67,7 +67,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
       const response = await bikeEdit(sendData);
       if (response.data.result === 'true') {
         Alert.alert('수정 되었습니다.');
-        navigation.navigate('BikeManageMent');
+        navigation.navigate('BikeManagement');
       }
     } else {
       const response = await addBike(sendData);
