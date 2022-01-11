@@ -5,7 +5,9 @@ import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import React from 'react';
 
-export default function CustomerDetail() {
+export default function CustomerDetail({route}) {
+  const item = route?.params?.item;
+  console.log(item);
   return (
     <>
       <Header title="상세보기" />
@@ -18,38 +20,38 @@ export default function CustomerDetail() {
               borderColor={Theme.borderColor.gray}
               color={Theme.color.black}
               fontSize={Theme.fontSize.fs12}>
-              관심 매장
+              {item.mt_status}
             </BorderButton>
-            <DarkBoldText mg="0px 0px 0px 10px">홍길동</DarkBoldText>
+            <DarkBoldText mg="0px 0px 0px 10px">{item.mt_name}</DarkBoldText>
           </RowBox>
           <Box>
             <RowBox mg="0px 0px 10px">
               <DarkMediumText width="110px">이메일</DarkMediumText>
-              <DarkText width="270px">pedalee@pedalCheck.co.kr</DarkText>
+              <DarkText width="270px">{item.mt_email}</DarkText>
             </RowBox>
             <RowBox mg="0px 0px 10px">
               <DarkMediumText width="110px">연락처</DarkMediumText>
-              <DarkText width="270px">010-1234-5678</DarkText>
+              <DarkText width="270px">{item.mt_hp}</DarkText>
             </RowBox>
             <RowBox mg="0px 0px 10px">
               <DarkMediumText width="110px">지역</DarkMediumText>
-              <DarkText width="270px">서울특별시 강남구</DarkText>
+              <DarkText width="270px">{item.mt_addr}</DarkText>
             </RowBox>
             <RowBox mg="0px 0px 10px">
               <DarkMediumText width="110px">최초 방문일</DarkMediumText>
-              <DarkText width="270px">2021-10-07 16:00</DarkText>
+              <DarkText width="270px">{item.first_visit}</DarkText>
             </RowBox>
             <RowBox mg="0px 0px 10px">
               <DarkMediumText width="110px">최근 정비일</DarkMediumText>
-              <DarkText width="270px">2021-10-07 16:00</DarkText>
+              <DarkText width="270px">{item.last_visit}</DarkText>
             </RowBox>
             <RowBox mg="0px 0px 10px">
               <DarkMediumText width="110px">정비횟수</DarkMediumText>
-              <DarkText width="270px">12</DarkText>
+              <DarkText width="270px">{item.order_cnt}</DarkText>
             </RowBox>
             <RowBox mg="0px 0px 10px">
               <DarkMediumText width="110px">예약취소 횟수</DarkMediumText>
-              <DarkText width="270px">1</DarkText>
+              <DarkText width="270px">{item.order_cancel_cnt}</DarkText>
             </RowBox>
           </Box>
         </Box>

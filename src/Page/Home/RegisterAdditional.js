@@ -15,6 +15,8 @@ import {AddInformation, MemberJoin} from '@/API/User/Login';
 import {charImage} from '@/assets/global/dummy';
 import SnsLogin from '@/Hooks/SnsLogin';
 import {setUserInfo} from '@/Store/loginState';
+import {imageAddress} from '@assets/global/config';
+import ImageCropPicker from 'react-native-image-crop-picker';
 
 export default function RegisterAdditional({navigation, route}) {
   const {snsLogin, token, birthDate} = useSelector(state => state);
@@ -72,7 +74,14 @@ export default function RegisterAdditional({navigation, route}) {
   );
 }
 
-export const RegisterAdditionalBody = ({sex, setSex, setSelectImage, selectImage}) => {
+export const RegisterAdditionalBody = ({
+  sex,
+  setSex,
+  setSelectImage,
+  selectImage,
+  imageType,
+  setImageType,
+}) => {
   const {size} = useSelector(state => state);
 
   const dispatch = useDispatch();
@@ -82,7 +91,18 @@ export const RegisterAdditionalBody = ({sex, setSex, setSelectImage, selectImage
   const birthDateValue =
     birthDate?.year !== '' ? `${birthDate.year}년 ${birthDate.month}월 ${birthDate.day}일` : '';
 
-  const image = selectImage ? charImage[selectImage] : ProfileImage;
+  let image = selectImage ? charImage[selectImage] : ProfileImage;
+
+  const onPressAddImage = () => {
+    ImageCropPicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true, // 자르기 활성화
+    }).then(images => {
+      setSelectImage(images);
+      setImageType(2);
+    });
+  };
 
   return (
     <Container mg="0px 16px 30px">
@@ -90,7 +110,11 @@ export const RegisterAdditionalBody = ({sex, setSex, setSelectImage, selectImage
         <DarkText>회원 이미지</DarkText>
       </Box>
       <RowBox mg="0px 0px 20px">
-        <DefaultImage source={image} width="80px" height="80px" />
+        <DefaultImage
+          source={imageType === 2 ? {uri: selectImage.path} : image}
+          width="80px"
+          height="80px"
+        />
         <Box mg="7px 0px 7px 10px" height="66px" justifyContent="space-between">
           <TouchableOpacity
             onPress={() => {
@@ -98,6 +122,7 @@ export const RegisterAdditionalBody = ({sex, setSex, setSelectImage, selectImage
                 modalOpenAndProp({
                   modalComponent: 'slide/selectImage',
                   setSelectImage: setSelectImage,
+                  setImageType: setImageType,
                 }),
               );
             }}>
@@ -105,7 +130,7 @@ export const RegisterAdditionalBody = ({sex, setSex, setSelectImage, selectImage
               기본 이미지 선택
             </BorderButton>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onPressAddImage}>
             <BorderButton fontSize={Theme.fontSize.fs15} width="120px">
               갤러리에서 선택
             </BorderButton>
