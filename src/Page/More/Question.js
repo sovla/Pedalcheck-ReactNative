@@ -12,6 +12,7 @@ import {useEffect} from 'react';
 import {deleteQna, getQnaList} from '@/API/More/More';
 import QuestionAddition from '@/Component/More/Question/QuestionAddition';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
+import {useSelector} from 'react-redux';
 
 // 2022-01-03 10:51:16
 // Junhan
@@ -21,6 +22,7 @@ export default function Question() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const isFocus = navigation.isFocused();
+  const {login} = useSelector(state => state);
 
   const [select, setSelect] = useState('페달체크');
   const [pedalCheckList, setPedalCheckList] = useState([]); // 페달체크 문의내역
@@ -70,7 +72,7 @@ export default function Question() {
 
   const questionDelete = idx => {
     deleteQna({
-      _mt_idx: 4, // 수정필요
+      _mt_idx: login?.idx,
       qt_idx: idx,
     }).then(async res => {
       console.log(res, '삭제완료');
@@ -96,7 +98,7 @@ export default function Question() {
     const type = select === '페달체크' ? 'pedalCheck' : 'shop';
     if (!isLastPage[type]) {
       getQnaList({
-        _mt_idx: 4,
+        _mt_idx: login?.idx,
         qt_type: select === '페달체크' ? 2 : 1,
         page: paramPage ?? select === '페달체크' ? page : shopPage,
       }).then(res => {

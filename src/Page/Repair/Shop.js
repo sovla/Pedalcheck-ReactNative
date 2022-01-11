@@ -20,32 +20,32 @@ export default function Shop({route}) {
   const [selectMenu, setSelectMenu] = useState('매장소개');
   const {size, login, shopInfo} = useSelector(state => state);
 
-  const [isLike, setIsLike] = useState(false);
-
   const menu = ['매장소개', '상품보기', '리뷰'];
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (shopInfo?.pt_list?.length === 0)
-      getShopDetail({
-        _mt_idx: login?.idx,
-        mt_idx: mt_idx, // 고정값 수정필요
-      }).then(res => {
-        dispatch(setShopInfo(res.data.data.data));
-        setIsLike(res?.data?.data?.data?.store_info?.like_on === 'on');
-      });
+    if (shopInfo?.pt_list?.length === 0) getShopDetailApi();
 
     return () => {
       dispatch(ResetShopInfo());
     };
   }, []);
 
-  const onPressLike = () => {
-    sendLikeShop({
+  const onPressLike = async () => {
+    await sendLikeShop({
       _mt_idx: login?.idx,
       mt_idx: mt_idx,
     });
-    setIsLike(prev => !prev);
+    await getShopDetailApi();
+  };
+
+  const getShopDetailApi = async () => {
+    await getShopDetail({
+      _mt_idx: login?.idx,
+      mt_idx: mt_idx,
+    }).then(res => {
+      dispatch(setShopInfo(res.data.data.data));
+    });
   };
   return (
     <Container>
@@ -75,7 +75,7 @@ export default function Shop({route}) {
       />
       <FooterButtons
         isRepair={shopInfo?.store_info?.mst_type === '1'}
-        isLike={isLike}
+        isLike={shopInfo?.store_info?.like_on === 'on'}
         onPressLike={onPressLike}
       />
     </Container>

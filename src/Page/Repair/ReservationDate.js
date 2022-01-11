@@ -15,18 +15,24 @@ import {useFocusEffect} from '@react-navigation/native';
 import {ToastAndroid} from 'react-native';
 import {useEffect} from 'react';
 import {useCallback} from 'react';
+import moment from 'moment';
+import 'moment/locale/ko';
 
-export default function ReservationDate({navigation}) {
+export default function ReservationDate({navigation, route: {params}}) {
+  const now = new Date(moment().format('YYYY-MM-DD HH:mm:ss'));
+
   const {shopInfo} = useSelector(state => state);
-  const [selectItem, setSelectItem] = useState('');
-  const [selectDate, setSelectDate] = useState(null);
-  const [disabledTimeList, setDisabledTimeList] = useState([]);
-  const [timeList, setTimeList] = useState([]);
-  const now = new Date();
+  const [selectItem, setSelectItem] = useState(''); // 선택한 시간
+  const [selectDate, setSelectDate] = useState(null); // 선택한 날짜
+
+  const [disabledDayList, setDisabledDayList] = useState([]); // 선택불가 날짜
+  const [disabledTimeList, setDisabledTimeList] = useState([]); // 선택불가 시간
+  const [timeList, setTimeList] = useState([]); // 선택가능한 시간
 
   useUpdateEffect(() => {
     setDisabledTimeList([]);
     setTimeList([]);
+    setSelectItem('');
     getReservationTimeList({
       ot_pt_date: selectDate,
       mt_idx: shopInfo?.store_info?.mt_idx,
@@ -65,9 +71,10 @@ export default function ReservationDate({navigation}) {
   const onChangeMonth = day => {
     getdisabledReservationDayList({
       ot_pt_month: day,
-
       mt_idx: shopInfo?.store_info?.mt_idx,
-    });
+    })
+      .then(res => res.data.result === 'true' && res.data.data.data)
+      .then(data => setDisabledDayList(data.disabled_date));
   };
 
   return (
@@ -82,9 +89,11 @@ export default function ReservationDate({navigation}) {
               selectDate={selectDate}
               setSelectDate={setSelectDate}
               onChangeMonth={onChangeMonth}
+              disabledDayList={disabledDayList}
             />
           </Box>
           <TimeList
+            selectDate={selectDate}
             timeList={timeList}
             disabled={disabledTimeList}
             selectItem={selectItem}
@@ -92,7 +101,15 @@ export default function ReservationDate({navigation}) {
           />
           <Box mg="20px 16px" height="44px">
             <LinkButton
-              to={() => navigation.navigate('ReservationRequest')}
+              to={() =>
+                navigation.navigate('ReservationRequest', {
+                  ...params,
+                  selectDate: {
+                    date: selectDate,
+                    time: selectItem,
+                  },
+                })
+              }
               content="다음"></LinkButton>
           </Box>
         </ScrollBox>

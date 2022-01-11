@@ -1,17 +1,13 @@
 import {LinkButton} from '@/assets/global/Button';
-import {Box, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
+import {Box, RowBox, ScrollBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
-import DefaultLine from '@/assets/global/Line';
 import {DarkBoldText, DarkText, GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {DefaultCheckBox} from '@/Component/Home/CheckBox';
-import Header from '@/Component/Layout/Header';
-import {sizeSlice} from '@/Store/sizeState';
 import {useNavigation} from '@react-navigation/core';
 import React from 'react';
-import {useState} from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
 import {useSelector} from 'react-redux';
+import {useRoute} from '@react-navigation/native';
 
 export default function ReservationBikeSelect({
   bikeArray = bikeArrayDummy,
@@ -19,9 +15,13 @@ export default function ReservationBikeSelect({
   selectItem,
   isButton = true,
   type = 'mbt_',
+  bikeName,
+  setBikeName,
 }) {
   const {size} = useSelector(state => state);
   const navigation = useNavigation();
+  const route = useRoute();
+  console.log(route);
   return (
     <>
       <ScrollBox mg="0px 16px">
@@ -70,18 +70,27 @@ export default function ReservationBikeSelect({
               직접입력
             </DarkText>
           </RowBox>
-          <Box onFocus={() => setSelectItem(2000)}>
-            <DefaultInput
-              placeHolder="브랜드명과 모델명을 입력해주세요"
-              width={size.minusPadding}
-            />
-          </Box>
+          {selectItem === 2000 && (
+            <Box onFocus={() => setSelectItem(2000)}>
+              <DefaultInput
+                placeHolder="브랜드명과 모델명을 입력해주세요"
+                width={size.minusPadding}
+                value={bikeName}
+                changeFn={setBikeName}
+              />
+            </Box>
+          )}
         </Box>
       </ScrollBox>
       {isButton && (
         <LinkButton
           mg="0px 16px 20px"
-          to={() => navigation.navigate('ReservationDate')}
+          to={() =>
+            navigation.navigate('ReservationDate', {
+              ...route.params,
+              selectBike: selectItem !== 2000 ? bikeArray[selectItem] : bikeName,
+            })
+          }
           content="다음"
         />
       )}

@@ -13,8 +13,9 @@ import RepairReservationHeader from './RepairReservationHeader';
 export default function ShopReservationBike({route: {params}}) {
   const [selectItem, setSelectItem] = useState('');
   const [bikeList, setBikeList] = useState([]);
+  const [bikeName, setBikeName] = useState(''); // 직접입력 선택한 경우
   const {size, login} = useSelector(state => state);
-  console.log(params);
+  console.log(selectItem, bikeList);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -37,6 +38,8 @@ export default function ShopReservationBike({route: {params}}) {
           bikeArray={bikeList}
           setSelectItem={setSelectItem}
           selectItem={selectItem}
+          bikeName={bikeName}
+          setBikeName={setBikeName}
         />
       </Box>
     </>

@@ -22,7 +22,7 @@ export default function ShopReservationProduct({navigation}) {
     shopInfo: {pt_list},
   } = useSelector(state => state);
   const [selectProduct, setSelectProduct] = useState([]);
-  const onPressItem = index => {
+  const onPressItem = (item, index) => {
     // by.junhan 상위(main) 하위(cargo) 체크박스  선택 방법  (11-18)
     const findItem = selectProduct?.find(item => item.index === index);
     if (findItem) {
@@ -31,6 +31,7 @@ export default function ShopReservationProduct({navigation}) {
         {
           index: findItem.index,
           main: !findItem.main,
+          item: item,
         },
       ]);
     } else {
@@ -39,6 +40,7 @@ export default function ShopReservationProduct({navigation}) {
         {
           index: index,
           main: true,
+          item: item,
         },
       ]);
     }
@@ -66,10 +68,10 @@ export default function ShopReservationProduct({navigation}) {
                 item={changeItem}
                 key={changeItem?.pt_idx + index}
                 onPressMain={() => {
-                  onPressItem(index, false);
+                  onPressItem(innerItem, index);
                 }}
                 onPressCargo={() => {
-                  onPressItem(index, true);
+                  onPressItem(innerItem, index);
                 }}
                 selectItem={selectProduct.find(item => item.index === index)}
               />
@@ -117,7 +119,7 @@ export default function ShopReservationProduct({navigation}) {
   );
 }
 
-export const ReservationProduct = ({item, onPressMain, onPressCargo, selectItem}) => {
+export const ReservationProduct = ({item, onPressMain, selectItem}) => {
   const {size} = useSelector(state => state);
 
   return (

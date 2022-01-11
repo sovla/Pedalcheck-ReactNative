@@ -6,7 +6,7 @@ import numberFormat from '@/Util/numberFormat';
 import {Platform} from 'react-native';
 
 export const DefaultText = styled.Text`
-  fontfamily: ${Platform.OS === 'android' ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF'};
+  font-family: ${Platform.OS === 'android' ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF'};
   color: ${p => p.color ?? Theme.color.white};
   font-size: ${p => p.fontSize ?? Theme.fontSize.fs16};
   width: ${p => pixelChange(p.width) ?? 'auto'};
