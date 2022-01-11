@@ -1,4 +1,4 @@
-const {API} = require('../Api');
+const {API, ImageAPI} = require('../Api');
 
 export const LoginApi = async args => {
   try {
@@ -48,6 +48,54 @@ export const GoogleLogin = async args => {
 export const AddInformation = async args => {
   try {
     const response = await API.post('member_join2.php', args);
+
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const AddInformationImage = async args => {
+  try {
+    const data = args;
+    const response = await ImageAPI(data, 'mt_image', 'member_join2.php');
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const UpdateMemberImage = async args => {
+  try {
+    const data = args;
+    const response = await ImageAPI(data, 'mt_bank_image', 'member_edit.php');
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const UpdateMember = async args => {
+  try {
+    const response = await API.post('member_edit.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getUserInformation = async args => {
+  try {
+    const response = await API.post('member_info.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const memberRetire = async args => {
+  try {
+    const response = await API.post('member_leave.php', args);
     return response;
   } catch (error) {
     console.log(error);

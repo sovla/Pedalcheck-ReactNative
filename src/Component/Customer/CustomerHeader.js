@@ -12,10 +12,7 @@ import DefaultImage from '@/assets/global/Image';
 import {DarkBoldText, DarkMediumText, IndigoText, MediumText} from '@/assets/global/Text';
 import numberFormat from '@/Util/numberFormat';
 
-export default function () {
-  const totalCustomer = 741871;
-  const likeShopCustomer = 20662;
-  const customer = 721211;
+export default function ({totalCustomer, likeShopCustomer, customer}) {
   return (
     <Box
       mg="20px 16px 40px"

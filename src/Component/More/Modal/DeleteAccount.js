@@ -1,24 +1,59 @@
 import {Box, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
-import {DarkBoldText, DarkText, DefaultText, IndigoText} from '@/assets/global/Text';
+import {DarkBoldText, DarkText, DefaultText, ErrorText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import ModalTitleBox from '@/Component/Modal/ModalTitleBox';
 import React from 'react';
 import WarnigIcon from '@assets/image/ic_warning.png';
 import {DefaultCheckBox} from '@/Component/Home/CheckBox';
 import {FooterButton} from '@/assets/global/Button';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {modalClose} from '@/Store/modalState';
 import {useNavigation} from '@react-navigation/core';
+import {Alert, TouchableOpacity} from 'react-native';
+import {useState} from 'react';
+import {memberRetire} from '@/API/User/Login';
+import {resetUserInfo} from '@/Store/loginState';
 
 export default function DeleteAccount() {
+  const [isCheck, setIsCheck] = useState(false);
+  const {login} = useSelector(state => state);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const onPressDeleteAccount = () => {
-    navigation.navigate('RepairHome');
+    if (!isCheck) {
+      Alert.alert('안내사항 확인 후 동의해주세요.');
+      return;
+    }
+
+    Alert.alert('', '정말 회원탈퇴를 하시겠습니까?', [
+      {
+        text: '확인',
+        onPress: () => memberRetireHandle(),
+      },
+      {
+        text: '취소',
+      },
+    ]);
+
+    dispatch(modalClose());
   };
   const onPressCancle = () => {
     dispatch(modalClose());
+  };
+
+  const memberRetireHandle = async () => {
+    const response = await memberRetire({
+      _mt_idx: login.idx,
+    });
+
+    Alert.alert('', '회원탈퇴과 완료되었습니다. 그 동안 서비스를 이용해 주셔서 감사합니다.', [
+      {
+        text: '확인',
+        onPress: () => navigation.reset({routes: [{name: 'Home'}]}),
+      },
+    ]);
+    dispatch(resetUserInfo());
   };
 
   return (
@@ -120,12 +155,14 @@ export default function DeleteAccount() {
             </Box>
             <DarkText fontSize={Theme.fontSize.fs14}>신중히 선택하신후 결정해주세요.</DarkText>
           </RowBox>
-          <RowBox backgroundColor="#0000" width="310px" justifyContent="flex-end">
-            <DefaultCheckBox />
-            <DarkBoldText mg="0px 0px 0px 5px" fontSize={Theme.fontSize.fs14}>
-              동의
-            </DarkBoldText>
-          </RowBox>
+          <TouchableOpacity onPress={() => setIsCheck(prev => !prev)}>
+            <RowBox backgroundColor="#0000" width="310px" justifyContent="flex-end">
+              <DefaultCheckBox isDisabled isCheck={isCheck} />
+              <DarkBoldText mg="0px 0px 0px 5px" fontSize={Theme.fontSize.fs14}>
+                동의
+              </DarkBoldText>
+            </RowBox>
+          </TouchableOpacity>
         </Box>
       </Box>
       <FooterButton

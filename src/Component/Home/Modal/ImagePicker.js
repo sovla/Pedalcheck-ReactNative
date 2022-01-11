@@ -11,11 +11,15 @@ import {LinkWhiteButton} from '@/assets/global/Button';
 import {TouchableOpacity} from 'react-native';
 import {modalClose} from '@/Store/modalState';
 
-export default function ImagePicker({setSelectImage}) {
+export default function ImagePicker({setSelectImage, setImageType}) {
   const [selectNumber, setSelectNumber] = useState(0);
   const size = useSelector(state => state.size);
   const dispatch = useDispatch();
   const imageWidth = `${(size.designWidth - 32 - 60) / 4}px`;
+
+  const imageSelect = num => {
+    setSelectNumber('file' + num + '.png');
+  };
 
   return (
     <>

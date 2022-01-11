@@ -1,6 +1,6 @@
 import {BorderButton, LinkButton} from '@/assets/global/Button';
 import {Box, RowBox, ScrollBox} from '@/assets/global/Container';
-import {DarkBoldText, DefaultText} from '@/assets/global/Text';
+import {DarkBoldText, DefaultText, ErrorText} from '@/assets/global/Text';
 import Header from '@/Component/Layout/Header';
 import React from 'react';
 import DefaultImage from '@assets/global/Image';
@@ -26,6 +26,11 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
   const setChangeBike = (name, value) => {
     setBike(prev => ({...prev, [name]: value}));
   };
+  const [errorMessage, setErrorMessage] = useState({
+    bikeName: '',
+    bikeModel: '',
+    bikeImage: '',
+  });
 
   useEffect(() => {
     if (modal?.modalProp && modal?.isDone) {
@@ -44,6 +49,9 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
   };
 
   const addBikeHandle = async () => {
+    if (RegJoin()) {
+      return;
+    }
     const sendData = {
       _mt_idx: login?.idx,
       mbt_idx: bike.mbt_idx,
@@ -219,6 +227,33 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
     },
   ];
 
+  const RegJoin = () => {
+    let result = false;
+    if (bike.bikeName === '') {
+      setErrorMessage(prev => ({
+        ...prev,
+        bikeName: '별명을 입력해주세요.',
+      }));
+      result = true;
+    }
+    if (bike.bikeModel === '') {
+      setErrorMessage(prev => ({
+        ...prev,
+        bikeModel: '닉네임을 입력해주세요.',
+      }));
+      result = true;
+    }
+    if (!image) {
+      setErrorMessage(prev => ({
+        ...prev,
+        bikeImage: '이미지를 등록해주세요.',
+      }));
+      result = true;
+    }
+
+    return result;
+  };
+
   return (
     <>
       <Header title="자전거 추가" />
@@ -239,6 +274,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
               height="90px"
             />
           </RowBox>
+          {errorMessage.bikeImage !== '' && <ErrorText>{errorMessage.bikeImage}</ErrorText>}
           <DefaultInput
             title="별명"
             placeHolder="별명을 입력해주세요"
@@ -248,6 +284,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
             changeFn={item => setChangeBike('bikeName', item)}
             mg="0px 0px 20px"
             pd="0px 0px 5px"
+            errorMessage={errorMessage.bikeName !== '' && errorMessage.bikeName}
           />
           <DefaultInput
             title="모델"
@@ -267,6 +304,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
             isText
             mg="0px 0px 0px"
             pd="0px 0px 5px"
+            errorMessage={errorMessage.bikeModel !== '' && errorMessage.bikeModel}
           />
         </Box>
         <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
