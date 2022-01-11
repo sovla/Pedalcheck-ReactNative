@@ -1,17 +1,13 @@
 import {LinkButton} from '@/assets/global/Button';
-import {Box, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
+import {BetweenBox, Box, RowBox, ScrollBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
-import DefaultLine from '@/assets/global/Line';
 import {DarkBoldText, DarkText, GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {DefaultCheckBox} from '@/Component/Home/CheckBox';
-import Header from '@/Component/Layout/Header';
-import {sizeSlice} from '@/Store/sizeState';
 import {useNavigation} from '@react-navigation/core';
 import React from 'react';
-import {useState} from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
 import {useSelector} from 'react-redux';
+import {useRoute} from '@react-navigation/native';
 
 export default function ReservationBikeSelect({
   bikeArray = bikeArrayDummy,
@@ -19,9 +15,14 @@ export default function ReservationBikeSelect({
   selectItem,
   isButton = true,
   type = 'mbt_',
+  bikeName,
+  setBikeName,
+  onPressNext,
 }) {
   const {size} = useSelector(state => state);
   const navigation = useNavigation();
+  const route = useRoute();
+
   return (
     <>
       <ScrollBox mg="0px 16px">
@@ -70,21 +71,35 @@ export default function ReservationBikeSelect({
               직접입력
             </DarkText>
           </RowBox>
-          <Box onFocus={() => setSelectItem(2000)}>
-            <DefaultInput
-              placeHolder="브랜드명과 모델명을 입력해주세요"
-              width={size.minusPadding}
-            />
-          </Box>
+          {selectItem === 2000 && (
+            <BetweenBox onFocus={() => setSelectItem(2000)} width="380px">
+              <DefaultInput
+                placeHolder="브랜드명"
+                width={'185px'}
+                value={bikeName.bikeBrand}
+                changeFn={text =>
+                  setBikeName(prev => ({
+                    ...prev,
+                    bikeBrand: text,
+                  }))
+                }
+              />
+              <DefaultInput
+                placeHolder="모델명"
+                width={'185px'}
+                value={bikeName.bikeModel}
+                changeFn={text =>
+                  setBikeName(prev => ({
+                    ...prev,
+                    bikeModel: text,
+                  }))
+                }
+              />
+            </BetweenBox>
+          )}
         </Box>
       </ScrollBox>
-      {isButton && (
-        <LinkButton
-          mg="0px 16px 20px"
-          to={() => navigation.navigate('ReservationDate')}
-          content="다음"
-        />
-      )}
+      {isButton && <LinkButton mg="0px 16px 20px" to={onPressNext} content="다음" />}
     </>
   );
 }

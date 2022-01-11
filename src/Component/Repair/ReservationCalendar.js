@@ -7,18 +7,26 @@ import CheckIcon from '@assets/image/ic_check_cal.png';
 import DefaultImage from '@assets/global/Image';
 import CalendarLocalConfig from '@Util/CalendarLocalConfig';
 import {useSelector} from 'react-redux';
+import moment from 'moment';
+import 'moment/locale/ko';
 CalendarLocalConfig;
-export default function ReservationCalendar({selectDate, setSelectDate, onChangeMonth = () => {}}) {
+
+export default function ReservationCalendar({
+  selectDate,
+  setSelectDate,
+  onChangeMonth = () => {},
+  disabledDayList,
+}) {
   const {size} = useSelector(state => state);
 
-  const dayTime = 1000 * 60 * 60 * 24;
-
   const onPressDate = day => {
-    const now = new Date();
-    // console.log(dayTime);
-    // console.log(new Date(day.timestamp - dayTime), now);
-    // console.log(new Date(day.timestamp - dayTime) < now);
-    if (new Date(day.timestamp - dayTime) < now) {
+    if (disabledDayList?.length > 0 && disabledDayList.find(item => item === day.dateString)) {
+      return null;
+    }
+    const getDay = new Date(day.dateString); // 9시 기준으로 반환됨
+    const now = new Date(new Date().setHours(9, 0, 0, 0)); // 9시 설정
+
+    if (getDay < now) {
       return null;
     }
     const {dateString} = day;

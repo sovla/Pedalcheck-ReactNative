@@ -11,18 +11,23 @@ import RepairReservationHeader from './RepairReservationHeader';
 import QuestionIcon from '@assets/image/btn_detail.png';
 import Icon from '@assets/image/ic_lightning.png';
 import {getPixel} from '@/Util/pixelChange';
-import {useSelector} from 'react-redux';
-import {ScrollView, TouchableOpacity} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {Alert, ScrollView, TouchableOpacity} from 'react-native';
 import {useState} from 'react';
 import {BorderButton, LinkButton} from '@/assets/global/Button';
+import {clearReservation, setReservationProduct} from '@/Store/reservationState';
+import {useFocusEffect} from '@react-navigation/native';
+import {useEffect} from 'react';
 
 export default function ShopReservationProduct({navigation}) {
+  const dispatch = useDispatch();
   const {
     size,
     shopInfo: {pt_list},
   } = useSelector(state => state);
   const [selectProduct, setSelectProduct] = useState([]);
-  const onPressItem = index => {
+
+  const onPressItem = (item, index) => {
     // by.junhan 상위(main) 하위(cargo) 체크박스  선택 방법  (11-18)
     const findItem = selectProduct?.find(item => item.index === index);
     if (findItem) {
@@ -31,6 +36,7 @@ export default function ShopReservationProduct({navigation}) {
         {
           index: findItem.index,
           main: !findItem.main,
+          item: item,
         },
       ]);
     } else {
@@ -39,10 +45,50 @@ export default function ShopReservationProduct({navigation}) {
         {
           index: index,
           main: true,
+          item: item,
         },
       ]);
     }
   };
+  const filterItem = selectProduct.length > 0 && selectProduct.filter(item => item.main);
+
+  const reduceItem = (list, type) => {
+    // list 길이가 0 일떈 0 리턴
+    // list 길이가 1 일땐 첫번째 아이템 정보 리턴
+    // list 길이가 1이상일땐 총합 리턴
+    if (Array.isArray(list)) {
+      if (list.length > 1) {
+        return list.reduce((prev, curr) => {
+          return parseInt(prev?.item[type]) + parseInt(curr?.item[type]);
+        });
+      } else if (list.length === 1) {
+        return parseInt(list[0]?.item[type]);
+      }
+    }
+    return 0;
+  };
+  const money = reduceItem(filterItem, 'pt_price');
+  const saleMoney = reduceItem(filterItem, 'pt_dc_price') - money;
+
+  const onPressNext = () => {
+    if (filterItem.length > 0) {
+      dispatch(
+        setReservationProduct({
+          selectProduct,
+          totalPrice: money + saleMoney,
+        }),
+      );
+      navigation.navigate('ReservationBike');
+    } else {
+      Alert.alert('', '정비 상품을 선택해주세요.');
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearReservation());
+    };
+  }, []);
 
   return (
     <>
@@ -66,10 +112,10 @@ export default function ShopReservationProduct({navigation}) {
                 item={changeItem}
                 key={changeItem?.pt_idx + index}
                 onPressMain={() => {
-                  onPressItem(index, false);
+                  onPressItem(innerItem, index);
                 }}
                 onPressCargo={() => {
-                  onPressItem(index, true);
+                  onPressItem(innerItem, index);
                 }}
                 selectItem={selectProduct.find(item => item.index === index)}
               />
@@ -82,11 +128,11 @@ export default function ShopReservationProduct({navigation}) {
         <DarkBoldText mg="20px 0px 15px">결제금액</DarkBoldText>
         <RowBox justifyContent="space-between" width={size.minusPadding}>
           <DarkText>가격</DarkText>
-          <MoneyText money={50000} color={Theme.color.black} fontWeight={Theme.fontWeight.bold} />
+          <MoneyText money={money} color={Theme.color.black} fontWeight={Theme.fontWeight.bold} />
         </RowBox>
         <RowBox mg="10px 0px 20px" justifyContent="space-between" width={size.minusPadding}>
           <DarkText>할인</DarkText>
-          <MoneyText money={-3000} color={Theme.color.black} />
+          <MoneyText money={saleMoney} color={Theme.color.black} />
         </RowBox>
         <DefaultLine />
         <RowBox mg="10px 0px 20px" justifyContent="space-between" width={size.minusPadding}>
@@ -96,28 +142,21 @@ export default function ShopReservationProduct({navigation}) {
             </IndigoText>
           </RowBox>
           <MoneyText
-            money={47000}
+            money={money + saleMoney}
             color={Theme.color.black}
             fontSize={Theme.fontSize.fs18}
             fontWeight={Theme.fontWeight.bold}
           />
         </RowBox>
         <Box height="44px" mg="0px 0px 20px" width={size.minusPadding}>
-          <LinkButton
-            widht={size.minusPadding}
-            to={() => {
-              navigation.navigate('ReservationBike', {
-                selectProduct,
-              });
-            }}
-            content="다음"></LinkButton>
+          <LinkButton widht={size.minusPadding} to={onPressNext} content="다음"></LinkButton>
         </Box>
       </Box>
     </>
   );
 }
 
-export const ReservationProduct = ({item, onPressMain, onPressCargo, selectItem}) => {
+export const ReservationProduct = ({item, onPressMain, selectItem}) => {
   const {size} = useSelector(state => state);
 
   return (

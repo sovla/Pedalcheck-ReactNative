@@ -6,19 +6,57 @@ import {DarkBoldText, DarkText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import CheckBox, {DefaultCheckBox} from '@/Component/Home/CheckBox';
 import Header from '@/Component/Layout/Header';
-import {modalOpen, setNavigator} from '@/Store/modalState';
+import {modalOpen, modalOpenAndProp, setNavigator} from '@/Store/modalState';
+import {setReservationPayment} from '@/Store/reservationState';
+import {useIsFocused} from '@react-navigation/native';
 import React from 'react';
+import {useLayoutEffect} from 'react';
 import {useState} from 'react';
-import {TouchableOpacity} from 'react-native';
+import {Alert, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import RepairReservationHeader from './RepairReservationHeader';
 
-export default function ShopReservationRequest({navigation}) {
+export default function ShopReservationRequest({navigation, route: {params}}) {
   const dispatch = useDispatch();
-  const {size} = useSelector(state => state);
+  const {size, reservationInfo} = useSelector(state => state);
+  const isFocuesd = useIsFocused();
+
   const [repairRequest, setRepairRequest] = useState('');
   const [selectPayment, setSelectPayment] = useState('');
   const [thirdParty, setThirdParty] = useState(false);
+
+  const onPressNext = () => {
+    if (!selectPayment) {
+      Alert.alert('', '결제 방법을 선택해주세요.');
+      return;
+    }
+    if (thirdParty) {
+      dispatch(
+        setReservationPayment({
+          repairRequest,
+          selectPayment,
+        }),
+      );
+      dispatch(
+        modalOpenAndProp({
+          modalComponent: 'paymentInformationCheck',
+        }),
+      );
+      dispatch(setNavigator(navigation));
+    } else {
+      Alert.alert(
+        '',
+        '정비 예약 결제를 위해서는 개인정보 제3자 제공 동의가 필요합니다. 개인 정보 제3자 제공에 동의해주세요.',
+      );
+    }
+  };
+  useLayoutEffect(() => {
+    if (isFocuesd) {
+      setSelectPayment(reservationInfo?.selectPayment?.selectPayment ?? '');
+      setRepairRequest(reservationInfo?.selectPayment?.repairRequest ?? '');
+    }
+  }, [isFocuesd]);
+
   return (
     <>
       <Header title="정비예약" />
@@ -83,8 +121,7 @@ export default function ShopReservationRequest({navigation}) {
       <LinkButton
         mg="0px 16px 20px"
         to={() => {
-          dispatch(modalOpen('paymentInformationCheck'));
-          dispatch(setNavigator(navigation));
+          onPressNext();
         }}
         content="다음"
       />
