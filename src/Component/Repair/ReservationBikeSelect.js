@@ -1,5 +1,5 @@
 import {LinkButton} from '@/assets/global/Button';
-import {Box, RowBox, ScrollBox} from '@/assets/global/Container';
+import {BetweenBox, Box, RowBox, ScrollBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
 import {DarkBoldText, DarkText, GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
@@ -17,11 +17,12 @@ export default function ReservationBikeSelect({
   type = 'mbt_',
   bikeName,
   setBikeName,
+  onPressNext,
 }) {
   const {size} = useSelector(state => state);
   const navigation = useNavigation();
   const route = useRoute();
-  console.log(route);
+
   return (
     <>
       <ScrollBox mg="0px 16px">
@@ -71,29 +72,34 @@ export default function ReservationBikeSelect({
             </DarkText>
           </RowBox>
           {selectItem === 2000 && (
-            <Box onFocus={() => setSelectItem(2000)}>
+            <BetweenBox onFocus={() => setSelectItem(2000)} width="380px">
               <DefaultInput
-                placeHolder="브랜드명과 모델명을 입력해주세요"
-                width={size.minusPadding}
-                value={bikeName}
-                changeFn={setBikeName}
+                placeHolder="브랜드명"
+                width={'185px'}
+                value={bikeName.bikeBrand}
+                changeFn={text =>
+                  setBikeName(prev => ({
+                    ...prev,
+                    bikeBrand: text,
+                  }))
+                }
               />
-            </Box>
+              <DefaultInput
+                placeHolder="모델명"
+                width={'185px'}
+                value={bikeName.bikeModel}
+                changeFn={text =>
+                  setBikeName(prev => ({
+                    ...prev,
+                    bikeModel: text,
+                  }))
+                }
+              />
+            </BetweenBox>
           )}
         </Box>
       </ScrollBox>
-      {isButton && (
-        <LinkButton
-          mg="0px 16px 20px"
-          to={() =>
-            navigation.navigate('ReservationDate', {
-              ...route.params,
-              selectBike: selectItem !== 2000 ? bikeArray[selectItem] : bikeName,
-            })
-          }
-          content="다음"
-        />
-      )}
+      {isButton && <LinkButton mg="0px 16px 20px" to={onPressNext} content="다음" />}
     </>
   );
 }

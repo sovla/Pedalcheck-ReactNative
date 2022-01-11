@@ -10,18 +10,21 @@ import TimeList from '@/Component/Repair/TimeList';
 import ReservationCalendar from '@/Component/Repair/ReservationCalendar';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {getdisabledReservationDayList, getReservationTimeList} from '@/API/Shop/Shop';
-import {useSelector} from 'react-redux';
-import {useFocusEffect} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {ToastAndroid} from 'react-native';
 import {useEffect} from 'react';
 import {useCallback} from 'react';
 import moment from 'moment';
 import 'moment/locale/ko';
+import {setReservationDate} from '@/Store/reservationState';
 
 export default function ReservationDate({navigation, route: {params}}) {
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
   const now = new Date(moment().format('YYYY-MM-DD HH:mm:ss'));
 
-  const {shopInfo} = useSelector(state => state);
+  const {shopInfo, reservationInfo} = useSelector(state => state);
   const [selectItem, setSelectItem] = useState(''); // 선택한 시간
   const [selectDate, setSelectDate] = useState(null); // 선택한 날짜
 
@@ -42,6 +45,7 @@ export default function ReservationDate({navigation, route: {params}}) {
         setDisabledTimeList(data?.order_time);
         if (Array.isArray(data?.store_time)) {
           const result = data.store_time
+
             .filter(item => item.flag === 'Y')
             .reduce((prev, curr) => {
               if (!prev?.st_time) {
@@ -55,18 +59,18 @@ export default function ReservationDate({navigation, route: {params}}) {
       });
   }, [selectDate]);
 
-  useFocusEffect(
-    useCallback(() => {
-      getdisabledReservationDayList({
-        ot_pt_month:
-          selectDate?.substr(0, 7) ??
+  useEffect(() => {
+    if (isFocused) {
+      setSelectDate(reservationInfo?.selectDate?.date ?? null);
+      setSelectItem(reservationInfo?.selectDate?.time ?? '');
+      onChangeMonth(
+        selectDate?.substr(0, 7) ??
           `${now.getFullYear()}-${
             now.getMonth() + 1 < 10 ? '0' + (now.getMonth() + 1) : now.getMonth() + 1
           }`,
-        mt_idx: shopInfo?.store_info?.mt_idx,
-      });
-    }, []),
-  );
+      );
+    }
+  }, [isFocused]);
 
   const onChangeMonth = day => {
     getdisabledReservationDayList({
@@ -75,6 +79,16 @@ export default function ReservationDate({navigation, route: {params}}) {
     })
       .then(res => res.data.result === 'true' && res.data.data.data)
       .then(data => setDisabledDayList(data.disabled_date));
+  };
+
+  const onPressNext = () => {
+    dispatch(
+      setReservationDate({
+        date: selectDate,
+        time: selectItem,
+      }),
+    );
+    navigation.navigate('ReservationRequest');
   };
 
   return (
@@ -100,17 +114,7 @@ export default function ReservationDate({navigation, route: {params}}) {
             setSelectItem={setSelectItem}
           />
           <Box mg="20px 16px" height="44px">
-            <LinkButton
-              to={() =>
-                navigation.navigate('ReservationRequest', {
-                  ...params,
-                  selectDate: {
-                    date: selectDate,
-                    time: selectItem,
-                  },
-                })
-              }
-              content="다음"></LinkButton>
+            <LinkButton to={() => onPressNext()} content="다음"></LinkButton>
           </Box>
         </ScrollBox>
       </Box>

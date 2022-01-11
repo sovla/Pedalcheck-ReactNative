@@ -4,28 +4,62 @@ import DefaultLine from '@/assets/global/Line';
 import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import ReservationBikeSelect from '@/Component/Repair/ReservationBikeSelect';
-import {useFocusEffect} from '@react-navigation/native';
+import {setReservationBike} from '@/Store/reservationState';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import React from 'react';
+import {useLayoutEffect} from 'react';
+import {useEffect} from 'react';
 import {useState} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import RepairReservationHeader from './RepairReservationHeader';
 
-export default function ShopReservationBike({route: {params}}) {
-  const [selectItem, setSelectItem] = useState('');
-  const [bikeList, setBikeList] = useState([]);
-  const [bikeName, setBikeName] = useState(''); // 직접입력 선택한 경우
-  const {size, login} = useSelector(state => state);
-  console.log(selectItem, bikeList);
+export default function ShopReservationBike({navigation, route: {params}}) {
+  const {size, login, reservationInfo} = useSelector(state => state);
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
 
-  useFocusEffect(
-    React.useCallback(() => {
+  const [selectItem, setSelectItem] = useState();
+  const [bikeList, setBikeList] = useState([]);
+  const [bikeName, setBikeName] = useState({
+    bikeBrand: '',
+    bikeModel: '',
+  }); // 직접입력 선택한 경우
+
+  const onPressNext = () => {
+    if (selectItem !== '') {
+      dispatch(
+        setReservationBike({
+          selectItem,
+          bikeName,
+          selectBike: selectItem !== 2000 ? bikeList[selectItem] : bikeName,
+        }),
+      );
+      navigation.navigate('ReservationDate');
+    } else {
+    }
+  };
+  useLayoutEffect(() => {
+    if (isFocused) {
+      setSelectItem(reservationInfo?.selectBike?.selectItem ?? '');
+      setBikeName(
+        reservationInfo?.selectBike?.bikeName ?? {
+          bikeBrand: '',
+          bikeModel: '',
+        },
+      );
+
       getMyBikeList({
         _mt_idx: login?.idx,
       })
         .then(res => res.data?.result === 'true' && res.data.data.data)
         .then(data => setBikeList(data));
-    }, []),
-  );
+    } else {
+      setBikeName({
+        bikeBrand: '',
+        bikeModel: '',
+      });
+    }
+  }, [isFocused]);
 
   return (
     <>
@@ -40,6 +74,7 @@ export default function ShopReservationBike({route: {params}}) {
           selectItem={selectItem}
           bikeName={bikeName}
           setBikeName={setBikeName}
+          onPressNext={onPressNext}
         />
       </Box>
     </>
