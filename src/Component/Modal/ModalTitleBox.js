@@ -24,7 +24,7 @@ export default function ModalTitleBox({title, padding = 64}) {
         {title}
       </DefaultText>
       <Box width="10%" alignItems="flex-end" height="100%">
-        <TouchableOpacity onPress={() => dispatch(modalClose())}>
+        <TouchableOpacity style={{padding: 5}} onPress={() => dispatch(modalClose())}>
           <DefaultImage source={CloseIcon} width="20px" height="20px" resizeMode="contain" />
         </TouchableOpacity>
       </Box>

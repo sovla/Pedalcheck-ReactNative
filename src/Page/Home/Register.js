@@ -17,12 +17,12 @@ export default function Register({navigation}) {
   const checkObjectInit = {
     service: false,
     privacy: false,
-    location: false,
-    thirdParty: false,
+    // location: false,
+    // thirdParty: false,
     marketing: false,
   };
   const [checkObject, setCheckObject] = useState(checkObjectInit);
-  const isAllCheck = Object.values(checkObject).filter(item => item === true).length === 5;
+  const isAllCheck = Object.values(checkObject).filter(Boolean).length === 3;
 
   const onPressCheck = name => {
     setCheckObject(prev => ({...prev, [name]: !prev[name]}));
@@ -30,11 +30,14 @@ export default function Register({navigation}) {
 
   const onPressAllCheck = () => {
     if (isAllCheck) {
+      //  전체 체크 완료 상태면 초기값 넣어서 제거
       setCheckObject(checkObjectInit);
     } else {
-      for (const key in checkObject) {
-        if (!checkObject[key]) onPressCheck(key);
-      }
+      setCheckObject({
+        service: true,
+        privacy: true,
+        marketing: true,
+      });
     }
   };
   const itemArray = [
@@ -46,14 +49,14 @@ export default function Register({navigation}) {
       content: '개인정보 수집 및 이용 동의 (필수)',
       name: 'privacy',
     },
-    {
-      content: '위치기반서비스 이용약관 (필수)',
-      name: 'location',
-    },
-    {
-      content: '개인정보 제3자 제공 동의 (선택)',
-      name: 'thirdParty',
-    },
+    // {
+    //   content: '위치기반서비스 이용약관 (필수)',
+    //   name: 'location',
+    // },
+    // {
+    //   content: '개인정보 제3자 제공 동의 (선택)',
+    //   name: 'thirdParty',
+    // },
     {
       content: '마케팅 정보 수신 동의 (선택)',
       name: 'marketing',
@@ -107,7 +110,8 @@ export default function Register({navigation}) {
               navigation.navigate('RegisterInformation');
             }}
             content="다음"
-            disabled={!checkObject.service || !checkObject.privacy || !checkObject.location}
+            disabled={!checkObject.service || !checkObject.privacy}
+            // || !checkObject.location
           />
         </PositionBox>
       </Container>
