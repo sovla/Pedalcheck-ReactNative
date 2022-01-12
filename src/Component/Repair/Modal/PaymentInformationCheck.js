@@ -2,6 +2,7 @@ import {FooterButton} from '@/assets/global/Button';
 import {Box, RowBox} from '@/assets/global/Container';
 import {DarkBoldText, DarkText} from '@/assets/global/Text';
 import ModalTitleBox from '@/Component/Modal/ModalTitleBox';
+import {reduceItem} from '@/Page/Repair/ReservationProduct';
 import {modalClose} from '@/Store/modalState';
 import numberFormat from '@/Util/numberFormat';
 import {useNavigation} from '@react-navigation/core';
@@ -31,9 +32,7 @@ export default function PaymentInformationCheck() {
   };
 
   const firstProduct = selectProduct[0]?.item?.pt_title;
-  const totalPrice = selectProduct.reduce((prev, curr) => {
-    return parseInt(prev?.item?.pt_dc_price) + parseInt(curr?.item?.pt_dc_price);
-  });
+  const totalPrice = reduceItem(selectProduct, 'pt_dc_price');
 
   const reservationTime = `${selectDate?.date} ${selectDate?.time}`;
 

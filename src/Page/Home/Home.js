@@ -11,10 +11,12 @@ import GoogleImage from '@/Component/Home/Icon/GoogleImage';
 import NaverImage from '@/Component/Home/Icon/NaverImage';
 import AppleImage from '@/Component/Home/Icon/AppleImage';
 import {useEffect} from 'react';
-import {ToastAndroid} from 'react-native';
+import {Platform, ToastAndroid} from 'react-native';
+import {GrayText} from '@/assets/global/Text';
+import Theme from '@/assets/global/Theme';
 
 export default function Home({navigation}) {
-  const {size} = useSelector(state => state);
+  const betweenBoxWidth = Platform.OS === 'android' ? '262px' : '312px';
 
   return (
     <>
@@ -23,19 +25,17 @@ export default function Home({navigation}) {
       </Container>
       <Box alignItems="center">
         <Box pd="16px">
-          <TextLinkButton
-            to={() => navigation.navigate('Register')}
-            content="SNS 계정으로 회원가입/로그인"
-          />
+          <GrayText fontSize={Theme.fontSize.fs15}>SNS 계정으로 회원가입/로그인</GrayText>
         </Box>
-        <BetweenBox width={`${size.designWidth - 100}px`} pd="0px 0px 10px">
+        <BetweenBox width={betweenBoxWidth} pd="0px 0px 10px" mg="0px 0px 40px">
           <KakaoImage />
           <GoogleImage />
           <NaverImage />
+
           <AppleImage />
         </BetweenBox>
       </Box>
-      <HomeFooter navigation={navigation}></HomeFooter>
+      <HomeFooter navigation={navigation} isShowLogin={false} />
     </>
   );
 }

@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import Theme from './Theme';
-import {DefaultText} from './Text';
+import {DefaultText, GrayText} from './Text';
 import {Box, PositionBox, RowBox} from './Container';
 import {useSelector} from 'react-redux';
 import pixelChange from '@/Util/pixelChange';
@@ -106,9 +106,9 @@ export const LinkWhiteButton = ({
 export const TextLinkButton = ({to, content, pd, mg}) => {
   return (
     <TouchableOpacity onPress={to}>
-      <DefaultText color={Theme.color.gray} fontSize={Theme.fontSize.fs15} pd={pd} mg={mg}>
+      <GrayText fontSize={Theme.fontSize.fs15} pd={pd} mg={mg}>
         {content}
-      </DefaultText>
+      </GrayText>
     </TouchableOpacity>
   );
 };
