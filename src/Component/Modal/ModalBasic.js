@@ -34,9 +34,13 @@ export default function ModalBasic() {
   const modal = useSelector(state => state.modal);
   const size = useSelector(state => state.size);
   const dispatch = useDispatch();
+  if (modal?.isOpenModal !== true) {
+    return null;
+  }
+  console.log(modal);
   let RenderItem = <></>;
 
-  const childrenProps = modal?.modalProp; // 모달 프롭 넣는 부분
+  const childrenProps = modal?.modalProp ?? {}; // 모달 프롭 넣는 부분
 
   const selectRenderItem = () => {
     switch (modal?.modalComponent) {
@@ -93,9 +97,7 @@ export default function ModalBasic() {
 
   const isSlide = modal?.modalComponent?.split('/')[0] === 'slide';
   const isFullSize = modal?.modalComponent?.split('/')[0] === 'fullSize';
-  if (modal?.isOpenModal !== true) {
-    return null;
-  }
+
   RenderItem = selectRenderItem();
   if (RenderItem !== <></>) {
     return (

@@ -1,6 +1,7 @@
 import {GoogleLogin, KakaoLogin, NaverLogin} from '@/API/User/Login';
 import {setUserInfo} from '@/Store/loginState';
 import {setSnsInfo} from '@/Store/snsLoginState';
+import { Alert } from 'react-native';
 
 export const SnsLogin = async (id, name, email, type, dispatch, navigation, token) => {
   // 2:카카오/3:네이버/4:구글/5:애플
@@ -40,6 +41,10 @@ export const SnsLogin = async (id, name, email, type, dispatch, navigation, toke
       return navigation.navigate('Register');
     }
   } else {
+    if(result?.data?.msg === "탈퇴처리된 회원입니다."){
+      Alert.alert('탈퇴처리된 회원입니다.');
+      return;
+    }
     // 회원가입 X
     dispatch(
       setSnsInfo({

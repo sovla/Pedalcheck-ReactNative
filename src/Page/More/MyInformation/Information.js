@@ -9,26 +9,47 @@ import Theme from '@/assets/global/Theme';
 import DefaultLine from '@/assets/global/Line';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import {useDispatch, useSelector} from 'react-redux';
-import {useNavigation} from '@react-navigation/core';
+import {useNavigation, useIsFocused} from '@react-navigation/core';
 import {resetSnsInfo} from '@/Store/snsLoginState';
 import {resetUserInfo} from '@/Store/loginState';
+import {imageAddress} from '@assets/global/config';
+import {loginType} from '@/assets/global/dummy';
+import {useEffect} from 'react';
+import {useState} from 'react';
+import {getBikeList} from '@/API/Bike/Bike';
 
 export default function Information() {
-  const {size} = useSelector(state => state);
+  const {size, login} = useSelector(state => state);
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const [bikeNumber, setBikeNumber] = useState(0);
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    getBikeListHandle();
+  }, [isFocused]);
+
+  const getBikeListHandle = () => {
+    getBikeList({
+      _mt_idx: login?.idx, // 수정 필요
+      mbt_flag: 'Y',
+    }).then(res => {
+      setBikeNumber(res?.data?.data?.data?.length);
+    });
+  };
 
   return (
     <>
       <Header title="내 정보" />
       <Container>
         <Box mg="20px 0px" width={size.designWidth} alignItems="center">
-          <DefaultImage source={DummyIcon} width="80px" height="80px" />
+          <DefaultImage source={{uri: imageAddress + login.mt_image}} width="80px" height="80px" />
           <DarkBoldText fontSize={Theme.fontSize.fs18}>
-            홍길동<DarkText fontSize={Theme.fontSize.fs18}>님</DarkText>
+            {login.mt_name}
+            <DarkText fontSize={Theme.fontSize.fs18}>님</DarkText>
           </DarkBoldText>
-          <GrayText fontSize={Theme.fontSize.fs15}>네이버 회원</GrayText>
-          <DarkText fontSize={Theme.fontSize.fs15}>pedalee@pedalcheck.co.kr</DarkText>
+          <GrayText fontSize={Theme.fontSize.fs15}>{loginType[login.mt_login_type]}회원</GrayText>
+          <DarkText fontSize={Theme.fontSize.fs15}>{login.mt_id}</DarkText>
         </Box>
         <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
         <Box pd="10px 16px 0px">
@@ -42,7 +63,7 @@ export default function Information() {
               <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
                 자전거 관리
               </DarkMediumText>
-              <DarkText fontSize={Theme.fontSize.fs15}>0/5</DarkText>
+              <DarkText fontSize={Theme.fontSize.fs15}>{bikeNumber ? bikeNumber : 0}/5</DarkText>
             </RowBox>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('CouponManagement')}>

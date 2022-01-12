@@ -400,6 +400,7 @@ export const shopDateHistory = [
   },
 ];
 
+export const loginType = ['', '', '카카오', '네이버', '구글', '애플'];
 // const dummyItem = {
 //   title: '체인 윤활 주기',
 //   image: DummyIcon,

@@ -22,6 +22,7 @@ export default function RegisterAdditional({navigation, route}) {
   const {snsLogin, token, birthDate} = useSelector(state => state);
   const [selectImage, setSelectImage] = useState();
   const [sex, setSex] = useState('man');
+  const [imageType, setImageType] = useState(1);
   const dispatch = useDispatch();
   const information = route.params.information;
   const birthDateValue =
@@ -61,6 +62,8 @@ export default function RegisterAdditional({navigation, route}) {
         setSelectImage={setSelectImage}
         selectImage={selectImage}
         setSex={setSex}
+        imageType={imageType}
+        setImageType={setImageType}
       />
       <Box mg="0px 16px 20px">
         <FooterButton
