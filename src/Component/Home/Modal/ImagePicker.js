@@ -17,15 +17,16 @@ export default function ImagePicker({setSelectImage, setImageType}) {
   const dispatch = useDispatch();
   const imageWidth = `${(size.designWidth - 32 - 60) / 4}px`;
 
-  const imageSelect = num => {
-    setSelectNumber('file' + num + '.png');
+  const setImage = selectNumber => {
+    setSelectNumber(selectNumber);
+    setImageType(1);
   };
 
   return (
     <>
       <ModalTitleBox size={size} title="기본 이미지 선택" padding={32} />
       <RowBox style={{flexWrap: 'wrap'}} width={size.minusPadding} mg={'0px 0px 10px'}>
-        <TouchableOpacity onPress={() => setSelectNumber(1)}>
+        <TouchableOpacity onPress={() => setImage(1)}>
           <DefaultImage
             source={Default1}
             width={imageWidth}
@@ -34,7 +35,7 @@ export default function ImagePicker({setSelectImage, setImageType}) {
           />
         </TouchableOpacity>
         <Box width="18px"></Box>
-        <TouchableOpacity onPress={() => setSelectNumber(2)}>
+        <TouchableOpacity onPress={() => setImage(2)}>
           <DefaultImage
             source={Default2}
             width={imageWidth}
@@ -43,7 +44,7 @@ export default function ImagePicker({setSelectImage, setImageType}) {
           />
         </TouchableOpacity>
         <Box width="18px"></Box>
-        <TouchableOpacity onPress={() => setSelectNumber(3)}>
+        <TouchableOpacity onPress={() => setImage(3)}>
           <DefaultImage
             source={Default3}
             width={imageWidth}
@@ -52,7 +53,7 @@ export default function ImagePicker({setSelectImage, setImageType}) {
           />
         </TouchableOpacity>
         <Box width="18px"></Box>
-        <TouchableOpacity onPress={() => setSelectNumber(4)}>
+        <TouchableOpacity onPress={() => setImage(4)}>
           <DefaultImage
             source={Default4}
             width={imageWidth}

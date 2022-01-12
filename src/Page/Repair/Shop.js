@@ -77,6 +77,7 @@ export default function Shop({route}) {
         isRepair={shopInfo?.store_info?.mst_type === '1'}
         isLike={shopInfo?.store_info?.like_on === 'on'}
         onPressLike={onPressLike}
+        my_bike={shopInfo?.my_bike}
       />
     </Container>
   );

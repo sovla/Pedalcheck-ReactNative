@@ -49,61 +49,68 @@ export default function Customer({navigation}) {
   };
   return (
     <Container>
-      <ScrollBox flex={1}>
-        <GradientHeader height={76} title="고객" imageSource={CustomerCheckIcon}></GradientHeader>
-        <CustomerHeader
-          totalCustomer={customerCount?.tot_cnt}
-          likeShopCustomer={customerCount?.like_cnt}
-          customer={customerCount?.normal_cnt}
-        />
-        <Box mg="0px 16px 30px">
-          <DarkBoldText>고객목록</DarkBoldText>
-          <DefaultDropdown
-            data={sortArray}
-            labelField="label"
-            valueField="value"
-            width={85}
-            isBorder={false}
-            setValue={setSortSelectItem}
-            value={sortSelectItem}
-            pdLeft={0}
-            fontType="Medium"
-          />
-          <Box>
-            <DefaultInput
-              value={searchText}
-              changeFn={text => setSearchText(text)}
-              width={size.minusPadding}
-              borderColor={Theme.borderColor.gray}
-              backgroundColor={Theme.color.white}
-              placeHolder="회원 이름을 입력하세요"></DefaultInput>
-            <PositionBox right="15px" top="11px">
-              <TouchableOpacity onPress={() => getCustomerHandle(1)}>
-                <DefaultImage source={CheckIcon} width="21px" height="21px"></DefaultImage>
-              </TouchableOpacity>
-            </PositionBox>
-          </Box>
-          <FlatList
-            keyExtractor={(item, index) => index}
-            onEndReached={() => setPage(prev => prev++)}
-            data={customerList}
-            renderItem={({item, index}) => {
-              return (
-                <TouchableOpacity onPress={() => onPressCustomer(item)}>
-                  <CustomerInformation
-                    name={item.mt_name}
-                    repairCount={item.order_cnt}
-                    reservationCancleCount={item.order_cancel_cnt}
-                    firstVisitDate={item.first_visit}
-                    lastRepairDate={item.last_visit}
-                    level={item.mt_status}
-                  />
-                </TouchableOpacity>
-              );
-            }}
-          />
-        </Box>
-      </ScrollBox>
+      <FlatList
+        ListHeaderComponent={
+          <>
+            <GradientHeader
+              height={76}
+              title="고객"
+              imageSource={CustomerCheckIcon}></GradientHeader>
+            <CustomerHeader
+              totalCustomer={customerCount?.tot_cnt}
+              likeShopCustomer={customerCount?.like_cnt}
+              customer={customerCount?.normal_cnt}
+            />
+            <Box mg="0px 16px 30px">
+              <DarkBoldText>고객목록</DarkBoldText>
+              <DefaultDropdown
+                data={sortArray}
+                labelField="label"
+                valueField="value"
+                width={85}
+                isBorder={false}
+                setValue={setSortSelectItem}
+                value={sortSelectItem}
+                pdLeft={0}
+                fontType="Medium"
+              />
+              <Box>
+                <DefaultInput
+                  value={searchText}
+                  changeFn={text => setSearchText(text)}
+                  width={size.minusPadding}
+                  borderColor={Theme.borderColor.gray}
+                  backgroundColor={Theme.color.white}
+                  placeHolder="회원 이름을 입력하세요"></DefaultInput>
+                <PositionBox right="15px" top="11px">
+                  <TouchableOpacity onPress={() => getCustomerHandle(1)}>
+                    <DefaultImage source={CheckIcon} width="21px" height="21px"></DefaultImage>
+                  </TouchableOpacity>
+                </PositionBox>
+              </Box>
+            </Box>
+          </>
+        }
+        style={{flex: 1}}
+        keyExtractor={(item, index) => index}
+        onEndReached={() => setPage(prev => prev++)}
+        data={customerList}
+        renderItem={({item, index}) => {
+          return (
+            <TouchableOpacity onPress={() => onPressCustomer(item)}>
+              <CustomerInformation
+                nestedScrollEnabled
+                name={item.mt_name}
+                repairCount={item.order_cnt}
+                reservationCancleCount={item.order_cancel_cnt}
+                firstVisitDate={item.first_visit}
+                lastRepairDate={item.last_visit}
+                level={item.mt_status}
+              />
+            </TouchableOpacity>
+          );
+        }}
+      />
       <FooterButtons isAdmin selectMenu={3} />
     </Container>
   );

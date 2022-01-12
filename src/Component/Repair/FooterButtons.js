@@ -3,17 +3,34 @@ import DefaultImage from '@/assets/global/Image';
 import {DarkText, DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 import {useSelector} from 'react-redux';
 import RepairReservationIcon from '@assets/image/ic_reservation.png';
 import LikeIcon from '@assets/image/good.png';
 import UnLikeIcon from '@assets/image/good_b.png';
 import {useNavigation} from '@react-navigation/core';
 
-export default function FooterButtons({isRepair = false, isLike = false, onPressLike = () => {}}) {
+export default function FooterButtons({
+  isRepair = false,
+  isLike = false,
+  onPressLike = () => {},
+  my_bike,
+}) {
   const {size} = useSelector(state => state);
   const navigation = useNavigation();
   const onPressRepair = () => {
+    if (!my_bike) {
+      Alert.alert('', '등록된 자전거가 없습니다. 정비할 자전거를 등록해주세요.', [
+        {
+          text: '확인',
+          onPress: () => navigation.navigate('BikeManagement'),
+        },
+        {
+          text: '취소',
+        },
+      ]);
+      return;
+    }
     navigation.navigate('ReservationProduct');
   };
   return (
@@ -22,7 +39,10 @@ export default function FooterButtons({isRepair = false, isLike = false, onPress
         width={size.designWidth}
         height="50px"
         style={[styles.borderRight, styles.borderLeft]}>
-        <TouchableOpacity style={styles.touchBox} onPress={onPressRepair}>
+        <TouchableOpacity
+          disabled={isRepair ? false : true}
+          style={styles.touchBox}
+          onPress={onPressRepair}>
           {isRepair ? ( // 정비예약 가능
             <RowBox
               width="100%"

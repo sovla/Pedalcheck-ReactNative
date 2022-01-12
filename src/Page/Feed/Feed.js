@@ -13,6 +13,8 @@ import {FlatList, Linking} from 'react-native';
 import {getFeedList} from '@/API/Feed/Feed';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
+// 웹뷰 작업 후 추가작업 필요
+
 export default function Feed() {
   const {size} = useSelector(state => state);
   const [feedList, setFeedList] = useState([]);

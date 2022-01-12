@@ -11,7 +11,7 @@ import DummyImage from '@assets/image/bicycle_default.png';
 import {DefaultInput} from '@/assets/global/Input';
 import DefaultLine from '@/assets/global/Line';
 import {useDispatch} from 'react-redux';
-import {modalClose, modalOpen, modalOpenAndProp, setModalProp} from '@/Store/modalState';
+import {modalOpen, setModalProp} from '@/Store/modalState';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';

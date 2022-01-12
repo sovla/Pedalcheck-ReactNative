@@ -33,7 +33,7 @@ export default function RegisterInformation({navigation}) {
   const onChangeInformation = (value, key) => {
     setInformaition(prev => ({...prev, [key]: value}));
   };
-
+ console.log(snsLogin)
   const onPressComplete = () => {
     // 등록하기 버튼
     // navigation.navigate('RepairHome');
@@ -41,7 +41,7 @@ export default function RegisterInformation({navigation}) {
     if (RegJoin()) {
       return; // 정규식 확인
     }
-
+   
     MemberJoin({
       mt_name: information.name,
       mt_nickname: information.nickName,

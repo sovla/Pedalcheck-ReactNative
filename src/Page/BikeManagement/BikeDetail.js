@@ -28,6 +28,9 @@ import {changeBikeStatus, deleteBike, getBikeDetail, setBikeDistacne} from '@/AP
 import {useEffect} from 'react';
 import {useState} from 'react';
 import BikeChangeCycle from '@/Util/BikeChangeCycle';
+import {showToastMessage} from '@/Util/Toast';
+
+// Toast 메시지 추가 필요
 
 export default function BikeDetail({navigation, route}) {
   const {size, login} = useSelector(state => state);
@@ -63,7 +66,9 @@ export default function BikeDetail({navigation, route}) {
             _mt_idx: login?.idx,
             mbt_idx: route?.params?.mbt_idx,
           });
+
           if (response.data.result === 'true') {
+            await showToastMessage('삭제되었습니다.');
             navigation.goBack();
           }
         },
@@ -77,6 +82,13 @@ export default function BikeDetail({navigation, route}) {
       mbt_idx: route?.params?.mbt_idx,
       mbt_flag: bikeStatus,
     });
+    if (response?.data?.result === 'true') {
+      if (bikeStatus === 'Y') {
+        showToastMessage('사용중인 자전거로 변경했습니다.');
+      } else {
+        showToastMessage('보관중인 자전거로 변경했습니다.');
+      }
+    }
   };
 
   const setBikeDistacneHandle = async bikeStatus => {
@@ -120,7 +132,7 @@ export default function BikeDetail({navigation, route}) {
           },
           {
             title: '타입',
-            value: bikeType[bike?.mbt_type].label,
+            value: bikeType[bike?.mbt_type]?.label,
           },
           {
             title: '구동계',
@@ -233,14 +245,16 @@ export default function BikeDetail({navigation, route}) {
             })}
           </Box>
           <Box>
-            <RowBox
-              mg="20px 0px 0px"
-              alignItems="center"
-              justifyContent="space-between"
-              width={size.minusPadding}>
-              <DarkText fontWeight={Theme.fontWeight.medium}>정비이력</DarkText>
-              <DefaultImage source={ArrowRightIcon} width="24px" height="24px" />
-            </RowBox>
+            <TouchableOpacity onPress={() => navigation.navigate('RepairHistory')}>
+              <RowBox
+                mg="20px 0px 0px"
+                alignItems="center"
+                justifyContent="space-between"
+                width={size.minusPadding}>
+                <DarkText fontWeight={Theme.fontWeight.medium}>정비이력</DarkText>
+                <DefaultImage source={ArrowRightIcon} width="24px" height="24px" />
+              </RowBox>
+            </TouchableOpacity>
             <Box>
               {order?.length ? (
                 order?.map((item, index) => {

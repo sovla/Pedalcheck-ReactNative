@@ -8,11 +8,11 @@ import React from 'react';
 import PencelIcon from '@assets/image/ic_modify.png';
 import {useSelector} from 'react-redux';
 import Review from './Review';
-import {FlatList, TouchableOpacity} from 'react-native';
+import {Alert, FlatList, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 
 export default function ReviewMain() {
-  const {size, shopInfo} = useSelector(state => state);
+  const {size, shopInfo, login} = useSelector(state => state);
   const navigation = useNavigation();
   return (
     <Box pd="20px 16px 0px">
@@ -30,6 +30,19 @@ export default function ReviewMain() {
         <Box>
           <TouchableOpacity
             onPress={() => {
+              // 현태 비회원일 때
+              if (login.mt_idx === '') {
+                Alert.alert('', '로그인이 필요한 기능입니다.', [
+                  {
+                    text: '확인',
+                    onPress: () => navigation.navigate('Home'),
+                  },
+                  {
+                    text: '취소',
+                  },
+                ]);
+                return;
+              }
               navigation.navigate('ReviewHome', {
                 mst_idx: shopInfo?.store_info?.mst_idx, // 매장 정보
               });
