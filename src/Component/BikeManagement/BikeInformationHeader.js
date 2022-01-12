@@ -4,11 +4,12 @@ import DefaultImage from '@assets/global/Image';
 import Theme from '@/assets/global/Theme';
 import DummyIcon from '@assets/image/default_5.png';
 import {DarkText, GrayText} from '@/assets/global/Text';
+import {imageAddress} from '@assets/global/config';
 
 export default function BikeInformationHeader({item, mg = '20px 0px'}) {
   return (
     <RowBox mg={mg} alignItems="center">
-      <DefaultImage source={DummyIcon} width="74px" height="74px" />
+      <DefaultImage source={{uri: imageAddress + item?.bikeImage}} width="74px" height="74px" />
       <Box mg="0px 0px 0px 20px">
         <RowBox>
           <DarkText fontSize={Theme.fontSize.fs15} fontWeight={Theme.fontWeight.medium}>

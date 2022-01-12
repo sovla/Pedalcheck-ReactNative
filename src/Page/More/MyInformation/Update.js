@@ -28,6 +28,7 @@ import ImageCropPicker from 'react-native-image-crop-picker';
 import {useDispatch, useSelector} from 'react-redux';
 import Geolocation from 'react-native-geolocation-service';
 import {useIsFocused} from '@react-navigation/native';
+import {setUserInfo} from '@/Store/loginState';
 
 export default function Update({navigation}) {
   const isFocused = useIsFocused();
@@ -83,7 +84,7 @@ export default function Update({navigation}) {
       return;
     }
     let response;
-    if (image.data) {
+    if (image.path) {
       response = await UpdateMemberImage({...user, mt_bank_image: image, _mt_idx: user.idx});
     } else {
       response = await UpdateMember({...user, _mt_idx: user.idx});
@@ -95,7 +96,7 @@ export default function Update({navigation}) {
       mt_gender: sex === 'man' ? 'M' : 'F',
       mt_birth: birthDateValue,
     };
-    if (selectImage.data) {
+    if (selectImage.path) {
       const addResponse = await AddInformationImage({
         ...sendData,
         mt_image: selectImage,
@@ -111,7 +112,10 @@ export default function Update({navigation}) {
       Alert.alert('', '저장되었습니다.', [
         {
           text: '확인',
-          onPress: () => navigation.goBack(),
+          onPress: () => {
+            dispatch(setUserInfo(user));
+            navigation.goBack();
+          },
         },
       ]);
     }

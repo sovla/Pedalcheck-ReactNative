@@ -27,13 +27,13 @@ export default function RegisterInformation({navigation}) {
     //  인풋값 변경
     setInformaition(prev => ({...prev, [key]: value}));
   };
-
+ console.log(snsLogin)
   const onPressComplete = () => {
     // 등록하기 버튼
     if (RegJoin(information, setErrorMessage)) {
       return null;
     }
-
+   
     MemberJoin({
       mt_name: information.name,
       mt_nickname: information.nickName,

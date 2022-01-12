@@ -28,9 +28,11 @@ import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistor
 import {isLastChild} from '@/Util/nthMap';
 import {BorderButton} from '@/assets/global/Button';
 import {useNavigation} from '@react-navigation/core';
+import {imageAddress} from '@assets/global/config';
+import {loginType} from '@/assets/global/dummy';
 
 export default function More() {
-  const {size} = useSelector(state => state);
+  const {size, login} = useSelector(state => state);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigation = useNavigation();
   const onPressMenu = item => {
@@ -107,22 +109,34 @@ export default function More() {
         <GradientHeader title="더보기" imageSource={WhiteMoreIcon} height={76}></GradientHeader>
         <BetweenBox width={size.designWidth} pd="20px 16px" alignItems="center">
           <RowBox alignItems="center">
-            <DefaultImage source={DummyIcon} width="50px" height="50px" />
-            <DarkBoldText fontSize={Theme.fontSize.fs18}>홍길동</DarkBoldText>
+            <DefaultImage
+              source={{uri: imageAddress + login.mt_image}}
+              width="50px"
+              height="50px"
+            />
+            <DarkBoldText fontSize={Theme.fontSize.fs18}>{login.mt_name}</DarkBoldText>
           </RowBox>
-          <GrayText fontSize={Theme.fontSize.fs15}>네이버 회원</GrayText>
+          <GrayText fontSize={Theme.fontSize.fs15}>{loginType[login.mt_login_type]}회원</GrayText>
         </BetweenBox>
         <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
-        <BetweenBox width={size.designWidth} pd="20px 16px" alignItems="center">
-          <DarkBoldText>정비소 관리자 화면으로 전환</DarkBoldText>
-          <TouchableOpacity onPress={() => setIsAdmin(!isAdmin)}>
-            <DefaultImage
-              source={isAdmin ? SwitchOnIcon : SwitchOffIcon}
-              width="61px"
-              height="27px"
-            />
-          </TouchableOpacity>
-        </BetweenBox>
+        {/* 현태
+          정비소 회원일 경우만 노출
+          2022-01-12 16:45:15
+        */}
+        {login.mt_level > 5 ? (
+          <BetweenBox width={size.designWidth} pd="20px 16px 10px 16px" alignItems="center">
+            <DarkBoldText>정비소 관리자 화면으로 전환</DarkBoldText>
+            <TouchableOpacity onPress={() => setIsAdmin(!isAdmin)}>
+              <DefaultImage
+                source={isAdmin ? SwitchOnIcon : SwitchOffIcon}
+                width="61px"
+                height="27px"
+              />
+            </TouchableOpacity>
+          </BetweenBox>
+        ) : (
+          <Box height="20px" />
+        )}
         {!isAdmin && <UserButton />}
         <Box pd="10px 16px 0px">
           {menuItem.map((item, index) => (

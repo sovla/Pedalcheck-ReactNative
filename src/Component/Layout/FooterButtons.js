@@ -19,12 +19,13 @@ import CustomerOffIcon from '@assets/image/menu07.png';
 import DefaultImage from '@/assets/global/Image';
 import {DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
-import {TouchableOpacity} from 'react-native';
+import {Alert, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
+import {AlertButton, AlertButtons} from '@/Util/Alert';
 
 export default function FooterButtons({selectMenu, isAdmin}) {
   const navigation = useNavigation();
-  const {size} = useSelector(state => state);
+  const {size, login} = useSelector(state => state);
   const boxWidth = `${(size.designWidth - 32) / 4}px`;
   const menuArray = isAdmin
     ? [
@@ -79,6 +80,15 @@ export default function FooterButtons({selectMenu, isAdmin}) {
           navigate: 'More',
         },
       ];
+  const onPressMenu = item => {
+    if (login.mt_idx === '') {
+      AlertButtons('로그인이 필요한 기능입니다.', '확인', '취소', () =>
+        navigation.navigate('Home'),
+      );
+      return;
+    }
+    navigation.navigate(item?.navigate);
+  };
   return (
     <RowBox
       height="64px"
@@ -98,7 +108,11 @@ export default function FooterButtons({selectMenu, isAdmin}) {
       {menuArray.map((item, index) => {
         const isOn = selectMenu === index + 1;
         return (
-          <TouchableOpacity key={item.content} onPress={() => navigation.navigate(item.navigate)}>
+          <TouchableOpacity
+            key={item.content}
+            onPress={() => {
+              onPressMenu(item);
+            }}>
             <Box
               width={boxWidth}
               backgroundColor="rgba(0,0,0,0)"

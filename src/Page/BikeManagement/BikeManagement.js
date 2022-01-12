@@ -17,34 +17,40 @@ export default function BikeManagement({navigation}) {
   const {size, login} = useSelector(state => state);
   const [select, setSelect] = useState('사용중인 자전거');
   const [page, setPage] = useState(1);
-  const [bikeList, setBikeList] = useState([]);
+  const [useBikeList, setUseBikeList] = useState([]);
+  const [storageBikeList, setStorageBike] = useState([]);
   const isFocused = useIsFocused();
 
   useEffect(() => {
     getBikeListHandle();
   }, [select, isFocused]);
 
-  const getBikeListHandle = () => {
-    getBikeList({
+  const getBikeListHandle = async () => {
+    const response = await getBikeList({
       _mt_idx: login?.idx, // 수정 필요
-      mbt_flag: select === '사용중인 자전거' ? 'Y' : 'N',
+      mbt_flag: 'Y',
       page: page,
     }).then(res => {
-      setBikeList(res?.data?.data?.data);
+      setUseBikeList(res?.data?.data?.data);
+    });
+    const response2 = await getBikeList({
+      _mt_idx: login?.idx, // 수정 필요
+      mbt_flag: 'N',
+      page: page,
+    }).then(res => {
+      setStorageBike(res?.data?.data?.data);
     });
   };
 
-  console.log(bikeList, 'bikeList :::');
-
   return (
     <>
-      {bikeList?.length ? (
+      {useBikeList?.length || storageBikeList?.length ? (
         <>
           <Header title="자전거 관리" />
 
           <MenuNav menuItem={menuItem} setSelect={setSelect} select={select} />
-          {select === '사용중인 자전거' && <UseBike size={size} items={bikeList} />}
-          {select === '보관 자전거' && <StorageBike size={size} item={bikeList} />}
+          {select === '사용중인 자전거' && <UseBike size={size} items={useBikeList} />}
+          {select === '보관 자전거' && <StorageBike size={size} item={storageBikeList} />}
         </>
       ) : (
         <BikeRegisterFirst navigation={navigation} />

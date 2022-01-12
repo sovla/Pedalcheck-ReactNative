@@ -29,6 +29,7 @@ import {DeleteLocation} from '@/Store/locationState';
 import {getEventList} from '@/API/Repair/Repair';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {is} from 'immer/dist/internal';
+import useUpdateEffect from '@/Hooks/useUpdateEffect';
 
 export default function RepairHome() {
   const {location} = useSelector(state => state);
@@ -42,7 +43,7 @@ export default function RepairHome() {
   const [selectImage, setSelectImage] = useState(0);
   const {size, login} = useSelector(state => state);
   const [tag, setTag] = useState([]);
-  const [innerLocation, setInnerLocation] = useState('부산 금정구');
+  const [innerLocation, setInnerLocation] = useState('');
   const [storeList, setStoreList] = useState([]);
 
   const [isScroll, setIsScroll] = useState(false);
@@ -60,18 +61,23 @@ export default function RepairHome() {
     setSelectImage(scrollSlideNumber(e, size.designWidth - 36));
   };
   useEffect(() => {
-    if (isFocused && !storeList?.length)
-      getShopList({
-        _mt_idx: login.idx,
-        page: apiPage,
-        mst_addr: '', // 위치로 검색
-        mst_name: '', // 검색하는 경우 추가
-        mst_tag: tag?.length > 0 ? tag?.reduce((a, b) => a + ',' + b) : '', // , 콤마 더해서 값 보내기
-        mst_type: selectItem === '전체보기' ? '' : '1',
-        sorting: sortSelectItem === '정비횟수순' ? 2 : sortSelectItem === '거리순' ? 3 : 1, // 인기순 1 거리순 2 정비횟수순 3
-      }).then(res => setStoreList(res.data.data.data.store_list));
-  }, [isFocused]);
+    setInnerLocation(login.mt_addr === '' ? '전체' : login.mt_addr);
+  }, []);
+  // 현태 최초 실행 시 위치 상태
 
+  useUpdateEffect(() => {
+    if (isFocused);
+    getShopList({
+      _mt_idx: login.idx,
+      page: apiPage,
+      mst_addr: innerLocation === '전체' ? '' : innerLocation, // 위치로 검색
+      mst_name: '', // 검색하는 경우 추가
+      mst_tag: tag?.length > 0 ? tag?.reduce((a, b) => a + ',' + b) : '', // , 콤마 더해서 값 보내기
+      mst_type: selectItem === '전체보기' ? '' : '1',
+      sorting: sortSelectItem === '정비횟수순' ? 2 : sortSelectItem === '거리순' ? 3 : 1, // 인기순 1 거리순 2 정비횟수순 3
+    }).then(res => setStoreList(res?.data?.data?.data?.store_list));
+  }, [isFocused, selectItem, sortSelectItem, tag, innerLocation]);
+  // 현태 태그 및 메뉴 선택 시 리렌더링
   useEffect(() => {
     if (location?.name) {
       setInnerLocation(location.name);

@@ -10,7 +10,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 export default function UpdateHome() {
-  const {size} = useSelector(state => state);
+  const {size, login} = useSelector(state => state);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   return (
@@ -24,13 +24,15 @@ export default function UpdateHome() {
             </DarkMediumText>
           </Box>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('ShopUpdate')}>
-          <Box backgroundColor="#0000" width={size.minusPadding} style={borderBottomWhiteGray}>
-            <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
-              업체 정보 수정
-            </DarkMediumText>
-          </Box>
-        </TouchableOpacity>
+        {login.mt_level > 5 && (
+          <TouchableOpacity onPress={() => navigation.navigate('ShopUpdate')}>
+            <Box backgroundColor="#0000" width={size.minusPadding} style={borderBottomWhiteGray}>
+              <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
+                업체 정보 수정
+              </DarkMediumText>
+            </Box>
+          </TouchableOpacity>
+        )}
         <TouchableOpacity onPress={() => dispatch(modalOpen('deleteAccount'))}>
           <Box backgroundColor="#0000" width={size.minusPadding} style={borderBottomWhiteGray}>
             <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
