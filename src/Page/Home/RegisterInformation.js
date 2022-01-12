@@ -18,28 +18,20 @@ import {useDispatch} from 'react-redux';
 import {useSelector} from 'react-redux';
 
 export default function RegisterInformation({navigation}) {
-  const informationInit = {
-    name: '',
-    nickName: '',
-    email: '',
-    tel: '',
-    location: '',
-  };
   const [information, setInformaition] = useState(informationInit);
   const [errorMessage, setErrorMessage] = useState(informationInit);
   const {size, location, snsLogin, token} = useSelector(state => state);
   const dispatch = useDispatch();
 
   const onChangeInformation = (value, key) => {
+    //  인풋값 변경
     setInformaition(prev => ({...prev, [key]: value}));
   };
 
   const onPressComplete = () => {
     // 등록하기 버튼
-    // navigation.navigate('RepairHome');
-
-    if (RegJoin()) {
-      return; // 정규식 확인
+    if (RegJoin(information, setErrorMessage)) {
+      return null;
     }
 
     MemberJoin({
@@ -61,43 +53,10 @@ export default function RegisterInformation({navigation}) {
   };
 
   const onPressAddInformation = () => {
-    if (RegJoin()) {
-      return;
+    if (RegJoin(information, setErrorMessage)) {
+      return null;
     }
     navigation.navigate('RegisterAdditional', {information: information});
-  };
-
-  const RegJoin = () => {
-    let result = false;
-    if (information.name === '') {
-      setErrorMessage(prev => ({
-        ...prev,
-        name: '이름을 입력해주세요.',
-      }));
-      result = true;
-    }
-    if (information.nickName === '') {
-      setErrorMessage(prev => ({
-        ...prev,
-        nickName: '닉네임을 입력해주세요.',
-      }));
-      result = true;
-    }
-    if (information.location === '') {
-      setErrorMessage(prev => ({
-        ...prev,
-        location: '지역을 입력해주세요.',
-      }));
-      result = true;
-    }
-    if (information.tel.length < 9) {
-      setErrorMessage(prev => ({
-        ...prev,
-        tel: '전화번호가 올바르지 않습니다.',
-      }));
-      result = true;
-    }
-    return result;
   };
 
   useLayoutEffect(() => {
@@ -137,6 +96,7 @@ export default function RegisterInformation({navigation}) {
             errorMessage={errorMessage.name !== '' && errorMessage.name}
             pd="0px 0px 5px"
             mg={errorMessage.name === '' && '0px 0px 20px'}
+            maxLength={10}
           />
           <DefaultInput
             title="닉네임"
@@ -148,6 +108,7 @@ export default function RegisterInformation({navigation}) {
             errorMessage={errorMessage.nickName !== '' && errorMessage.nickName}
             pd="0px 0px 5px"
             mg={errorMessage.nickName === '' && '0px 0px 20px'}
+            maxLength={10}
           />
           <DefaultInput
             title="이메일"
@@ -164,10 +125,11 @@ export default function RegisterInformation({navigation}) {
             fontSize={Theme.fontSize.fs15}
             placeHolder="'-'없이 숫자만 입력하세요"
             value={information.tel}
-            changeFn={e => onChangeInformation(e, 'tel')}
+            changeFn={e => onChangeInformation(phoneNumber(e), 'tel')}
             errorMessage={errorMessage.tel !== '' && errorMessage.tel}
             pd="0px 0px 5px"
             mg={errorMessage.tel === '' && '0px 0px 20px'}
+            maxLength={13}
           />
           <DefaultInput
             title="지역"
@@ -206,4 +168,85 @@ export const RequireFieldText = () => {
       </Box>
     </>
   );
+};
+
+const RegJoin = (object, setFunction) => {
+  let result = false;
+  setFunction(informationInit);
+  console.log(object.tel.length < 12);
+  if (object.name === '') {
+    setFunction(prev => ({
+      ...prev,
+      name: '이름을 입력해주세요.',
+    }));
+    result = true;
+  }
+  if (object.nickName === '') {
+    setFunction(prev => ({
+      ...prev,
+      nickName: '닉네임을 입력해주세요.',
+    }));
+    result = true;
+  }
+  if (object.location === '') {
+    setFunction(prev => ({
+      ...prev,
+      location: '지역을 입력해주세요.',
+    }));
+    result = true;
+  }
+  if (object.tel.length < 12) {
+    setFunction(prev => ({
+      ...prev,
+      tel: '전화번호가 올바르지 않습니다.',
+    }));
+    result = true;
+  }
+  return result;
+};
+
+function phoneNumber(value) {
+  if (!value) {
+    return '';
+  }
+
+  value = value.replace(/[^0-9]/g, '');
+
+  let result = [];
+  let restNumber = '';
+
+  // 지역번호와 나머지 번호로 나누기
+  if (value.startsWith('02')) {
+    // 서울 02 지역번호
+    result.push(value.substr(0, 2));
+    restNumber = value.substring(2);
+  } else if (value.startsWith('1')) {
+    // 지역 번호가 없는 경우
+    // 1xxx-yyyy
+    restNumber = value;
+  } else {
+    // 나머지 3자리 지역번호
+    // 0xx-yyyy-zzzz
+    result.push(value.substr(0, 3));
+    restNumber = value.substring(3);
+  }
+
+  if (restNumber.length === 7) {
+    // 7자리만 남았을 때는 xxx-yyyy
+    result.push(restNumber.substring(0, 3));
+    result.push(restNumber.substring(3));
+  } else {
+    result.push(restNumber.substring(0, 4));
+    result.push(restNumber.substring(4));
+  }
+
+  return result.filter(val => val).join('-');
+}
+
+const informationInit = {
+  name: '',
+  nickName: '',
+  email: '',
+  tel: '',
+  location: '',
 };

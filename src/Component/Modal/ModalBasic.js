@@ -107,6 +107,7 @@ export default function ModalBasic() {
           dispatch(modalClose());
         }}>
         {isFullSize ? (
+          // 풀사이즈 일때
           <Container alignItems="center" zIndex="200">
             {modal?.modalComponent !== undefined && <RenderItem {...childrenProps} />}
           </Container>
@@ -117,6 +118,7 @@ export default function ModalBasic() {
             alignItems="center"
             zIndex="200">
             {!isSlide ? (
+              // 슬라이드형 아닐때 기본
               <Box
                 backgroundColor={Theme.color.white}
                 width={size.minusPadding}
@@ -127,11 +129,12 @@ export default function ModalBasic() {
                 {modal?.modalComponent !== undefined && <RenderItem {...childrenProps} />}
               </Box>
             ) : (
+              // 슬라이드형 바닥에서 올라오는거
               <PositionBox
                 style={{borderTopLeftRadius: 15, borderTopRightRadius: 15}}
                 backgroundColor={Theme.color.white}
                 minWidth={size.designWidth}
-                minHeight="300px"
+                minHeight="200px"
                 pd="20px 16px"
                 bottom="0px"
                 alignItems="center">

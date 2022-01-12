@@ -35,7 +35,7 @@ export default function RegisterAdditional({navigation, route}) {
       mt_hp: information.tel,
       mt_addr: information.location,
       mt_idx: snsLogin.mt_idx,
-      mt_app_token: token.token, // 수정 필요
+      mt_app_token: token.token,
     }).then(res => {
       if (res?.data?.data?.result !== 'false') {
         dispatch(setUserInfo(res?.data?.data?.data?.data));
@@ -50,7 +50,7 @@ export default function RegisterAdditional({navigation, route}) {
       mt_birth: birthDateValue,
     });
     if (response.data.result === 'true') {
-      navigation.navigate('RepairHome');
+      navigation.reset({routes: [{name: 'RepairHome'}]});
     }
   };
   return (
