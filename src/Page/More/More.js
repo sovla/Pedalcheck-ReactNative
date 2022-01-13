@@ -123,7 +123,7 @@ export default function More() {
           정비소 회원일 경우만 노출
           2022-01-12 16:45:15
         */}
-        {login.mt_level > 5 ? (
+        {login.mt_level >= 5 ? (
           <BetweenBox width={size.designWidth} pd="20px 16px 10px 16px" alignItems="center">
             <DarkBoldText>정비소 관리자 화면으로 전환</DarkBoldText>
             <TouchableOpacity onPress={() => setIsAdmin(!isAdmin)}>

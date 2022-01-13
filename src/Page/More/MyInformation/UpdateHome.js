@@ -24,7 +24,7 @@ export default function UpdateHome() {
             </DarkMediumText>
           </Box>
         </TouchableOpacity>
-        {login.mt_level > 5 && (
+        {login.mt_level >= 5 && (
           <TouchableOpacity onPress={() => navigation.navigate('ShopUpdate')}>
             <Box backgroundColor="#0000" width={size.minusPadding} style={borderBottomWhiteGray}>
               <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
