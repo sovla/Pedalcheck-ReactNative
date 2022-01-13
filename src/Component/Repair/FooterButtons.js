@@ -9,6 +9,7 @@ import RepairReservationIcon from '@assets/image/ic_reservation.png';
 import LikeIcon from '@assets/image/good.png';
 import UnLikeIcon from '@assets/image/good_b.png';
 import {useNavigation} from '@react-navigation/core';
+import {AlertButtons, RequireLoginAlert} from '@/Util/Alert';
 
 export default function FooterButtons({
   isRepair = false,
@@ -16,29 +17,26 @@ export default function FooterButtons({
   onPressLike = () => {},
   my_bike,
 }) {
-  const {size} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const navigation = useNavigation();
   const onPressRepair = () => {
-    if (!my_bike) {
-      Alert.alert('', '등록된 자전거가 없습니다. 정비할 자전거를 등록해주세요.', [
-        {
-          text: '확인',
-          onPress: () => navigation.navigate('BikeManagement'),
-        },
-        {
-          text: '취소',
-        },
-      ]);
-      return;
+    if (RequireLoginAlert(login, navigation)) {
+      if (!my_bike) {
+        AlertButtons(
+          '등록된 자전거가 없습니다. 정비할 자전거를 등록해주세요.',
+          '확인',
+          '취소',
+          () => navigation.navigate('BikeManagement'),
+        );
+        return;
+      } else {
+        navigation.navigate('ReservationProduct');
+      }
     }
-    navigation.navigate('ReservationProduct');
   };
   return (
     <PositionBox bottom="0px">
-      <RowBox
-        width={size.designWidth}
-        height="50px"
-        style={[styles.borderRight, styles.borderLeft]}>
+      <RowBox width="412px" height="50px" style={[styles.borderRight, styles.borderLeft]}>
         <TouchableOpacity
           disabled={isRepair ? false : true}
           style={styles.touchBox}

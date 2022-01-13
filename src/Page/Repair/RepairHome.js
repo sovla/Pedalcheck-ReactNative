@@ -1,10 +1,9 @@
 import {Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
-import {DarkMediumText, DarkText} from '@/assets/global/Text';
+import {DarkBoldText, DarkMediumText, DarkText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
-import {Dropdown} from 'react-native-element-dropdown';
 import React, {useState} from 'react';
-import {ScrollView, StyleSheet, View, TouchableOpacity, FlatList} from 'react-native';
+import {ScrollView, TouchableOpacity, FlatList} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import WhiteSpannerIcon from '@assets/image/menu01_top.png';
 import {WhiteInput} from '@assets/global/Input';
@@ -22,17 +21,16 @@ import FooterButtons from '@/Component/Layout/FooterButtons';
 import {getPixel} from '@/Util/pixelChange';
 import scrollSlideNumber from '@/Util/scrollSlideNumber';
 import {useEffect} from 'react';
-import {getShopList, shopLike} from '@/API/Shop/Shop';
+import {getShopList} from '@/API/Shop/Shop';
 import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
 import {modalOpen} from '@/Store/modalState';
-import {DeleteLocation} from '@/Store/locationState';
 import {getEventList} from '@/API/Repair/Repair';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {is} from 'immer/dist/internal';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
+import {reduceItemSplit} from '@/Util/reduceItem';
 
 export default function RepairHome() {
-  const {location} = useSelector(state => state);
+  const {size, login, location} = useSelector(state => state);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
@@ -41,12 +39,12 @@ export default function RepairHome() {
 
   const [apiPage, setApiPage] = useState(1); // API Page
   const [selectImage, setSelectImage] = useState(0);
-  const {size, login} = useSelector(state => state);
+
   const [tag, setTag] = useState([]);
   const [innerLocation, setInnerLocation] = useState('');
   const [storeList, setStoreList] = useState([]);
-
-  const [isScroll, setIsScroll] = useState(false);
+  const [searchText, setSearchText] = useState(''); // 검색 텍스트
+  const [isSearch, setIsSearch] = useState(false); // 검색 누를때
 
   const onPressTag = tagName => {
     // By.Junhan tag에 값이 없다면 넣어주고 있다면 제거
@@ -66,17 +64,21 @@ export default function RepairHome() {
   // 현태 최초 실행 시 위치 상태
 
   useUpdateEffect(() => {
-    if (isFocused);
-    getShopList({
-      _mt_idx: login.idx,
-      page: apiPage,
-      mst_addr: innerLocation === '전체' ? '' : innerLocation, // 위치로 검색
-      mst_name: '', // 검색하는 경우 추가
-      mst_tag: tag?.length > 0 ? tag?.reduce((a, b) => a + ',' + b) : '', // , 콤마 더해서 값 보내기
-      mst_type: selectItem === '전체보기' ? '' : '1',
-      sorting: sortSelectItem === '정비횟수순' ? 2 : sortSelectItem === '거리순' ? 3 : 1, // 인기순 1 거리순 2 정비횟수순 3
-    }).then(res => setStoreList(res?.data?.data?.data?.store_list));
-  }, [isFocused, selectItem, sortSelectItem, tag, innerLocation]);
+    if (isFocused) {
+      let mst_tag = reduceItemSplit(tag, ',');
+      //  , 콤마 더해서 값 보내기
+
+      getShopList({
+        _mt_idx: login.idx,
+        page: apiPage,
+        mst_addr: innerLocation === '전체' ? '' : innerLocation, // 위치로 검색
+        mst_name: searchText ?? '', // 검색하는 경우 추가
+        mst_tag: mst_tag, //
+        mst_type: selectItem === '전체보기' ? '' : '1',
+        sorting: sortSelectItem === '정비횟수순' ? 2 : sortSelectItem === '거리순' ? 3 : 1, // 인기순 1 거리순 2 정비횟수순 3
+      }).then(res => setStoreList(res?.data?.data?.data?.store_list));
+    }
+  }, [isFocused, selectItem, sortSelectItem, tag, innerLocation, isSearch]);
   // 현태 태그 및 메뉴 선택 시 리렌더링
   useEffect(() => {
     if (location?.name) {
@@ -100,6 +102,9 @@ export default function RepairHome() {
             onScrollSlide={onScrollSlide}
             onPressTag={onPressTag}
             dispatch={dispatch}
+            searchText={searchText}
+            setSearchText={setSearchText}
+            setIsSearch={setIsSearch}
           />
         }
         data={storeList}
@@ -119,6 +124,13 @@ export default function RepairHome() {
             />
           </Box>
         )}
+        ListEmptyComponent={() => {
+          return (
+            <Box justifyContent="center" alignItems="center" mg="20px 0px">
+              <DarkBoldText>검색 결과가 없습니다.</DarkBoldText>
+            </Box>
+          );
+        }}
         style={{
           marginBottom: 20,
         }}
@@ -139,6 +151,9 @@ const Header = ({
   onScrollSlide,
   onPressTag,
   dispatch,
+  searchText,
+  setSearchText,
+  setIsSearch,
 }) => {
   return (
     <>
@@ -147,9 +162,15 @@ const Header = ({
           <WhiteInput
             height="43px"
             width={size.minusPadding}
-            placeholder="매장명을 입력해주세요."></WhiteInput>
+            placeholder="매장명을 입력해주세요."
+            value={searchText}
+            onChangeText={setSearchText}
+          />
           <PositionBox top="11px" right="15px">
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setIsSearch(prev => !prev);
+              }}>
               <DefaultImage source={SearchIcon} width="21px" height="21px"></DefaultImage>
             </TouchableOpacity>
           </PositionBox>

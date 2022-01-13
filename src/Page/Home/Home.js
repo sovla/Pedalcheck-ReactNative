@@ -1,22 +1,20 @@
-import {BetweenBox, Box, Container, PositionBox} from '@/assets/global/Container';
+import {BetweenBox, Box, Container} from '@/assets/global/Container';
 import React from 'react';
 
 import LogoBox from '@/Component/Home/LogoBox';
 import HomeFooter from '@/Component/Home/HomeFooter';
-import pixelChange from '@/Util/pixelChange';
-import {useSelector} from 'react-redux';
-import {TextLinkButton} from '@/assets/global/Button';
 import KakaoImage from '@/Component/Home/Icon/KakaoImage';
 import GoogleImage from '@/Component/Home/Icon/GoogleImage';
 import NaverImage from '@/Component/Home/Icon/NaverImage';
 import AppleImage from '@/Component/Home/Icon/AppleImage';
-import {useEffect} from 'react';
-import {Platform, ToastAndroid} from 'react-native';
+import {Platform} from 'react-native';
 import {GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 
 export default function Home({navigation}) {
   const betweenBoxWidth = Platform.OS === 'android' ? '262px' : '312px';
+  // 안드로이드 카카오 구글 네이버    3가지
+  // IOS 카카오 구글 네이버 애플로그인 4가지 로 크기가 다릅니다.
 
   return (
     <>
@@ -35,6 +33,7 @@ export default function Home({navigation}) {
           <AppleImage />
         </BetweenBox>
       </Box>
+
       <HomeFooter navigation={navigation} isShowLogin={false} />
     </>
   );
