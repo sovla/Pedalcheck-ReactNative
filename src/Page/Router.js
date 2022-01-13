@@ -59,7 +59,14 @@ import DateChange from './ReservationManagement/DateChange';
 import ReservationManagement from './ReservationManagement/ReservationManagement';
 import ReservationManagementDetail from './ReservationManagement/ReservationManagementDetail';
 import RepairHome from './Repair/RepairHome';
-import {DevSettings, SafeAreaView, useWindowDimensions, View} from 'react-native';
+import {
+  BackHandler,
+  DevSettings,
+  SafeAreaView,
+  ToastAndroid,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import Theme from '@/assets/global/Theme';
 import {useDispatch, useSelector} from 'react-redux';
 import ModalBasic from '@/Component/Modal/ModalBasic';
@@ -80,33 +87,61 @@ import {useMemo} from 'react';
 import {current} from '@reduxjs/toolkit';
 import messaging from '@react-native-firebase/messaging';
 import {setToken} from '@/Store/tokenState';
+import {useRef} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const INIT_ROUTER_COMPONENT_NAME = 'Home';
+
+let count = 0;
 
 const Stack = createNativeStackNavigator();
 
 const withScrollView = WrappedComponent => {
   return props => {
     const isFocus = useIsFocused();
+    const navigation = useNavigation();
+    console.log(navigation.canGoBack());
+
+    useEffect(() => {
+      if (!navigation.canGoBack() && isFocus) {
+        BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      }
+      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [isFocus]);
+
+    const onBackPress = () => {
+      if (count < 1) {
+        count++;
+        ToastAndroid.show('한번더 뒤로가기를 누르면 앱이 종료됩니다.', ToastAndroid.SHORT);
+      } else {
+        BackHandler.exitApp();
+      }
+      setTimeout(() => {
+        count = 0;
+      }, 2000);
+
+      return true;
+    };
     return (
       <>
-      <SafeAreaView style={{flex:0,backgroundColor:"#fff"}} />
-      <SafeAreaView style={{flex: 1}}>
-        <View style={{flex: 1, backgroundColor: Theme.color.white}}>
-          <WrappedComponent {...props} />
+        <SafeAreaView style={{flex: 0, backgroundColor: '#fff'}} />
+        <SafeAreaView style={{flex: 1}}>
+          <View style={{flex: 1, backgroundColor: Theme.color.white}}>
+            <WrappedComponent {...props} />
 
-          {isFocus && <ModalBasic navigation={props?.navigation} />}
-          <PositionBox
-            backgroundColor="#0000"
-            flexDirection="row"
-            top="0px"
-            right="0px"
-            zIndex={3000}>
-            <DarkBoldText>{props.route.name}</DarkBoldText>
-          </PositionBox>
-        </View>
-      </SafeAreaView>
-      <SafeAreaView style={{flex:0,backgroundColor:"#fff"}} />
+            {isFocus && <ModalBasic navigation={props?.navigation} />}
+            <PositionBox
+              backgroundColor="#0000"
+              flexDirection="row"
+              top="0px"
+              right="0px"
+              zIndex={3000}>
+              <DarkBoldText>{props.route.name}</DarkBoldText>
+            </PositionBox>
+          </View>
+        </SafeAreaView>
+        <SafeAreaView style={{flex: 0, backgroundColor: '#fff'}} />
       </>
     );
   };
@@ -115,6 +150,7 @@ const withScrollView = WrappedComponent => {
 export default function Router() {
   const dispatch = useDispatch();
   const {height, width} = useWindowDimensions();
+  const ref = useRef(null);
 
   const getToken = async () => {
     try {

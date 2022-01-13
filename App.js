@@ -1,13 +1,32 @@
 import {store} from '@/Store/store';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Provider} from 'react-redux';
 import Router from './src/Page/Router';
 import SplashScreen from 'react-native-splash-screen';
-import {PermissionsAndroid, Text, View} from 'react-native';
+import {BackHandler, PermissionsAndroid, Text, ToastAndroid, View} from 'react-native';
 import Toast from 'react-native-toast-message';
 import {DefaultText} from './src/assets/global/Text';
+import {useFocusEffect} from '@react-navigation/native';
+import {check, requestMultiple, PERMISSIONS} from 'react-native-permissions';
 
 const STORYBOOK_START = false;
+
+const IosPermission = [
+  // PERMISSIONS.IOS.ACCESS_NOTIFICATION_POLICY,
+  // PERMISSIONS.IOS.ACCESS_FINE_LOCATION,
+  // PERMISSIONS.IOS.CAMERA,
+  // PERMISSIONS.IOS.CALL_PHONE,
+  // PERMISSIONS.IOS.PHOTO_LIBRARY,
+  // PERMISSIONS.IOS.WRITE_EXTERNAL_STORAGE,
+];
+const AndroidPermission = [
+  PERMISSIONS.ANDROID.ACCESS_NOTIFICATION_POLICY,
+  PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+  PERMISSIONS.ANDROID.CAMERA,
+  PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+  PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+  PERMISSIONS.ANDROID.CALL_PHONE,
+];
 
 function App() {
   async function requestPermissions() {
@@ -20,9 +39,12 @@ function App() {
     }
 
     if (Platform.OS === 'android') {
-      await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+      requestMultiple(AndroidPermission);
+    } else {
+      requestMultiple(IosPermission);
     }
   }
+
   useEffect(() => {
     setTimeout(() => {
       SplashScreen.hide();
