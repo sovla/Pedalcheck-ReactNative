@@ -14,8 +14,9 @@ import {getShopDetail, sendLikeShop} from '@/API/Shop/Shop';
 import Review from '@/Component/Repair/Review';
 import {ResetShopInfo, setShopInfo} from '@/Store/shopInfoState';
 import ShopHeader from '@/Component/Repair/ShopHeader';
+import {RequireLoginAlert} from '@/Util/Alert';
 
-export default function Shop({route}) {
+export default function Shop({route, navigation}) {
   const {mt_idx} = route.params;
   const [selectMenu, setSelectMenu] = useState('매장소개');
   const {size, login, shopInfo} = useSelector(state => state);
@@ -32,11 +33,13 @@ export default function Shop({route}) {
   }, []);
 
   const onPressLike = async () => {
-    await sendLikeShop({
-      _mt_idx: login?.idx,
-      mt_idx: mt_idx,
-    });
-    await getShopDetailApi();
+    if (RequireLoginAlert(login, navigation)) {
+      await sendLikeShop({
+        _mt_idx: login?.idx,
+        mt_idx: mt_idx,
+      });
+      await getShopDetailApi();
+    }
   };
 
   const getShopDetailApi = async () => {

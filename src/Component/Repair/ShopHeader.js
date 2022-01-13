@@ -17,6 +17,7 @@ import QuestionIcon from '@assets/image/btn_inq.png';
 import {MediumText} from '@/assets/global/Text';
 import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {RequireLoginAlert} from '@/Util/Alert';
 
 // 2022-01-04 10:07:06
 // Junhan
@@ -27,9 +28,16 @@ const ShopHeader = ({size}) => {
   const dummyImageArray = [ShopDummyImage, ShopDummyImage, ShopDummyImage];
   const {
     shopInfo: {store_info},
+    login,
   } = useSelector(state => state);
 
   const isPartner = store_info?.mst_type === '1';
+
+  const onPressQuestion = () => {
+    if (RequireLoginAlert(login, navigation)) {
+      navigation.navigate('RepairQuestion');
+    }
+  };
   return (
     <>
       <Box flex={1} zIndex={100}>
@@ -57,9 +65,7 @@ const ShopHeader = ({size}) => {
               right="26px"
               zIndex={100}
               alignItems="center">
-              <TouchableOpacity
-                onPress={() => navigation.navigate('RepairQuestion')}
-                style={{flex: 1, alignItems: 'center'}}>
+              <TouchableOpacity onPress={onPressQuestion} style={{flex: 1, alignItems: 'center'}}>
                 <DefaultImage source={QuestionIcon} width="57px" height="57px" />
                 <MediumText color={Theme.color.skyBlue} fontSize={Theme.fontSize.fs13}>
                   1:1 문의

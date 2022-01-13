@@ -1,4 +1,4 @@
-import {Box, Container, RowBox, ScrollBox} from '@/assets/global/Container';
+import {Box, RowBox, ScrollBox} from '@/assets/global/Container';
 import DefaultLine from '@/assets/global/Line';
 import {DarkBoldText, DarkText, IndigoText, MoneyText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
@@ -12,12 +12,12 @@ import QuestionIcon from '@assets/image/btn_detail.png';
 import Icon from '@assets/image/ic_lightning.png';
 import {getPixel} from '@/Util/pixelChange';
 import {useDispatch, useSelector} from 'react-redux';
-import {Alert, ScrollView, TouchableOpacity} from 'react-native';
+import {Alert, TouchableOpacity} from 'react-native';
 import {useState} from 'react';
-import {BorderButton, LinkButton} from '@/assets/global/Button';
+import {LinkButton} from '@/assets/global/Button';
 import {clearReservation, setReservationProduct} from '@/Store/reservationState';
-import {useFocusEffect} from '@react-navigation/native';
 import {useEffect} from 'react';
+import {reduceItem} from '@/Util/reduceItem';
 
 export default function ShopReservationProduct({navigation}) {
   const dispatch = useDispatch();
@@ -180,20 +180,4 @@ export const ReservationProduct = ({item, onPressMain, selectItem}) => {
       </RowBox>
     </RowBox>
   );
-};
-
-export const reduceItem = (list, type) => {
-  // list 길이가 0 일떈 0 리턴
-  // list 길이가 1 일땐 첫번째 아이템 정보 리턴
-  // list 길이가 1이상일땐 총합 리턴
-  if (Array.isArray(list)) {
-    if (list.length > 1) {
-      return list.reduce((prev, curr) => {
-        return parseInt(prev?.item[type]) + parseInt(curr?.item[type]);
-      });
-    } else if (list.length === 1) {
-      return parseInt(list[0]?.item[type]);
-    }
-  }
-  return 0;
 };
