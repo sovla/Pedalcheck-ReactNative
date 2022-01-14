@@ -21,6 +21,7 @@ export default function Feed() {
   const [page, setPage] = useState(1);
 
   const [isLast, setIsLast] = useState(false);
+  const [isScroll, setIsScroll] = useState(false);
 
   useEffect(() => {
     getFeedListHandle();
@@ -46,7 +47,13 @@ export default function Feed() {
         data={feedList}
         keyExtractor={(item, index) => index.toString()}
         onEndReached={() => {
-          getFeedListHandle();
+          if (isScroll) {
+            getFeedListHandle();
+            setIsScroll(false);
+          }
+        }}
+        onMomentumScrollBegin={() => {
+          setIsScroll(true);
         }}
         renderItem={({item, index}) => {
           return <FeedBox item={item} size={size} />;

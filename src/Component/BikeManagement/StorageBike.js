@@ -2,11 +2,13 @@ import {Box, RowBox} from '@/assets/global/Container';
 import {DarkBoldText} from '@/assets/global/Text';
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
+import {useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import Bike from './Bike';
 
-export default function StorageBike({size, item}) {
+export default function StorageBike({size, item, getBikeListHandle}) {
+  const [isScroll, setIsScroll] = useState(false);
   const navigation = useNavigation();
   const onPressBike = idx => {
     navigation.navigate('BikeDetail', {mbt_idx: idx});
@@ -19,9 +21,17 @@ export default function StorageBike({size, item}) {
       </RowBox>
 
       <FlatList
-        nestedScrollEnabled
         keyExtractor={({item, index}) => index}
         data={item}
+        onEndReached={() => {
+          if (isScroll) {
+            getBikeListHandle();
+            setIsScroll(false);
+          }
+        }}
+        onMomentumScrollBegin={() => {
+          setIsScroll(true);
+        }}
         renderItem={({item, index}) => {
           const changeItem = {
             brandName: item.mbt_brand,

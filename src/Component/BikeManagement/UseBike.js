@@ -9,11 +9,16 @@ import PlusIcon from '@assets/image/ic_plus_w.png';
 import DefaultImage from '@assets/global/Image';
 import {useNavigation} from '@react-navigation/core';
 import {FlatList} from 'react-native-gesture-handler';
+import {AlertButton} from '@/Util/Alert';
 
 export default function UseBike({items, size}) {
   const navigation = useNavigation();
 
   const onPressAddBike = () => {
+    if (items?.length >= 5) {
+      AlertButton('사용중인 자전거는 5대 이상 등록할 수 없습니다.');
+      return;
+    }
     navigation.navigate('BikeRegister');
   };
 

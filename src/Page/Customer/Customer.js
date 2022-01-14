@@ -18,20 +18,23 @@ import {useState} from 'react';
 import {useEffect} from 'react';
 import {getCustomer} from '@/API/Manager/Customer';
 import {FlatList} from 'react-native-gesture-handler';
+import {getPixel} from '@/Util/pixelChange';
+import useUpdateEffect from '@/Hooks/useUpdateEffect';
 
 export default function Customer({navigation}) {
   const {size} = useSelector(state => state);
   const [sortSelectItem, setSortSelectItem] = useState('전체');
   const [customerCount, setCustomerCount] = useState(0);
   const [searchText, setSearchText] = useState('');
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(1);
   const [customerList, setCustomerList] = useState([]);
+  const [isScroll, setIsScroll] = useState(false);
 
   useEffect(() => {
     getCustomerHandle();
-  }, [sortSelectItem, page]);
+  }, [sortSelectItem]);
 
-  const getCustomerHandle = async page => {
+  const getCustomerHandle = async () => {
     const response = await getCustomer({
       _mt_idx: 10, // 수정 필요
       cate: sortSelectItem === '전체' ? 1 : sortSelectItem === '일반' ? 2 : 3,
@@ -40,8 +43,12 @@ export default function Customer({navigation}) {
     });
 
     const {customer_cnt, customer_list} = response?.data?.data?.data;
+
+    if (customer_list.length > 0) {
+      setCustomerList(prev => [...prev, ...customer_list]);
+    }
     setCustomerCount(customer_cnt);
-    setCustomerList(customer_list);
+    setPage(prev => prev + 1);
   };
 
   const onPressCustomer = item => {
@@ -93,11 +100,21 @@ export default function Customer({navigation}) {
         }
         style={{flex: 1}}
         keyExtractor={(item, index) => index}
-        onEndReached={() => setPage(prev => prev++)}
+        onEndReached={() => {
+          if (isScroll) {
+            getCustomerHandle();
+            setIsScroll(false);
+          }
+        }}
+        onMomentumScrollBegin={() => {
+          setIsScroll(true);
+        }}
         data={customerList}
         renderItem={({item, index}) => {
           return (
-            <TouchableOpacity onPress={() => onPressCustomer(item)}>
+            <TouchableOpacity
+              style={{marginHorizontal: getPixel(16)}}
+              onPress={() => onPressCustomer(item)}>
               <CustomerInformation
                 nestedScrollEnabled
                 name={item.mt_name}

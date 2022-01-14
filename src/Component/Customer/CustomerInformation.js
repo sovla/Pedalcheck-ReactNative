@@ -46,7 +46,7 @@ export default function CustomerInformation({
   return (
     <Box style={borderBottomWhiteGray} pd="0px 10px" width={size.minusPadding}>
       <BetweenBox width={`${380 - 20}px`} mg="16px 0px 7px">
-        <RowBox>
+        <RowBox alignItems="center">
           <DarkBoldText mg="0px 5px 0px 0px">{name}</DarkBoldText>
           <IndigoText mg="0px 3px 0px 0px" fontSize={Theme.fontSize.fs13}>
             정비횟수

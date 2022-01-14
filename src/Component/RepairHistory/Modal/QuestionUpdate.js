@@ -13,7 +13,7 @@ import ModalTitleBox from '@/Component/Modal/ModalTitleBox';
 import {DefaultInput} from '@/assets/global/Input';
 import {modalClose} from '@/Store/modalState';
 
-export default function QuestionUpdate() {
+export default function QuestionUpdate({item}) {
   const dispatch = useDispatch();
   return (
     <>
@@ -21,10 +21,10 @@ export default function QuestionUpdate() {
       <Box pd="0px 20px" width={'380px'}>
         <BetweenBox width="340px" style={borderBottomWhiteGray} height="55px">
           <Box>
-            <DarkBoldText fontSize={Theme.fontSize.fs15}>정비 관련 문의 드립니다!</DarkBoldText>
+            <DarkBoldText fontSize={Theme.fontSize.fs15}>{item?.qt_title}</DarkBoldText>
             <GrayText fontSize={Theme.fontSize.fs12} letterSpacing="0px">
               {' '}
-              2021-10-15 14:22
+              {item?.qt_wdate}
             </GrayText>
           </Box>
           <RowBox>
