@@ -22,23 +22,28 @@ export default function BikeManagement({navigation}) {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    getBikeListHandle();
+    if (isFocused) {
+      getBikeListHandle();
+    }
   }, [select, isFocused]);
 
   const getBikeListHandle = async () => {
     const response = await getBikeList({
-      _mt_idx: login?.idx, // 수정 필요
+      _mt_idx: login?.idx,
       mbt_flag: 'Y',
-      page: page,
+      page: 1,
     }).then(res => {
       setUseBikeList(res?.data?.data?.data);
     });
     const response2 = await getBikeList({
-      _mt_idx: login?.idx, // 수정 필요
+      _mt_idx: login?.idx,
       mbt_flag: 'N',
       page: page,
     }).then(res => {
-      setStorageBike(res?.data?.data?.data);
+      if (res?.data?.data?.data?.length) {
+        setStorageBike(prev => [...prev, ...res?.data?.data?.data]);
+        setPage(prev => prev + 1);
+      }
     });
   };
 
@@ -50,7 +55,9 @@ export default function BikeManagement({navigation}) {
 
           <MenuNav menuItem={menuItem} setSelect={setSelect} select={select} />
           {select === '사용중인 자전거' && <UseBike size={size} items={useBikeList} />}
-          {select === '보관 자전거' && <StorageBike size={size} item={storageBikeList} />}
+          {select === '보관 자전거' && (
+            <StorageBike size={size} getBikeListHandle={getBikeListHandle} item={storageBikeList} />
+          )}
         </>
       ) : (
         <BikeRegisterFirst navigation={navigation} />

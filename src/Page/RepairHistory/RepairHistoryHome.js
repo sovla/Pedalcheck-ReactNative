@@ -7,61 +7,51 @@ import NoticeWhiteIcon from '@assets/image/notice_white.png';
 import FooterButtons from '@/Component/Layout/FooterButtons';
 import {useDispatch} from 'react-redux';
 import {modalOpen} from '@/Store/modalState';
-import {useNavigation} from '@react-navigation/native';
 import RepairHistorySelectHome from './RepairHistorySelectHome';
 import RepairHistorySelectReview from './RepairHistorySelectReview';
 import RepairHistorySelectQuestion from './RepairHistorySelectQuestion';
 import RepairHistorySelectHistory from './RepairHistorySelectHistory';
+import {FlatList} from 'react-native-gesture-handler';
+
+// 현태 : 수정 필요 모듈화 작업
 
 export default function RepairHistoryHome() {
   const [select, setSelect] = useState('홈');
 
-  const [questionSelect, setQuestionSelect] = useState([]);
-  const [selectComment, setSelectComment] = useState([]);
   const dispatch = useDispatch();
 
-  const navigation = useNavigation();
-  const onPressRecomment = index => {
-    if (selectComment.find(findIndex => findIndex === index)) {
-      setSelectComment(prev => prev.filter(filterItem => filterItem !== index));
-    } else {
-      setSelectComment(prev => [...prev, index]);
-    }
-  };
-  const onPressItem = title => {
-    if (questionSelect.find(findItem => findItem === title)) {
-      setQuestionSelect(prev => prev.filter(filterItem => filterItem !== title));
-    } else {
-      setQuestionSelect(prev => [...prev, title]);
-    }
-  };
-
-  const onPressProduct = () => {
-    navigation.navigate('Detail');
-  };
   return (
     <Container>
-      <ScrollBox>
-        <GradientHeader
-          title="예약관리"
-          imageSource={NoticeWhiteIcon}
-          imageSize={{
-            width: '35px',
-            height: '29px',
-          }}
-          onPressImage={() => dispatch(modalOpen('fullSize/notice'))}>
-          <HeaderButton
-            select={select}
-            setSelect={setSelect}
-            width="185px"
-            menuList={['홈', '정비이력', '리뷰', '1:1문의']}
-          />
-        </GradientHeader>
-        {select === '홈' && <RepairHistorySelectHome />}
-        {select === '정비이력' && <RepairHistorySelectHistory />}
-        {select === '리뷰' && <RepairHistorySelectReview />}
-        {select === '1:1문의' && <RepairHistorySelectQuestion />}
-      </ScrollBox>
+      <FlatList
+        ListHeaderComponent={
+          <>
+            <GradientHeader
+              title="정비내역"
+              imageSource={NoticeWhiteIcon}
+              imageSize={{
+                width: '35px',
+                height: '29px',
+              }}
+              onPressImage={() => dispatch(modalOpen('fullSize/notice'))}>
+              <HeaderButton
+                select={select}
+                setSelect={setSelect}
+                width="185px"
+                menuList={['홈', '정비이력', '리뷰', '1:1문의']}
+              />
+            </GradientHeader>
+            {select === '홈' ? (
+              <RepairHistorySelectHome />
+            ) : select === '정비이력' ? (
+              <RepairHistorySelectHistory />
+            ) : select === '리뷰' ? (
+              <RepairHistorySelectReview />
+            ) : (
+              <RepairHistorySelectQuestion />
+            )}
+          </>
+        }
+      />
       <FooterButtons selectMenu={1} isAdmin />
     </Container>
   );

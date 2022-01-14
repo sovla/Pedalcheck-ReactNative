@@ -30,6 +30,7 @@ export default function Post({route: {params}}) {
   const [noticeData, setNoticeData] = useState([]);
 
   const [noticePage, setNoticePage] = useState(1);
+  const [isScroll, setIsScroll] = useState(false);
   const [eventPage, setEventPage] = useState(1);
 
   const [last, setLast] = useState({
@@ -119,7 +120,13 @@ export default function Post({route: {params}}) {
           }}
           keyExtractor={({item, index}) => index}
           onEndReached={() => {
-            getBoardListHandle();
+            if (isScroll) {
+              getBoardListHandle();
+              setIsScroll(false);
+            }
+          }}
+          onMomentumScrollBegin={() => {
+            setIsScroll(true);
           }}
         />
       </Container>

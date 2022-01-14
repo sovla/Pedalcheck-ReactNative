@@ -14,74 +14,86 @@ import SearchIcon from '@assets/image/ic_search.png';
 import {TouchableOpacity} from 'react-native';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import numberFormat from '@/Util/numberFormat';
+import {FlatList} from 'react-native-gesture-handler';
+import {useEffect} from 'react';
 
 export default function RepairHistorySelectHistory() {
   const [questionSelect, setQuestionSelect] = useState([]);
   const navigation = useNavigation();
+
+  // useEffect(() => {
+
+  // } ,[])
 
   const onPressProduct = () => {
     navigation.navigate('Detail');
   };
   return (
     <Box pd="0px 16px">
-      <BetweenBox
-        width="380px"
-        pd="16px"
-        mg="20px 0px"
-        backgroundColor={Theme.color.backgroundBlue}
-        borderRadius="10px"
-        alignItems="center">
-        <RowBox backgroundColor="#0000" alignItems="center">
-          <DefaultImage source={SpannerIcon} width="24px" height="24px" />
-          <DarkBoldText mg="0px 0px 0px 5px">누적장비</DarkBoldText>
-        </RowBox>
-        <RowBox backgroundColor="#0000" alignItems="center">
-          <IndigoText fontWeight={Theme.fontWeight.bold}>12,345</IndigoText>
-          <IndigoText fontWeight={Theme.fontWeight.bold}>건</IndigoText>
-        </RowBox>
-      </BetweenBox>
-      <RowBox alignItems="center">
-        <BorderButton
-          width="135px"
-          height="36px"
-          borderColor={Theme.borderColor.gray}
-          color={Theme.color.black}>
-          2021-10-14(미완)
-        </BorderButton>
-        <DarkText mg="0px 6.5px">~</DarkText>
-        <BorderButton
-          width="135px"
-          height="36px"
-          borderColor={Theme.borderColor.gray}
-          color={Theme.color.black}>
-          2021-10-14(미완)
-        </BorderButton>
-        <Box mg="0px 0px 0px 10px">
-          <BorderButton width="78px" height="36px">
-            조회
-          </BorderButton>
-        </Box>
-      </RowBox>
-      <DefaultDropdown
-        data={productDummy}
-        value="정비 상품 검색"
-        setValue={item => console.log(item)}
-        width={121}
-        pdLeft={0}
-        fontType="Medium"
-        isBorder={false}
+      <FlatList
+        ListHeaderComponent={
+          <>
+            <BetweenBox
+              width="380px"
+              pd="16px"
+              mg="20px 0px"
+              backgroundColor={Theme.color.backgroundBlue}
+              borderRadius="10px"
+              alignItems="center">
+              <RowBox backgroundColor="#0000" alignItems="center">
+                <DefaultImage source={SpannerIcon} width="24px" height="24px" />
+                <DarkBoldText mg="0px 0px 0px 5px">누적장비</DarkBoldText>
+              </RowBox>
+              <RowBox backgroundColor="#0000" alignItems="center">
+                <IndigoText fontWeight={Theme.fontWeight.bold}>12,345</IndigoText>
+                <IndigoText fontWeight={Theme.fontWeight.bold}>건</IndigoText>
+              </RowBox>
+            </BetweenBox>
+            <RowBox alignItems="center">
+              <BorderButton
+                width="135px"
+                height="36px"
+                borderColor={Theme.borderColor.gray}
+                color={Theme.color.black}>
+                2021-10-14(미완)
+              </BorderButton>
+              <DarkText mg="0px 6.5px">~</DarkText>
+              <BorderButton
+                width="135px"
+                height="36px"
+                borderColor={Theme.borderColor.gray}
+                color={Theme.color.black}>
+                2021-10-14(미완)
+              </BorderButton>
+              <Box mg="0px 0px 0px 10px">
+                <BorderButton width="78px" height="36px">
+                  조회
+                </BorderButton>
+              </Box>
+            </RowBox>
+            <DefaultDropdown
+              data={productDummy}
+              value="정비 상품 검색"
+              setValue={item => console.log(item)}
+              width={121}
+              pdLeft={0}
+              fontType="Medium"
+              isBorder={false}
+            />
+            <RowBox>
+              <DefaultInput
+                backgroundColor={Theme.color.white}
+                borderColor={Theme.borderColor.gray}
+                placeHolder="정비 상품을 검색하세요"
+                width="380px"
+              />
+              <PositionBox backgroundColor="#0000" right="16px" bottom="11px">
+                <DefaultImage source={SearchIcon} width="21px" height="21px" />
+              </PositionBox>
+            </RowBox>
+          </>
+        }
       />
-      <RowBox>
-        <DefaultInput
-          backgroundColor={Theme.color.white}
-          borderColor={Theme.borderColor.gray}
-          placeHolder="정비 상품을 검색하세요"
-          width="380px"
-        />
-        <PositionBox backgroundColor="#0000" right="16px" bottom="11px">
-          <DefaultImage source={SearchIcon} width="21px" height="21px" />
-        </PositionBox>
-      </RowBox>
       <ReceiptProduct onPress={onPressProduct} />
       <ReceiptProduct onPress={onPressProduct} />
       <ReceiptProduct onPress={onPressProduct} />
