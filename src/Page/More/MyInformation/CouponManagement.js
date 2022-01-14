@@ -1,76 +1,174 @@
-import {BorderButton, Button} from '@/assets/global/Button';
-import {BetweenBox, Box, Container, RowBox, ScrollBox} from '@/assets/global/Container';
-import DefaultImage from '@/assets/global/Image';
-import {
-  DarkBoldText,
-  DarkText,
-  DefaultText,
-  GrayText,
-  IndigoText,
-  MediumText,
-} from '@/assets/global/Text';
+import {Button} from '@/assets/global/Button';
+import {Box, RowBox} from '@/assets/global/Container';
+import {DefaultText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
-import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import Header from '@/Component/Layout/Header';
 import MenuNav from '@/Component/Layout/MenuNav';
 import React from 'react';
 import {useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {FlatList, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
-import CheckIcon from '@assets/image/ic_check_w.png';
-import ProductsShow from '@/Component/Repair/ProductsShow';
-import Badge from '@/Component/BikeManagement/Badge';
 import {DefaultInput} from '@/assets/global/Input';
 import {repairHistoryDropdownList} from '@/assets/global/dummy';
-import {useNavigation} from '@react-navigation/core';
 import CouponItem from '@/Component/MyInformation/CouponItem';
+import {useEffect} from 'react';
+import {useIsFocused} from '@react-navigation/native';
+import {getCouponList} from '@/API/More/More';
+import UseCouponItem from '@/Component/MyInformation/UseCouponItem';
 
 export default function CouponManagement() {
   const [selectMenu, setSelectMenu] = useState('쿠폰함');
+  const [selectSubMenu, setSelectSubMenu] = useState('보유');
+  const [availableCouponList, setAvailableCouponList] = useState([]);
+  const [usedCouponList, setUsedCouponList] = useState([]);
+
+  const [availablePage, setAvailablePage] = useState(1);
+  const [usedPage, setUsedPage] = useState(1);
+
+  const [isScroll, setIsScroll] = useState(false);
+
+  const [isLastPage, setIsLastPage] = useState({
+    available: false,
+    used: false,
+  });
+
+  const isFocused = useIsFocused();
+  const {login} = useSelector(state => state);
+
+  const menu = ['쿠폰함', '쿠폰 사용 현황'];
+
+  useEffect(() => {
+    if (isFocused) {
+      getCouponListHandle();
+    }
+  }, [isFocused, selectSubMenu]);
+
+  const getCouponListHandle = async () => {
+    const isHold = selectSubMenu === '보유';
+    if ((isHold && isLastPage.available) || (!isHold && isLastPage.used)) {
+      return null;
+    }
+    await getCouponList({
+      _mt_idx: 10, // 수정필요
+      cst_status: isHold ? 1 : 2,
+      page: isHold ? availablePage : usedPage,
+    }).then(res => {
+      if (res.data.result === 'true') {
+        // 데이터 정상적으로 전송
+        if (res.data.data.data) {
+          // 데이터가 들어있다면
+          if (isHold) {
+            setAvailableCouponList(prev => [...prev, ...res.data.data.data]);
+            setAvailablePage(prev => prev + 1);
+          } else {
+            setUsedCouponList(prev => [...prev, ...res.data.data.data]);
+            setUsedPage(prev => prev + 1);
+          }
+        } else {
+          setIsLastPage(prev => ({...prev, [isHold ? 'available' : 'used']: true}));
+          // 보유 혹은 완료 리스트 마지막 페이지 여부
+        }
+      }
+    });
+  };
+
+  const flatListData = () => {
+    if (selectMenu === '쿠폰함') {
+      if (selectSubMenu === '보유') {
+        return availableCouponList;
+      } else {
+        return usedCouponList;
+      }
+    } else {
+      return [];
+    }
+  };
 
   return (
     <>
       <Header title="쿠폰 관리" />
-      <MenuNav menuItem={menu} select={selectMenu} setSelect={setSelectMenu} />
-      <Container>
-        <ScrollBox>
-          {selectMenu === '쿠폰함' && <CouponBox />}
-          {selectMenu === '쿠폰 사용 현황' && <CouponUsageStatus />}
-        </ScrollBox>
-      </Container>
+
+      <Box style={{flex: 1}}>
+        <FlatList
+          data={flatListData()}
+          onEndReached={e => {
+            if (isScroll) {
+              getCouponListHandle();
+              setIsScroll(false);
+            }
+          }}
+          onEndReachedThreshold={0.5}
+          onMomentumScrollBegin={() => {
+            setIsScroll(true);
+          }}
+          renderItem={({item, index}) => {
+            return selectSubMenu === '보유' ? (
+              <CouponItem
+                couponName={item?.ct_title}
+                shopName={item?.mst_name}
+                issueDate={item?.cst_wdate}
+                startOfAvailability={item?.cst_sdate}
+                endOfAvailability={item?.cst_edate}
+                status={item?.cst_status === '미사용' && '사용'}
+                onPressCouponUse={() => {}}
+              />
+            ) : (
+              <CouponItem
+                couponName={item?.ct_title}
+                shopName={item?.mst_name}
+                issueDate={item?.cst_wdate}
+                startOfAvailability={item?.cst_sdate}
+                endOfAvailability={item?.cst_edate}
+                badgeContent={item?.cst_status}
+                onPressCouponUse={() => {}}
+              />
+            );
+          }}
+          keyExtractor={(item, index) => index.toString()}
+          ListHeaderComponent={
+            <>
+              <MenuNav menuItem={menu} select={selectMenu} setSelect={setSelectMenu} />
+              {selectMenu === '쿠폰함' && (
+                <CouponBox selectSubMenu={selectSubMenu} setSelectSubMenu={setSelectSubMenu} />
+              )}
+              {selectMenu === '쿠폰 사용 현황' && <CouponUsageStatus />}
+            </>
+          }
+        />
+      </Box>
     </>
   );
 }
 
-const menu = ['쿠폰함', '쿠폰 사용 현황'];
+// cst_edate: "2022-02-01 23:59:59"
+// cst_idx: "1"
+// cst_status: "미사용"
+// cst_udate: null
+// cst_title
+// ct_title
+// cst_wdate: "2021-12-30 15:46:55"
+// ct_code: "code1234"
+// ct_idx: "1"
+// mst_idx: "2"
+// mst_name: "디몬정비"
+// od_idx: null
 
 const CouponUsageStatus = () => {
   const [dropMenu, setDropMenu] = useState('전체');
   return (
-    <>
-      <Box mg="20px 16px 0px">
-        <DefaultInput
-          value={dropMenu}
-          changeFn={setDropMenu}
-          isDropdown
-          dropdownItem={repairHistoryDropdownList}
-        />
-      </Box>
-      <Box>
-        <CouponItem />
-        <CouponItem badgeContent="처리완료" />
-        <CouponItem badgeContent="승인" />
-        <CouponItem badgeContent="승인거부" />
-        <CouponItem badgeContent="미사용" />
-      </Box>
-    </>
+    <Box mg="20px 16px 0px">
+      <DefaultInput
+        value={dropMenu}
+        changeFn={setDropMenu}
+        isDropdown
+        dropdownItem={repairHistoryDropdownList}
+      />
+    </Box>
   );
 };
 
-const CouponBox = () => {
+const CouponBox = ({setSelectSubMenu, selectSubMenu}) => {
   const {size} = useSelector(state => state);
-  const navigation = useNavigation();
-  const [selectMenu, setSelectMenu] = useState('보유');
 
   const colorSelector = (type, item) => {
     if (type === 'text') {
@@ -83,50 +181,45 @@ const CouponBox = () => {
   return (
     <Box>
       <RowBox mg="15px 16px">
-        <TouchableOpacity onPress={() => setSelectMenu('보유')}>
+        <TouchableOpacity onPress={() => setSelectSubMenu('보유')}>
           <Button
             width="185px"
             height="35px"
             backgroundColor={Theme.color.white}
-            borderColor={colorSelector('border', selectMenu === '보유')}
+            borderColor={colorSelector('border', selectSubMenu === '보유')}
             borderRadius="3px"
             mg="0px 10px 0px 0px">
             <DefaultText
               fontSize={Theme.fontSize.fs13}
-              color={colorSelector('text', selectMenu === '보유')}
+              color={colorSelector('text', selectSubMenu === '보유')}
               fontWeight={Theme.fontWeight.bold}>
               보유
             </DefaultText>
           </Button>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setSelectMenu('완료 · 만료')}>
+        <TouchableOpacity onPress={() => setSelectSubMenu('완료 · 만료')}>
           <Button
             width="185px"
             height="35px"
             backgroundColor={Theme.color.white}
-            borderColor={colorSelector('border', selectMenu === '완료 · 만료')}
+            borderColor={colorSelector('border', selectSubMenu === '완료 · 만료')}
             borderRadius="3px">
             <DefaultText
               fontSize={Theme.fontSize.fs13}
               fontWeight={Theme.fontWeight.bold}
-              color={colorSelector('text', selectMenu === '완료 · 만료')}>
+              color={colorSelector('text', selectSubMenu === '완료 · 만료')}>
               완료 · 만료
             </DefaultText>
           </Button>
         </TouchableOpacity>
       </RowBox>
-      <Box width={size.designWidth} alignItems="center">
-        <IndigoText fontSize={Theme.fontSize.fs14}>
-          쿠폰은 발행매장에서만 사용가능합니다.
-        </IndigoText>
-      </Box>
-      <Box>
-        <CouponItem onPressCouponUse={() => navigation.navigate('CouponUseBikeSelect')} />
-        <CouponItem />
-        <CouponItem />
-        <CouponItem />
-        <CouponItem />
-      </Box>
+      {selectSubMenu === '보유' && (
+        <Box width={size.designWidth} alignItems="center">
+          <IndigoText fontSize={Theme.fontSize.fs14}>
+            쿠폰은 발행매장에서만 사용가능합니다.
+          </IndigoText>
+        </Box>
+      )}
     </Box>
   );
 };

@@ -30,7 +30,7 @@ import AlertModal from './AlertModal';
 // slide, fullSize, default
 // 사용법 modal.modalComponent에 원하는 값을 넣고 switch문을 추가하면 됩니다.
 
-export default function ModalBasic() {
+export default function ModalBasic({navigation}) {
   const modal = useSelector(state => state.modal);
   const size = useSelector(state => state.size);
   const dispatch = useDispatch();

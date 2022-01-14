@@ -1,35 +1,21 @@
-import {BorderButton, Button} from '@/assets/global/Button';
-import {BetweenBox, Box, Container, RowBox, ScrollBox} from '@/assets/global/Container';
+import {Button} from '@/assets/global/Button';
+import {BetweenBox, Box, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
-import {
-  DarkBoldText,
-  DarkText,
-  DefaultText,
-  GrayText,
-  IndigoText,
-  MediumText,
-} from '@/assets/global/Text';
+import {DarkBoldText, DarkText, DefaultText, GrayText, MediumText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
-import Header from '@/Component/Layout/Header';
-import MenuNav from '@/Component/Layout/MenuNav';
 import React from 'react';
-import {useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import CheckIcon from '@assets/image/ic_check_w.png';
-import ProductsShow from '@/Component/Repair/ProductsShow';
 import Badge from '@/Component/BikeManagement/Badge';
-import {DefaultInput} from '@/assets/global/Input';
-import {repairHistoryDropdownList} from '@/assets/global/dummy';
-import {useNavigation} from '@react-navigation/core';
 
 const CouponItem = ({
-  couponName = '세차 무료쿠폰',
-  shopName = '인천신스',
-  issueDate = '2021-10-13',
-  startOfAvailability = '2021-10-13',
-  endOfAvailability = '2021-11-13',
+  couponName = '쿠폰이름',
+  shopName = '매장명',
+  issueDate = '발급날',
+  startOfAvailability = '사용 기간 시작날',
+  endOfAvailability = '사용 기간 끝날',
   status = '사용',
   badgeContent,
   rejectionContent = '거절사유가 입력됩니다. 거절사유가 입력됩니다.',
