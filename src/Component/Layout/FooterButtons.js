@@ -81,7 +81,9 @@ export default function FooterButtons({selectMenu, isAdmin}) {
         },
       ];
   const onPressMenu = item => {
-    if (RequireLoginAlert(login, navigation)) {
+    if (item.content !== '정비소' && RequireLoginAlert(login, navigation)) {
+      navigation.navigate(item?.navigate);
+    } else if (item.content === '정비소' && login.idx) {
       navigation.navigate(item?.navigate);
     }
   };

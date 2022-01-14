@@ -29,7 +29,7 @@ export default function RegisterAdditional({navigation, route}) {
     birthDate?.year !== '' ? `${birthDate.year}-${birthDate.month}-${birthDate.day}` : '';
 
   const onPressSave = async () => {
-    const joinResponse = await MemberJoin({
+    await MemberJoin({
       mt_name: information.name,
       mt_nickname: information.nickName,
       mt_id: information.email,
@@ -38,7 +38,7 @@ export default function RegisterAdditional({navigation, route}) {
       mt_idx: snsLogin.mt_idx,
       mt_app_token: token.token,
     }).then(res => {
-      if (res?.data?.data?.result !== 'false') {
+      if (res?.data?.result !== 'false') {
         dispatch(setUserInfo(res?.data?.data?.data?.data));
       }
     });

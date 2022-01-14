@@ -19,7 +19,7 @@ import {modalClose, modalOpenAndProp} from '@/Store/modalState';
 import {DarkBoldText, DarkMediumText} from '@/assets/global/Text';
 
 export default function LikeShop() {
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const navigation = useNavigation();
   const isFocused = navigation.isFocused();
   const dispatch = useDispatch();
@@ -180,6 +180,12 @@ const LikeShopItem = ({item, isEdit, deleteList}) => {
         <ShopComponent
           mg="0px"
           isPress={false}
+          shopTitle={item?.mst_name}
+          likeCount={item?.mst_likes}
+          reviewCount={item?.mst_reviews}
+          repairCount={item?.mst_orders}
+          tagList={item?.mst_tag?.split(',')}
+          image={item?.mst_img}
           width={isEdit ? '346px' : '380px'}
           isBorder={false}
         />
@@ -187,3 +193,11 @@ const LikeShopItem = ({item, isEdit, deleteList}) => {
     </RowBox>
   );
 };
+// mst_img: null
+// mst_likes: "3"
+// mst_name: "디몬정비"
+// mst_orders: "1"
+// mst_reviews: "1"
+// mst_tag: "픽업,출장수리"
+// mst_type: "1"
+// mt_idx: "2"

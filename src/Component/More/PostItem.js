@@ -10,7 +10,8 @@ import {TouchableOpacity} from 'react-native';
 
 export default function PostItem({item, index, selectPost, setSelectPost}) {
   const {size} = useSelector(state => state);
-  const onPressPost = idx => {
+  const isIdx = item?.idx !== undefined;
+  const onPressPost = (idx, type) => {
     if (selectPost.find(findItem => findItem === idx)) {
       setSelectPost(selectPost.filter(filterItem => filterItem !== idx));
     } else {
@@ -18,10 +19,10 @@ export default function PostItem({item, index, selectPost, setSelectPost}) {
     }
   };
 
-  const isSelect = selectPost.find(findItem => findItem === item.idx);
+  const isSelect = selectPost.find(findItem => findItem === (isIdx ? item.idx : index + 1));
   return (
     <Box key={index} alignItems="center" style={isSelect && borderBottomWhiteGray}>
-      <TouchableOpacity onPress={() => onPressPost(item.idx)}>
+      <TouchableOpacity onPress={() => onPressPost(item?.idx ?? index + 1, item?.idx)}>
         <BetweenBox pd="16p 10px" width={size.minusPadding} style={borderBottomWhiteGray}>
           <Box>
             <DarkBoldText fontSize={Theme.fontSize.fs15}>{item.title}</DarkBoldText>
