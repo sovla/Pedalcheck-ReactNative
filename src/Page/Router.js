@@ -100,11 +100,9 @@ const Stack = createNativeStackNavigator();
 const withScrollView = WrappedComponent => {
   return props => {
     const isFocus = useIsFocused();
-    const navigation = useNavigation();
-    console.log(navigation.canGoBack());
 
     useEffect(() => {
-      if (!navigation.canGoBack() && isFocus) {
+      if (!props?.navigation?.canGoBack() && isFocus) {
         BackHandler.addEventListener('hardwareBackPress', onBackPress);
       }
       return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);

@@ -37,10 +37,9 @@ export default function ModalBasic() {
   if (modal?.isOpenModal !== true) {
     return null;
   }
-  console.log(modal);
   let RenderItem = <></>;
 
-  const childrenProps = modal?.modalProp ?? {}; // 모달 프롭 넣는 부분
+  const childrenProps = modal?.modalProp ? modal.modalProp : {}; // 모달 프롭 넣는 부분
 
   const selectRenderItem = () => {
     switch (modal?.modalComponent) {
