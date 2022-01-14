@@ -47,7 +47,7 @@ export const loginSlice = createSlice({
       });
     },
     resetUserInfo: () => {
-      initialState;
+      return initialState;
     },
   },
 });

@@ -9,7 +9,7 @@ import {BorderButton, LinkButton} from '@/assets/global/Button';
 import {Box, Container, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
 import {bankList} from '@/assets/global/dummy';
 import {DefaultInput} from '@/assets/global/Input';
-import {DarkText} from '@/assets/global/Text';
+import {DarkText, ErrorText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import Header from '@/Component/Layout/Header';
@@ -46,6 +46,7 @@ export default function Update({navigation}) {
     bname: '',
     mt_addr: '',
     location: '',
+    mt_bank_image: '',
   });
   const birthDateValue =
     birthDate?.year !== ''
@@ -67,7 +68,7 @@ export default function Update({navigation}) {
 
   const setUserInformation = async () => {
     const response = await getUserInformation({
-      _mt_idx: login.mt_idx,
+      _mt_idx: login.idx,
     });
 
     if (response?.data?.result === 'true') {
@@ -84,7 +85,7 @@ export default function Update({navigation}) {
       return;
     }
     let response;
-    if (image.path) {
+    if (image?.path) {
       response = await UpdateMemberImage({...user, mt_bank_image: image, _mt_idx: user.idx});
     } else {
       response = await UpdateMember({...user, _mt_idx: user.idx});
@@ -135,42 +136,57 @@ export default function Update({navigation}) {
 
   const RegJoin = () => {
     let result = false;
-    if (user.mt_name === '') {
+    if (emptyData(user.mt_name)) {
       setErrorMessage(prev => ({
         ...prev,
         name: '이름을 입력해주세요.',
       }));
       result = true;
     }
-    if (user.mt_nickname === '') {
+    if (emptyData(user.mt_nickname)) {
       setErrorMessage(prev => ({
         ...prev,
         nickname: '닉네임을 입력해주세요.',
       }));
       result = true;
     }
-    if (user.mt_addr === '') {
+    if (emptyData(user.mt_addr)) {
       setErrorMessage(prev => ({
         ...prev,
         mt_addr: '지역을 입력해주세요.',
       }));
       result = true;
     }
-    if (user.mt_account === '') {
+    if (emptyData(user.mt_account)) {
       setErrorMessage(prev => ({
         ...prev,
         account: '계좌번호를 입력해주세요.',
       }));
       result = true;
     }
-    if (user.mt_bname === '') {
+    if (emptyData(user.mt_bname)) {
       setErrorMessage(prev => ({
         ...prev,
         bname: '예금주명을 입력해주세요.',
       }));
       result = true;
     }
+    if (emptyData(user.mt_bank_image)) {
+      setErrorMessage(prev => ({
+        ...prev,
+        mt_bank_image: '통장 사본을 등록해주세요.',
+      }));
+      result = true;
+    }
     return result;
+  };
+
+  const emptyData = data => {
+    if (data === '' && data === null && !data) {
+      return false;
+    } else {
+      return true;
+    }
   };
 
   return (
@@ -317,7 +333,7 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
             changeFn={text => setUser(prev => ({...prev, mt_account: text}))}
           />
         </Box>
-        <RowBox width={size.minusPadding} alignItems="flex-end" mg="0px 0px 60px">
+        <RowBox width={size.minusPadding} alignItems="flex-end" mg="0px 0px 10px">
           <TouchableOpacity>
             <BorderButton
               onPress={onPressAddImage}
@@ -336,6 +352,8 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
             <DarkText fontSize={Theme.fontSize.fs13}>{image && '통장 사본.jpg'}</DarkText>
           </RowBox>
         </RowBox>
+        {errorMessage.mt_bank_image !== '' && <ErrorText>{errorMessage.mt_bank_image}</ErrorText>}
+        <Box mg="0px 0px 60px"></Box>
       </Box>
     </Box>
   );
