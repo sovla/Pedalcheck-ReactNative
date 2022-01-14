@@ -1,6 +1,6 @@
 import {Alert} from 'react-native';
 
-export const AlertButton = (alertContent, leftButtonText = '확인', leftButtonPress) => {
+export const AlertButton = (alertContent, leftButtonText = '확인', leftButtonPress = () => {}) => {
   Alert.alert('', alertContent, [
     {
       text: leftButtonText,

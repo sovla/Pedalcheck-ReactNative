@@ -16,7 +16,7 @@ import {useIsFocused} from '@react-navigation/native';
 import {getCouponList} from '@/API/More/More';
 import UseCouponItem from '@/Component/MyInformation/UseCouponItem';
 
-export default function CouponManagement() {
+export default function CouponManagement({navigation}) {
   const [selectMenu, setSelectMenu] = useState('쿠폰함');
   const [selectSubMenu, setSelectSubMenu] = useState('보유');
   const [availableCouponList, setAvailableCouponList] = useState([]);
@@ -44,6 +44,7 @@ export default function CouponManagement() {
   }, [isFocused, selectSubMenu]);
 
   const getCouponListHandle = async () => {
+    //  쿠폰리스트 얻어오는곳 쿠폰함()
     const isHold = selectSubMenu === '보유';
     if ((isHold && isLastPage.available) || (!isHold && isLastPage.used)) {
       return null;
@@ -73,6 +74,7 @@ export default function CouponManagement() {
   };
 
   const flatListData = () => {
+    //  플랫리스트 데이터 부분 선택
     if (selectMenu === '쿠폰함') {
       if (selectSubMenu === '보유') {
         return availableCouponList;
@@ -110,7 +112,9 @@ export default function CouponManagement() {
                 startOfAvailability={item?.cst_sdate}
                 endOfAvailability={item?.cst_edate}
                 status={item?.cst_status === '미사용' && '사용'}
-                onPressCouponUse={() => {}}
+                onPressCouponUse={() => {
+                  navigation.navigate('CouponUseBikeSelect', {item});
+                }}
               />
             ) : (
               <CouponItem
@@ -139,19 +143,6 @@ export default function CouponManagement() {
     </>
   );
 }
-
-// cst_edate: "2022-02-01 23:59:59"
-// cst_idx: "1"
-// cst_status: "미사용"
-// cst_udate: null
-// cst_title
-// ct_title
-// cst_wdate: "2021-12-30 15:46:55"
-// ct_code: "code1234"
-// ct_idx: "1"
-// mst_idx: "2"
-// mst_name: "디몬정비"
-// od_idx: null
 
 const CouponUsageStatus = () => {
   const [dropMenu, setDropMenu] = useState('전체');

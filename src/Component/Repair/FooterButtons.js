@@ -9,7 +9,7 @@ import RepairReservationIcon from '@assets/image/ic_reservation.png';
 import LikeIcon from '@assets/image/good.png';
 import UnLikeIcon from '@assets/image/good_b.png';
 import {useNavigation} from '@react-navigation/core';
-import {AlertButtons, RequireLoginAlert} from '@/Util/Alert';
+import {AlertButton, AlertButtons, RequireLoginAlert} from '@/Util/Alert';
 
 export default function FooterButtons({
   isRepair = false,
@@ -17,7 +17,7 @@ export default function FooterButtons({
   onPressLike = () => {},
   my_bike,
 }) {
-  const {login} = useSelector(state => state);
+  const {login, shopInfo} = useSelector(state => state);
   const navigation = useNavigation();
   const onPressRepair = () => {
     if (RequireLoginAlert(login, navigation)) {
@@ -30,7 +30,11 @@ export default function FooterButtons({
         );
         return;
       } else {
-        navigation.navigate('ReservationProduct');
+        if (shopInfo.pt_list) {
+          navigation.navigate('ReservationProduct');
+        } else {
+          AlertButton('예약 가능한 상품이 없습니다.');
+        }
       }
     }
   };

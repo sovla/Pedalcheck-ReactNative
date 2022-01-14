@@ -1,5 +1,13 @@
-import {LinkButton} from '@/assets/global/Button';
-import {Box, Container, PositionBox, ScrollBox} from '@/assets/global/Container';
+import {getMyBikeList} from '@/API/Shop/Shop';
+import {BorderButton, Button, ButtonTouch, LinkButton} from '@/assets/global/Button';
+import {
+  BetweenBox,
+  Box,
+  Container,
+  PositionBox,
+  RowBox,
+  ScrollBox,
+} from '@/assets/global/Container';
 import DefaultLine from '@/assets/global/Line';
 import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
@@ -8,14 +16,60 @@ import RepairReservationHeader from '@/Page/Repair/RepairReservationHeader';
 import {getPixel} from '@/Util/pixelChange';
 import {useNavigation} from '@react-navigation/core';
 import React from 'react';
+import {useLayoutEffect} from 'react';
 import {useState} from 'react';
 import {ScrollView, View} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {useIsFocused} from '@react-navigation/native';
+import {DefaultInput} from '@/assets/global/Input';
+import {DefaultText} from '@/assets/global/Text';
+import {modalOpenAndProp} from '@/Store/modalState';
 
 export default function CouponUseBikeSelect() {
-  const {size} = useSelector(state => state);
-  const [selectItem, setSelectItem] = useState('');
+  const {size, login} = useSelector(state => state);
+  const isFocused = useIsFocused();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const [selectItem, setSelectItem] = useState('');
+  const [bikeList, setBikeList] = useState([]);
+  const [bikeName, setBikeName] = useState({
+    bikeBrand: '',
+    bikeModel: '',
+  }); // 직접입력 선택한 경우
+
+  const [shopInfo, setShopInfo] = useState({
+    mst_idx: '',
+    mst_name: '',
+  });
+
+  const onPressNext = () => {
+    if (selectItem !== '') {
+      navigation.navigate('ReservationDate', {
+        selectBike: selectItem !== 2000 ? bikeList[selectItem] : bikeName,
+      });
+    }
+  };
+
+  const onPressSearch = () => {
+    dispatch(modalOpenAndProp({modalComponent: 'searchShop', setShopInfo}));
+  };
+
+  useLayoutEffect(() => {
+    if (isFocused) {
+      getMyBikeList({
+        _mt_idx: login?.idx,
+      })
+        .then(res => res.data?.result === 'true' && res.data.data.data)
+        .then(data => setBikeList(data));
+    } else {
+      setBikeName({
+        bikeBrand: '',
+        bikeModel: '',
+      });
+    }
+  }, [isFocused]);
+
   return (
     <>
       <Header title="쿠폰 사용" />
@@ -28,14 +82,27 @@ export default function CouponUseBikeSelect() {
             isButton={false}
             selectItem={selectItem}
             setSelectItem={setSelectItem}
+            bikeArray={bikeList}
+            bikeName={bikeName}
+            setBikeName={setBikeName}
+            onPressNext={onPressNext}
           />
+          <BetweenBox mg="40px 16px 0px" alignItems="flex-end">
+            <DefaultInput
+              title="매장선택"
+              fontSize={Theme.fontSize.fs16}
+              width="310px"
+              pd="0px 0px 5px"
+              value={shopInfo?.mst_name}
+              disabled
+            />
+            <ButtonTouch onPress={onPressSearch} width="60px">
+              <DefaultText>검색</DefaultText>
+            </ButtonTouch>
+          </BetweenBox>
         </ScrollBox>
+        <LinkButton mg="20px 16px" to={onPressNext} content="다음" />
       </Box>
-      <LinkButton
-        mg="20px 16px"
-        to={() => navigation.navigate('CouponUseDateSelect')}
-        content="다음"
-      />
     </>
   );
 }
