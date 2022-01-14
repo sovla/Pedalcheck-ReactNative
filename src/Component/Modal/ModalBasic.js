@@ -15,6 +15,7 @@ import ThirdParty from '../Home/Modal/ThirdParty';
 import DeleteAccount from '../More/Modal/DeleteAccount';
 import QuestionDelete from '../More/Modal/QuestionDelete';
 import ReservationCancle from '../More/Modal/ReservationCancle';
+import SearchShop from '../More/Modal/SearchShop';
 import DaumPostMadal from '../MyInformation/DaumPostMadal';
 import PaymentInformationCheck from '../Repair/Modal/PaymentInformationCheck';
 import AdjustmentHistory from '../RepairHistory/Modal/AdjustmentHistory';
@@ -30,17 +31,16 @@ import AlertModal from './AlertModal';
 // slide, fullSize, default
 // 사용법 modal.modalComponent에 원하는 값을 넣고 switch문을 추가하면 됩니다.
 
-export default function ModalBasic() {
+export default function ModalBasic({navigation}) {
   const modal = useSelector(state => state.modal);
   const size = useSelector(state => state.size);
   const dispatch = useDispatch();
   if (modal?.isOpenModal !== true) {
     return null;
   }
-  console.log(modal);
   let RenderItem = <></>;
 
-  const childrenProps = modal?.modalProp ?? {}; // 모달 프롭 넣는 부분
+  const childrenProps = modal?.modalProp ? modal.modalProp : {}; // 모달 프롭 넣는 부분
 
   const selectRenderItem = () => {
     switch (modal?.modalComponent) {
@@ -92,6 +92,8 @@ export default function ModalBasic() {
         return AlertModal;
       case 'daumPostModal':
         return DaumPostMadal;
+      case 'searchShop':
+        return SearchShop;
     }
   };
 

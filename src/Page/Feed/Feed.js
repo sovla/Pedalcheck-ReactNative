@@ -72,6 +72,7 @@ export const ShadowStyle = {
 };
 
 const FeedBox = ({item, size}) => {
+  const image = item?.bikeImagel ? {uri: item.bikeImage} : DummyImage;
   return (
     <Box
       width={size.minusPadding}
@@ -81,7 +82,7 @@ const FeedBox = ({item, size}) => {
       style={{borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}>
       {item?.ft_store_img && (
         <TouchableOpacity onPress={() => Linking.openURL(item?.ft_link)}>
-          <DefaultImage source={item?.bikeImage} width={size.minusPadding} height="200px" />
+          <DefaultImage source={image} width={size.minusPadding} height="200px" />
         </TouchableOpacity>
       )}
       <RowBox mg="15px 15px 0px" justifyContent="space-between">

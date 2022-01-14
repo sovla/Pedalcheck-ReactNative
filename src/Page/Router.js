@@ -97,60 +97,9 @@ let count = 0;
 
 const Stack = createNativeStackNavigator();
 
-const withScrollView = WrappedComponent => {
-  return props => {
-    const isFocus = useIsFocused();
-    const navigation = useNavigation();
-    console.log(navigation.canGoBack());
-
-    useEffect(() => {
-      if (!navigation.canGoBack() && isFocus) {
-        BackHandler.addEventListener('hardwareBackPress', onBackPress);
-      }
-      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-    }, [isFocus]);
-
-    const onBackPress = () => {
-      if (count < 1) {
-        count++;
-        ToastAndroid.show('한번더 뒤로가기를 누르면 앱이 종료됩니다.', ToastAndroid.SHORT);
-      } else {
-        BackHandler.exitApp();
-      }
-      setTimeout(() => {
-        count = 0;
-      }, 2000);
-
-      return true;
-    };
-    return (
-      <>
-        <SafeAreaView style={{flex: 0, backgroundColor: '#fff'}} />
-        <SafeAreaView style={{flex: 1}}>
-          <View style={{flex: 1, backgroundColor: Theme.color.white}}>
-            <WrappedComponent {...props} />
-
-            {isFocus && <ModalBasic navigation={props?.navigation} />}
-            <PositionBox
-              backgroundColor="#0000"
-              flexDirection="row"
-              top="0px"
-              right="0px"
-              zIndex={3000}>
-              <DarkBoldText>{props.route.name}</DarkBoldText>
-            </PositionBox>
-          </View>
-        </SafeAreaView>
-        <SafeAreaView style={{flex: 0, backgroundColor: '#fff'}} />
-      </>
-    );
-  };
-};
-
 export default function Router() {
   const dispatch = useDispatch();
   const {height, width} = useWindowDimensions();
-  const ref = useRef(null);
 
   const getToken = async () => {
     try {
@@ -202,6 +151,54 @@ export default function Router() {
     </>
   );
 }
+
+const withScrollView = WrappedComponent => {
+  return props => {
+    const isFocus = useIsFocused();
+
+    useEffect(() => {
+      if (!props?.navigation?.canGoBack() && isFocus) {
+        BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      }
+      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [isFocus]);
+
+    const onBackPress = () => {
+      if (count < 1) {
+        count++;
+        ToastAndroid.show('한번더 뒤로가기를 누르면 앱이 종료됩니다.', ToastAndroid.SHORT);
+      } else {
+        BackHandler.exitApp();
+      }
+      setTimeout(() => {
+        count = 0;
+      }, 2000);
+
+      return true;
+    };
+    return (
+      <>
+        <SafeAreaView style={{flex: 0, backgroundColor: '#fff'}} />
+        <SafeAreaView style={{flex: 1}}>
+          <View style={{flex: 1, backgroundColor: Theme.color.white}}>
+            <WrappedComponent {...props} />
+
+            {isFocus && <ModalBasic navigation={props?.navigation} />}
+            <PositionBox
+              backgroundColor="#0000"
+              flexDirection="row"
+              top="0px"
+              right="0px"
+              zIndex={3000}>
+              <DarkBoldText>{props.route.name}</DarkBoldText>
+            </PositionBox>
+          </View>
+        </SafeAreaView>
+        <SafeAreaView style={{flex: 0, backgroundColor: '#fff'}} />
+      </>
+    );
+  };
+};
 
 const forFade = ({current}) => {
   return {

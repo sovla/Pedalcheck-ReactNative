@@ -107,3 +107,21 @@ export const getRepairHistoryDetail = async args => {
     console.log(error);
   }
 };
+
+export const getCouponList = async args => {
+  try {
+    const response = await API.post('coupon.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getShopList = async args => {
+  try {
+    const response = await API.post('get_store.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

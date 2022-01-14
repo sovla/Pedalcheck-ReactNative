@@ -26,7 +26,7 @@ export default function Information() {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    getBikeListHandle();
+    isFocused && getBikeListHandle();
   }, [isFocused]);
 
   const getBikeListHandle = () => {

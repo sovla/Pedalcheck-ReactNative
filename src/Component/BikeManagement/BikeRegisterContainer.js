@@ -18,6 +18,7 @@ import {useNavigation} from '@react-navigation/native';
 import {addBike, bikeEdit, bikeSerialCheck} from '@/API/Bike/Bike';
 import {useState} from 'react';
 import {Alert} from 'react-native';
+import useUpdateEffect from '@/Hooks/useUpdateEffect';
 
 export default function BikeRegisterContainer({isUpdate, bike, setBike, image, setImage}) {
   const {size, modal, login} = useSelector(state => state);
@@ -32,11 +33,11 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
     bikeImage: '',
   });
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (modal?.modalProp && modal?.isDone) {
-      setBike(prev => ({...prev, bikeModel: modal.modalProp}));
+      setBike(prev => ({...prev, bikeModel: modal?.modalProp}));
     }
-  }, [modal.isDone]);
+  }, [modal?.isDone]);
 
   const onPressAddImage = () => {
     ImageCropPicker.openPicker({
@@ -90,9 +91,9 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
     bikeSerialCheck({
       _mt_idx: login?.idx, // 수정 필요
       mbt_serial: bike.vehicleNumber,
-    }).then(
-      res =>
-        res?.data?.data?.data !== '' &&
+    }).then(res => {
+      if (res.data?.data?.data !== '') {
+        const {data} = res.data.data;
         Alert.alert('', '기존에 등록된 정보가 있습니다. 이 정보를 사용하시겠습니까?', [
           {
             text: '취소',
@@ -101,11 +102,6 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
           {
             text: '확인',
             onPress: () => {
-              const {
-                data: {
-                  data: {data},
-                },
-              } = res;
               setBike({
                 bikeName: data.mbt_nick,
                 bikeModel: data.mbt_brand + '  ' + data.mbt_model,
@@ -122,8 +118,9 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
               });
             },
           },
-        ]),
-    );
+        ]);
+      }
+    });
   };
 
   const selectionOption = [

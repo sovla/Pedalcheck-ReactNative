@@ -10,6 +10,7 @@ import {useSelector} from 'react-redux';
 import Review from './Review';
 import {Alert, FlatList, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
+import {RequireLoginAlert} from '@/Util/Alert';
 
 export default function ReviewMain() {
   const {size, shopInfo, login} = useSelector(state => state);
@@ -31,21 +32,11 @@ export default function ReviewMain() {
           <TouchableOpacity
             onPress={() => {
               // 현태 비회원일 때
-              if (login.mt_idx === '') {
-                Alert.alert('', '로그인이 필요한 기능입니다.', [
-                  {
-                    text: '확인',
-                    onPress: () => navigation.navigate('Home'),
-                  },
-                  {
-                    text: '취소',
-                  },
-                ]);
-                return;
+              if (RequireLoginAlert(login, navigation)) {
+                navigation.navigate('ReviewHome', {
+                  mst_idx: shopInfo?.store_info?.mst_idx, // 매장 정보
+                });
               }
-              navigation.navigate('ReviewHome', {
-                mst_idx: shopInfo?.store_info?.mst_idx, // 매장 정보
-              });
             }}>
             <BorderButton width="90px">
               <DefaultImage source={PencelIcon} width="17px" height="17px" />

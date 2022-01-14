@@ -103,7 +103,9 @@ export default function Question() {
         page: paramPage ?? select === '페달체크' ? page : shopPage,
       }).then(res => {
         const qna_list = res?.data?.data?.data?.qna_list;
+
         if (res.data.result === 'true' && qna_list) {
+          // 데이터 true , qna_list 존재
           if (select === '페달체크') {
             setPage(prev => prev + 1);
             setPedalCheckList(prev => [...prev, ...qna_list]);
@@ -112,6 +114,7 @@ export default function Question() {
             setShopList(prev => [...prev, ...qna_list]);
           }
         } else if (res.data.result === 'true') {
+          // 데이터 true , qna_list 없을때 라스트페이지 적용
           setIsLastPage(prev => ({
             ...prev,
             [type]: true,

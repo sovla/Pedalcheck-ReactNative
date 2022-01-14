@@ -21,7 +21,7 @@ import {DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {Alert, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
-import {AlertButton, AlertButtons} from '@/Util/Alert';
+import {AlertButton, AlertButtons, RequireLoginAlert} from '@/Util/Alert';
 
 export default function FooterButtons({selectMenu, isAdmin}) {
   const navigation = useNavigation();
@@ -81,13 +81,9 @@ export default function FooterButtons({selectMenu, isAdmin}) {
         },
       ];
   const onPressMenu = item => {
-    if (login.mt_idx === '') {
-      AlertButtons('로그인이 필요한 기능입니다.', '확인', '취소', () =>
-        navigation.navigate('Home'),
-      );
-      return;
+    if (RequireLoginAlert(login, navigation)) {
+      navigation.navigate(item?.navigate);
     }
-    navigation.navigate(item?.navigate);
   };
   return (
     <RowBox
