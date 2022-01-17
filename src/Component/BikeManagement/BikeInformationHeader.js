@@ -7,6 +7,12 @@ import {DarkText, GrayText} from '@/assets/global/Text';
 import {imageAddress} from '@assets/global/config';
 
 export default function BikeInformationHeader({item, mg = '20px 0px'}) {
+  // {
+  //   bikeName:"",
+  //   brand:"",
+  //   modelName:"",
+  //   bikeName:""
+  // }
   return (
     <RowBox mg={mg} alignItems="center">
       <DefaultImage source={{uri: imageAddress + item?.bikeImage}} width="74px" height="74px" />

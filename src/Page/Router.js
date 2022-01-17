@@ -59,16 +59,9 @@ import DateChange from './ReservationManagement/DateChange';
 import ReservationManagement from './ReservationManagement/ReservationManagement';
 import ReservationManagementDetail from './ReservationManagement/ReservationManagementDetail';
 import RepairHome from './Repair/RepairHome';
-import {
-  BackHandler,
-  DevSettings,
-  SafeAreaView,
-  ToastAndroid,
-  useWindowDimensions,
-  View,
-} from 'react-native';
+import {BackHandler, SafeAreaView, ToastAndroid, useWindowDimensions, View} from 'react-native';
 import Theme from '@/assets/global/Theme';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import ModalBasic from '@/Component/Modal/ModalBasic';
 import {initSetting} from '@/Store/sizeState';
 import ProductDetail from './Repair/ProductDetail';
@@ -76,20 +69,11 @@ import BikeRegisterFirst from './BikeManagement/BikeRegisterFirst';
 import {useIsFocused} from '@react-navigation/core';
 import RepairHistoryDetail from './More/MyInformation/RepairHistoryDetail';
 import {PositionBox} from '@/assets/global/Container';
-import {BorderButton} from '@/assets/global/Button';
-import {DarkBoldText, IndigoText} from '@/assets/global/Text';
+import {DarkBoldText} from '@/assets/global/Text';
 import CouponUseComplete from './More/Coupon/CouponUseComplete';
 import CouponUseDateSelect from './More/Coupon/CouponUseDateSelect';
-import Card from '@/Component/ReservationManagement/Card';
-import {CardStyleInterpolators} from '@react-navigation/stack';
-import {useCallback} from 'react';
-import {useMemo} from 'react';
-import {current} from '@reduxjs/toolkit';
 import messaging from '@react-native-firebase/messaging';
 import {setToken} from '@/Store/tokenState';
-import {useRef} from 'react';
-import {useFocusEffect} from '@react-navigation/native';
-import {useNavigation} from '@react-navigation/native';
 
 const INIT_ROUTER_COMPONENT_NAME = 'Home';
 

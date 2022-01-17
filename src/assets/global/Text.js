@@ -120,9 +120,9 @@ export const MoneyText = props => {
       fontSize={Theme.fontSize.fs12}
       color={Theme.color.gray}
       {...props}>
-      {numberFormat(props.money)} 원
+      {numberFormat(props.money)}&nbsp;원
     </DefaultText>
   ) : (
-    <DefaultText {...props}>{numberFormat(props.money)}원</DefaultText>
+    <DefaultText {...props}>{numberFormat(props.money)}&nbsp;원</DefaultText>
   );
 };

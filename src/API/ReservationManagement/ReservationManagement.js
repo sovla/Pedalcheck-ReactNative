@@ -1,3 +1,5 @@
+import {API} from '../Api';
+
 export const getReservationList = async args => {
   try {
     const response = await API.post('mng/order_list.php', args);
