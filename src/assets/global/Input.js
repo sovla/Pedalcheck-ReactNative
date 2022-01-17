@@ -117,6 +117,7 @@ export const DefaultInput = ({
           data={dropdownItem}
           labelField="label"
           valueField="value"
+          autoScroll={false}
           placeholder={placeHolder}
           iconColor={Theme.color.gray}
           onChange={item => {
@@ -125,12 +126,14 @@ export const DefaultInput = ({
           placeholderStyle={{
             color: Theme.color.black,
             fontSize: 15,
-            fontFamily: Platform.OS === "android" ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF',
+            fontFamily:
+              Platform.OS === 'android' ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF',
           }}
           selectedTextStyle={{
             color: Theme.color.black,
             fontSize: 15,
-            fontFamily: Platform.OS === "android" ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF',
+            fontFamily:
+              Platform.OS === 'android' ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF',
             lineHeight: 20,
             height: 20,
           }}
@@ -171,7 +174,7 @@ const DefaultInputStyle = styled.TextInput`
   line-height: 22px;
   include-font-padding: false;
   color: ${p => p.color ?? Theme.color.black};
-  font-family: ${Platform.OS === "android" ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF'};
+  font-family: ${Platform.OS === 'android' ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF'};
 
   ${p =>
     p.width &&

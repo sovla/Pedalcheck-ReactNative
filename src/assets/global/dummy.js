@@ -94,10 +94,6 @@ export const repairHistoryDropdownList = [
     value: '예약',
   },
   {
-    label: '예약취소',
-    value: '예약취소',
-  },
-  {
     label: '승인',
     value: '승인',
   },

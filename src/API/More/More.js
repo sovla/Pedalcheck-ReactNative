@@ -134,3 +134,12 @@ export const couponReservation = async args => {
     console.log(error);
   }
 };
+
+export const getCouponUsageStateList = async args => {
+  try {
+    const response = await API.post('coupon_used.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
