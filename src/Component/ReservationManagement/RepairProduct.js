@@ -36,7 +36,7 @@ export default function RepairProduct({
           </RowBox>
           <GrayText fontSize={Theme.fontSize.fs12}>{reservationDate}</GrayText>
         </Box>
-        <Box>
+        <Box alignItems="flex-end">
           <Badge badgeContent={status} />
           <MoneyText
             mg="13px 0px 0px"

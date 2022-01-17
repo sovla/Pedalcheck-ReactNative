@@ -32,6 +32,7 @@ export default function FAQ() {
       }
     });
   };
+  console.log(selectPost);
   return (
     <>
       <Header title="자주하는 질문" />

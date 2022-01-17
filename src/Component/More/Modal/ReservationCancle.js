@@ -6,7 +6,6 @@ import ModalTitleBox from '@/Component/Modal/ModalTitleBox';
 import {modalClose} from '@/Store/modalState';
 import React from 'react';
 import {useState} from 'react';
-import {View, Text} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 export default function ReservationCancle() {
@@ -27,7 +26,7 @@ export default function ReservationCancle() {
     dispatch(modalClose());
   };
   return (
-    <Container>
+    <>
       <ModalTitleBox title="환불 계좌 입력" />
       <Box mg="0px 0px 10px">
         {Object.keys(user).map((item, index) => {
@@ -70,6 +69,6 @@ export default function ReservationCancle() {
           rightContent="취소"
         />
       </Box>
-    </Container>
+    </>
   );
 }

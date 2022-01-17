@@ -125,3 +125,21 @@ export const getShopList = async args => {
     console.log(error);
   }
 };
+
+export const couponReservation = async args => {
+  try {
+    const response = await API.post('order_coupon.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getCouponUsageStateList = async args => {
+  try {
+    const response = await API.post('coupon_used.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -23,14 +23,14 @@ import scrollSlideNumber from '@/Util/scrollSlideNumber';
 import {useEffect} from 'react';
 import {getShopList} from '@/API/Shop/Shop';
 import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
-import {modalOpen} from '@/Store/modalState';
+import {modalOpen, setModalProp} from '@/Store/modalState';
 import {getEventList} from '@/API/Repair/Repair';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {reduceItemSplit} from '@/Util/reduceItem';
 
 export default function RepairHome() {
-  const {size, login, location} = useSelector(state => state);
+  const {size, login, location, modal} = useSelector(state => state);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 

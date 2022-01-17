@@ -10,12 +10,12 @@ import AppleImage from '@/Component/Home/Icon/AppleImage';
 import {Platform} from 'react-native';
 import {GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
+import {getDay} from '@/Util/getDateList';
 
 export default function Home({navigation}) {
   const betweenBoxWidth = Platform.OS === 'android' ? '262px' : '312px';
   // 안드로이드 카카오 구글 네이버    3가지
   // IOS 카카오 구글 네이버 애플로그인 4가지 로 크기가 다릅니다.
-
   return (
     <>
       <Container mg="70px 16px 30px">

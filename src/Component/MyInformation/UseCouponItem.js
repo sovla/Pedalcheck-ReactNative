@@ -11,8 +11,8 @@ import CheckIcon from '@assets/image/ic_check_w.png';
 import Badge from '@/Component/BikeManagement/Badge';
 
 const UseCouponItem = ({
-  couponName = '',
-  shopName = '',
+  couponName = '쿠폰이름',
+  shopName = '매장명',
   bikeNickName = '',
   useCouponDate = '',
   badgeContent,

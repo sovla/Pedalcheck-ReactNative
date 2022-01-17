@@ -18,14 +18,15 @@ import {useNavigation} from '@react-navigation/core';
 import React from 'react';
 import {useLayoutEffect} from 'react';
 import {useState} from 'react';
-import {ScrollView, View} from 'react-native';
+import {Alert, ScrollView, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
 import {DefaultInput} from '@/assets/global/Input';
 import {DefaultText} from '@/assets/global/Text';
 import {modalOpenAndProp} from '@/Store/modalState';
+import {AlertButton} from '@/Util/Alert';
 
-export default function CouponUseBikeSelect() {
+export default function CouponUseBikeSelect({route: {params}}) {
   const {size, login} = useSelector(state => state);
   const isFocused = useIsFocused();
   const navigation = useNavigation();
@@ -44,10 +45,19 @@ export default function CouponUseBikeSelect() {
   });
 
   const onPressNext = () => {
-    if (selectItem !== '') {
-      navigation.navigate('ReservationDate', {
+    if (selectItem !== '' && shopInfo.mst_name !== '') {
+      navigation.navigate('CouponUseDateSelect', {
+        shopInfo: shopInfo,
         selectBike: selectItem !== 2000 ? bikeList[selectItem] : bikeName,
+        ...params,
       });
+    } else {
+      if (selectItem === '') {
+        AlertButton('자전거를 선택해주세요.');
+        return null;
+      } else {
+        AlertButton('매장을 선택해주세요.');
+      }
     }
   };
 

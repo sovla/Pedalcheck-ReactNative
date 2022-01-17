@@ -20,3 +20,7 @@ export default function getDateList(startTimeDate, endTimeDate) {
     return listDate;
   }
 }
+
+export const getDay = date => {
+  return new Date(+date + 3240 * 10000).toISOString().split('T')[0];
+};

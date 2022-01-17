@@ -121,6 +121,7 @@ export const DefaultInput = ({
           data={dropdownItem}
           labelField="label"
           valueField="value"
+          autoScroll={false}
           placeholder={placeHolder}
           iconColor={Theme.color.gray}
           onChange={item => {

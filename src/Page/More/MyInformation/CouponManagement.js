@@ -13,23 +13,29 @@ import {repairHistoryDropdownList} from '@/assets/global/dummy';
 import CouponItem from '@/Component/MyInformation/CouponItem';
 import {useEffect} from 'react';
 import {useIsFocused} from '@react-navigation/native';
-import {getCouponList} from '@/API/More/More';
+import {getCouponList, getCouponUsageStateList} from '@/API/More/More';
 import UseCouponItem from '@/Component/MyInformation/UseCouponItem';
+import {useLayoutEffect} from 'react';
+import useUpdateEffect from '@/Hooks/useUpdateEffect';
+import useStateWithPromise from '@/Hooks/useStateWithPromise';
 
-export default function CouponManagement({navigation}) {
+export default function CouponManagement({navigation, route: {params}}) {
   const [selectMenu, setSelectMenu] = useState('쿠폰함');
   const [selectSubMenu, setSelectSubMenu] = useState('보유');
-  const [availableCouponList, setAvailableCouponList] = useState([]);
-  const [usedCouponList, setUsedCouponList] = useState([]);
+  const [availableCouponList, setAvailableCouponList] = useState([]); // 쿠폰함 - 보유 리스트
+  const [usedCouponList, setUsedCouponList] = useState([]); //  쿠폰함 - 완료 . 만료 리스트
+  const [couponUsageState, setCouponUsageState] = useState([]); // 쿠폰 사용 현황 리스트
 
-  const [availablePage, setAvailablePage] = useState(1);
-  const [usedPage, setUsedPage] = useState(1);
+  const [availablePage, setAvailablePage] = useState(1); // 쿠폰함 - 보유 페이징
+  const [usedPage, setUsedPage] = useState(1); // 쿠폰함 - 완료 . 만료 페이징
+  const [usagePage, setUsagePage] = useState(1);
 
+  const [dropMenu, setDropMenu] = useState('전체');
   const [isScroll, setIsScroll] = useState(false);
-
   const [isLastPage, setIsLastPage] = useState({
     available: false,
     used: false,
+    usage: false,
   });
 
   const isFocused = useIsFocused();
@@ -39,9 +45,20 @@ export default function CouponManagement({navigation}) {
 
   useEffect(() => {
     if (isFocused) {
-      getCouponListHandle();
+      if (selectMenu === '쿠폰함') {
+        getCouponListHandle();
+      } else {
+        getCouponUsageStateListHandle();
+      }
     }
-  }, [isFocused, selectSubMenu]);
+  }, [isFocused, selectSubMenu, selectMenu]);
+  useUpdateEffect(() => {
+    getCouponUsageStateListHandle(1);
+  }, [dropMenu]);
+
+  useLayoutEffect(() => {
+    setSelectMenu(params?.menu ?? '쿠폰함');
+  }, []);
 
   const getCouponListHandle = async () => {
     //  쿠폰리스트 얻어오는곳 쿠폰함()
@@ -50,7 +67,7 @@ export default function CouponManagement({navigation}) {
       return null;
     }
     await getCouponList({
-      _mt_idx: 10, // 수정필요
+      _mt_idx: login.idx,
       cst_status: isHold ? 1 : 2,
       page: isHold ? availablePage : usedPage,
     }).then(res => {
@@ -73,6 +90,53 @@ export default function CouponManagement({navigation}) {
     });
   };
 
+  const getCouponUsageStateListHandle = async page => {
+    //  쿠폰 사용 현황 리스트
+    if (isLastPage.usage && !page) {
+      return null;
+    }
+    if (page) {
+      // 페이지 인자가 있을경우 초기화
+      await setUsagePage(1);
+      await setIsLastPage(prev => ({...prev, usage: false}));
+      await setCouponUsageState([]);
+    }
+    await getCouponUsageStateList({
+      _mt_idx: login.idx,
+      ot_status: changeDropMenu(),
+      page: page ?? usagePage,
+    })
+      .then(res => {
+        if (res.data?.result === 'true') {
+          return res.data.data.data;
+        }
+      })
+      .then(data => {
+        if (data) {
+          setCouponUsageState(data);
+          setUsagePage(prev => prev + 1);
+        } else {
+          setIsLastPage(prev => ({...prev, usage: true}));
+        }
+      });
+  };
+
+  // 미입력시 기본값 1 '1' => '예약', '3' => '승인', '4' => '승인거부', '5' => '처리완료',
+  //  1:미사용/2:예약/3:승인/4:승인거부/5:처리완료
+  const changeDropMenu = () => {
+    if (dropMenu === '전체') {
+      return 1;
+    } else if (dropMenu === '예약') {
+      return 1;
+    } else if (dropMenu === '승인') {
+      return 3;
+    } else if (dropMenu === '승인거부') {
+      return 4;
+    } else if (dropMenu === '처리완료') {
+      return 5;
+    }
+  };
+
   const flatListData = () => {
     //  플랫리스트 데이터 부분 선택
     if (selectMenu === '쿠폰함') {
@@ -82,10 +146,9 @@ export default function CouponManagement({navigation}) {
         return usedCouponList;
       }
     } else {
-      return [];
+      return couponUsageState;
     }
   };
-
   return (
     <>
       <Header title="쿠폰 관리" />
@@ -95,7 +158,12 @@ export default function CouponManagement({navigation}) {
           data={flatListData()}
           onEndReached={e => {
             if (isScroll) {
-              getCouponListHandle();
+              if (selectMenu === '쿠폰함') {
+                getCouponListHandle();
+              } else {
+                getCouponUsageStateListHandle();
+              }
+
               setIsScroll(false);
             }
           }}
@@ -104,28 +172,42 @@ export default function CouponManagement({navigation}) {
             setIsScroll(true);
           }}
           renderItem={({item, index}) => {
-            return selectSubMenu === '보유' ? (
-              <CouponItem
-                couponName={item?.ct_title}
-                shopName={item?.mst_name}
-                issueDate={item?.cst_wdate}
-                startOfAvailability={item?.cst_sdate}
-                endOfAvailability={item?.cst_edate}
-                status={item?.cst_status === '미사용' && '사용'}
-                onPressCouponUse={() => {
-                  navigation.navigate('CouponUseBikeSelect', {item});
-                }}
-              />
-            ) : (
-              <CouponItem
-                couponName={item?.ct_title}
-                shopName={item?.mst_name}
-                issueDate={item?.cst_wdate}
-                startOfAvailability={item?.cst_sdate}
-                endOfAvailability={item?.cst_edate}
-                badgeContent={item?.cst_status}
-                onPressCouponUse={() => {}}
-              />
+            return (
+              <>
+                {selectMenu === '쿠폰함' && selectSubMenu === '보유' && (
+                  <CouponItem
+                    couponName={item?.ct_title}
+                    shopName={item?.mst_name}
+                    issueDate={item?.cst_wdate}
+                    startOfAvailability={item?.cst_sdate}
+                    endOfAvailability={item?.cst_edate}
+                    status={item?.cst_status === '미사용' && '사용'}
+                    onPressCouponUse={() => {
+                      navigation.navigate('CouponUseBikeSelect', {item});
+                    }}
+                  />
+                )}
+                {selectMenu === '쿠폰함' && selectSubMenu === '완료 · 만료' && (
+                  <CouponItem
+                    couponName={item?.ct_title}
+                    shopName={item?.mst_name}
+                    issueDate={item?.cst_wdate}
+                    startOfAvailability={item?.cst_sdate}
+                    endOfAvailability={item?.cst_edate}
+                    badgeContent={item?.cst_status}
+                  />
+                )}
+                {selectMenu === '쿠폰 사용 현황' && (
+                  <UseCouponItem
+                    couponName={item?.ct_title}
+                    shopName={item?.mst_name}
+                    bikeNickName={item?.ot_bike_nick}
+                    useCouponDate={item?.ot_pt_date + ' ' + item?.ot_pt_time.substr(0, 5)}
+                    badgeContent={item?.ot_status}
+                    // rejectionContent={item?.cst_edate}
+                  />
+                )}
+              </>
             );
           }}
           keyExtractor={(item, index) => index.toString()}
@@ -135,7 +217,9 @@ export default function CouponManagement({navigation}) {
               {selectMenu === '쿠폰함' && (
                 <CouponBox selectSubMenu={selectSubMenu} setSelectSubMenu={setSelectSubMenu} />
               )}
-              {selectMenu === '쿠폰 사용 현황' && <CouponUsageStatus />}
+              {selectMenu === '쿠폰 사용 현황' && (
+                <CouponUsageStatus setDropMenu={setDropMenu} dropMenu={dropMenu} />
+              )}
             </>
           }
         />
@@ -144,8 +228,7 @@ export default function CouponManagement({navigation}) {
   );
 }
 
-const CouponUsageStatus = () => {
-  const [dropMenu, setDropMenu] = useState('전체');
+const CouponUsageStatus = ({dropMenu, setDropMenu}) => {
   return (
     <Box mg="20px 16px 0px">
       <DefaultInput
@@ -204,13 +287,13 @@ const CouponBox = ({setSelectSubMenu, selectSubMenu}) => {
           </Button>
         </TouchableOpacity>
       </RowBox>
-      {selectSubMenu === '보유' && (
+      {/* {selectSubMenu === '보유' && (
         <Box width={size.designWidth} alignItems="center">
           <IndigoText fontSize={Theme.fontSize.fs14}>
             쿠폰은 발행매장에서만 사용가능합니다.
           </IndigoText>
         </Box>
-      )}
+      )} */}
     </Box>
   );
 };
