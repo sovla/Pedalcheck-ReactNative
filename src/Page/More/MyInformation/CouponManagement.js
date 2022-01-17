@@ -15,15 +15,18 @@ import {useEffect} from 'react';
 import {useIsFocused} from '@react-navigation/native';
 import {getCouponList} from '@/API/More/More';
 import UseCouponItem from '@/Component/MyInformation/UseCouponItem';
+import {useLayoutEffect} from 'react';
 
-export default function CouponManagement({navigation}) {
+export default function CouponManagement({navigation, route: {params}}) {
   const [selectMenu, setSelectMenu] = useState('쿠폰함');
   const [selectSubMenu, setSelectSubMenu] = useState('보유');
-  const [availableCouponList, setAvailableCouponList] = useState([]);
-  const [usedCouponList, setUsedCouponList] = useState([]);
+  const [availableCouponList, setAvailableCouponList] = useState([]); // 쿠폰함 - 보유 리스트
+  const [usedCouponList, setUsedCouponList] = useState([]); //  쿠폰함 - 완료 . 만료 리스트
+  const [couponUsageState, setCouponUsageState] = useState([]); // 쿠폰 사용 현황 리스트
 
-  const [availablePage, setAvailablePage] = useState(1);
-  const [usedPage, setUsedPage] = useState(1);
+  const [availablePage, setAvailablePage] = useState(1); // 쿠폰함 - 보유 페이징
+  const [usedPage, setUsedPage] = useState(1); // 쿠폰함 - 완료 . 만료 페이징
+  const [usagePage, setUsagePage] = useState(1);
 
   const [isScroll, setIsScroll] = useState(false);
 
@@ -43,6 +46,10 @@ export default function CouponManagement({navigation}) {
     }
   }, [isFocused, selectSubMenu]);
 
+  useLayoutEffect(() => {
+    setSelectMenu(params?.menu ?? '쿠폰함');
+  }, []);
+
   const getCouponListHandle = async () => {
     //  쿠폰리스트 얻어오는곳 쿠폰함()
     const isHold = selectSubMenu === '보유';
@@ -50,7 +57,7 @@ export default function CouponManagement({navigation}) {
       return null;
     }
     await getCouponList({
-      _mt_idx: 10, // 수정필요
+      _mt_idx: login.idx,
       cst_status: isHold ? 1 : 2,
       page: isHold ? availablePage : usedPage,
     }).then(res => {
@@ -82,7 +89,7 @@ export default function CouponManagement({navigation}) {
         return usedCouponList;
       }
     } else {
-      return [];
+      return couponUsageState;
     }
   };
 
@@ -124,7 +131,6 @@ export default function CouponManagement({navigation}) {
                 startOfAvailability={item?.cst_sdate}
                 endOfAvailability={item?.cst_edate}
                 badgeContent={item?.cst_status}
-                onPressCouponUse={() => {}}
               />
             );
           }}
@@ -204,13 +210,13 @@ const CouponBox = ({setSelectSubMenu, selectSubMenu}) => {
           </Button>
         </TouchableOpacity>
       </RowBox>
-      {selectSubMenu === '보유' && (
+      {/* {selectSubMenu === '보유' && (
         <Box width={size.designWidth} alignItems="center">
           <IndigoText fontSize={Theme.fontSize.fs14}>
             쿠폰은 발행매장에서만 사용가능합니다.
           </IndigoText>
         </Box>
-      )}
+      )} */}
     </Box>
   );
 };
