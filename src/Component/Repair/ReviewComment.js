@@ -7,7 +7,18 @@ import {View, Text} from 'react-native';
 import ReplyIcon from '@assets/image/ic_reply.png';
 import DefaultImage from '@/assets/global/Image';
 
-export default function ReviewComment({size, isDetailPage}) {
+export default function ReviewComment({
+  size,
+  isDetailPage,
+  name = '사장님',
+  reviewDate = '2021-10-13',
+  reviewContent = `  사장님 댓글 삽입 영역 댓글이 길어질 경우 자세히를 터치하여 자세히 보기 할 수 있다. 사장님
+          댓글 삽입 영역 댓글이 길어질 경우 자세히를 터치하여 자세히 보기 할 수 있다. 사장님 댓글
+          삽입 영역 댓글이 길어질 경우 자세히를 터치하여 자세히 보기 할 수 있다.사장님 댓글 삽입
+          영역 댓글이 길어질 경우 자세히를 터치하여 자세히 보기 할 수 있다. 사장님 댓글 삽입 영역
+          댓글이 길어질 경우 자세히를 터치하여 자세히 보기 할 수 있다. 사장님 댓글 삽입 영역 댓글이
+          길어질 경우 자세히를 터치하여 자세히 보기 할 수 있다.`,
+}) {
   return (
     <Container
       pd="10px 10px 10px 44px"
@@ -15,10 +26,10 @@ export default function ReviewComment({size, isDetailPage}) {
       borderRadius="10px">
       <RowBox backgroundColor="#0000" alignItems="center">
         <DarkBoldText mg="0px 5px 0px 0px" fontSize={Theme.fontSize.fs15}>
-          사장님
+          {name}
         </DarkBoldText>
         <DefaultText color={Theme.color.gray} fontSize={Theme.fontSize.fs12}>
-          2021-10-13
+          {reviewDate.slice(0, 10)}
         </DefaultText>
       </RowBox>
       <RowBox backgroundColor="#0000">
@@ -28,12 +39,7 @@ export default function ReviewComment({size, isDetailPage}) {
           width={size.designWidth - 32 - 54}
           fontSize={Theme.fontSize.fs15}
           lineHeight="22px">
-          사장님 댓글 삽입 영역 댓글이 길어질 경우 자세히를 터치하여 자세히 보기 할 수 있다. 사장님
-          댓글 삽입 영역 댓글이 길어질 경우 자세히를 터치하여 자세히 보기 할 수 있다. 사장님 댓글
-          삽입 영역 댓글이 길어질 경우 자세히를 터치하여 자세히 보기 할 수 있다.사장님 댓글 삽입
-          영역 댓글이 길어질 경우 자세히를 터치하여 자세히 보기 할 수 있다. 사장님 댓글 삽입 영역
-          댓글이 길어질 경우 자세히를 터치하여 자세히 보기 할 수 있다. 사장님 댓글 삽입 영역 댓글이
-          길어질 경우 자세히를 터치하여 자세히 보기 할 수 있다.
+          {reviewContent}
         </DefaultText>
       </RowBox>
       <PositionBox top="14px" left="13px" backgroundColor="#0000">

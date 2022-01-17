@@ -48,7 +48,7 @@ export default function Swiper({imageArray, width, height, borderRadius = 'Botto
           },
         ]}
         onMomentumScrollEnd={onScrollSlide}>
-        {imageArray.map((item, index) => (
+        {imageArray?.map((item, index) => (
           <DefaultImage
             style={[borderRadiusStyle]}
             key={`image_${index}`}
@@ -72,7 +72,7 @@ export default function Swiper({imageArray, width, height, borderRadius = 'Botto
         <DefaultImage source={ArrowLeft} width="24px" height="24px" />
         <DefaultText fontSize={Theme.fontSize.fs12}>
           {numberCheck(imageNumber + 1)}{' '}
-          <GrayText fontSize={Theme.fontSize.fs12}> / {numberCheck(imageArray.length)}</GrayText>
+          <GrayText fontSize={Theme.fontSize.fs12}> / {numberCheck(imageArray?.length)}</GrayText>
         </DefaultText>
         <DefaultImage source={ArrowRight} width="24px" height="24px" />
       </PositionBox>

@@ -16,14 +16,21 @@ import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistor
 import numberFormat from '@/Util/numberFormat';
 import {FlatList} from 'react-native-gesture-handler';
 import {useEffect} from 'react';
+import {getOrderList} from '@/API/Manager/RepairHistory';
 
 export default function RepairHistorySelectHistory() {
   const [questionSelect, setQuestionSelect] = useState([]);
   const navigation = useNavigation();
 
-  // useEffect(() => {
+  useEffect(() => {
+    getOrderListHandle();
+  }, []);
 
-  // } ,[])
+  const getOrderListHandle = async () => {
+    await getOrderList({
+      _mt_idx: 10, //수정 필요
+    });
+  };
 
   const onPressProduct = () => {
     navigation.navigate('Detail');

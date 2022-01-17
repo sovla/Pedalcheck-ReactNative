@@ -44,7 +44,7 @@ export default function Customer({navigation}) {
 
     const {customer_cnt, customer_list} = response?.data?.data?.data;
 
-    if (customer_list.length > 0) {
+    if (customer_list?.length > 0) {
       setCustomerList(prev => [...prev, ...customer_list]);
     }
     setCustomerCount(customer_cnt);
