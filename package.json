@@ -11,7 +11,7 @@
     "storybook": "start-storybook -p 7007",
     "build-storybook": "build-storybook",
     "adb": "adb connect 192.168.0.30 && yarn android",
-    "adb1": "adb connect 192.168.0.64 && yarn android"
+    "adb1": "adb connect 192.168.0.77 && yarn android"
   },
   "dependencies": {
     "@actbase/react-daum-postcode": "1.0.1",

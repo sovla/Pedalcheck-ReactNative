@@ -16,6 +16,8 @@ export default function RepairHistorySelectQuestion() {
   const [selectComment, setSelectComment] = useState([]);
   const [questionList, setQuestionList] = useState([]);
   const [page, setPage] = useState(1);
+  const [isModalClose, setIsModalClose] = useState(true);
+
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const isFocus = navigation.isFocused();
@@ -28,9 +30,21 @@ export default function RepairHistorySelectQuestion() {
     }
   };
 
+  const setRecomment = (index, answer) => {
+    setQuestionList(prev =>
+      prev.map(value => {
+        if (value.qt_idx === index) {
+          return {...value, qt_status: '답변', qt_answer: answer};
+        } else {
+          return {...value};
+        }
+      }),
+    );
+  };
+
   useEffect(() => {
     getQnaListHandle();
-  }, [isFocus]);
+  }, [isFocus, modalOpenAndProp]);
 
   const getQnaListHandle = async () => {
     const response = await getQnaList({
@@ -39,6 +53,7 @@ export default function RepairHistorySelectQuestion() {
     });
     if (response?.data?.result === 'true') {
       if (response?.data?.data?.data?.qna_list?.length > 0) {
+        setPage(prev => prev + 1);
         setQuestionList(prev => [...prev, ...response?.data?.data?.data?.qna_list]);
       }
     }
@@ -57,6 +72,7 @@ export default function RepairHistorySelectQuestion() {
                   modalOpenAndProp({
                     modalComponent: 'questionSubmit',
                     item: item,
+                    setRecomment: setRecomment,
                   }),
                 )
               }
@@ -65,6 +81,7 @@ export default function RepairHistorySelectQuestion() {
                   modalOpenAndProp({
                     modalComponent: 'questionSubmit',
                     item: item,
+                    setRecomment: setRecomment,
                   }),
                 )
               }
@@ -85,6 +102,7 @@ export default function RepairHistorySelectQuestion() {
         onEndReached={() => {
           if (isScroll) {
             getQnaListHandle();
+
             setIsScroll(false);
           }
         }}

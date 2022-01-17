@@ -31,9 +31,11 @@ export const DefaultInput = ({
   isQuestion, //      ? 여부
   questionPress, //   ? 눌럿을때 Function
   maxLength, //        문자열 최대길이
+  maxHeight, //       최대 높이
   mg = '0px',
   pd = '0px 10px 5px',
   onBlur = () => {},
+  onContentSizeChange,
 }) => {
   let RenderCondition = 'Default';
   if (disabled && !isText && !isDropdown) {
@@ -98,6 +100,8 @@ export const DefaultInput = ({
               textAlignVertical: 'center',
             },
           ]}
+          maxHeight={maxHeight}
+          onContentSizeChange={onContentSizeChange}
         />
       )}
       {RenderCondition === 'isText' && ( // 텍스트 형태
@@ -125,12 +129,14 @@ export const DefaultInput = ({
           placeholderStyle={{
             color: Theme.color.black,
             fontSize: 15,
-            fontFamily: Platform.OS === "android" ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF',
+            fontFamily:
+              Platform.OS === 'android' ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF',
           }}
           selectedTextStyle={{
             color: Theme.color.black,
             fontSize: 15,
-            fontFamily: Platform.OS === "android" ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF',
+            fontFamily:
+              Platform.OS === 'android' ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF',
             lineHeight: 20,
             height: 20,
           }}
@@ -171,7 +177,7 @@ const DefaultInputStyle = styled.TextInput`
   line-height: 22px;
   include-font-padding: false;
   color: ${p => p.color ?? Theme.color.black};
-  font-family: ${Platform.OS === "android" ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF'};
+  font-family: ${Platform.OS === 'android' ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF'};
 
   ${p =>
     p.width &&
@@ -183,6 +189,12 @@ const DefaultInputStyle = styled.TextInput`
     css`
       height: ${pixelChange(p.height)};
     `}
+      ${p =>
+    p.maxHeight &&
+    css`
+      max-height: ${pixelChange(p.maxHeight)};
+    `}
+
     ${p =>
     p.borderColor &&
     css`

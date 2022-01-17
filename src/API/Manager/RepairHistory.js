@@ -26,3 +26,31 @@ export const qnaUpdate = async args => {
     console.log(error);
   }
 };
+// 1:1 문의
+
+export const getReview = async args => {
+  try {
+    const response = await API.post('mng/review.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const addReview = async args => {
+  try {
+    const response = await API.post('mng/review_cmt_add.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getOrderList = async args => {
+  try {
+    const response = await API.post('mng/main_order_list.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

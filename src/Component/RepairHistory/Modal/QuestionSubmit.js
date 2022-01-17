@@ -5,7 +5,14 @@ import React from 'react';
 import ArrowUpIcon from '@assets/image/list_arr_top.png';
 import {TouchableOpacity} from 'react-native';
 import ReplyIcon from '@assets/image/ic_reply.png';
-import {DarkBoldText, DarkMediumText, DarkText, GrayText, IndigoText} from '@/assets/global/Text';
+import {
+  DarkBoldText,
+  DarkMediumText,
+  DarkText,
+  ErrorText,
+  GrayText,
+  IndigoText,
+} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {useDispatch, useSelector} from 'react-redux';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
@@ -16,8 +23,9 @@ import {useState} from 'react';
 import {qnaUpdate, qnaWrite} from '@/API/Manager/RepairHistory';
 import {useEffect} from 'react';
 
-export default function QuestionSubmit({item}) {
+export default function QuestionSubmit({item, setRecomment}) {
   const [answer, setAnswer] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,6 +33,15 @@ export default function QuestionSubmit({item}) {
   }, []);
 
   const answerWrite = async () => {
+    if (answer === '') {
+      setErrorMessage('답변을 입력해주세요.');
+      return;
+    }
+    if (answer.length < 10) {
+      setErrorMessage('답변을 10자 이상 입력해주세요.');
+      return;
+    }
+
     if (item.qt_status === '답변') {
       const response = await qnaUpdate({
         _mt_idx: 10, // 수정필요
@@ -38,9 +55,11 @@ export default function QuestionSubmit({item}) {
         qt_answer: answer,
       });
     }
-
+    await setRecomment(item.qt_idx, answer);
     dispatch(modalClose());
   };
+
+  console.log(item);
 
   return (
     <>
@@ -82,6 +101,8 @@ export default function QuestionSubmit({item}) {
           isAlignTop
           fontSize={Theme.fontSize.fs16}
         />
+
+        {errorMessage !== '' && <ErrorText>{errorMessage}</ErrorText>}
         <LinkButton content="저장하기" width="340px" to={() => answerWrite()} />
       </Box>
     </>
