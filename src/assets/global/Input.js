@@ -32,6 +32,7 @@ export const DefaultInput = ({
   questionPress, //   ? 눌럿을때 Function
   maxLength, //        문자열 최대길이
   maxHeight, //       최대 높이
+  keyboardType, //    keyboardType
   mg = '0px',
   pd = '0px 10px 5px',
   onBlur = () => {},
@@ -79,6 +80,7 @@ export const DefaultInput = ({
       )}
       {RenderCondition === 'Default' && ( // 기본 인풋
         <DefaultInputStyle
+          keyboardType={keyboardType}
           width={width}
           maxLength={maxLength}
           height={height}

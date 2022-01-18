@@ -60,6 +60,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
 
   const {size, login} = useSelector(state => state);
   const dispatch = useDispatch();
+
   const onPressApprove = async () => {
     // 승인 누를시
     const result = await editApiHandle(3);
@@ -103,7 +104,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
         showToastMessage('처리 완료되었습니다.');
       }
     } else {
-      navigation.navigate('Approval');
+      navigation.navigate('Approval', {...params, ...reservationInfo});
     }
   };
   const editApiHandle = async (ot_status, content) => {
