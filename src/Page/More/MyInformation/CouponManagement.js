@@ -103,7 +103,7 @@ export default function CouponManagement({navigation, route: {params}}) {
     }
     await getCouponUsageStateList({
       _mt_idx: login.idx,
-      ot_status: changeDropMenu(),
+      ot_status: changeDropMenu(dropMenu),
       page: page ?? usagePage,
     })
       .then(res => {
@@ -123,19 +123,6 @@ export default function CouponManagement({navigation, route: {params}}) {
 
   // 미입력시 기본값 1 '1' => '예약', '3' => '승인', '4' => '승인거부', '5' => '처리완료',
   //  1:미사용/2:예약/3:승인/4:승인거부/5:처리완료
-  const changeDropMenu = () => {
-    if (dropMenu === '전체') {
-      return 1;
-    } else if (dropMenu === '예약') {
-      return 1;
-    } else if (dropMenu === '승인') {
-      return 3;
-    } else if (dropMenu === '승인거부') {
-      return 4;
-    } else if (dropMenu === '처리완료') {
-      return 5;
-    }
-  };
 
   const flatListData = () => {
     //  플랫리스트 데이터 부분 선택
@@ -296,4 +283,18 @@ const CouponBox = ({setSelectSubMenu, selectSubMenu}) => {
       )} */}
     </Box>
   );
+};
+
+export const changeDropMenu = dropMenu => {
+  if (dropMenu === '전체') {
+    return 1;
+  } else if (dropMenu === '예약') {
+    return 1;
+  } else if (dropMenu === '승인') {
+    return 3;
+  } else if (dropMenu === '승인거부') {
+    return 4;
+  } else if (dropMenu === '처리완료') {
+    return 5;
+  }
 };

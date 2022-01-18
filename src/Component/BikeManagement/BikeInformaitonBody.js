@@ -6,8 +6,9 @@ import {useSelector} from 'react-redux';
 
 export default function BikeInformaitonBody({bikeInfoDetail}) {
   const {size} = useSelector(state => state);
+  console.log(!bikeInfoDetail?.filter(item => item.value)?.length, 'bikeInfoDetail');
 
-  if (!bikeInfoDetail?.length) {
+  if (!bikeInfoDetail?.filter(item => item.value)?.length) {
     return null;
   }
 

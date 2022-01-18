@@ -14,7 +14,6 @@ import RepairProduct from '@/Component/ReservationManagement/RepairProduct';
 import CheckIcon from '@assets/image/ic_check_cal.png';
 import {useNavigation} from '@react-navigation/core';
 import ScrollDays from './ScrollDays';
-import MenuNav from '../Layout/MenuNav';
 
 export default function CouponReservation() {
   const navigation = useNavigation();

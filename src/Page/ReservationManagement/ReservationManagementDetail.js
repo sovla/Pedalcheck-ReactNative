@@ -1,6 +1,9 @@
-import {getReservationDetail} from '@/API/ReservationManagement/ReservationManagement';
-import {BorderButton, FooterButton} from '@/assets/global/Button';
-import {Box, RowBox, ScrollBox} from '@/assets/global/Container';
+import {
+  getCouponReservationDetail,
+  getReservationDetail,
+} from '@/API/ReservationManagement/ReservationManagement';
+import {BorderButton, FooterButton, LinkButton, LinkWhiteButton} from '@/assets/global/Button';
+import {BetweenBox, Box, RowBox, ScrollBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
 import {DarkBoldText, DarkMediumText, DarkText, MoneyText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
@@ -17,7 +20,7 @@ import {useEffect} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
-export default function ReservationManagementDetail({navigation, route: {params}}) {
+export default function ReservationManagementDetail({navigation, route: {params}, type}) {
   const initData = {
     ot_status: '예약',
     pt_title: '세차,종합정비',
@@ -40,6 +43,9 @@ export default function ReservationManagementDetail({navigation, route: {params}
     mt_name: '신혜수',
     mt_email: 'lotion_@naver.com',
     mt_hp: '010-6464-6464',
+    //  결제대기
+    //  고객 레벨 일반 관심매장 고객 여부
+    //  거절일 경우 거절에 대한 메모 값
   };
   const [reservationInfo, setReservationInfo] = useState(initData);
   const [memo, setMemo] = useState('');
@@ -59,22 +65,23 @@ export default function ReservationManagementDetail({navigation, route: {params}
   };
 
   useEffect(() => {
-    getReservationDetail({
+    const detailApiFunction = type === 'coupon' ? getCouponReservationDetail : getReservationDetail;
+    detailApiFunction({
       _mt_idx: login.idx,
       od_idx: params?.od_idx,
     })
       .then(res => res.data?.result === 'true' && res.data.data.data)
       .then(data => setReservationInfo(data));
   }, []);
-  console.log(params);
   useUpdateEffect(() => {
     setMemo(reservationInfo?.ot_adm_memo);
   }, [reservationInfo]);
 
   const bikeInfo = {
-    bikeName: reservationInfo.ot_bike_nick,
-    brand: reservationInfo.ot_bike_brand,
-    modelName: reservationInfo.ot_bike_model,
+    bikeName: reservationInfo?.ot_bike_nick,
+    brand: reservationInfo?.ot_bike_brand,
+    modelName: reservationInfo?.ot_bike_model,
+    bikeImage: reservationInfo?.ot_bike_image,
   };
 
   const bikeInfoDetail = [
@@ -203,14 +210,15 @@ export default function ReservationManagementDetail({navigation, route: {params}
             />
           </Box>
           <Box mg="0px 0px 20px">
-            <FooterButton
-              isChange
-              leftContent="승인"
-              rightContent="거절"
-              isRelative
-              leftPress={onPressApprove}
-              rightPress={onPressRejection}
-            />
+            <RowBox width="380px">
+              {reservationInfo.ot_status === '예약' && (
+                <>
+                  <LinkButton width="185px" content="승인" to={onPressApprove} />
+                  <Box width="10px" />
+                  <LinkWhiteButton width="185px" content="거절" to={onPressRejection} />
+                </>
+              )}
+            </RowBox>
           </Box>
         </ScrollBox>
       </Box>
