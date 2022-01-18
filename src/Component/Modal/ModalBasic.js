@@ -16,7 +16,7 @@ import DeleteAccount from '../More/Modal/DeleteAccount';
 import QuestionDelete from '../More/Modal/QuestionDelete';
 import ReservationCancle from '../More/Modal/ReservationCancle';
 import SearchShop from '../More/Modal/SearchShop';
-import DaumPostMadal from '../MyInformation/DaumPostMadal';
+import DaumPostCode from '../More/Modal/DaumPostCode';
 import PaymentInformationCheck from '../Repair/Modal/PaymentInformationCheck';
 import AdjustmentHistory from '../RepairHistory/Modal/AdjustmentHistory';
 import Notice from '../RepairHistory/Modal/Notice';
@@ -90,8 +90,8 @@ export default function ModalBasic({navigation}) {
         return QuestionSubmit;
       case 'alertModal':
         return AlertModal;
-      case 'daumPostModal':
-        return DaumPostMadal;
+      case 'fullSize/DaumPostCode':
+        return DaumPostCode;
       case 'searchShop':
         return SearchShop;
     }

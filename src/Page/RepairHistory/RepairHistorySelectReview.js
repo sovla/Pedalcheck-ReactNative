@@ -20,12 +20,14 @@ import Review from '@/Component/Repair/Review';
 import DummyIcon from '@assets/image/dummy.png';
 import {LinkButton, LinkWhiteButton} from '@/assets/global/Button';
 import {useEffect} from 'react';
-import {addReview, getReview} from '@/API/Manager/RepairHistory';
+import {addReview, deleteReview, getReview} from '@/API/Manager/RepairHistory';
 import {TouchableOpacity, TouchableOpacityBase} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import ReviewComment from '@/Component/Repair/ReviewComment';
 import moment from 'moment';
 import {useLayoutEffect} from 'react';
+import {AlertButtons} from '@/Util/Alert';
+import {showToastMessage} from '@/Util/Toast';
 
 // 2022-01-17 17:17:25 현태 수정 필요
 
@@ -86,6 +88,26 @@ export default function RepairHistorySelectReview() {
     }
   };
 
+  const deleteHandle = async srt_idx => {
+    const response = await deleteReview({
+      _mt_idx: 10, // 수정 필요
+      srt_idx: srt_idx,
+    });
+
+    if (response?.data?.result === 'true') {
+      setReview(prev =>
+        prev.map(value => {
+          if (value.srt_idx === srt_idx) {
+            return {...value, srt_res_content: '', srt_adate: ''};
+          } else {
+            return {...value};
+          }
+        }),
+      );
+      showToastMessage('삭제되었습니다.');
+    }
+  };
+
   if (isLoading) {
     return null;
   }
@@ -131,7 +153,13 @@ export default function RepairHistorySelectReview() {
         }
         data={review}
         renderItem={({item, index}) => (
-          <ReviewRecomment commentSubmit={commentSubmit} size={size} item={item} />
+          <ReviewRecomment
+            setReview={setReview}
+            commentSubmit={commentSubmit}
+            deleteHandle={deleteHandle}
+            size={size}
+            item={item}
+          />
         )}
         onEndReached={() => {
           if (isScroll) {
@@ -145,10 +173,16 @@ export default function RepairHistorySelectReview() {
   );
 }
 
-const ReviewRecomment = ({item, size, commentSubmit}) => {
+const ReviewRecomment = ({item, size, commentSubmit, deleteHandle}) => {
   const [inputHeight, setInputHeight] = useState(44);
   const [comment, setComment] = useState('');
   const navigation = useNavigation();
+
+  const deletePress = async srt_idx => {
+    AlertButtons('댓글을 삭제하시겠습니까? 삭제하면 복구할 수 없습니다.', '확인', '취소', () =>
+      deleteHandle(srt_idx),
+    );
+  };
 
   return (
     <Box mg="20px 0px 0px">
@@ -188,6 +222,7 @@ const ReviewRecomment = ({item, size, commentSubmit}) => {
             reviewDate={item.srt_adate}
             reviewContent={item.srt_res_content}
             size={size}
+            deletePress={() => deletePress(item.srt_idx)}
           />
         </RowBox>
       ) : (
@@ -205,7 +240,10 @@ const ReviewRecomment = ({item, size, commentSubmit}) => {
             changeFn={text => setComment(text)}
           />
           <LinkButton
-            to={() => commentSubmit(item.srt_idx, comment, moment().format('YYYY-MM-DD'))}
+            to={() => {
+              commentSubmit(item.srt_idx, comment, moment().format('YYYY-MM-DD'));
+              setComment('');
+            }}
             content="등록"
             width="60px"
             height="44px"

@@ -3,10 +3,9 @@ import {DarkBoldText, DarkMediumText, DarkText, DefaultText} from '@/assets/glob
 import Theme from '@/assets/global/Theme';
 import {DefaultTheme} from '@react-navigation/native';
 import React from 'react';
-import {View, Text} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import ReplyIcon from '@assets/image/ic_reply.png';
 import DefaultImage from '@/assets/global/Image';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {BorderButton} from '@/assets/global/Button';
 
 export default function ReviewComment({
@@ -20,14 +19,15 @@ export default function ReviewComment({
           영역 댓글이 길어질 경우 자세히를 터치하여 자세히 보기 할 수 있다. 사장님 댓글 삽입 영역
           댓글이 길어질 경우 자세히를 터치하여 자세히 보기 할 수 있다. 사장님 댓글 삽입 영역 댓글이
           길어질 경우 자세히를 터치하여 자세히 보기 할 수 있다.`,
+  deletePress,
 }) {
   return (
     <Container
       pd="10px 10px 10px 44px"
       backgroundColor={Theme.color.backgroundBlue}
       borderRadius="10px">
-      <BetweenBox backgroundColor="#0000" alignItems="center">
-        <RowBox>
+      <BetweenBox backgroundColor="#0000" alignItems="center" width="326px">
+        <RowBox backgroundColor={Theme.color.backgroundBlue} alignItems="center">
           <DarkBoldText mg="0px 5px 0px 0px" fontSize={Theme.fontSize.fs15}>
             {name}
           </DarkBoldText>
@@ -35,14 +35,14 @@ export default function ReviewComment({
             {reviewDate.slice(0, 10)}
           </DefaultText>
         </RowBox>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={deletePress}>
           <Box mg="0px 5px">
             <BorderButton
               width="38px"
               height="25px"
               borderColor={Theme.borderColor.gray}
               color={Theme.color.black}>
-              <DarkMediumText fontSize={Theme.fontSize.fs13}>수정</DarkMediumText>
+              <DarkMediumText fontSize={Theme.fontSize.fs13}>삭제</DarkMediumText>
             </BorderButton>
           </Box>
         </TouchableOpacity>

@@ -54,3 +54,12 @@ export const getOrderList = async args => {
     console.log(error);
   }
 };
+
+export const deleteReview = async args => {
+  try {
+    const response = await API.post('mng/review_cmt_del.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
