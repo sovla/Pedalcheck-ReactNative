@@ -1,5 +1,12 @@
 import {BorderButton, Button, LinkButton} from '@/assets/global/Button';
-import {BetweenBox, Box, RowBox, ScrollBox} from '@/assets/global/Container';
+import {
+  BetweenBox,
+  Box,
+  Container,
+  PositionBox,
+  RowBox,
+  ScrollBox,
+} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
 import {DarkBoldText, DarkMediumText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
@@ -7,15 +14,22 @@ import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistor
 import Header from '@/Component/Layout/Header';
 import Photo from '@/Component/Repair/Photo';
 import {RequireFieldText} from '@/Page/Home/RegisterInformation';
+import {modalOpenAndProp} from '@/Store/modalState';
+import {GetLocation} from '@/Util/GetLocation';
+import Postcode from '@actbase/react-daum-postcode';
 import React from 'react';
 import {useState} from 'react';
 import {TouchableOpacity} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 export default function ShopUpdate() {
   const {size} = useSelector(state => state);
   const [imageArray, setImageArray] = useState([]);
   const [selectDay, setSelectDay] = useState([]);
+  const [isDaumOpen, setIsDaumOpen] = useState(false);
+
+  const dispatch = useDispatch();
+  const [postData, setPostData] = useState([]);
 
   const onPressDay = day => {
     if (selectDay.find(findItem => findItem === day)) {
@@ -24,6 +38,10 @@ export default function ShopUpdate() {
       setSelectDay(prev => [...prev, day]);
     }
   };
+  const openDaumPost = () => {
+    setIsDaumOpen(true);
+  };
+  console.log(postData);
   return (
     <>
       <Header title="정보 수정" />
@@ -60,9 +78,11 @@ export default function ShopUpdate() {
               pd="0px 0px 5px"
               mg="0px 10px 0px 0px"
             />
-            <BorderButton width="100px" height="44px" borderRadius="10px">
-              주소검색
-            </BorderButton>
+            <TouchableOpacity onPress={() => openDaumPost()}>
+              <BorderButton width="100px" height="44px" borderRadius="10px">
+                주소검색
+              </BorderButton>
+            </TouchableOpacity>
           </BetweenBox>
           <DefaultInput
             width={size.minusPadding}
@@ -177,6 +197,19 @@ export default function ShopUpdate() {
           <LinkButton content="저장하기" mg="0px 0px 20px" />
         </Box>
       </ScrollBox>
+      {isDaumOpen && (
+        <PositionBox backgroundColor={Theme.color.backgroundDarkGray}>
+          <Postcode
+            style={{width: '100%', height: '100%'}}
+            jsOptions={{animation: true, hideMapBtn: true}}
+            onSelected={async data => {
+              await setPostData(data);
+              setIsDaumOpen(false);
+              console.log(GetLocation(data.address));
+            }}
+          />
+        </PositionBox>
+      )}
     </>
   );
 }
