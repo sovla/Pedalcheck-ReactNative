@@ -26,9 +26,12 @@ import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {changeDropMenu} from '@/Page/More/MyInformation/CouponManagement';
 import {AlertButtons} from '@/Util/Alert';
 import {showToastMessage} from '@/Util/Toast';
+import {useIsFocused} from '@react-navigation/native';
 
 export default function RepairReservation({type}) {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
+
   const {size, login} = useSelector(state => state);
   const [daySelect, setDaySelect] = useState(new Date()); // 날짜 선택
   const [isScroll, setIsScroll] = useState(false); // onEndReached 스크롤 여부
@@ -51,8 +54,10 @@ export default function RepairReservation({type}) {
   };
 
   useEffect(() => {
-    getReservationListHandle();
-  }, []);
+    if (isFocused) {
+      getReservationListHandle(1);
+    }
+  }, [isFocused]);
   useUpdateEffect(() => {
     getReservationListHandle(1);
   }, [daySelect, dropDown]);
@@ -64,7 +69,6 @@ export default function RepairReservation({type}) {
     if (initPage) {
       await setPage(1);
       await setIsLast(false);
-      await setList([]);
     }
     const getListFunction = type === 'coupon' ? getCouponReservationList : getReservationList;
 
@@ -87,6 +91,9 @@ export default function RepairReservation({type}) {
           setPage(prev => prev + 1);
         } else {
           setIsLast(true);
+          if (initPage) {
+            setList([]);
+          }
         }
       });
   };

@@ -139,6 +139,7 @@ export const FooterButton = ({
   buttonWidth,
   isChange,
   isRelative,
+  position,
 }) => {
   const {size} = useSelector(state => state);
   const buttonBoxWidth = width ? width : size.minusPadding;
@@ -147,7 +148,7 @@ export const FooterButton = ({
 
   return (
     <RenderBox
-      style={{flexDirection: 'row'}}
+      style={{flexDirection: 'row', ...position}}
       width={buttonBoxWidth}
       bottom={isRelative ? null : '0px'}
       justifyContent="space-between">

@@ -10,15 +10,15 @@ import {useState} from 'react';
 import {Alert} from 'react-native';
 import {useDispatch} from 'react-redux';
 
-export default function RepairRejection() {
+export default function RepairRejection({onPressReject}) {
   const dispatch = useDispatch();
   const [content, setContent] = useState('');
   const onPressConfirm = () => {
     if (content === '') {
       AlertButton('승인거절 사유를 입력해주세요.');
     } else {
+      onPressReject(content);
       dispatch(modalClose());
-      showToastMessage('승인거부되었습니다.');
     }
   };
   return (

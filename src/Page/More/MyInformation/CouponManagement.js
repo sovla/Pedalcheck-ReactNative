@@ -287,7 +287,7 @@ const CouponBox = ({setSelectSubMenu, selectSubMenu}) => {
 
 export const changeDropMenu = dropMenu => {
   if (dropMenu === '전체') {
-    return 1;
+    return undefined;
   } else if (dropMenu === '예약') {
     return 1;
   } else if (dropMenu === '승인') {
