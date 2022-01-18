@@ -2,7 +2,7 @@ import {BorderButton, Button, LinkButton} from '@/assets/global/Button';
 import {Box, Container, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import {FlatList, TextInput, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import PlusBlackIcon from '@assets/image/ic_plus.png';
 import {DarkText} from '@/assets/global/Text';
@@ -12,14 +12,25 @@ import {WhiteInput} from '@/assets/global/Input';
 import {useState} from 'react';
 import TrashIcon from '@assets/image/ic_trash.png';
 import ModifyIcon from '@assets/image/ic_modify.png';
-import {timeList} from '@/assets/global/dummy';
 import {useEffect} from 'react';
 import {useLayoutEffect} from 'react';
 import ModifyButton from '../Buttons/ModifyButton';
 import TrashButton from '../Buttons/TrashButton';
+import {reservationTimeList} from '@/API/ReservationManagement/ReservationManagement';
 
 export default function ReservationTimeManagement() {
   const {size} = useSelector(state => state);
+  const [timeList, setTimeList] = useState([]);
+
+  useEffect(() => {
+    reservationTimeList({
+      _mt_idx: 10,
+    })
+      .then(res => res.data?.result === 'true' && res.data.data.data)
+      .then(data => {
+        setTimeList(data.store_ordertime);
+      });
+  }, []);
 
   return (
     <Container>
@@ -32,9 +43,18 @@ export default function ReservationTimeManagement() {
         </Button>
       </Box>
       <RowBox width={size.designWidth} flexWrap="wrap">
-        {timeList.map(item => (
+        <FlatList
+          data={timeList}
+          numColumns={2}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({item, index}) => {
+            const time = item.ot_time;
+            return <TimeManagementCheckBox time={time} />;
+          }}
+        />
+        {/* {timeList.map(item => (
           <TimeManagementCheckBox key={item + 'time'} time={item} />
-        ))}
+        ))} */}
       </RowBox>
       <Box mg="0px 16px 20px">
         <LinkButton content="저장하기" />
@@ -45,6 +65,7 @@ export default function ReservationTimeManagement() {
 
 const TimeManagementCheckBox = ({time, isCheck, onUpdate}) => {
   const [reservationTime, setReservationTime] = useState('');
+  const [isUpdate, setIsUpdate] = useState(false);
   useLayoutEffect(() => {
     setReservationTime(time);
   }, []);
@@ -56,8 +77,15 @@ const TimeManagementCheckBox = ({time, isCheck, onUpdate}) => {
           width="70px"
           height="30px"
           pd="0px"
+          editable={isUpdate}
+          selectTextOnFocus={isUpdate}
           value={reservationTime}
-          onChangeText={setReservationTime}
+          onChangeText={text => {
+            const reg = '(\\d{2})(\\d{2})';
+            const code = text.replace(reg, '$1:$2');
+            console.log(code);
+            setReservationTime(code);
+          }}
           borderColor={Theme.borderColor.gray}
           borderRadius="3px"
           style={{
@@ -68,7 +96,11 @@ const TimeManagementCheckBox = ({time, isCheck, onUpdate}) => {
         />
       </Box>
       <RowBox justifyContent="space-between" width="65px" height="100%" alignItems="center">
-        <ModifyButton />
+        <ModifyButton
+          onPress={() => {
+            setIsUpdate(true);
+          }}
+        />
         <TrashButton />
       </RowBox>
     </RowBox>
