@@ -1,23 +1,112 @@
+import {
+  getReservationDayList,
+  reservationDayListSave,
+} from '@/API/ReservationManagement/ReservationManagement';
 import {Box, Container} from '@/assets/global/Container';
 import {GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import React from 'react';
+import {useEffect} from 'react';
+import {useLayoutEffect} from 'react';
 import {useState} from 'react';
+import {useSelector} from 'react-redux';
 import DayScheduleManagement from './DayScheduleManagement';
 import ScrollDays from './ScrollDays';
+import {getDay} from '@Util/getDateList';
+import {showToastMessage} from '@/Util/Toast';
 
 export default function ScheduleManagement() {
   const [daySelect, setDaySelect] = useState(new Date());
+  const [orderList, setOrderList] = useState([]);
+  const [timeList, setTimeList] = useState([]);
+  const [allOff, setAllOff] = useState(false);
+  const [repeat, setRepeat] = useState(false);
+  const [memo, setMemo] = useState('');
+  const [selectTime, setSelectTime] = useState([]);
 
+  const {login} = useSelector(state => state);
+  useEffect(() => {
+    setSelectTime([]);
+    getReservationDayList({
+      _mt_idx: login.idx, // 수정필요 login.idx
+      date: getDay(daySelect),
+    })
+      .then(res => res.data?.result === 'true' && res.data.data.data)
+      .then(data => {
+        setTimeList(data.store_time);
+        setOrderList(data.order_date);
+        setAllOff(data.st_off === 'Y');
+        setRepeat(data.st_repeat === 'Y');
+        setMemo(data.st_memo);
+      });
+  }, [daySelect]);
+
+  const onPressSave = () => {
+    if (!timeList?.length) {
+      return null;
+    }
+    let result = {};
+
+    timeList
+      .map((item, index) => {
+        const findItem = selectTime.find(findItem => findItem === item.st_time);
+        if (findItem) {
+          return {
+            ['st_time' + index]: item.st_time,
+            ['flag' + index]: 'N',
+          };
+        } else {
+          return {
+            ['st_time' + index]: item.st_time,
+            ['flag' + index]: item.flag,
+          };
+        }
+      })
+      .forEach(item => {
+        Object.assign(result, item);
+      });
+
+    reservationDayListSave({
+      _mt_idx: login.idx, // 수정필요 login.idx
+      st_date: getDay(daySelect),
+      st_repeat: repeat ? 'Y' : 'N',
+      st_off: allOff ? 'Y' : 'N',
+      st_memo: memo,
+      ...result,
+    }).then(res => {
+      if (res.data?.result === 'true') {
+        showToastMessage(res.data.msg);
+      } else {
+        showToastMessage(res.data.msg);
+      }
+    });
+  };
   return (
     <Container>
-      <ScrollDays daySelect={daySelect} setDaySelect={setDaySelect} />
+      <ScrollDays
+        daySelect={daySelect}
+        setDaySelect={setDaySelect}
+        isNotPrev
+        orderList={orderList}
+      />
       <Box mg="0px 16px 40px">
         <GrayText fontSize={Theme.fontSize.fs13}>
           좌/우로 슬라이드하여 지난 주/다음 주 예약내역을 볼 수 있습니다.
         </GrayText>
       </Box>
-      <DayScheduleManagement />
+      <DayScheduleManagement
+        daySelect={daySelect}
+        timeList={timeList}
+        allOff={allOff}
+        setAllOff={setAllOff}
+        repeat={repeat}
+        setRepeat={setRepeat}
+        memo={memo}
+        setMemo={setMemo}
+        selectTime={selectTime}
+        setSelectTime={setSelectTime}
+        onPressSave={onPressSave}
+      />
     </Container>
   );
 }

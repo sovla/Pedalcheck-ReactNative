@@ -8,7 +8,14 @@ import {useSelector} from 'react-redux';
 import 'moment/locale/ko';
 import EqualsDay from '@/Util/EqualsDay';
 
-export default function TimeList({timeList, disabled, selectItem, setSelectItem, selectDate}) {
+export default function TimeList({
+  timeList = [],
+  disabled = [],
+  selectItem,
+  setSelectItem,
+  selectDate,
+  isMultiple,
+}) {
   const TimeBoxWithNthChild = withNthMap(mapInnerItem);
   const {size} = useSelector(state => state);
 
@@ -19,7 +26,9 @@ export default function TimeList({timeList, disabled, selectItem, setSelectItem,
   const onPressTime = time => {
     setSelectItem(time);
   };
-
+  if (!Array.isArray(timeList) || timeList.length === 0) {
+    return null;
+  }
   return (
     <Box mg="0px 16px">
       <RowBox width={size.minusPadding} flexWrap="wrap">
@@ -33,12 +42,16 @@ export default function TimeList({timeList, disabled, selectItem, setSelectItem,
               time={item}
               isDisabled={
                 disabled?.find(findItem => item === findItem) ||
-                (EqualsDay(now, newSelectDate) &&
-                  newSelectDate.setHours(time[0], time[1]) < now.getTime())
+                (!isMultiple &&
+                  EqualsDay(now, newSelectDate) && // 날짜가 같고
+                  newSelectDate.setHours(time[0], time[1]) < now.getTime()) // 현재보다 이전인 시간은 disabled
               }
-              isSelect={selectItem === item}
+              isSelect={
+                !isMultiple ? selectItem === item : selectItem.find(findItem => findItem === item)
+              }
               betweenMargin="0px 10px 10px 0px"
               onPress={() => onPressTime(item)}
+              isMultiple={isMultiple}
             />
           );
         })}
@@ -47,10 +60,12 @@ export default function TimeList({timeList, disabled, selectItem, setSelectItem,
   );
 }
 
-const mapInnerItem = ({time, mg, isSelect, isDisabled, onPress}) => {
+const mapInnerItem = ({time, mg, isSelect, isDisabled, onPress, isMultiple}) => {
   function threeCond(firstCond, secondCond, type) {
     if (firstCond) {
-      return type === 'color' ? Theme.color.white : Theme.color.skyBlue;
+      const color = isMultiple ? Theme.color.darkGray : Theme.color.white;
+      const backgroundColor = isMultiple ? Theme.color.backgroundDisabled : Theme.color.skyBlue;
+      return type === 'color' ? color : backgroundColor;
     } else if (secondCond) {
       return type === 'color' ? Theme.color.darkGray : Theme.color.backgroundDisabled;
     } else {
@@ -59,7 +74,9 @@ const mapInnerItem = ({time, mg, isSelect, isDisabled, onPress}) => {
   }
   const color = threeCond(isSelect, isDisabled, 'color');
   const backgroundColor = threeCond(isSelect, isDisabled, 'backgroundColor');
-  const borderColor = isSelect ? Theme.borderColor.skyBlue : Theme.borderColor.gray;
+
+  const isMultipleBorderColor = isMultiple ? Theme.borderColor.gray : Theme.borderColor.skyBlue;
+  const borderColor = isSelect ? isMultipleBorderColor : Theme.borderColor.gray;
   return (
     <Box width="87.5px" mg={mg}>
       <TouchableOpacity disabled={isDisabled} onPress={onPress}>
