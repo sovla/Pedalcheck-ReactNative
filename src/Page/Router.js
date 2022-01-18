@@ -76,7 +76,7 @@ import CouponUseDateSelect from './More/Coupon/CouponUseDateSelect';
 import messaging from '@react-native-firebase/messaging';
 import {setToken} from '@/Store/tokenState';
 
-const INIT_ROUTER_COMPONENT_NAME = 'BikeExportList';
+const INIT_ROUTER_COMPONENT_NAME = 'Home';
 
 let count = 0;
 
