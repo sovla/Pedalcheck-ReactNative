@@ -14,12 +14,27 @@ import SearchIcon from '@assets/image/ic_search.png';
 import {TouchableOpacity} from 'react-native';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import numberFormat from '@/Util/numberFormat';
+
 import {FlatList} from 'react-native-gesture-handler';
 import {useEffect} from 'react';
 import {getOrderList} from '@/API/Manager/RepairHistory';
 
+import DateTimePicker from '@react-native-community/datetimepicker';
+import {dateFormat} from '@/Util/DateFormat';
+// 데이트 픽커
+
 export default function RepairHistorySelectHistory() {
   const [questionSelect, setQuestionSelect] = useState([]);
+  const [datePicker, setDatePicker] = useState({
+    start: false,
+    end: false,
+  });
+  const [selectDate, setSelectDate] = useState({
+    start: '',
+    end: '',
+  });
+  const [date, setDate] = useState(new Date());
+
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -35,6 +50,19 @@ export default function RepairHistorySelectHistory() {
   const onPressProduct = () => {
     navigation.navigate('Detail');
   };
+  const onChange = (event, selectedDate) => {
+    if (datePicker.start) {
+      setDatePicker(prev => ({...prev, start: false}));
+      setSelectDate(prev => ({...prev, start: dateFormat(selectedDate)}));
+    }
+    if (datePicker.end) {
+      setDatePicker(prev => ({...prev, end: false}));
+      setSelectDate(prev => ({...prev, end: dateFormat(selectedDate)}));
+    }
+  };
+
+  console.log(selectDate);
+
   return (
     <Box pd="0px 16px">
       <FlatList
@@ -57,21 +85,25 @@ export default function RepairHistorySelectHistory() {
               </RowBox>
             </BetweenBox>
             <RowBox alignItems="center">
-              <BorderButton
-                width="135px"
-                height="36px"
-                borderColor={Theme.borderColor.gray}
-                color={Theme.color.black}>
-                2021-10-14(미완)
-              </BorderButton>
+              <TouchableOpacity onPress={() => setDatePicker({start: true, end: false})}>
+                <BorderButton
+                  width="135px"
+                  height="36px"
+                  borderColor={Theme.borderColor.gray}
+                  color={Theme.color.black}>
+                  {selectDate?.start}
+                </BorderButton>
+              </TouchableOpacity>
               <DarkText mg="0px 6.5px">~</DarkText>
-              <BorderButton
-                width="135px"
-                height="36px"
-                borderColor={Theme.borderColor.gray}
-                color={Theme.color.black}>
-                2021-10-14(미완)
-              </BorderButton>
+              <TouchableOpacity onPress={() => setDatePicker({start: false, end: true})}>
+                <BorderButton
+                  width="135px"
+                  height="36px"
+                  borderColor={Theme.borderColor.gray}
+                  color={Theme.color.black}>
+                  {selectDate.end}
+                </BorderButton>
+              </TouchableOpacity>
               <Box mg="0px 0px 0px 10px">
                 <BorderButton width="78px" height="36px">
                   조회
@@ -98,6 +130,15 @@ export default function RepairHistorySelectHistory() {
                 <DefaultImage source={SearchIcon} width="21px" height="21px" />
               </PositionBox>
             </RowBox>
+            {(datePicker?.start || datePicker?.end) && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode="date"
+                display="default"
+                onChange={onChange}
+              />
+            )}
           </>
         }
       />

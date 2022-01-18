@@ -45,7 +45,6 @@ export default function RepairHistorySelectReview() {
   }, []);
 
   const getReviewHandle = async isSearch => {
-    setIsLoading(true);
     const response = await getReview({
       _mt_idx: 10, // 수정 필요
       keyword: keyword,
@@ -65,7 +64,6 @@ export default function RepairHistorySelectReview() {
     }
 
     setKeyword('');
-    setIsLoading(false);
   };
 
   const commentSubmit = async (srt_idx, srt_res_content, srt_adate) => {
@@ -218,6 +216,7 @@ const ReviewRecomment = ({item, size, commentSubmit}) => {
         to={() =>
           navigation.navigate('ReviewDetail', {
             isRecomment: true,
+            item: item,
           })
         }
         mg="20px 0px 20px"

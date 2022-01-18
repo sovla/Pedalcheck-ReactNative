@@ -25,6 +25,8 @@ export default function Review({
   const {size} = useSelector(state => state);
   const navigation = useNavigation();
   const imageArray = item?.srt_img;
+
+  console.log(item);
   return (
     <Box
       pd="20px 0px"

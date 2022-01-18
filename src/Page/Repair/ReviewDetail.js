@@ -8,12 +8,13 @@ import {StyleSheet, Text, View} from 'react-native';
 
 export default function ReviewDetail(props) {
   const isRecomment = props?.route?.params?.isRecomment;
+  const item = props?.route?.params?.item;
   return (
     <>
       <Header title="리뷰" />
       <ScrollBox pd="0px 16px">
         <Box>
-          <Review isDetailPage isRecomment={isRecomment} />
+          <Review item={item} isDetailPage isRecomment={isRecomment} />
         </Box>
       </ScrollBox>
       {isRecomment && (
