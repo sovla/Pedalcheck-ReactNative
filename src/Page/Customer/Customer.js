@@ -19,7 +19,6 @@ import {useEffect} from 'react';
 import {getCustomer} from '@/API/Manager/Customer';
 import {FlatList} from 'react-native-gesture-handler';
 import {getPixel} from '@/Util/pixelChange';
-import useUpdateEffect from '@/Hooks/useUpdateEffect';
 
 export default function Customer({navigation}) {
   const {size} = useSelector(state => state);

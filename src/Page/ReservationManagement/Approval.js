@@ -68,7 +68,7 @@ export default function Approval({navigation, route: {params}}) {
     }
     const result = changeCheckList();
     reservationComplete({
-      _mt_idx: login.idx, // 수정필요
+      _mt_idx: login.idx,
       od_idx: params.od_idx,
       opt_return: selectWages === '반환공임비' ? 'R' : selectWages === '추가공임비' ? 'A' : 'N', // 추가/반환 공임비 N:없음/A:추가공임비/R:반환공임비
       opt_return_price: wages ?? '',
