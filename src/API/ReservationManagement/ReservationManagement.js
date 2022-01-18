@@ -1,4 +1,4 @@
-import {API} from '../Api';
+import {API, ImageAPI} from '../Api';
 
 export const getReservationList = async args => {
   try {
@@ -28,7 +28,7 @@ export const reservationEdit = async args => {
 };
 export const reservationComplete = async args => {
   try {
-    const response = await API.post('mng/order_proc.php', args);
+    const response = await ImageAPI.post('mng/order_proc.php', 'opt_image', args);
     return response;
   } catch (error) {
     console.log(error);

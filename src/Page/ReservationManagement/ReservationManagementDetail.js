@@ -1,5 +1,10 @@
-import {getReservationDetail} from '@/API/ReservationManagement/ReservationManagement';
-import {BorderButton, FooterButton} from '@/assets/global/Button';
+import {
+  couponReservationEdit,
+  getCouponReservationDetail,
+  getReservationDetail,
+  reservationEdit,
+} from '@/API/ReservationManagement/ReservationManagement';
+import {BorderButton, FooterButton, LinkWhiteButton} from '@/assets/global/Button';
 import {Box, RowBox, ScrollBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
 import {DarkBoldText, DarkMediumText, DarkText, MoneyText} from '@/assets/global/Text';
@@ -10,71 +15,145 @@ import BikeInformationHeader from '@/Component/BikeManagement/BikeInformationHea
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import Header from '@/Component/Layout/Header';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
-import {modalOpen} from '@/Store/modalState';
+import {modalOpen, modalOpenAndProp} from '@/Store/modalState';
+import {getPixel} from '@/Util/pixelChange';
 import React from 'react';
 import {useState} from 'react';
 import {useEffect} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
+import 'moment/locale/ko';
 import {useDispatch, useSelector} from 'react-redux';
+import {showToastMessage} from '@/Util/Toast';
 
 export default function ReservationManagementDetail({navigation, route: {params}}) {
+  const type = params?.type;
+
   const initData = {
-    ot_status: '예약',
-    pt_title: '세차,종합정비',
-    ot_pt_date: '2022-01-13',
-    ot_pt_time: '13:00:00',
-    ot_price: '42000',
-    ot_memo: 'ㅎㅁㅎㅁ',
+    ot_status: '',
+    pt_title: '',
+    ot_pt_date: '',
+    ot_pt_time: '',
+    ot_price: '',
+    ot_memo: '',
     ot_adm_memo: null,
-    mbt_serial: 'EFW13548Et',
-    mbt_year: '2020',
-    mbt_type: '로드바이크',
+    mbt_serial: '',
+    mbt_year: '',
+    mbt_type: '',
     mbt_drive: null,
-    mbt_size: '180',
-    mbt_color: '검은색',
+    mbt_size: '',
+    mbt_color: '',
     mbt_model_detail: null,
     ot_bike_image: null,
-    ot_bike_nick: '따르릉',
+    ot_bike_nick: '',
     ot_bike_brand: null,
     ot_bike_model: null,
-    mt_name: '신혜수',
-    mt_email: 'lotion_@naver.com',
-    mt_hp: '010-6464-6464',
+    mt_name: '',
+    mt_email: '',
+    mt_hp: '',
+    //  결제대기
+    //  고객 레벨 일반 관심매장 고객 여부
+    //  거절일 경우 거절에 대한 메모 값
   };
   const [reservationInfo, setReservationInfo] = useState(initData);
   const [memo, setMemo] = useState('');
+  const [isChange, setIsChange] = useState(false);
+
   const {size, login} = useSelector(state => state);
   const dispatch = useDispatch();
-  const onPressApprove = () => {
+
+  const onPressApprove = async () => {
     // 승인 누를시
-    navigation.navigate('Approval');
+    const result = await editApiHandle(3);
+
+    if (result) {
+      // 승인 완료시 푸시 알림  정비요청이 승인되었습니다 전송 API 추가
+      showToastMessage('정비요청이 승인되었습니다.');
+    } else {
+    }
   };
-  const onPressRejection = () => {
+  const onPressRejection = async () => {
     // 거절 누를시
-    dispatch(modalOpen('repairRejection'));
+
+    dispatch(
+      modalOpenAndProp({
+        modalComponent: 'repairRejection',
+        onPressReject: content => {
+          onPressReject(content);
+        },
+      }),
+    );
+
+    const onPressReject = async content => {
+      // Modal 안에서 Reject 누를시
+      const result = await editApiHandle(4, content);
+      if (result) {
+        showToastMessage('승인거부되었습니다.');
+      }
+    };
   };
   const onPressChangeDate = () => {
     // 예약 시간 옆 변경 누를시
-    navigation.navigate('DateChange');
+    navigation.navigate('DateChange', params);
+  };
+  const onPressComplete = async () => {
+    // 처리 완료 누를시
+    if (type === 'coupon') {
+      //  쿠폰 -  처리완료처리
+      const result = await editApiHandle(5);
+      if (result) {
+        showToastMessage('처리 완료되었습니다.');
+      }
+    } else {
+      navigation.navigate('Approval', {...params, ...reservationInfo});
+    }
+  };
+  const editApiHandle = async (ot_status, content) => {
+    // 승인 거절 처리완료 api
+    // ot_status 3이면 승인 4 거절 5 처리완료
+    // 5 처리완료는 쿠폰일때만 존재
+    // content 거절 사유
+
+    const approveFunction = type === 'coupon' ? couponReservationEdit : reservationEdit;
+    const response = await approveFunction({
+      _mt_idx: 10,
+      od_idx: params?.od_idx,
+      ot_status,
+    });
+    if (response.data?.result === 'true') {
+      setIsChange(prev => !prev);
+      return true;
+    } else {
+      showToastMessage(response.data?.msg);
+      return false;
+    }
   };
 
-  useEffect(() => {
-    getReservationDetail({
-      _mt_idx: login.idx,
+  const getReservationInfoHandle = async () => {
+    // 예약 정보 API
+    const detailApiFunction = type === 'coupon' ? getCouponReservationDetail : getReservationDetail;
+    await detailApiFunction({
+      _mt_idx: login?.idx,
       od_idx: params?.od_idx,
     })
       .then(res => res.data?.result === 'true' && res.data.data.data)
       .then(data => setReservationInfo(data));
-  }, []);
-  console.log(params);
+  };
+
+  useEffect(() => {
+    // 초기, 값 변경시 예약정보 API
+    getReservationInfoHandle();
+  }, [isChange]);
+
   useUpdateEffect(() => {
+    // 예약정보 바뀔 경우 메모 데이터 불러오기
     setMemo(reservationInfo?.ot_adm_memo);
   }, [reservationInfo]);
 
   const bikeInfo = {
-    bikeName: reservationInfo.ot_bike_nick,
-    brand: reservationInfo.ot_bike_brand,
-    modelName: reservationInfo.ot_bike_model,
+    bikeName: reservationInfo?.ot_bike_nick,
+    brand: reservationInfo?.ot_bike_brand,
+    modelName: reservationInfo?.ot_bike_model,
+    bikeImage: reservationInfo?.ot_bike_image,
   };
 
   const bikeInfoDetail = [
@@ -108,11 +187,16 @@ export default function ReservationManagementDetail({navigation, route: {params}
     },
   ];
 
+  const reservationTime = new Date(reservationInfo.ot_pt_date + ' ' + reservationInfo.ot_pt_time);
+  const now = new Date();
+  // 예약시간 <= 현재시간 인경우 true
+  const isPrevTime = reservationTime <= now;
+
   return (
     <>
       <Header title="상세보기" />
-      <Box flex={1}>
-        <ScrollBox flex={1} pd="0px 16px">
+      <Box style={{flex: 1}}>
+        <ScrollBox pd="0px 16px">
           <Box style={borderBottomWhiteGray}>
             <RowBox mg="20px 0px 0px" alignItems="center">
               <Badge badgeContent={reservationInfo?.ot_status} />
@@ -148,22 +232,25 @@ export default function ReservationManagementDetail({navigation, route: {params}
             <BikeInformationHeader item={bikeInfo} mg="10px 0px" />
             <BikeInformaitonBody bikeInfoDetail={bikeInfoDetail} />
           </Box>
-          <Box mg="10px 0px 20px" style={borderBottomWhiteGray}>
-            <DarkBoldText>결제정보</DarkBoldText>
-            <RowBox mg="10px 0px 20px" justifyContent="space-between" width={size.minusPadding}>
-              <DarkMediumText fontSize={Theme.fontSize.fs15}> 가격</DarkMediumText>
-              <RowBox>
-                <Badge badgeContent={reservationInfo.status} />
-                <MoneyText
-                  mg="0px 0px 0px 10px"
-                  fontSize={Theme.fontSize.fs15}
-                  fontWeight={Theme.fontWeight.bold}
-                  color={Theme.color.black}
-                  money={reservationInfo?.ot_price}
-                />
+          {type !== 'coupon' && (
+            <Box mg="10px 0px 20px" style={borderBottomWhiteGray}>
+              <DarkBoldText>결제정보</DarkBoldText>
+              <RowBox mg="10px 0px 20px" justifyContent="space-between" width={size.minusPadding}>
+                <DarkMediumText fontSize={Theme.fontSize.fs15}> 가격</DarkMediumText>
+                <RowBox>
+                  <Badge badgeContent={reservationInfo.status} />
+                  <MoneyText
+                    mg="0px 0px 0px 10px"
+                    fontSize={Theme.fontSize.fs15}
+                    fontWeight={Theme.fontWeight.bold}
+                    color={Theme.color.black}
+                    money={reservationInfo?.ot_price}
+                  />
+                </RowBox>
               </RowBox>
-            </RowBox>
-          </Box>
+            </Box>
+          )}
+
           <Box style={borderBottomWhiteGray}>
             <DarkBoldText>고객정보</DarkBoldText>
             <Box width={size.minusPadding}>
@@ -190,29 +277,70 @@ export default function ReservationManagementDetail({navigation, route: {params}
               </RowBox>
             </Box>
           </Box>
-          <Box mg="0px 0px 20px">
-            <DarkBoldText mg="20px 0px 10px">정비소 관리자 메모</DarkBoldText>
-            <DefaultInput
-              placeHolder="메모를 입력해주세요"
-              width={size.minusPadding}
-              height="100px"
-              isAlignTop
-              multiline
-              value={memo}
-              changeFn={setMemo}
-            />
-          </Box>
-          <Box mg="0px 0px 20px">
-            <FooterButton
-              isChange
-              leftContent="승인"
-              rightContent="거절"
-              isRelative
-              leftPress={onPressApprove}
-              rightPress={onPressRejection}
-            />
-          </Box>
+          {type !== 'coupon' && (
+            <>
+              <Box mg="0px 0px 20px">
+                <DarkBoldText mg="20px 0px 10px">정비소 관리자 메모</DarkBoldText>
+                <DefaultInput
+                  placeHolder="메모를 입력해주세요"
+                  width={size.minusPadding}
+                  height="100px"
+                  isAlignTop
+                  multiline
+                  value={memo}
+                  changeFn={setMemo}
+                />
+              </Box>
+              <Box mg="0px 0px 20px">
+                {reservationInfo.ot_status === '예약' && !isPrevTime && (
+                  <FooterButton
+                    isChange
+                    leftContent="승인"
+                    rightContent="거절"
+                    isRelative
+                    leftPress={onPressApprove}
+                    rightPress={onPressRejection}
+                  />
+                )}
+                {reservationInfo.ot_status === '예약' && isPrevTime && (
+                  <RowBox justifyContent="flex-end" width="380px">
+                    <LinkWhiteButton width="175px" content="거절" to={onPressRejection} />
+                  </RowBox>
+                )}
+                {reservationInfo.ot_status === '승인' && ( // 수정필요 결제 완료 여부 조건문에 추가 필요
+                  <RowBox justifyContent="flex-end" width="380px">
+                    <LinkWhiteButton width="175px" content="처리완료" to={onPressComplete} />
+                  </RowBox>
+                )}
+              </Box>
+            </>
+          )}
         </ScrollBox>
+        {type === 'coupon' && (
+          <Box mg="0px 0px 20px">
+            {reservationInfo.ot_status === '예약' && !isPrevTime && (
+              <FooterButton
+                isChange
+                leftContent="승인"
+                rightContent="거절"
+                isRelative={type !== 'coupon'}
+                leftPress={onPressApprove}
+                rightPress={onPressRejection}
+                position={type === 'coupon' && {left: getPixel(16)}}
+              />
+            )}
+            {reservationInfo.ot_status === '예약' && isPrevTime && (
+              <RowBox justifyContent="flex-end" width="380px" mg="0px 16px">
+                <LinkWhiteButton width="175px" content="거절" to={onPressRejection} />
+              </RowBox>
+            )}
+            {reservationInfo.ot_status === '승인' && (
+              <RowBox justifyContent="flex-end" width="380px" mg="0px 16px">
+                <LinkWhiteButton width="175px" content="처리완료" to={onPressComplete} />
+              </RowBox>
+            )}
+          </Box>
+        )}
       </Box>
     </>
   );

@@ -8,9 +8,10 @@ import {useEffect} from 'react';
 import {useLayoutEffect} from 'react';
 import {useRef} from 'react';
 import moment from 'moment';
+import 'moment/locale/ko';
 
 export default function ScrollDays({setDaySelect, daySelect}) {
-  const now = new Date();
+  const now = new Date(moment().format('YYYY-MM-DD'));
   const flatListRef = useRef(null);
   const dateList = getDateList(
     now.getTime() - 7 * 24 * 60 * 60 * 1000,

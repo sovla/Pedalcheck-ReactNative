@@ -31,6 +31,7 @@ import ShopUpdate from './More/MyInformation/ShopUpdate';
 import Update from './More/MyInformation/Update';
 import UpdateHome from './More/MyInformation/UpdateHome';
 import BikeExport from './More/MyShop/BikeExport';
+import BikeExportList from './More/MyShop/BikeExportList';
 import CouponDetail from './More/MyShop/CouponDetail';
 import CouponIssue from './More/MyShop/CouponIssue';
 import CouponManagement from './More/MyInformation/CouponManagement';
@@ -75,7 +76,7 @@ import CouponUseDateSelect from './More/Coupon/CouponUseDateSelect';
 import messaging from '@react-native-firebase/messaging';
 import {setToken} from '@/Store/tokenState';
 
-const INIT_ROUTER_COMPONENT_NAME = 'Home';
+const INIT_ROUTER_COMPONENT_NAME = 'BikeExportList';
 
 let count = 0;
 
@@ -328,6 +329,10 @@ const RouterSetting = [
   {
     name: 'BikeExport',
     component: BikeExport,
+  },
+  {
+    name: 'BikeExportList',
+    component: BikeExportList,
   },
   {
     name: 'CouponDetail',

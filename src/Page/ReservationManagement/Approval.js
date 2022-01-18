@@ -1,5 +1,4 @@
 import {Box, RowBox, ScrollBox} from '@/assets/global/Container';
-import {productStatus} from '@/assets/global/dummy';
 import {DefaultInput} from '@/assets/global/Input';
 import {
   DarkBoldText,
@@ -26,21 +25,58 @@ import {useCallback} from 'react';
 import Photo from '@/Component/Repair/Photo';
 import CheckList from '@/Component/ReservationManagement/CheckList';
 import {RequireFieldText} from '../Home/RegisterInformation';
+import {reservationComplete} from '@/API/ReservationManagement/ReservationManagement';
+import useUpdateEffect from '@/Hooks/useUpdateEffect';
 
-export default function Approval({navigation}) {
+export default function Approval({navigation, route: {params}}) {
   const {size} = useSelector(state => state);
   const [isShow, setIsShow] = useState(false);
   const [checkList, setCheckList] = useState(initCheckList);
   const [imageArray, setImageArray] = useState([]);
+  const [selectWages, setSelectWages] = useState('없음');
 
+  const [wages, setWages] = useState('');
   const onPressCancle = () => {
     navigation.goBack();
   };
+  console.log();
 
   const onPressComfirm = () => {
     navigation.navigate('ReservationManagement');
   };
 
+  //   reservationComplete({
+  // _mt_idx:10,
+  //   od_idx:3,
+  //   opt_return:0,
+  //   opt_return_price:1,
+  //   opt_note:2,
+  //   opt_chk_1_1:0,
+  //   opt_chk_1_2:1,
+  //   opt_chk_2_1:2,
+  //   opt_chk_2_2:0,
+  //   opt_chk_2_3:0,
+  //   opt_chk_3_1:0,
+  //   opt_chk_3_2:0,
+  //   opt_chk_3_3:0,
+  //   opt_chk_4_1:0,
+  //   opt_chk_4_2:0,
+  //   opt_chk_4_3:0,
+  //   opt_chk_5_1:0,
+  //   opt_chk_5_2:0,
+  //   opt_chk_5_3:0,
+  //   opt_chk_6_1:0,
+  //   opt_chk_6_2:0,
+  //   opt_chk_7_1:0,
+  //   opt_chk_7_2:0,
+  //   opt_chk_7_3:0,
+  //   opt_chk_7_4:0,
+  //   opt_chk_7_5:0,
+  //   })
+  useUpdateEffect(() => {
+    setWages('');
+  }, [selectWages]);
+  const menuItem = ['없음', '추가공임비', '반환공임비'];
   return (
     <>
       <Header title="처리완료" />
@@ -51,7 +87,7 @@ export default function Approval({navigation}) {
             <RowBox mg="10px 0px 20px" width={size.minusPadding} justifyContent="space-between">
               <DarkText>가격</DarkText>
               <MoneyText
-                money={productStatus.totalPrice}
+                money={params?.ot_price}
                 color={Theme.color.black}
                 fontSize={Theme.fontSize.fs15}
                 fontWeight={Theme.fontWeight.bold}
@@ -65,38 +101,30 @@ export default function Approval({navigation}) {
           </Box>
           <Box>
             <DarkBoldText mg="20px 0px 12px">추가/반환 공임비</DarkBoldText>
-            <RowBox width={size.minusPadding}>
-              <TouchableOpacity>
-                <RowBox>
-                  <DefaultCheckBox isRadio isDisabled />
-                  <DarkText mg="0px 40px 0px 10px" fontSize={Theme.fontSize.fs15}>
-                    없음
-                  </DarkText>
-                </RowBox>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <RowBox>
-                  <DefaultCheckBox isRadio isDisabled />
-                  <DarkText mg="0px 40px 0px 10px" fontSize={Theme.fontSize.fs15}>
-                    추가공임비
-                  </DarkText>
-                </RowBox>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <RowBox>
-                  <DefaultCheckBox isRadio isDisabled />
-                  <DarkText mg="0px 0px 0px 10px" fontSize={Theme.fontSize.fs15}>
-                    반환공임비
-                  </DarkText>
-                </RowBox>
-              </TouchableOpacity>
+            <RowBox mg="0px 0px 10px" width={size.minusPadding}>
+              {menuItem.map(item => (
+                <SelectItem
+                  content={item}
+                  onPress={setSelectWages}
+                  select={selectWages}
+                  key={item}
+                />
+              ))}
             </RowBox>
-            <RowBox mg="10px 0px 30px" alignItems="center">
-              <DefaultInput placeHolder="추가공임비를 입력해주세요." width="340px" />
-              <DarkMediumText mg="0px 0px 0px 10px" fontSize={Theme.fontSize.fs15}>
-                원
-              </DarkMediumText>
-            </RowBox>
+            {selectWages !== '없음' && (
+              <RowBox mg="10px 0px 30px" alignItems="center">
+                <DefaultInput
+                  placeHolder={`${selectWages}를 입력해주세요.`}
+                  width="340px"
+                  value={wages}
+                  changeFn={setWages}
+                  keyboardType={'numeric'}
+                />
+                <DarkMediumText mg="0px 0px 0px 10px" fontSize={Theme.fontSize.fs15}>
+                  원
+                </DarkMediumText>
+              </RowBox>
+            )}
           </Box>
           <Box style={borderBottomWhiteGray}>
             <DarkBoldText mg="0px 0px 20px">선택 입력 항목</DarkBoldText>
@@ -127,7 +155,7 @@ export default function Approval({navigation}) {
             checkList={checkList}
             setCheckList={setCheckList}
           />
-          <Box>
+          <Box mg="10px 0px 20px">
             <FooterButton
               isRelative
               isChange
@@ -142,6 +170,22 @@ export default function Approval({navigation}) {
     </>
   );
 }
+
+const SelectItem = ({content, onPress, select}) => {
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        onPress(content);
+      }}>
+      <RowBox>
+        <DefaultCheckBox isRadio isDisabled isCheck={select === content} />
+        <DarkText mg="0px 40px 0px 10px" fontSize={Theme.fontSize.fs15}>
+          {content}
+        </DarkText>
+      </RowBox>
+    </TouchableOpacity>
+  );
+};
 
 const initCheckList = [
   {

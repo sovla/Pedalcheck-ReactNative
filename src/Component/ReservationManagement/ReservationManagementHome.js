@@ -4,7 +4,7 @@ import {useState} from 'react';
 import {View, Text} from 'react-native';
 import MenuNav from '../Layout/MenuNav';
 import CouponReservation from './CouponReservation';
-import RapairReservation from './RapairReservation';
+import RepairReservation from './RepairReservation';
 
 export default function ReservationManagementHome() {
   const [subSelect, setSubSelect] = useState('정비 예약');
@@ -19,7 +19,11 @@ export default function ReservationManagementHome() {
           setSubSelect(item);
         }}
       />
-      {subSelect === '정비 예약' ? <RapairReservation /> : <CouponReservation />}
+      {subSelect === '정비 예약' ? (
+        <RepairReservation key={'RepairReservation'} type="repair" />
+      ) : (
+        <RepairReservation key={'CouponReservation'} type="coupon" />
+      )}
     </Container>
   );
 }

@@ -68,7 +68,12 @@ export default function Photo({imageArray, setImageArray, imageCount = 5, isView
             backgroundColor={Theme.color.white}
             borderColor={Theme.borderColor.gray}
             borderRadius="5px">
-            <DefaultImage source={CameraIcon} width="24px" height="24px" />
+            <DefaultImage
+              source={CameraIcon}
+              style={{borderRadius: 5}}
+              width="24px"
+              height="24px"
+            />
             <DarkText fontSize={Theme.fontSize.fs13} fontWeight={Theme.fontWeight.medium}>
               사진 추가
             </DarkText>
@@ -81,10 +86,11 @@ export default function Photo({imageArray, setImageArray, imageCount = 5, isView
 
 const MapInnerItem = ({index, mg, item, onPressDelete, isView}) => {
   return (
-    <Box width="120px" height="80px" mg={mg}>
+    <Box width="120px" height="80px" mg={mg} style={{borderRadius: 5}}>
       <DefaultImage
         source={item?.path !== undefined ? {uri: item?.path} : item}
         width="120px"
+        style={{borderRadius: 5}}
         resizeMode="stretch"
       />
       {!isView && (

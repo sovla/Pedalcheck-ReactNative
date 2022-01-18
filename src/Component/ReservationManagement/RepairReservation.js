@@ -14,16 +14,25 @@ import {useNavigation} from '@react-navigation/core';
 import ScrollDays from './ScrollDays';
 import MenuNav from '../Layout/MenuNav';
 import {useEffect} from 'react';
-import {getReservationList} from '@/API/ReservationManagement/ReservationManagement';
+import {
+  getCouponReservationList,
+  getReservationList,
+} from '@/API/ReservationManagement/ReservationManagement';
 import {getPixel} from '@/Util/pixelChange';
 import DefaultDropdown from '../MyShop/DefaultDropdown';
 import {repairHistoryDropdownList} from '@/assets/global/dummy';
 import {getDay} from '@/Util/getDateList';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
+import {changeDropMenu} from '@/Page/More/MyInformation/CouponManagement';
+import {AlertButtons} from '@/Util/Alert';
+import {showToastMessage} from '@/Util/Toast';
+import {useIsFocused} from '@react-navigation/native';
 
-export default function RapairReservation() {
+export default function RepairReservation({type}) {
   const navigation = useNavigation();
-  const {size} = useSelector(state => state);
+  const isFocused = useIsFocused();
+
+  const {size, login} = useSelector(state => state);
   const [daySelect, setDaySelect] = useState(new Date()); // 날짜 선택
   const [isScroll, setIsScroll] = useState(false); // onEndReached 스크롤 여부
   const [dropDown, setDropDown] = useState('전체'); // 드롭다운 메뉴
@@ -32,17 +41,26 @@ export default function RapairReservation() {
 
   const [isLast, setIsLast] = useState(false); // 리스트 마지막 여부
 
-  const onPressAllApprove = () => {};
+  const onPressAllApprove = () => {
+    AlertButtons('예약 건 전체를 승인 처리하시겠습니까?', '확인', '취소', () => {
+      showToastMessage('변경되었습니다.');
+    });
+  };
   const onPressProduct = item => {
-    navigation.navigate('ReservationManagementDetail', item);
+    navigation.navigate('ReservationManagementDetail', {
+      ...item,
+      type,
+    });
   };
 
   useEffect(() => {
-    getReservationListHandle();
-  }, []);
+    if (isFocused) {
+      getReservationListHandle(1);
+    }
+  }, [isFocused]);
   useUpdateEffect(() => {
     getReservationListHandle(1);
-  }, [daySelect]);
+  }, [daySelect, dropDown]);
 
   const getReservationListHandle = async initPage => {
     if (isLast && !initPage) {
@@ -51,21 +69,31 @@ export default function RapairReservation() {
     if (initPage) {
       await setPage(1);
       await setIsLast(false);
-      await setList([]);
     }
-    await getReservationList({
+    const getListFunction = type === 'coupon' ? getCouponReservationList : getReservationList;
+
+    await getListFunction({
       _mt_idx: 10,
       ot_date: typeof daySelect === 'object' ? getDay(daySelect) : daySelect,
-      ot_status: 1,
+      ot_status: changeDropMenu(dropDown),
       page: initPage ?? page,
     })
       .then(res => res.data?.result === 'true' && res.data.data.data)
       .then(data => {
         if (data) {
-          setList(prev => [...prev, ...data]);
+          if (initPage) {
+            // 인자 initPage가 있는경우 바로 데이터 넣기
+            setList([...data]);
+          } else {
+            setList(prev => [...prev, ...data]);
+          }
+
           setPage(prev => prev + 1);
         } else {
           setIsLast(true);
+          if (initPage) {
+            setList([]);
+          }
         }
       });
   };
@@ -102,9 +130,6 @@ export default function RapairReservation() {
                   width={90}
                 />
               </Box>
-              {/* 드롭다운으로 변경예정 */}
-              {/* <DarkMediumText>전체</DarkMediumText>
-                <DefaultImage source={ArrowDownIcon} width="24px" height="24px" /> */}
             </Box>
           </Box>
         }
