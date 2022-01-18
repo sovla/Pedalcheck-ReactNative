@@ -28,7 +28,7 @@ export const reservationEdit = async args => {
 };
 export const reservationComplete = async args => {
   try {
-    const response = await ImageAPI.post('mng/order_proc.php', 'opt_image', args);
+    const response = await ImageAPI(args, 'opt_image', 'mng/order_proc.php');
     return response;
   } catch (error) {
     console.log(error);

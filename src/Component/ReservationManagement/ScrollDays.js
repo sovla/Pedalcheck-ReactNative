@@ -9,21 +9,41 @@ import {useLayoutEffect} from 'react';
 import {useRef} from 'react';
 import moment from 'moment';
 import 'moment/locale/ko';
+import {numberChangeFormat} from '@/Util/numberFormat';
+import {useState} from 'react';
 
-export default function ScrollDays({setDaySelect, daySelect}) {
+export default function ScrollDays({setDaySelect, daySelect, isNotPrev, orderList = []}) {
   const now = new Date(moment().format('YYYY-MM-DD'));
   const flatListRef = useRef(null);
+
+  const prevDay = isNotPrev ? 0 : 7;
+  const nextDay = isNotPrev ? 13 : 7;
   const dateList = getDateList(
-    now.getTime() - 7 * 24 * 60 * 60 * 1000,
-    now.getTime() + 7 * 24 * 60 * 60 * 1000,
-  );
+    now.getTime() - prevDay * 24 * 60 * 60 * 1000,
+    now.getTime() + nextDay * 24 * 60 * 60 * 1000,
+  ).map(item => {
+    const orderItem = orderList.find(findItem => findItem.date === item);
+    if (orderItem) {
+      return {
+        date: item,
+        count: parseInt(orderItem.ot_cnt),
+      };
+    } else {
+      return {
+        date: item,
+        count: 0,
+      };
+    }
+  });
+
   const dayList = ['일', '월', '화', '수', '목', '금', '토'];
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (flatListRef?.current?.props?.data?.length) {
-      flatListRef.current.scrollToEnd();
+      if (!isNotPrev) flatListRef.current.scrollToEnd();
     }
   }, []);
+
   return (
     <Box style={{height: 83}} mg="20px 0px 10px">
       <FlatList
@@ -32,7 +52,13 @@ export default function ScrollDays({setDaySelect, daySelect}) {
         getItemLayout={(data, index) => ({length: 83, offset: 300, index})}
         data={dateList}
         renderItem={({item, index}) => {
-          const itemDate = new Date(item);
+          if (!item?.date) {
+            return null;
+          }
+
+          const itemDate = new Date(item.date);
+          const count = item?.count;
+
           return (
             <TouchableOpacity
               key={itemDate}
@@ -47,7 +73,7 @@ export default function ScrollDays({setDaySelect, daySelect}) {
               <Card
                 dateDay={itemDate.getDate()}
                 day={dayList.find((item, index) => index === itemDate.getDay())}
-                count={'00'}
+                count={numberChangeFormat(count)}
                 isSelect={daySelect.toLocaleDateString() === itemDate.toLocaleDateString()}
               />
             </TouchableOpacity>

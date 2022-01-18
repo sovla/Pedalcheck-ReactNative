@@ -31,7 +31,7 @@ export default function Information() {
 
   const getBikeListHandle = () => {
     getBikeList({
-      _mt_idx: login?.idx, // 수정 필요
+      _mt_idx: login?.idx,
       mbt_flag: 'Y',
     }).then(res => {
       setBikeNumber(res?.data?.data?.data?.length);

@@ -53,7 +53,7 @@ export default function More() {
       case '쿠폰 관리':
         return navigation.navigate('Coupon');
       case '출고 이력 관리':
-        return navigation.navigate('BikeExport');
+        return navigation.navigate('BikeExportList');
     }
   };
 

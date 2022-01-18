@@ -73,7 +73,7 @@ export default function RepairReservation({type}) {
     const getListFunction = type === 'coupon' ? getCouponReservationList : getReservationList;
 
     await getListFunction({
-      _mt_idx: 10,
+      _mt_idx: login?.idx,
       ot_date: typeof daySelect === 'object' ? getDay(daySelect) : daySelect,
       ot_status: changeDropMenu(dropDown),
       page: initPage ?? page,

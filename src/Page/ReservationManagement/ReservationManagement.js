@@ -12,6 +12,7 @@ import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import ReservationManagementHome from '@/Component/ReservationManagement/ReservationManagementHome';
 
 const Stack = createNativeStackNavigator();
+
 export default function ReservationManagement({navigation}) {
   const [select, setSelect] = useState('예약현황');
   const {size} = useSelector(state => state);

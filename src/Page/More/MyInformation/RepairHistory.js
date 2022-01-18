@@ -15,7 +15,7 @@ import {FlatList, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 
 export default function RepairHistory() {
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const navigation = useNavigation();
   const isFocused = navigation.isFocused();
 
@@ -29,7 +29,7 @@ export default function RepairHistory() {
 
   const getHistoryListApi = () => {
     getRepairHistory({
-      _mt_idx: 10, // 수정필요 login?.idx
+      _mt_idx: login?.idx,
     })
       .then(res => res?.data?.result === 'true' && res.data.data.data)
       .then(data => setHistoryList(data));

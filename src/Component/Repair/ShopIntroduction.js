@@ -42,7 +42,6 @@ export default function ShopIntroduction() {
     latitude: store_info?.mst_lat ?? '35.244125',
     longitude: store_info?.mst_lng ?? '129.088150',
   };
-  console.log(storeRegion);
 
   return (
     <Box pd="20px 16px">

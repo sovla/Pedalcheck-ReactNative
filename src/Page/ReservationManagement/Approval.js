@@ -27,52 +27,66 @@ import CheckList from '@/Component/ReservationManagement/CheckList';
 import {RequireFieldText} from '../Home/RegisterInformation';
 import {reservationComplete} from '@/API/ReservationManagement/ReservationManagement';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
+import {showToastMessage} from '@/Util/Toast';
+import {isOrdered} from 'immutable';
+import {AlertButton} from '@/Util/Alert';
 
 export default function Approval({navigation, route: {params}}) {
-  const {size} = useSelector(state => state);
+  const {size, login} = useSelector(state => state);
   const [isShow, setIsShow] = useState(false);
   const [checkList, setCheckList] = useState(initCheckList);
   const [imageArray, setImageArray] = useState([]);
   const [selectWages, setSelectWages] = useState('없음');
+  const [memo, setMemo] = useState('');
 
   const [wages, setWages] = useState('');
   const onPressCancle = () => {
     navigation.goBack();
   };
-  console.log();
+  const changeCheckList = () => {
+    let data = {};
 
-  const onPressComfirm = () => {
-    navigation.navigate('ReservationManagement');
+    const apiDataString = 'opt_chk_';
+    for (let i = 0; i < checkList.length; i++) {
+      const item = checkList[i]?.item;
+      for (let j = 0; j < item.length; j++) {
+        const select = item[j]?.select;
+        Object.assign(data, {
+          [`${apiDataString}${i + 1}_${j + 1}`]: select === '' ? 0 : select === '양호' ? 1 : 2,
+        });
+      }
+    }
+    return data;
   };
 
-  //   reservationComplete({
-  // _mt_idx:10,
-  //   od_idx:3,
-  //   opt_return:0,
-  //   opt_return_price:1,
-  //   opt_note:2,
-  //   opt_chk_1_1:0,
-  //   opt_chk_1_2:1,
-  //   opt_chk_2_1:2,
-  //   opt_chk_2_2:0,
-  //   opt_chk_2_3:0,
-  //   opt_chk_3_1:0,
-  //   opt_chk_3_2:0,
-  //   opt_chk_3_3:0,
-  //   opt_chk_4_1:0,
-  //   opt_chk_4_2:0,
-  //   opt_chk_4_3:0,
-  //   opt_chk_5_1:0,
-  //   opt_chk_5_2:0,
-  //   opt_chk_5_3:0,
-  //   opt_chk_6_1:0,
-  //   opt_chk_6_2:0,
-  //   opt_chk_7_1:0,
-  //   opt_chk_7_2:0,
-  //   opt_chk_7_3:0,
-  //   opt_chk_7_4:0,
-  //   opt_chk_7_5:0,
-  //   })
+  const onPressComfirm = () => {
+    if (selectWages !== '') {
+      if (wages === '') {
+        AlertButton(`${selectWages}를 입력해주세요.`);
+        return null;
+      }
+    }
+    const result = changeCheckList();
+    reservationComplete({
+      _mt_idx: login.idx,
+      od_idx: params.od_idx,
+      opt_return: selectWages === '반환공임비' ? 'R' : selectWages === '추가공임비' ? 'A' : 'N', // 추가/반환 공임비 N:없음/A:추가공임비/R:반환공임비
+      opt_return_price: wages ?? '',
+      opt_note: memo,
+      opt_image: imageArray,
+      ...result,
+    }).then(res => {
+      const {data} = res;
+      if (data.result === 'true') {
+        //  수정필요  정비내역 정비이력으로 이동
+        showToastMessage('정비 처리완료 되었습니다.');
+      } else {
+        showToastMessage(data.msg);
+      }
+    });
+    // navigation.navigate('ReservationManagement');
+  };
+
   useUpdateEffect(() => {
     setWages('');
   }, [selectWages]);
@@ -147,6 +161,8 @@ export default function Approval({navigation, route: {params}}) {
               placeHolder="정비노트를 입력해주세요"
               isAlignTop
               multiline
+              value={memo}
+              changeFn={setMemo}
             />
           </Box>
           <CheckList
