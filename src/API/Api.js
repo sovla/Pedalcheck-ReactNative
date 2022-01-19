@@ -61,7 +61,7 @@ export const API = axios.create({
   },
 });
 
-export const ImageAPI = async (data, field, url) => {
+export const ImageAPI = async (data, field, url, isIndex = false) => {
   // 이미지 API 2022-01-05 16:40:31 Junhan
   //
   try {
@@ -70,19 +70,36 @@ export const ImageAPI = async (data, field, url) => {
     delete cloneData[field];
 
     const jwt_data = jwt_encode(cloneData, SECRETKEY);
-
-    let imageResult = {};
+    // isIndex
+    let imageResultObject = {};
     let index = 1;
+
+    let imageResult = [];
     if (Array.isArray(data[field])) {
       for (const imageItem of data[field]) {
-        Object.assign(imageResult, {
-          [`${field}${index}`]: {
-            key: 'poto' + new Date().getTime(),
-            uri: Platform.OS === 'android' ? imageItem.path : imageItem.path.replace('file://', ''),
-            type: imageItem.mime,
-            name: 'auto.jpg',
-          },
-        });
+        !isIndex
+          ? imageResult.push({
+              [field]: {
+                key: 'poto' + new Date().getTime(),
+                uri:
+                  Platform.OS === 'android'
+                    ? imageItem.path
+                    : imageItem.path.replace('file://', ''),
+                type: imageItem.mime,
+                name: 'auto.jpg',
+              },
+            })
+          : Object.assign(imageResultObject, {
+              [`${field}${index}`]: {
+                key: 'poto' + new Date().getTime(),
+                uri:
+                  Platform.OS === 'android'
+                    ? imageItem.path
+                    : imageItem.path.replace('file://', ''),
+                type: imageItem.mime,
+                name: 'auto.jpg',
+              },
+            });
         index++;
       }
     } else {
@@ -96,12 +113,17 @@ export const ImageAPI = async (data, field, url) => {
         },
       };
     }
-    console.log(imageResult);
-    const formData = formFormatter({
-      jwt_data,
-      secretKey: SECRETKEY,
-      ...imageResult,
-    });
+    const formData = !isIndex
+      ? formFormatter({
+          jwt_data,
+          secretKey: SECRETKEY,
+          [field]: imageResult,
+        })
+      : formFormatter({
+          jwt_data,
+          secretKey: SECRETKEY,
+          ...imageResultObject,
+        });
 
     const response = await axios.post(`${baseURL}${url}`, formData, {
       'Content-Type': 'application/x-www-form-urlencoded',

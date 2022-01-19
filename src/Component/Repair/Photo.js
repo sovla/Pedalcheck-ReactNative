@@ -23,7 +23,6 @@ export default function Photo({imageArray, setImageArray, imageCount = 5, isView
       width: 300,
       height: 400,
       cropping: true, // 자르기 활성화
-      includeBase64: true,
       multiple: true,
     }).then(images => {
       if (checkImageCount(images)) {

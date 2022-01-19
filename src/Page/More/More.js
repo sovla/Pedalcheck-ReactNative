@@ -7,7 +7,7 @@ import WhiteMoreIcon from '@assets/image/menu04_top.png';
 import FooterButtons from '@/Component/Layout/FooterButtons';
 import DummyIcon from '@assets/image/default_4.png';
 import {useSelector} from 'react-redux';
-import {BoldText, DarkBoldText, DarkMediumText, GrayText} from '@/assets/global/Text';
+import {BoldText, DarkBoldText, DarkMediumText, DarkText, GrayText} from '@/assets/global/Text';
 import {useState} from 'react';
 import Theme from '@/assets/global/Theme';
 import DefaultLine from '@/assets/global/Line';
@@ -160,6 +160,7 @@ export default function More() {
           ))}
         </Box>
         <MoreFooter />
+        <PedalCheckInfo />
       </ScrollBox>
 
       <FooterButtons selectMenu={4} isAdmin={isAdmin} />
@@ -236,6 +237,55 @@ const MoreFooter = () => {
         <BoldText fontSize={Theme.fontSize.fs13} color={Theme.color.gray}>
           0.0.00
         </BoldText>
+      </RowBox>
+    </Box>
+  );
+};
+
+const PedalCheckInfo = () => {
+  return (
+    <Box backgroundColor="#0000" mg="10px 0px 0px" width="380px" mg="20px 16px">
+      <RowBox mg="0px 0px 5px" backgroundColor="#0000" width="380px">
+        <DarkMediumText fontSize={Theme.fontSize.fs13}>주식회사</DarkMediumText>
+        <GrayText mg="0px 5px" fontSize={Theme.fontSize.fs13}>
+          와이크
+        </GrayText>
+        <DarkMediumText fontSize={Theme.fontSize.fs13}>대표</DarkMediumText>
+        <GrayText mg="0px 5px" fontSize={Theme.fontSize.fs13}>
+          이무비
+        </GrayText>
+        <DarkMediumText fontSize={Theme.fontSize.fs13}>사업자등록번호</DarkMediumText>
+        <GrayText mg="0px 5px" fontSize={Theme.fontSize.fs13}>
+          618-88-02068
+        </GrayText>
+      </RowBox>
+      <RowBox mg="0px 0px 5px" backgroundColor="#0000" width="380px">
+        <DarkMediumText fontSize={Theme.fontSize.fs13}>주소</DarkMediumText>
+        <GrayText mg="0px 5px" fontSize={Theme.fontSize.fs13}>
+          인천광역시 연수구 갯벌로12, 미추홀타워 7층 7-5호
+        </GrayText>
+      </RowBox>
+      <RowBox mg="0px 0px 5px" backgroundColor="#0000" width="380px">
+        <DarkMediumText fontSize={Theme.fontSize.fs13}>통신판매업 신고번호</DarkMediumText>
+        <GrayText mg="0px 5px" fontSize={Theme.fontSize.fs13}>
+          제 2021-인천연수구-1616 호
+        </GrayText>
+        <DarkMediumText fontSize={Theme.fontSize.fs13}>Call</DarkMediumText>
+        <GrayText mg="0px 5px" fontSize={Theme.fontSize.fs13}>
+          070-5227-0240
+        </GrayText>
+      </RowBox>
+      <RowBox mg="0px 0px 5px" backgroundColor="#0000">
+        <DarkMediumText fontSize={Theme.fontSize.fs13}>Email</DarkMediumText>
+        <GrayText mg="0px 5px" fontSize={Theme.fontSize.fs13}>
+          pedalcheck@gmail.com
+        </GrayText>
+      </RowBox>
+
+      <RowBox mg="0px 0px 5px" backgroundColor="#0000" width="380px">
+        <GrayText fontSize={Theme.fontSize.fs13}>
+          Copyright ⓒ 2022 와이크 All rights reserved
+        </GrayText>
       </RowBox>
     </Box>
   );

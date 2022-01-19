@@ -17,7 +17,6 @@ const Stack = createNativeStackNavigator();
 
 export default function ReservationManagement() {
   const navigation = useNavigation();
-  const route = useRoute();
   const [select, setSelect] = useState('예약현황');
   const [routes, setRoutes] = useState('ReservationManagementHome');
   useUpdateEffect(() => {

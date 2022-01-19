@@ -7,7 +7,7 @@ import KakaoImage from '@/Component/Home/Icon/KakaoImage';
 import GoogleImage from '@/Component/Home/Icon/GoogleImage';
 import NaverImage from '@/Component/Home/Icon/NaverImage';
 import AppleImage from '@/Component/Home/Icon/AppleImage';
-import {Platform} from 'react-native';
+import {Platform, TouchableOpacity} from 'react-native';
 import {GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {getDay} from '@/Util/getDateList';
@@ -32,6 +32,11 @@ export default function Home({navigation}) {
 
           <AppleImage />
         </BetweenBox>
+        <TouchableOpacity
+          style={{width: 40, height: 50, backgroundColor: 'red'}}
+          onPress={() => {
+            navigation.navigate('Payment');
+          }}></TouchableOpacity>
       </Box>
 
       <HomeFooter navigation={navigation} isShowLogin={false} />
