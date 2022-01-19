@@ -1,12 +1,10 @@
-import {FooterButton} from '@/assets/global/Button';
 import {Box, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
 import {DarkText} from '@/assets/global/Text';
-import FooterButtons from '@/Component/Layout/FooterButtons';
 import ModalTitleBox from '@/Component/Modal/ModalTitleBox';
 import {modalClose} from '@/Store/modalState';
 import React from 'react';
 import {useState} from 'react';
-import {View, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {useDispatch} from 'react-redux';
 import SearchIcon from '@assets/image/ic_search.png';
 import {DefaultInput} from '@/assets/global/Input';

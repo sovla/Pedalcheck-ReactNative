@@ -90,6 +90,7 @@ export default function RepairReservation({type}) {
 
           setPage(prev => prev + 1);
         } else {
+          // 데이터가 없을때
           setIsLast(true);
           if (initPage) {
             setList([]);

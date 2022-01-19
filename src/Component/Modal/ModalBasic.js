@@ -16,7 +16,7 @@ import DeleteAccount from '../More/Modal/DeleteAccount';
 import QuestionDelete from '../More/Modal/QuestionDelete';
 import ReservationCancle from '../More/Modal/ReservationCancle';
 import SearchShop from '../More/Modal/SearchShop';
-import DaumPostMadal from '../MyInformation/DaumPostMadal';
+import DaumPostCode from '../More/Modal/DaumPostCode';
 import PaymentInformationCheck from '../Repair/Modal/PaymentInformationCheck';
 import AdjustmentHistory from '../RepairHistory/Modal/AdjustmentHistory';
 import Notice from '../RepairHistory/Modal/Notice';
@@ -24,6 +24,8 @@ import QuestionSubmit from '../RepairHistory/Modal/QuestionSubmit';
 import QuestionUpdate from '../RepairHistory/Modal/QuestionUpdate';
 import RepairRejection from '../ReservationManagement/Modal/RepairRejection';
 import AlertModal from './AlertModal';
+import SearchBrand from '../More/Modal/SearchBrand';
+import SearchTag from '../More/Modal/SearchTag';
 
 // 2022-01-04 08:31:15
 // Junhan
@@ -90,10 +92,14 @@ export default function ModalBasic({navigation}) {
         return QuestionSubmit;
       case 'alertModal':
         return AlertModal;
-      case 'daumPostModal':
-        return DaumPostMadal;
+      case 'fullSize/DaumPostCode':
+        return DaumPostCode;
       case 'searchShop':
         return SearchShop;
+      case 'SearchBrand':
+        return SearchBrand;
+      case 'SearchTag':
+        return SearchTag;
     }
   };
 

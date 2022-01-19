@@ -77,6 +77,7 @@ export const ImageAPI = async (data, field, url, isIndex = false) => {
     let imageResult = [];
     if (Array.isArray(data[field])) {
       for (const imageItem of data[field]) {
+
         !isIndex
           ? imageResult.push({
               [field]: {
@@ -100,6 +101,7 @@ export const ImageAPI = async (data, field, url, isIndex = false) => {
                 name: 'auto.jpg',
               },
             });
+
         index++;
       }
     } else {
@@ -107,7 +109,7 @@ export const ImageAPI = async (data, field, url, isIndex = false) => {
       imageResult = {
         [field]: {
           key: 'poto' + new Date().getTime(),
-          uri: Platform.OS === 'android' ? imageItem.path : imageItem.path.replace('file://', ''),
+          uri: Platform.OS === 'android' ? imageItem?.path : imageItem?.path.replace('file://', ''),
           type: imageItem.mime,
           name: 'auto.jpg',
         },

@@ -24,7 +24,6 @@ export default function Bike({item, isUse = true}) {
             <GrayBoldText mg="0px 10px">{item.modelName}</GrayBoldText>
           </>
         )}
-
         <GrayText>{item.bikeName}</GrayText>
       </RowBox>
       <RowBox>

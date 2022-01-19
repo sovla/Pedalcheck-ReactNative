@@ -6,7 +6,7 @@ import {DarkMediumText, DefaultText, GrayText, IndigoText} from '@/assets/global
 import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import {modalOpen} from '@/Store/modalState';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import React from 'react';
 import PlusIcon from '@assets/image/ic_plus_w.png';
 import {Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
@@ -14,18 +14,49 @@ import {useDispatch} from 'react-redux';
 import ModifyButton from '@/Component/Buttons/ModifyButton';
 import TrashButton from '@/Component/Buttons/TrashButton';
 import {AlertButtons} from '@/Util/Alert';
+import {useEffect} from 'react';
+import {deleteBikeExport, getBikeExportList} from '@/API/Manager/More';
+import {useState} from 'react';
+import {showToastMessage} from '@/Util/Toast';
 
 export default function BikeExportList() {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
+  const [ExportList, setExportList] = useState([]);
+
+  useEffect(() => {
+    if (isFocused) {
+      getBikeExportListHandle();
+    }
+  }, [isFocused]);
+
+  const getBikeExportListHandle = async () => {
+    const response = await getBikeExportList({
+      _mt_idx: 10, //수정 필요
+    });
+
+    if (response?.data?.result === 'true') {
+      setExportList(response?.data?.data?.data);
+    }
+  };
+
   const onPressModify = item => {
-    navigation.navigate('BikeExport', item);
+    navigation.navigate('BikeExport', {item: item});
   };
   const onPressDelete = item => {
     AlertButtons('출고 이력을 삭제하시겠습니까?', '확인', '취소', () => onPressConfirm());
-    const onPressConfirm = () => {
-      // 출고이력 삭제
+    const onPressConfirm = async () => {
+      const response = await deleteBikeExport({
+        _mt_idx: 10, // 수정 필요
+        sbt_idx: item.sbt_idx,
+      });
+
+      if (response?.data?.result === 'true') {
+        showToastMessage('삭제 되었습니다.');
+        getBikeExportListHandle();
+      }
     };
   };
   return (
@@ -38,13 +69,14 @@ export default function BikeExportList() {
         </RowBox>
       </ButtonTouch>
       <FlatList
-        data={[1, 2, 3, 4, 5]}
+        data={ExportList}
+        keyExtractor={(item, index) => item.sbt_idx}
         renderItem={({item, index}) => (
           <BikeListItem
-            brandName={'APPALANCHIA'}
-            modelName={'Momentum'}
-            vehicleNumber={'3T0A12546'}
-            year={'2017'}
+            brandName={item.sbt_brand}
+            modelName={item.sbt_model}
+            vehicleNumber={item.sbt_serial}
+            year={20 + item.sbt_year}
             onPressModify={() => {
               onPressModify(item);
             }}

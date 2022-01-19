@@ -19,6 +19,7 @@ import {useEffect} from 'react';
 import {getCustomer} from '@/API/Manager/Customer';
 import {FlatList} from 'react-native-gesture-handler';
 import {getPixel} from '@/Util/pixelChange';
+import SearchIcon from './SearchIcon';
 
 export default function Customer({navigation}) {
   const {size} = useSelector(state => state);
@@ -29,25 +30,46 @@ export default function Customer({navigation}) {
   const [customerList, setCustomerList] = useState([]);
   const [isScroll, setIsScroll] = useState(false);
 
+  const [isLast, setIsLast] = useState(false);
+
   useEffect(() => {
     getCustomerHandle();
   }, [sortSelectItem]);
 
-  const getCustomerHandle = async () => {
+  const getCustomerHandle = async insertPage => {
+    if (isLast && !insertPage) {
+      return null;
+    }
+
+    if (insertPage) {
+      await setPage(1);
+      await setIsLast(false);
+    }
+
     const response = await getCustomer({
       _mt_idx: 10, // 수정 필요
       cate: sortSelectItem === '전체' ? 1 : sortSelectItem === '일반' ? 2 : 3,
       mt_name: searchText,
-      page: page,
+      page: insertPage ?? page,
     });
 
-    const {customer_cnt, customer_list} = response?.data?.data?.data;
-
-    if (customer_list?.length > 0) {
-      setCustomerList(prev => [...prev, ...customer_list]);
+    if (response?.data?.result === 'true') {
+      const {customer_cnt, customer_list} = response?.data?.data?.data;
+      if (customer_list.length > 0) {
+        if (insertPage) {
+          setCustomerList([...customer_list]);
+        } else {
+          setCustomerList(prev => [...prev, ...customer_list]);
+        }
+        setPage(prev => prev + 1);
+        setCustomerCount(customer_cnt);
+      } else {
+        setIsLast(true);
+        if (insertPage) {
+          setCustomerList([]);
+        }
+      }
     }
-    setCustomerCount(customer_cnt);
-    setPage(prev => prev + 1);
   };
 
   const onPressCustomer = item => {
@@ -88,11 +110,11 @@ export default function Customer({navigation}) {
                   borderColor={Theme.borderColor.gray}
                   backgroundColor={Theme.color.white}
                   placeHolder="회원 이름을 입력하세요"></DefaultInput>
-                <PositionBox right="15px" top="11px">
-                  <TouchableOpacity onPress={() => getCustomerHandle(1)}>
-                    <DefaultImage source={CheckIcon} width="21px" height="21px"></DefaultImage>
-                  </TouchableOpacity>
-                </PositionBox>
+                <SearchIcon
+                  onPress={() => {
+                    getCustomerHandle(1);
+                  }}
+                />
               </Box>
             </Box>
           </>

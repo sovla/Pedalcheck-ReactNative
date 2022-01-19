@@ -12,6 +12,7 @@ import {useEffect} from 'react';
 import {Alert} from 'react-native';
 import {useIsFocused} from '@react-navigation/native';
 import BikeRegisterFirst from './BikeRegisterFirst';
+import Loading from '@/Component/Layout/Loading';
 
 export default function BikeManagement({navigation}) {
   const {size, login} = useSelector(state => state);
@@ -20,6 +21,7 @@ export default function BikeManagement({navigation}) {
   const [useBikeList, setUseBikeList] = useState([]);
   const [storageBikeList, setStorageBike] = useState([]);
   const isFocused = useIsFocused();
+  const [isDone, setIsDone] = useState(true);
 
   useEffect(() => {
     if (isFocused) {
@@ -28,14 +30,16 @@ export default function BikeManagement({navigation}) {
   }, [select, isFocused]);
 
   const getBikeListHandle = async () => {
-    const response = await getBikeList({
+    setIsDone(true);
+
+    await getBikeList({
       _mt_idx: login?.idx,
       mbt_flag: 'Y',
       page: 1,
     }).then(res => {
       setUseBikeList(res?.data?.data?.data);
     });
-    const response2 = await getBikeList({
+    await getBikeList({
       _mt_idx: login?.idx,
       mbt_flag: 'N',
       page: page,
@@ -45,7 +49,12 @@ export default function BikeManagement({navigation}) {
         setPage(prev => prev + 1);
       }
     });
+
+    setIsDone(false);
   };
+  if (isDone) {
+    return <Loading />;
+  }
 
   return (
     <>
