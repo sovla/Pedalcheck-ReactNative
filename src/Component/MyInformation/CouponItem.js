@@ -20,9 +20,10 @@ const CouponItem = ({
   badgeContent,
   rejectionContent = '거절사유가 입력됩니다. 거절사유가 입력됩니다.',
   onPressCouponUse = () => {},
+  isAdmin,
 }) => {
   const {size} = useSelector(state => state);
-  const height = badgeContent === '미사용' ? '120px' : '100px';
+  const height = badgeContent === '미사용' ? (isAdmin ? '100px' : '120px') : '100px';
   return (
     <Box style={borderBottomWhiteGray} width={size.minusPadding} mg="0px 16px">
       <BetweenBox alignItems="center" pd="16px 10px" width="100%" height={height}>
