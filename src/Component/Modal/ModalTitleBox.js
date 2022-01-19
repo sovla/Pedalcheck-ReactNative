@@ -8,7 +8,7 @@ import {Text, TouchableOpacity} from 'react-native';
 import CloseIcon from '@assets/image/pop_close.png';
 import {useDispatch, useSelector} from 'react-redux';
 
-export default function ModalTitleBox({title, padding = 64}) {
+export default function ModalTitleBox({title, padding = 64, onclose = () => {}}) {
   const dispatch = useDispatch();
   const {size} = useSelector(state => state);
   const boxWidth = size.designWidth - padding;
@@ -24,7 +24,12 @@ export default function ModalTitleBox({title, padding = 64}) {
         {title}
       </DefaultText>
       <Box width="10%" alignItems="flex-end" height="100%">
-        <TouchableOpacity style={{padding: 5}} onPress={() => dispatch(modalClose())}>
+        <TouchableOpacity
+          style={{padding: 5}}
+          onPress={async () => {
+            await onclose();
+            await dispatch(modalClose());
+          }}>
           <DefaultImage source={CloseIcon} width="20px" height="20px" resizeMode="contain" />
         </TouchableOpacity>
       </Box>

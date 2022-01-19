@@ -1,4 +1,4 @@
-import {API} from '../Api';
+import {API, ImageAPI} from '../Api';
 
 export const getBoardList = async args => {
   try {
@@ -143,3 +143,32 @@ export const getCouponUsageStateList = async args => {
     console.log(error);
   }
 };
+
+export const updateStore = async args => {
+  try {
+    const response = await API.post('mng/store_edit.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateStoreImage = async args => {
+  try {
+    const data = args;
+    const response = await ImageAPI(data, 'mst_image', 'mng/store_edit.php');
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getTagList = async args => {
+  try {
+    const response = await API.post('get_tag.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+// 태그 불러오기

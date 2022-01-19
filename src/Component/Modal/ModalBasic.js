@@ -24,6 +24,8 @@ import QuestionSubmit from '../RepairHistory/Modal/QuestionSubmit';
 import QuestionUpdate from '../RepairHistory/Modal/QuestionUpdate';
 import RepairRejection from '../ReservationManagement/Modal/RepairRejection';
 import AlertModal from './AlertModal';
+import SearchBrand from '../More/Modal/SearchBrand';
+import SearchTag from '../More/Modal/SearchTag';
 
 // 2022-01-04 08:31:15
 // Junhan
@@ -94,6 +96,10 @@ export default function ModalBasic({navigation}) {
         return DaumPostCode;
       case 'searchShop':
         return SearchShop;
+      case 'SearchBrand':
+        return SearchBrand;
+      case 'SearchTag':
+        return SearchTag;
     }
   };
 
