@@ -227,7 +227,7 @@ const DefaultInputTextStyle = styled.View`
 `;
 
 export const WhiteInput = styled(DefaultInputStyle)`
-  background-color: ${Theme.color.white};
+  background-color: ${p => p.backgroundColor ?? Theme.color.white};
   border-radius: ${p => p.borderRadius ?? '10px'};
   align-items: ${p => p.alignItems ?? 'flex-start'};
   padding: ${p => pixelChange(p.pd) ?? pixelChange('10px 16px')};

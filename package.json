@@ -28,6 +28,7 @@
     "@reduxjs/toolkit": "1.6.2",
     "axios": "0.24.0",
     "babel-plugin-module-resolver": "4.1.0",
+    "iamport-react-native": "2.0.0-rc.1",
     "jwt-decode": "3.1.2",
     "jwt-encode": "1.0.1",
     "moment": "2.29.1",

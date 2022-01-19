@@ -47,6 +47,7 @@ import ReservationRequest from './Repair/ReservationRequest';
 import ReviewDetail from './Repair/ReviewDetail';
 import ReviewHome from './Repair/ReviewHome';
 import ReviewWrite from './Repair/ReviewWrite';
+import Payment from './Repair/Payment';
 import Shop from './Repair/Shop';
 import AdjustmentHistory from './RepairHistory/AdjustmentHistory';
 import BikeStats from './RepairHistory/BikeStats';
@@ -399,6 +400,10 @@ const RouterSetting = [
   {
     name: 'ReviewWrite',
     component: ReviewWrite,
+  },
+  {
+    name: 'Payment',
+    component: Payment,
   },
   {
     name: 'Shop',

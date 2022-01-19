@@ -45,34 +45,33 @@ export default function ScheduleManagement() {
     if (!timeList?.length) {
       return null;
     }
-    let result = {};
+    let st_time = [];
+    let flag = [];
 
     timeList
       .map((item, index) => {
+        // {st_time1:시간,flag1:Y||N} 처럼 객체로 데이터 가공
         const findItem = selectTime.find(findItem => findItem === item.st_time);
         if (findItem) {
-          return {
-            ['st_time' + index]: item.st_time,
-            ['flag' + index]: 'N',
-          };
+          st_time.push(item.st_time);
+          flag.push('N');
         } else {
-          return {
-            ['st_time' + index]: item.st_time,
-            ['flag' + index]: item.flag,
-          };
+          st_time.push(item.st_time);
+          flag.push(item.flag);
         }
       })
       .forEach(item => {
-        Object.assign(result, item);
+        Object.assign(result, item); // 배열모든 값을 하나의 객체에 취합
       });
 
     reservationDayListSave({
-      _mt_idx: login.idx, // 수정필요 login.idx
+      _mt_idx: login.idx,
       st_date: getDay(daySelect),
       st_repeat: repeat ? 'Y' : 'N',
       st_off: allOff ? 'Y' : 'N',
       st_memo: memo,
-      ...result,
+      st_time,
+      flag,
     }).then(res => {
       if (res.data?.result === 'true') {
         showToastMessage(res.data.msg);

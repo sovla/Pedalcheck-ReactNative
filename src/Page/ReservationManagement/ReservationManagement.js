@@ -10,13 +10,15 @@ import ReservationTimeManagement from '@/Component/ReservationManagement/Reserva
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import ReservationManagementHome from '@/Component/ReservationManagement/ReservationManagementHome';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {useRef} from 'react';
 
 const Stack = createNativeStackNavigator();
 
-export default function ReservationManagement({navigation}) {
+export default function ReservationManagement() {
+  const navigation = useNavigation();
   const [select, setSelect] = useState('예약현황');
-  const {size} = useSelector(state => state);
-
+  const [routes, setRoutes] = useState('ReservationManagementHome');
   useUpdateEffect(() => {
     if (select === '예약현황') {
       navigation.navigate('ReservationManagementHome');
@@ -26,6 +28,15 @@ export default function ReservationManagement({navigation}) {
       navigation.navigate('ReservationTimeManagement');
     }
   }, [select]);
+  useUpdateEffect(() => {
+    if (routes === 'ReservationManagementHome') {
+      setSelect('예약현황');
+    } else if (routes === 'ScheduleManagement') {
+      setSelect('일정관리');
+    } else if (routes === 'ReservationTimeManagement') {
+      setSelect('예약 시간 관리');
+    }
+  }, [routes]);
 
   return (
     <>
@@ -34,6 +45,11 @@ export default function ReservationManagement({navigation}) {
       </GradientHeader>
 
       <Stack.Navigator
+        screenListeners={{
+          state: e => {
+            setRoutes(e.data.state.routes[e.data.state.routes.length - 1].name);
+          },
+        }}
         screenOptions={{
           headerShown: false,
         }}
