@@ -15,6 +15,8 @@ import {FlatList, TouchableOpacity} from 'react-native';
 import {getCouponList} from '@/API/More/Coupon';
 import {useState} from 'react';
 import {useEffect} from 'react';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import {dateFormat} from '@/Util/DateFormat';
 
 export default function Coupon() {
   const navigation = useNavigation();
@@ -22,6 +24,11 @@ export default function Coupon() {
   const isFocused = useIsFocused();
 
   const [couponList, setCouponList] = useState([]);
+  const [isOpen, setIsOpen] = useState(0);
+  const [times, setTimes] = useState({
+    prev: '',
+    next: '',
+  });
 
   useEffect(() => {
     if (isFocused) {
@@ -41,6 +48,15 @@ export default function Coupon() {
     } else {
     }
   };
+  const onChange = (event, selectDate) => {
+    console.log(selectDate);
+    if (isOpen % 2 === 1) {
+      setTimes(prev => ({...prev, ['prev']: dateFormat(selectDate)}));
+    } else {
+      setTimes(prev => ({...prev, ['next']: dateFormat(selectDate)}));
+    }
+    setIsOpen(0);
+  };
   return (
     <>
       <Header title="쿠폰 관리" />
@@ -55,21 +71,31 @@ export default function Coupon() {
               </RowBox>
             </ButtonTouch>
             <RowBox alignItems="center">
-              <BorderButton
-                width="135px"
-                height="36px"
-                borderColor="gray"
-                color={Theme.color.black}>
-                2021-10-14(미완)
-              </BorderButton>
+              <TouchableOpacity
+                onPress={() => {
+                  setIsOpen(1);
+                }}>
+                <BorderButton
+                  width="135px"
+                  height="36px"
+                  borderColor="gray"
+                  color={Theme.color.black}>
+                  {times.prev}
+                </BorderButton>
+              </TouchableOpacity>
               <DarkText mg="0px 6.5px">~</DarkText>
-              <BorderButton
-                width="135px"
-                height="36px"
-                borderColor="gray"
-                color={Theme.color.black}>
-                2021-10-14(미완)
-              </BorderButton>
+              <TouchableOpacity
+                onPress={() => {
+                  setIsOpen(2);
+                }}>
+                <BorderButton
+                  width="135px"
+                  height="36px"
+                  borderColor="gray"
+                  color={Theme.color.black}>
+                  {times.next}
+                </BorderButton>
+              </TouchableOpacity>
               <Box mg="0px 0px 0px 10px">
                 <BorderButton width="78px" height="36px">
                   조회
@@ -125,6 +151,9 @@ export default function Coupon() {
           );
         }}
       />
+      {isOpen > 0 && (
+        <DateTimePicker value={new Date()} mode="date" display="default" onChange={onChange} />
+      )}
     </>
   );
 }

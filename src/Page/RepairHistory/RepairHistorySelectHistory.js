@@ -51,6 +51,9 @@ export default function RepairHistorySelectHistory() {
     navigation.navigate('Detail');
   };
   const onChange = (event, selectedDate) => {
+    if (event.type !== 'set') {
+      return null;
+    }
     if (datePicker.start) {
       setDatePicker(prev => ({...prev, start: false}));
       setSelectDate(prev => ({...prev, start: dateFormat(selectedDate)}));
@@ -60,8 +63,6 @@ export default function RepairHistorySelectHistory() {
       setSelectDate(prev => ({...prev, end: dateFormat(selectedDate)}));
     }
   };
-
-  console.log(selectDate);
 
   return (
     <Box pd="0px 16px">
@@ -131,13 +132,7 @@ export default function RepairHistorySelectHistory() {
               </PositionBox>
             </RowBox>
             {(datePicker?.start || datePicker?.end) && (
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode="date"
-                display="default"
-                onChange={onChange}
-              />
+              <DateTimePicker value={date} mode="date" display="default" onChange={onChange} />
             )}
           </>
         }
