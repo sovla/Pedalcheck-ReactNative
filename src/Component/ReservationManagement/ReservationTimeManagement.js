@@ -16,24 +16,30 @@ import {useEffect} from 'react';
 import {useLayoutEffect} from 'react';
 import ModifyButton from '../Buttons/ModifyButton';
 import TrashButton from '../Buttons/TrashButton';
-import {reservationTimeList} from '@/API/ReservationManagement/ReservationManagement';
+import {
+  reservationTimeList,
+  reservationTimeListSave,
+} from '@/API/ReservationManagement/ReservationManagement';
 import {AlertButton} from '@/Util/Alert';
 import {useIsFocused} from '@react-navigation/native';
+import {showToastMessage} from '@/Util/Toast';
 
 export default function ReservationTimeManagement() {
   const isFocused = useIsFocused();
 
-  const {size} = useSelector(state => state);
+  const {size, login} = useSelector(state => state);
   const [timeList, setTimeList] = useState([]);
+  const [orderTimeIdx, setOrderTimeIdx] = useState('');
 
   useEffect(() => {
     if (isFocused) {
       reservationTimeList({
-        _mt_idx: 10,
+        _mt_idx: login?.idx,
       })
         .then(res => res.data?.result === 'true' && res.data.data.data)
         .then(data => {
           setTimeList(data.store_ordertime);
+          setOrderTimeIdx(data.ordertime_idx);
         });
     }
   }, [isFocused]);
@@ -78,43 +84,47 @@ export default function ReservationTimeManagement() {
   };
 
   const onPressSave = () => {
-    try {
-      const copyTimeList = timeList.slice();
+    const copyTimeList = timeList.slice();
 
-      const changeTime = time => {
-        const timeSplit = time.split(':');
-        const hour = parseInt(timeSplit[0]);
-        const minute = parseInt(timeSplit[1]);
+    const changeTime = time => {
+      const timeSplit = time.split(':');
+      const hour = parseInt(timeSplit[0]);
+      const minute = parseInt(timeSplit[1]);
 
-        return hour * 60 + minute;
-      };
+      return hour * 60 + minute;
+    };
 
-      let result = false;
-      copyTimeList.sort((prev, next) => {
-        if (result) {
-          return null;
-        }
-        const prevTime = changeTime(prev['ot_time']);
-        const nextTime = changeTime(next['ot_time']);
-        console.log(prevTime, nextTime);
-        if (prevTime === nextTime) {
-          result = true;
-          AlertButton('입력한 예약 시간 중 중복된 값이 있습니다.');
-          return null;
-        }
-        return prevTime - nextTime;
-      });
+    let result = false;
+    let ot_time = [];
+    let flag = [];
+
+    copyTimeList.sort((prev, next) => {
       if (result) {
         return null;
       }
-      console.log(copyTimeList);
-    } catch (error) {
-      console.log(error);
+      const prevTime = changeTime(prev['ot_time']);
+      const nextTime = changeTime(next['ot_time']);
+      if (prevTime === nextTime) {
+        result = true;
+        AlertButton('입력한 예약 시간 중 중복된 값이 있습니다.');
+        return null;
+      }
+      return prevTime - nextTime;
+    });
+    if (result) {
+      return null;
     }
+    copyTimeList.forEach((item, index) => {
+      ot_time.push(item.ot_time);
+      flag.push(item.flag);
+    });
 
-    // 정렬
-    // 중복 시간 체크
-    // 저장후 toast
+    reservationTimeListSave({
+      _mt_idx: login.idx,
+      ot_time,
+      flag,
+      ordertime_idx: orderTimeIdx,
+    }).then(res => res.data?.result === 'true' && showToastMessage('저장되었습니다.'));
   };
 
   const onPressDelete = index => {
