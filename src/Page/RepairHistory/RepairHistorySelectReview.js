@@ -62,6 +62,10 @@ export default function RepairHistorySelectReview() {
         }
         setTot_page(response?.data?.data?.data?.tot_cnt);
         setPage(prev => prev + 1);
+      } else {
+        if (isSearch) {
+          setReview([]);
+        }
       }
     }
 
@@ -238,6 +242,7 @@ const ReviewRecomment = ({item, size, commentSubmit, deleteHandle}) => {
             }}
             value={comment}
             changeFn={text => setComment(text)}
+            maxLength={500}
           />
           <LinkButton
             to={() => {

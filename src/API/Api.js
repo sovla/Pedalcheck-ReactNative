@@ -78,7 +78,8 @@ export const ImageAPI = async (data, field, url) => {
         Object.assign(imageResult, {
           [`${field}${index}`]: {
             key: 'poto' + new Date().getTime(),
-            uri: Platform.OS === 'android' ? imageItem.path : imageItem.path.replace('file://', ''),
+            uri:
+              Platform.OS === 'android' ? imageItem?.path : imageItem?.path.replace('file://', ''),
             type: imageItem.mime,
             name: 'auto.jpg',
           },
@@ -90,7 +91,7 @@ export const ImageAPI = async (data, field, url) => {
       imageResult = {
         [field]: {
           key: 'poto' + new Date().getTime(),
-          uri: Platform.OS === 'android' ? imageItem.path : imageItem.path.replace('file://', ''),
+          uri: Platform.OS === 'android' ? imageItem?.path : imageItem?.path.replace('file://', ''),
           type: imageItem.mime,
           name: 'auto.jpg',
         },

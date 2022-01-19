@@ -182,10 +182,10 @@ export default function Update({navigation}) {
   };
 
   const emptyData = data => {
-    if (data === '' && data === null && !data) {
-      return false;
-    } else {
+    if (data === '' || data === null || !data) {
       return true;
+    } else {
+      return false;
     }
   };
 
@@ -250,7 +250,7 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
         </RowBox>
       </Box>
       <Box>
-        <Box mg="20px 0px 0px">
+        <Box mg="20px 0px">
           <DefaultInput
             title="이름"
             placeHolder="이름을 입력해주세요"
@@ -294,7 +294,7 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
             value={user?.mt_addr}
             isText
             errorMessage={errorMessage.mt_addr !== '' && errorMessage.mt_addr}
-            mg={errorMessage.location === '' && '0px 0px 20px'}
+            mg={errorMessage.location === '' && '0px'}
             PressText={() => {
               dispatch(DeleteLocation());
               dispatch(modalOpen('locationPicker'));
