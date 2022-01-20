@@ -1,7 +1,7 @@
 import {Box, PositionBox} from '@/assets/global/Container';
 import Theme from '@/assets/global/Theme';
 import React from 'react';
-import {ActivityIndicator} from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 
 export default function Loading({
   isAbsolute = false,
@@ -23,9 +23,9 @@ export default function Loading({
           <ActivityIndicator size="large" color={Theme.color.gray} />
         </PositionBox>
       ) : (
-        <Box style={{flex: 1}} alignItems="center" justifyContent="center">
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
           <ActivityIndicator size="large" color={Theme.color.gray} />
-        </Box>
+        </View>
       )}
     </>
   );

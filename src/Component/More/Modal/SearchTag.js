@@ -1,7 +1,6 @@
-import {BetweenBox, Box, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
+import {BetweenBox, Box, PositionBox, ScrollBox} from '@/assets/global/Container';
 import {DarkText} from '@/assets/global/Text';
 import ModalTitleBox from '@/Component/Modal/ModalTitleBox';
-import {modalClose} from '@/Store/modalState';
 import React from 'react';
 import {useState} from 'react';
 import {TouchableOpacity} from 'react-native';
@@ -9,12 +8,11 @@ import {useDispatch} from 'react-redux';
 import SearchIcon from '@assets/image/ic_search.png';
 import {DefaultInput} from '@/assets/global/Input';
 import DefaultImage from '@/assets/global/Image';
-import {getShopList, getTagList} from '@/API/More/More';
+import {getTagList} from '@/API/More/More';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
-import {getBikeModel} from '@/API/Bike/Bike';
 import {useEffect} from 'react';
 import Theme from '@/assets/global/Theme';
-import {BorderButton, Button, DisabledBorderButton, FooterButton} from '@/assets/global/Button';
+import {BorderButton} from '@/assets/global/Button';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 
 export default function SearchTag({setShopInformation, shopInformation}) {
