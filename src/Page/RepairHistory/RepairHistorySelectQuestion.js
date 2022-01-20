@@ -8,6 +8,7 @@ import QuestionRecomment from '@/Component/RepairHistory/QuestionRecomment';
 import {useEffect} from 'react';
 import {getQnaList} from '@/API/Manager/RepairHistory';
 import {FlatList} from 'react-native-gesture-handler';
+import {isList} from 'immutable';
 
 export default function RepairHistorySelectQuestion() {
   //const {login} = useSelector(state => state);
@@ -17,6 +18,7 @@ export default function RepairHistorySelectQuestion() {
   const [questionList, setQuestionList] = useState([]);
   const [page, setPage] = useState(1);
   const [isModalClose, setIsModalClose] = useState(true);
+  const [isLast, setIsLast] = useState(false);
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -47,6 +49,10 @@ export default function RepairHistorySelectQuestion() {
   }, [isFocus, modalOpenAndProp]);
 
   const getQnaListHandle = async () => {
+    if (isLast) {
+      return;
+    }
+
     const response = await getQnaList({
       _mt_idx: 10, //login.idx,
       page: page,
@@ -55,6 +61,8 @@ export default function RepairHistorySelectQuestion() {
       if (response?.data?.data?.data?.qna_list?.length > 0) {
         setPage(prev => prev + 1);
         setQuestionList(prev => [...prev, ...response?.data?.data?.data?.qna_list]);
+      } else {
+        setIsLast(true);
       }
     }
   };
@@ -65,38 +73,40 @@ export default function RepairHistorySelectQuestion() {
         data={questionList}
         renderItem={({item, index}) => {
           return (
-            <QuestionRecomment
-              key={index}
-              onPressUpdate={() =>
-                dispatch(
-                  modalOpenAndProp({
-                    modalComponent: 'questionSubmit',
-                    item: item,
-                    setRecomment: setRecomment,
-                  }),
-                )
-              }
-              onPressSubmit={() =>
-                dispatch(
-                  modalOpenAndProp({
-                    modalComponent: 'questionSubmit',
-                    item: item,
-                    setRecomment: setRecomment,
-                  }),
-                )
-              }
-              onPressItem={() => {
-                onPressRecomment(index + 1);
-              }}
-              isSelect={selectComment.find(findItem => findItem === index + 1) ? true : false}
-              status={item?.qt_status === '답변' ? '답변완료' : item?.qt_status}
-              // categoryName="개선제안" //getCategoryNumber(item?.qt_ca)
-              questionTitle={item?.qt_title}
-              writeDate={item?.qt_wdate}
-              content={item?.qt_content}
-              adminContent={item?.qt_answer}
-              adminWriteDate={item?.qt_adate}
-            />
+            <>
+              <QuestionRecomment
+                key={index}
+                onPressUpdate={() =>
+                  dispatch(
+                    modalOpenAndProp({
+                      modalComponent: 'questionSubmit',
+                      item: item,
+                      setRecomment: setRecomment,
+                    }),
+                  )
+                }
+                onPressSubmit={() =>
+                  dispatch(
+                    modalOpenAndProp({
+                      modalComponent: 'questionSubmit',
+                      item: item,
+                      setRecomment: setRecomment,
+                    }),
+                  )
+                }
+                onPressItem={() => {
+                  onPressRecomment(index + 1);
+                }}
+                isSelect={selectComment.find(findItem => findItem === index + 1) ? true : false}
+                status={item?.qt_status === '답변' ? '답변완료' : item?.qt_status}
+                // categoryName="개선제안" //getCategoryNumber(item?.qt_ca)
+                questionTitle={item?.qt_title}
+                writeDate={item?.qt_wdate}
+                content={item?.qt_content}
+                adminContent={item?.qt_answer}
+                adminWriteDate={item?.qt_adate}
+              />
+            </>
           );
         }}
         onEndReached={() => {
@@ -110,6 +120,7 @@ export default function RepairHistorySelectQuestion() {
           setIsScroll(true);
         }}
       />
+      {isLast && <Box mg="10px 0"></Box>}
     </Box>
   );
 }

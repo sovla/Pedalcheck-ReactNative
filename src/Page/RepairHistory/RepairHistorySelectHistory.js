@@ -10,7 +10,6 @@ import SpannerIcon from '@assets/image/menu01_on.png';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {DefaultInput} from '@/assets/global/Input';
-import SearchIcon from '@assets/image/ic_search.png';
 import {TouchableOpacity} from 'react-native';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import numberFormat from '@/Util/numberFormat';
@@ -21,6 +20,11 @@ import {getOrderList} from '@/API/Manager/RepairHistory';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {dateFormat} from '@/Util/DateFormat';
+import SearchIcon from '../Customer/SearchIcon';
+import DatePickerComponent from '@/Component/BikeManagement/DatePickerComponent';
+import {showToastMessage} from '@/Util/Toast';
+import Loading from '@/Component/Layout/Loading';
+
 // 데이트 픽커
 
 export default function RepairHistorySelectHistory() {
@@ -35,33 +39,119 @@ export default function RepairHistorySelectHistory() {
   });
   const [date, setDate] = useState(new Date());
 
+  const [productList, setProductList] = useState([]);
+  const [selectItem, setSelectItem] = useState('');
+  const [orderList, setOrderList] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
+
+  const [page, setPage] = useState(1);
+  const [searchText, setSearchText] = useState('');
+  const [isLast, setIsLast] = useState(false);
+  const [isScroll, setIsScroll] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
   const navigation = useNavigation();
 
   useEffect(() => {
     getOrderListHandle();
   }, []);
 
-  const getOrderListHandle = async () => {
-    await getOrderList({
+  const getOrderListHandle = async insertPage => {
+    if (insertPage) {
+      await setPage(1);
+      await setIsLast(false);
+    }
+
+    if (isLast && !insertPage) {
+      return null;
+    }
+
+    if (RegJoin() && insertPage) {
+      showToastMessage('종료일은 시작일 이후여야 합니다.');
+      return;
+    }
+
+    const response = await getOrderList({
       _mt_idx: 10, //수정 필요
+      ot_name: searchText,
+      ot_sdate: selectDate.start,
+      ot_edate: selectDate.end,
+      pt_idx: selectItem ?? '',
+      page: insertPage ? insertPage : page,
     });
+    if (response?.data?.result === 'true') {
+      if (response?.data?.data?.data) {
+        const {product, order, tot_cnt} = response?.data?.data?.data;
+
+        if (order?.length > 0) {
+          if (insertPage) {
+            setOrderList([...order]);
+          } else {
+            setOrderList(prev => [...prev, ...order]);
+          }
+          setPage(prev => prev + 1);
+        } else {
+        }
+        setProductList([
+          {
+            label: '전체',
+            value: '',
+          },
+          ...product?.map(v => {
+            return {label: v.pt_title, value: v.pt_idx};
+          }),
+        ]);
+        setTotalCount(tot_cnt);
+      } else {
+        setIsLast(true);
+        if (insertPage) {
+          setOrderList([]);
+        }
+      }
+    }
+    setIsLoading(false);
   };
 
-  const onPressProduct = () => {
-    navigation.navigate('Detail');
+  const onPressProduct = item => {
+    navigation.navigate('Detail', {item: item});
   };
   const onChange = (event, selectedDate) => {
     if (datePicker.start) {
       setDatePicker(prev => ({...prev, start: false}));
-      setSelectDate(prev => ({...prev, start: dateFormat(selectedDate)}));
+      if (!selectedDate) {
+        setSelectDate(prev => ({...prev, start: ''}));
+      } else {
+        setSelectDate(prev => ({...prev, start: dateFormat(selectedDate)}));
+      }
     }
     if (datePicker.end) {
       setDatePicker(prev => ({...prev, end: false}));
-      setSelectDate(prev => ({...prev, end: dateFormat(selectedDate)}));
+
+      if (!selectedDate) {
+        setSelectDate(prev => ({...prev, end: ''}));
+      } else {
+        setSelectDate(prev => ({...prev, end: dateFormat(selectedDate)}));
+      }
     }
   };
 
-  console.log(selectDate);
+  const RegJoin = () => {
+    const startDate = new Date(selectDate.start);
+    const endDate = new Date(selectDate.end);
+
+    if (startDate > endDate) {
+      return true;
+    }
+    return false;
+  };
+
+  if (isLoading) {
+    return (
+      <Box mg="200px 0px" width="412px" alignItems="center">
+        <Loading />
+      </Box>
+    );
+  }
 
   return (
     <Box pd="0px 16px">
@@ -80,55 +170,42 @@ export default function RepairHistorySelectHistory() {
                 <DarkBoldText mg="0px 0px 0px 5px">누적장비</DarkBoldText>
               </RowBox>
               <RowBox backgroundColor="#0000" alignItems="center">
-                <IndigoText fontWeight={Theme.fontWeight.bold}>12,345</IndigoText>
+                <IndigoText fontWeight={Theme.fontWeight.bold}>
+                  {numberFormat(totalCount)}
+                </IndigoText>
                 <IndigoText fontWeight={Theme.fontWeight.bold}>건</IndigoText>
               </RowBox>
             </BetweenBox>
-            <RowBox alignItems="center">
-              <TouchableOpacity onPress={() => setDatePicker({start: true, end: false})}>
-                <BorderButton
-                  width="135px"
-                  height="36px"
-                  borderColor={Theme.borderColor.gray}
-                  color={Theme.color.black}>
-                  {selectDate?.start}
-                </BorderButton>
-              </TouchableOpacity>
-              <DarkText mg="0px 6.5px">~</DarkText>
-              <TouchableOpacity onPress={() => setDatePicker({start: false, end: true})}>
-                <BorderButton
-                  width="135px"
-                  height="36px"
-                  borderColor={Theme.borderColor.gray}
-                  color={Theme.color.black}>
-                  {selectDate.end}
-                </BorderButton>
-              </TouchableOpacity>
-              <Box mg="0px 0px 0px 10px">
-                <BorderButton width="78px" height="36px">
-                  조회
-                </BorderButton>
-              </Box>
-            </RowBox>
+            <DatePickerComponent
+              onPressStart={() => setDatePicker({start: true, end: false})}
+              onPressEnd={() => setDatePicker({start: false, end: true})}
+              selectDate={selectDate}
+              onPressSearch={() => getOrderListHandle(1)}
+            />
             <DefaultDropdown
-              data={productDummy}
-              value="정비 상품 검색"
-              setValue={item => console.log(item)}
-              width={121}
-              pdLeft={0}
+              data={productList}
+              value={selectItem}
+              setValue={item => setSelectItem(item)}
+              width={100}
+              pdLeft={20}
               fontType="Medium"
               isBorder={false}
             />
+
             <RowBox>
               <DefaultInput
                 backgroundColor={Theme.color.white}
                 borderColor={Theme.borderColor.gray}
                 placeHolder="정비 상품을 검색하세요"
                 width="380px"
+                changeFn={text => setSearchText(text)}
+                value={searchText}
               />
-              <PositionBox backgroundColor="#0000" right="16px" bottom="11px">
-                <DefaultImage source={SearchIcon} width="21px" height="21px" />
-              </PositionBox>
+              <SearchIcon
+                onPress={() => {
+                  getOrderListHandle(1);
+                }}
+              />
             </RowBox>
             {(datePicker?.start || datePicker?.end) && (
               <DateTimePicker
@@ -141,22 +218,31 @@ export default function RepairHistorySelectHistory() {
             )}
           </>
         }
+        data={orderList}
+        renderItem={({item, index}) => {
+          return (
+            <ReceiptProduct
+              productName={item.ot_title}
+              name={item.ot_name}
+              date={item.ot_pt_date + ' ' + item.ot_pt_time}
+              price={item.ot_price}
+              onPress={() => onPressProduct(item)}
+            />
+          );
+        }}
+        onEndReached={() => {
+          if (isScroll) {
+            getOrderListHandle();
+            setIsScroll(false);
+          }
+        }}
+        onMomentumScrollBegin={() => {
+          setIsScroll(true);
+        }}
       />
-      <ReceiptProduct onPress={onPressProduct} />
-      <ReceiptProduct onPress={onPressProduct} />
-      <ReceiptProduct onPress={onPressProduct} />
-      <ReceiptProduct onPress={onPressProduct} />
-      <ReceiptProduct onPress={onPressProduct} />
-      <ReceiptProduct onPress={onPressProduct} />
     </Box>
   );
 }
-
-const productDummy = [
-  {label: '정비 상품 검색', value: '정비 상품 검색'},
-  {label: '정비 - 오버홀', value: '정비 - 오버홀'},
-  {label: '정비 - 기본점검', value: '정비 - 기본점검'},
-];
 
 const ReceiptProduct = ({
   productName = '정비 - 오버홀',
