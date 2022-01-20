@@ -28,6 +28,7 @@ import moment from 'moment';
 import {useLayoutEffect} from 'react';
 import {AlertButtons} from '@/Util/Alert';
 import {showToastMessage} from '@/Util/Toast';
+import Loading from '@/Component/Layout/Loading';
 
 // 2022-01-17 17:17:25 현태 수정 필요
 
@@ -40,13 +41,17 @@ export default function RepairHistorySelectReview() {
 
   const {size, login} = useSelector(state => state);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useLayoutEffect(() => {
     getReviewHandle();
   }, []);
 
   const getReviewHandle = async isSearch => {
+    if (page === 1 || isSearch) {
+      setIsLoading(true);
+    }
+
     const response = await getReview({
       _mt_idx: 10, // 수정 필요
       keyword: keyword,
@@ -70,6 +75,7 @@ export default function RepairHistorySelectReview() {
     }
 
     setKeyword('');
+    setIsLoading(false);
   };
 
   const commentSubmit = async (srt_idx, srt_res_content, srt_adate) => {
@@ -113,9 +119,12 @@ export default function RepairHistorySelectReview() {
   };
 
   if (isLoading) {
-    return null;
+    return (
+      <Box mg="200px 0px" width="412px" alignItems="center">
+        <Loading />
+      </Box>
+    );
   }
-
   return (
     <Box pd="0px 16px">
       <FlatList
@@ -171,6 +180,11 @@ export default function RepairHistorySelectReview() {
           }
         }}
         onMomentumScrollBegin={() => setIsScroll(true)}
+        ListEmptyComponent={
+          <Box alignItems="center" mg="20px 0px">
+            <DarkBoldText>검색결과가 없습니다.</DarkBoldText>
+          </Box>
+        }
       />
       {/* <Review isDetail /> */}
     </Box>

@@ -7,29 +7,36 @@ import {useState} from 'react';
 import SwitchOnIcon from '@assets/image/toggle_on.png';
 import SwitchOffIcon from '@assets/image/toggle_off.png';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Theme from '@/assets/global/Theme';
 import {useEffect} from 'react';
 import {setPushNotice} from '@/API/More/More';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
+import {setUserInfo} from '@/Store/loginState';
 
 export default function AlarmSetting() {
   const {size, login} = useSelector(state => state);
-  const [pushAlarm, setPushAlarm] = useState(false);
-  const [messageAlarm, setMessageAlarm] = useState(false);
+  // const [pushAlarm, setPushAlarm] = useState(false);
+  // const [messageAlarm, setMessageAlarm] = useState(false);
+  const [userInformation, setUserInformation] = useState(login);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    setPushAlarm(login?.mt_pushing === 'Y');
-    setMessageAlarm(login?.mt_agree === 'Y');
-  }, []);
+  // useEffect(() => {
+  //   setUserInformation(login?.mt_pushing === 'Y');
+  //   setUserInformation(login?.mt_agree === 'Y');
+  // }, []);
 
   useUpdateEffect(() => {
     setPushNotice({
       _mt_idx: login?.idx,
-      mt_pushing: pushAlarm ? 'Y' : 'N',
-      mt_agree: messageAlarm ? 'Y' : 'N',
+      mt_pushing: userInformation.mt_pushing === 'Y' ? 'Y' : 'N',
+      mt_agree: userInformation.mt_agree === 'Y' ? 'Y' : 'N',
     }).then(res => console.log(res));
-  }, [pushAlarm, messageAlarm]);
+
+    dispatch(setUserInfo(userInformation));
+  }, [userInformation]);
+
+  console.log('userInformation ::::', userInformation);
 
   return (
     <>
@@ -40,10 +47,13 @@ export default function AlarmSetting() {
             <DarkMediumText>푸쉬 알림</DarkMediumText>
             <TouchableOpacity
               onPress={() => {
-                setPushAlarm(prev => !prev);
+                setUserInformation(prev => ({
+                  ...prev,
+                  mt_pushing: userInformation.mt_pushing === 'Y' ? 'N' : 'Y',
+                }));
               }}>
               <DefaultImage
-                source={pushAlarm ? SwitchOnIcon : SwitchOffIcon}
+                source={userInformation.mt_pushing === 'Y' ? SwitchOnIcon : SwitchOffIcon}
                 width="61px"
                 height="27px"
               />
@@ -51,9 +61,15 @@ export default function AlarmSetting() {
           </BetweenBox>
           <BetweenBox pd="0px 16px 15px" width={size.designWidth} alignItems="center">
             <DarkMediumText>문자 알림</DarkMediumText>
-            <TouchableOpacity onPress={() => setMessageAlarm(prev => !prev)}>
+            <TouchableOpacity
+              onPress={() => {
+                setUserInformation(prev => ({
+                  ...prev,
+                  mt_agree: userInformation.mt_agree === 'Y' ? 'N' : 'Y',
+                }));
+              }}>
               <DefaultImage
-                source={messageAlarm ? SwitchOnIcon : SwitchOffIcon}
+                source={userInformation.mt_agree === 'Y' ? SwitchOnIcon : SwitchOffIcon}
                 width="61px"
                 height="27px"
               />
