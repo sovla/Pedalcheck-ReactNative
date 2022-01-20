@@ -19,6 +19,8 @@ import {addBike, bikeEdit, bikeSerialCheck} from '@/API/Bike/Bike';
 import {useState} from 'react';
 import {Alert} from 'react-native';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
+import {AlertButton} from '@/Util/Alert';
+import {imageAddress} from '@assets/global/config';
 
 export default function BikeRegisterContainer({isUpdate, bike, setBike, image, setImage}) {
   const {size, modal, login} = useSelector(state => state);
@@ -70,7 +72,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
       mbt_power: bike.power,
       mbt_type: bike.type,
       mbt_model_detail: bike.modelDetail,
-      mbt_image: image,
+      mbt_image: image?.path ? image : undefined,
     };
     if (isUpdate) {
       const response = await bikeEdit(sendData);
@@ -241,10 +243,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
       result = true;
     }
     if (!image) {
-      setErrorMessage(prev => ({
-        ...prev,
-        bikeImage: '이미지를 등록해주세요.',
-      }));
+      AlertButton('자전거 이미지를 등록해주세요.');
       result = true;
     }
 
@@ -266,7 +265,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
               <BorderButton onPress={onPressAddImage}>등록</BorderButton>
             </Box>
             <DefaultImage
-              source={image !== undefined ? {uri: image.path} : DummyImage}
+              source={image !== undefined ? {uri: image?.path ?? imageAddress + image} : DummyImage}
               width="90px"
               height="90px"
             />

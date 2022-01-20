@@ -65,7 +65,7 @@ export const ImageAPI = async (data, field, url, isIndex = false) => {
   // 이미지 API 2022-01-05 16:40:31 Junhan
   //
   try {
-    console.log('formData :::', data);
+    console.log('data :::', data);
     let cloneData = Object.assign({}, data);
     delete cloneData[field];
 
@@ -75,45 +75,44 @@ export const ImageAPI = async (data, field, url, isIndex = false) => {
     let index = 1;
 
     let imageResult = [];
-    if (Array.isArray(data[field])) {
-      for (const imageItem of data[field]) {
+    if (data[field]) {
+      if (Array.isArray(data[field])) {
+        for (const imageItem of data[field]) {
+          !isIndex
+            ? imageResult.push({
+                [field]: {
+                  key: 'poto' + new Date().getTime(),
+                  uri:
+                    Platform.OS === 'android'
+                      ? imageItem.path
+                      : imageItem.path.replace('file://', ''),
+                  type: imageItem.mime,
+                  name: 'auto.jpg',
+                },
+              })
+            : Object.assign(imageResultObject, {
+                [`${field}${index}`]: {
+                  key: 'poto' + new Date().getTime(),
+                  uri:
+                    Platform.OS === 'android'
+                      ? imageItem.path
+                      : imageItem.path.replace('file://', ''),
+                  type: imageItem.mime,
+                  name: 'auto.jpg',
+                },
+              });
 
-        !isIndex
-          ? imageResult.push({
-              [field]: {
-                key: 'poto' + new Date().getTime(),
-                uri:
-                  Platform.OS === 'android'
-                    ? imageItem.path
-                    : imageItem.path.replace('file://', ''),
-                type: imageItem.mime,
-                name: 'auto.jpg',
-              },
-            })
-          : Object.assign(imageResultObject, {
-              [`${field}${index}`]: {
-                key: 'poto' + new Date().getTime(),
-                uri:
-                  Platform.OS === 'android'
-                    ? imageItem.path
-                    : imageItem.path.replace('file://', ''),
-                type: imageItem.mime,
-                name: 'auto.jpg',
-              },
-            });
-
-        index++;
-      }
-    } else {
-      const imageItem = data[field];
-      imageResult = {
-        [field]: {
+          index++;
+        }
+      } else {
+        const imageItem = data[field];
+        imageResult = {
           key: 'poto' + new Date().getTime(),
           uri: Platform.OS === 'android' ? imageItem?.path : imageItem?.path.replace('file://', ''),
           type: imageItem.mime,
           name: 'auto.jpg',
-        },
-      };
+        };
+      }
     }
     const formData = !isIndex
       ? formFormatter({
@@ -126,7 +125,7 @@ export const ImageAPI = async (data, field, url, isIndex = false) => {
           secretKey: SECRETKEY,
           ...imageResultObject,
         });
-
+    console.log('formData:::', formData);
     const response = await axios.post(`${baseURL}${url}`, formData, {
       'Content-Type': 'application/x-www-form-urlencoded',
     });

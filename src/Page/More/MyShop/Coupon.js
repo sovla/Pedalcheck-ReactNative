@@ -19,7 +19,6 @@ import {dateFormat} from '@/Util/DateFormat';
 import SearchIcon from '@/Page/Customer/SearchIcon';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {useSelector} from 'react-redux';
-import getDateList from '@/Util/getDateList';
 
 export default function Coupon() {
   // 날짜 선택 필요한 상태, 함수 시작
@@ -111,15 +110,15 @@ export default function Coupon() {
       setIsLast(true);
     }
   };
-  const onChange = (event, selectDate) => {
-    if (event.type !== 'set') {
-      setOpen('');
-      return null;
-    }
-    // open 값은 next , prev 로 들어온다
-    setTimes(prev => ({...prev, [open]: dateFormat(selectDate)}));
-    setOpen('');
-  };
+  // const onChange = (event, selectDate) => {
+  //   if (event.type !== 'set') {
+  //     setOpen('');
+  //     return null;
+  //   }
+  //   // open 값은 next , prev 로 들어온다
+  //   setTimes(prev => ({...prev, [open]: dateFormat(selectDate)}));
+  //   setOpen('');
+  // };
   return (
     <>
       <Header title="쿠폰 관리" />
