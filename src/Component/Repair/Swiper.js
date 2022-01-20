@@ -7,7 +7,7 @@ import React, {useState} from 'react';
 import ArrowLeft from '@assets/image/slide_l.png';
 import ArrowRight from '@assets/image/slide_r.png';
 import {useSelector} from 'react-redux';
-import {ScrollView} from 'react-native';
+import {FlatList, ScrollView} from 'react-native';
 import {numberCheck} from '@/Page/Repair/RepairHome';
 import scrollSlideNumber from '@/Util/scrollSlideNumber';
 
@@ -36,19 +36,12 @@ export default function Swiper({imageArray, width, height, borderRadius = 'Botto
       style={{
         maxHeight: getPixel(transformHeight),
       }}>
-      <ScrollView
+      <FlatList
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        style={[
-          borderRadiusStyle,
-          {
-            maxHeight: getPixel(transformHeight),
-            width: getPixel(transformWidth),
-          },
-        ]}
-        onMomentumScrollEnd={onScrollSlide}>
-        {imageArray?.map((item, index) => (
+        data={imageArray}
+        renderItem={({item, index}) => (
           <DefaultImage
             style={[borderRadiusStyle]}
             key={`image_${index}`}
@@ -57,8 +50,16 @@ export default function Swiper({imageArray, width, height, borderRadius = 'Botto
             height={`${transformHeight}px`}
             resizeMode="cover"
           />
-        ))}
-      </ScrollView>
+        )}
+        style={[
+          borderRadiusStyle,
+          {
+            maxHeight: getPixel(transformHeight),
+            width: getPixel(transformWidth),
+          },
+        ]}
+        onMomentumScrollEnd={onScrollSlide}
+      />
       <PositionBox
         left="16px"
         bottom="18px"
