@@ -25,13 +25,12 @@ export default function BikeManagement({navigation}) {
 
   useEffect(() => {
     if (isFocused) {
+      setPage(1);
       getBikeListHandle();
     }
   }, [select, isFocused]);
 
   const getBikeListHandle = async () => {
-    setIsDone(true);
-
     await getBikeList({
       _mt_idx: login?.idx,
       mbt_flag: 'Y',
@@ -45,7 +44,11 @@ export default function BikeManagement({navigation}) {
       page: page,
     }).then(res => {
       if (res?.data?.data?.data?.length) {
-        setStorageBike(prev => [...prev, ...res?.data?.data?.data]);
+        if (page === 1) {
+          setStorageBike([...res?.data?.data?.data]);
+        } else {
+          setStorageBike(prev => [...prev, ...res?.data?.data?.data]);
+        }
         setPage(prev => prev + 1);
       }
     });

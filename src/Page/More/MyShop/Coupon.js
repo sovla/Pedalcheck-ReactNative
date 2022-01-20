@@ -22,6 +22,37 @@ import {useSelector} from 'react-redux';
 import getDateList from '@/Util/getDateList';
 
 export default function Coupon() {
+  // 날짜 선택 필요한 상태, 함수 시작
+  const [date, setDate] = useState(new Date());
+  const [selectDate, setSelectDate] = useState({
+    start: '',
+    end: '',
+  });
+  const [datePicker, setDatePicker] = useState({
+    start: false,
+    end: false,
+  });
+  const onChange = (event, selectedDate) => {
+    if (datePicker.start) {
+      setDatePicker(prev => ({...prev, start: false}));
+      if (!selectedDate) {
+        setSelectDate(prev => ({...prev, start: ''}));
+      } else {
+        setSelectDate(prev => ({...prev, start: dateFormat(selectedDate)}));
+      }
+    }
+    if (datePicker.end) {
+      setDatePicker(prev => ({...prev, end: false}));
+
+      if (!selectedDate) {
+        setSelectDate(prev => ({...prev, end: ''}));
+      } else {
+        setSelectDate(prev => ({...prev, end: dateFormat(selectedDate)}));
+      }
+    }
+  };
+  // 날짜 선택 필요한 상태, 함수 종료 알아서 수정 ㅋ
+
   const navigation = useNavigation();
   const login = useSelector(state => state.login);
   const isFocused = useIsFocused();

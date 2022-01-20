@@ -29,6 +29,7 @@ import {useEffect} from 'react';
 import {useState} from 'react';
 import BikeChangeCycle from '@/Util/BikeChangeCycle';
 import {showToastMessage} from '@/Util/Toast';
+import {AlertButton} from '@/Util/Alert';
 
 // Toast 메시지 추가 필요
 
@@ -88,7 +89,12 @@ export default function BikeDetail({navigation, route}) {
       } else {
         showToastMessage('보관중인 자전거로 변경했습니다.');
       }
+    } else {
+      if (response.data.msg === '사용중인 자전거가 5개 이상입니다.') {
+        AlertButton('사용중인 자전거는 5대까지 등록가능합니다.');
+      }
     }
+    getBikeDetailHandle();
   };
 
   const setBikeDistacneHandle = async bikeStatus => {
@@ -206,14 +212,15 @@ export default function BikeDetail({navigation, route}) {
             <RowBox width={size.minusPadding} justifyContent="space-between">
               <DarkText fontWeight={Theme.fontWeight.medium}>자전거 정보</DarkText>
               <RowBox>
-                <Box mg="0px 5px 0px 0px">
+                {bike?.mbt_flag === 'Y' ? (
                   <TouchableOpacity onPress={() => changeBikeStatusHandle('N')}>
                     <BorderButton width="87px">자전거 보관</BorderButton>
                   </TouchableOpacity>
-                </Box>
-                <TouchableOpacity onPress={() => changeBikeStatusHandle('Y')}>
-                  <BorderButton width="87px">자전거 사용</BorderButton>
-                </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={() => changeBikeStatusHandle('Y')}>
+                    <BorderButton width="87px">자전거 사용</BorderButton>
+                  </TouchableOpacity>
+                )}
               </RowBox>
             </RowBox>
             <BikeInformaitonBody bikeInfoDetail={bikeInfo.detail} />

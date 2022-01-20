@@ -56,7 +56,7 @@ function App() {
     customToast: ({text1, props}) => (
       <View
         style={{
-          width: '100%',
+          width: '92%',
           justifyContent: 'center',
           alignItems: 'center',
           marginTop: Platform.OS === 'ios' ? 44 : 0,
@@ -65,9 +65,10 @@ function App() {
           style={{
             width: '100%',
             alignItems: 'center',
-            backgroundColor: 'rgba(22,22,22,0.75)',
+            backgroundColor: 'rgba(22,22,22,0.60)',
             height: 60,
             justifyContent: 'center',
+            borderRadius: 17,
           }}>
           <DefaultText>{text1}</DefaultText>
         </View>

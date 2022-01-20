@@ -171,4 +171,13 @@ export const getTagList = async args => {
     console.log(error);
   }
 };
+
+export const getStoreInfo = async args => {
+  try {
+    const response = await API.post('mng/store_info.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
 // 태그 불러오기

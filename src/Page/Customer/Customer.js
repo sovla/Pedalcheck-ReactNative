@@ -20,6 +20,7 @@ import {getCustomer} from '@/API/Manager/Customer';
 import {FlatList} from 'react-native-gesture-handler';
 import {getPixel} from '@/Util/pixelChange';
 import SearchIcon from './SearchIcon';
+import useUpdateEffect from '@/Hooks/useUpdateEffect';
 
 export default function Customer({navigation}) {
   const {size} = useSelector(state => state);
@@ -34,6 +35,10 @@ export default function Customer({navigation}) {
 
   useEffect(() => {
     getCustomerHandle();
+  }, []);
+
+  useUpdateEffect(() => {
+    getCustomerHandle(1);
   }, [sortSelectItem]);
 
   const getCustomerHandle = async insertPage => {
@@ -75,6 +80,7 @@ export default function Customer({navigation}) {
   const onPressCustomer = item => {
     navigation.navigate('CustomerDetail', {item});
   };
+
   return (
     <Container>
       <FlatList
@@ -89,18 +95,19 @@ export default function Customer({navigation}) {
               likeShopCustomer={customerCount?.like_cnt}
               customer={customerCount?.normal_cnt}
             />
-            <Box mg="0px 16px 30px">
+            <Box mg="0px 16px 25px">
               <DarkBoldText>고객목록</DarkBoldText>
               <DefaultDropdown
                 data={sortArray}
                 labelField="label"
                 valueField="value"
-                width={85}
                 isBorder={false}
                 setValue={setSortSelectItem}
                 value={sortSelectItem}
-                pdLeft={0}
+                pdLeft={40 - 8 * sortSelectItem.length}
+                width={90}
                 fontType="Medium"
+                alignItems="center"
               />
               <Box>
                 <DefaultInput
@@ -148,6 +155,11 @@ export default function Customer({navigation}) {
             </TouchableOpacity>
           );
         }}
+        ListEmptyComponent={
+          <Box alignItems="center">
+            <DarkBoldText>검색결과가 없습니다.</DarkBoldText>
+          </Box>
+        }
       />
       <FooterButtons isAdmin selectMenu={3} />
     </Container>
