@@ -6,7 +6,7 @@ import GradientHeader from '@/Component/Layout/GradientHeader';
 import WhiteMoreIcon from '@assets/image/menu04_top.png';
 import FooterButtons from '@/Component/Layout/FooterButtons';
 import DummyIcon from '@assets/image/default_4.png';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {BoldText, DarkBoldText, DarkMediumText, DarkText, GrayText} from '@/assets/global/Text';
 import {useState} from 'react';
 import Theme from '@/assets/global/Theme';
@@ -30,9 +30,12 @@ import {BorderButton} from '@/assets/global/Button';
 import {useNavigation} from '@react-navigation/core';
 import {imageAddress} from '@assets/global/config';
 import {loginType} from '@/assets/global/dummy';
+import {useEffect} from 'react';
+import {getStoreInfo} from '@/API/More/More';
+import {setStoreInfo} from '@/Store/storeInfoState';
 
 export default function More() {
-  const {size, login} = useSelector(state => state);
+  const {size, login, storeInfo} = useSelector(state => state);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigation = useNavigation();
   const onPressMenu = item => {
@@ -56,6 +59,7 @@ export default function More() {
         return navigation.navigate('BikeExportList');
     }
   };
+  const dispatch = useDispatch();
 
   const menuItem = isAdmin
     ? [
@@ -102,6 +106,19 @@ export default function More() {
           icon: NoticeIcon,
         },
       ];
+  useEffect(() => {
+    getStoreInfoHandle();
+  }, []);
+  const getStoreInfoHandle = async () => {
+    const response = await getStoreInfo({
+      _mt_idx: 10, // 수정 필요
+    });
+
+    if (response?.data?.result === 'true') {
+      dispatch(setStoreInfo(response?.data?.data?.data));
+    }
+  };
+  console.log(storeInfo);
 
   return (
     <Container>
