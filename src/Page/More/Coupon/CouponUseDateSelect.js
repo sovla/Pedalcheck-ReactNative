@@ -40,21 +40,20 @@ export default function ReservationDate({navigation, route: {params}}) {
     })
       .then(res => res.data?.result === 'true' && res.data.data?.data)
       .then(data => {
-        setDisabledTimeList(data?.order_time);
-        if (Array.isArray(data?.store_time)) {
-          const result = data.store_time
+        setDisabledTimeList(data?.order_time ?? []);
 
+        console.log('here');
+        if (Array.isArray(data?.store_time)) {
+          const {store_time} = data;
+          const result = store_time
             .filter(item => item.flag === 'Y')
-            .reduce((prev, curr) => {
-              if (!prev?.st_time) {
-                return [...prev, curr.st_time];
-              } else {
-                return [curr.st_time];
-              }
+            .map(item => {
+              return item?.ot_time ?? item.st_time;
             });
           setTimeList(result);
         }
-      });
+      })
+      .catch(error => console.log(error));
   }, [selectDate]);
 
   useEffect(() => {
