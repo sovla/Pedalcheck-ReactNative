@@ -110,15 +110,7 @@ export default function Coupon() {
       setIsLast(true);
     }
   };
-  // const onChange = (event, selectDate) => {
-  //   if (event.type !== 'set') {
-  //     setOpen('');
-  //     return null;
-  //   }
-  //   // open 값은 next , prev 로 들어온다
-  //   setTimes(prev => ({...prev, [open]: dateFormat(selectDate)}));
-  //   setOpen('');
-  // };
+
   return (
     <>
       <Header title="쿠폰 관리" />
