@@ -40,6 +40,7 @@ export default function BikeRegister({route}) {
         type: data.mbt_type,
         modelDetail: data.mbt_model_detail,
       });
+      setImage(data?.mbt_image);
       setIsUpdate(true);
     }
   }, []);

@@ -24,11 +24,11 @@ export default function BikeManagement({navigation}) {
   const [isDone, setIsDone] = useState(true);
 
   useEffect(() => {
+    setPage(1);
     if (isFocused) {
-      setPage(1);
       getBikeListHandle();
     }
-  }, [select, isFocused]);
+  }, [isFocused]);
 
   const getBikeListHandle = async () => {
     await getBikeList({
@@ -36,7 +36,11 @@ export default function BikeManagement({navigation}) {
       mbt_flag: 'Y',
       page: 1,
     }).then(res => {
-      setUseBikeList(res?.data?.data?.data);
+      if (res.data?.data?.data?.length) {
+        setUseBikeList(res?.data?.data?.data);
+      } else {
+        setUseBikeList([]);
+      }
     });
     await getBikeList({
       _mt_idx: login?.idx,
@@ -50,6 +54,12 @@ export default function BikeManagement({navigation}) {
           setStorageBike(prev => [...prev, ...res?.data?.data?.data]);
         }
         setPage(prev => prev + 1);
+      } else {
+        if (page === 1) {
+          setStorageBike([]);
+        } else {
+          return null;
+        }
       }
     });
 

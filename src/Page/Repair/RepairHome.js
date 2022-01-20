@@ -239,19 +239,6 @@ const Header = ({
       </Box>
       <Box mg="20px 16px 0px">
         <RecommenderShop totalCount={dummyImageArray?.length} count={selectImage + 1} />
-        <Box width="380px">
-          <ShopComponent
-            mg="0px"
-            pd="14px 10px"
-            shopTitle="인천신스"
-            isPartner
-            isImage
-            likeCount={1995}
-            reviewCount={8491}
-            repairCount={12765}
-            tagList={['픽업', '피팅전문', '중고거래', '광고']}
-          />
-        </Box>
         <Box>
           <Box height="200px">
             <ScrollView
@@ -371,7 +358,7 @@ const RecommenderShop = ({totalCount, count}) => {
   return (
     <BorderBottomBox
       fontSize={Theme.fontSize.fs18}
-      title="추천 매장"
+      title=""
       height="32px"
       leftWidth={25}
       titleColor={Theme.color.indigo}

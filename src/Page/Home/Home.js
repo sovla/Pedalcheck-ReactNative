@@ -32,11 +32,11 @@ export default function Home({navigation}) {
 
           <AppleImage />
         </BetweenBox>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{width: 40, height: 50, backgroundColor: 'red'}}
           onPress={() => {
             navigation.navigate('Payment');
-          }}></TouchableOpacity>
+          }}></TouchableOpacity> */}
       </Box>
 
       <HomeFooter navigation={navigation} isShowLogin={false} />
