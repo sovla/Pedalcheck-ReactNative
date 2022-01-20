@@ -68,17 +68,20 @@ export default function QuestionItem({
             {content}
           </DarkText>
           <RowBox mg="10px 0px" width="100%" justifyContent="flex-end">
-            <TouchableOpacity onPress={onPressUpdate}>
-              <Box mg="0px 5px">
-                <BorderButton
-                  width="44px"
-                  height="25px"
-                  borderColor={Theme.borderColor.gray}
-                  color={Theme.color.black}>
-                  <DarkMediumText fontSize={Theme.fontSize.fs13}>수정</DarkMediumText>
-                </BorderButton>
-              </Box>
-            </TouchableOpacity>
+            {status !== '답변' && (
+              <TouchableOpacity onPress={onPressUpdate}>
+                <Box mg="0px 5px">
+                  <BorderButton
+                    width="44px"
+                    height="25px"
+                    borderColor={Theme.borderColor.gray}
+                    color={Theme.color.black}>
+                    <DarkMediumText fontSize={Theme.fontSize.fs13}>수정</DarkMediumText>
+                  </BorderButton>
+                </Box>
+              </TouchableOpacity>
+            )}
+
             <TouchableOpacity onPress={onPressDelete}>
               <BorderButton
                 width="44px"

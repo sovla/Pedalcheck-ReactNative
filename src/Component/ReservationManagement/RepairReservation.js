@@ -27,6 +27,7 @@ import {changeDropMenu} from '@/Page/More/MyInformation/CouponManagement';
 import {AlertButtons} from '@/Util/Alert';
 import {showToastMessage} from '@/Util/Toast';
 import {useIsFocused} from '@react-navigation/native';
+import {useLayoutEffect} from 'react';
 
 export default function RepairReservation({type}) {
   const navigation = useNavigation();
@@ -37,7 +38,8 @@ export default function RepairReservation({type}) {
   const [isScroll, setIsScroll] = useState(false); // onEndReached 스크롤 여부
   const [dropDown, setDropDown] = useState('전체'); // 드롭다운 메뉴
   const [list, setList] = useState([]); // 예약 현황 정비 예약 리스트
-  const [page, setPage] = useState(1); // 페이지
+  const [page, setPage] = useState(1); // 페이지\
+  const [orderList, setOrderList] = useState([]); // 아래에
 
   const [isLast, setIsLast] = useState(false); // 리스트 마지막 여부
 
@@ -52,7 +54,7 @@ export default function RepairReservation({type}) {
       type,
     });
   };
-
+  useLayoutEffect(() => {}, []);
   useEffect(() => {
     if (isFocused) {
       getReservationListHandle(1);

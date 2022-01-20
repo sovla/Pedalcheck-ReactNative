@@ -35,20 +35,20 @@ export default function CouponUseComplete({route: {params}}) {
   const [reservationInfo, setReservationInfo] = useState(dummy);
   console.log(reservationInfo);
   useLayoutEffect(() => {
-    // couponReservation({
-    //   _mt_idx: login.idx,
-    //   cst_idx: coupon.cst_idx,
-    //   mbt_idx: selectBike?.mbt_idx,
-    //   ot_bike_nick: selectBike?.mbt_nick,
-    //   mst_idx: shopInfo.mst_idx,
-    //   ot_pt_date: selectDate.date,
-    //   ot_pt_time: selectDate.time,
-    // })
-    //   .then(res => res?.data?.result === 'true' && res.data.data.data)
-    //   .then(data => {
-    //     setReservationInfo(data);
-    //     setIsDone(true);
-    //   });
+    couponReservation({
+      _mt_idx: login.idx,
+      cst_idx: coupon.cst_idx,
+      mbt_idx: selectBike?.mbt_idx,
+      ot_bike_nick: selectBike?.mbt_nick,
+      mst_idx: shopInfo.mst_idx,
+      ot_pt_date: selectDate.date,
+      ot_pt_time: selectDate.time,
+    })
+      .then(res => res?.data?.result === 'true' && res.data.data.data)
+      .then(data => {
+        setReservationInfo(data);
+        setIsDone(true);
+      });
   }, []);
   return (
     <>

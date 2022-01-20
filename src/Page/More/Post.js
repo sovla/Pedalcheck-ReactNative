@@ -1,19 +1,10 @@
-import {BetweenBox, Box, Container, ScrollBox} from '@/assets/global/Container';
-import {DarkBoldText, DarkText, GrayText} from '@/assets/global/Text';
-import Theme from '@/assets/global/Theme';
+import {Container} from '@/assets/global/Container';
 import Header from '@/Component/Layout/Header';
 import MenuNav from '@/Component/Layout/MenuNav';
 import React from 'react';
 import {useState} from 'react';
 
-import ArrowUpIcon from '@assets/image/list_arr_top.png';
-import DummyIcon from '@assets/image/default_5.png';
-import {useSelector} from 'react-redux';
-import DefaultImage from '@/assets/global/Image';
-import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
-import {TouchableOpacity} from 'react-native';
 import PostItem from '@/Component/More/PostItem';
-import Marking from 'react-native-calendars/src/calendar/day/marking';
 import {useEffect} from 'react';
 import {getBoardList} from '@/API/More/More';
 import {FlatList} from 'react-native-gesture-handler';
@@ -21,8 +12,6 @@ import {useFocusEffect} from '@react-navigation/native';
 
 export default function Post({route: {params}}) {
   const menuItem = ['공지', '이벤트'];
-
-  const {size} = useSelector(state => state);
 
   const [select, setSelect] = useState('공지');
   const [selectPost, setSelectPost] = useState([]);
@@ -118,7 +107,6 @@ export default function Post({route: {params}}) {
               />
             );
           }}
-          keyExtractor={({item, index}) => index}
           onEndReached={() => {
             if (isScroll) {
               getBoardListHandle();

@@ -55,7 +55,7 @@ export default function Customer({navigation}) {
 
     if (response?.data?.result === 'true') {
       const {customer_cnt, customer_list} = response?.data?.data?.data;
-      if (customer_list.length > 0) {
+      if (customer_list?.length > 0) {
         if (insertPage) {
           setCustomerList([...customer_list]);
         } else {
@@ -73,7 +73,7 @@ export default function Customer({navigation}) {
   };
 
   const onPressCustomer = item => {
-    navigation.navigate('CustomerDetail', {item: item});
+    navigation.navigate('CustomerDetail', {item});
   };
   return (
     <Container>
