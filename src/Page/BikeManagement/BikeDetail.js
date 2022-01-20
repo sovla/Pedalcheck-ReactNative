@@ -98,6 +98,7 @@ export default function BikeDetail({navigation, route}) {
   };
 
   const setBikeDistacneHandle = async bikeStatus => {
+    setBikeDistacneText('');
     const response = await setBikeDistacne({
       _mt_idx: login.idx,
       mbt_idx: route?.params?.mbt_idx,
@@ -127,6 +128,7 @@ export default function BikeDetail({navigation, route}) {
         brand: bike?.mbt_brand,
         modelName: bike?.mbt_model,
         bikeName: bike?.mbt_nick,
+        bikeImage: bike?.mbt_image,
         detail: [
           {
             title: '차대번호',

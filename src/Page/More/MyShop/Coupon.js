@@ -19,7 +19,6 @@ import {dateFormat} from '@/Util/DateFormat';
 import SearchIcon from '@/Page/Customer/SearchIcon';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {useSelector} from 'react-redux';
-import getDateList from '@/Util/getDateList';
 
 export default function Coupon() {
   // 날짜 선택 필요한 상태, 함수 시작
