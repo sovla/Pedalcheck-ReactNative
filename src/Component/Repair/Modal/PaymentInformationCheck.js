@@ -2,15 +2,15 @@ import {FooterButton} from '@/assets/global/Button';
 import {Box, RowBox} from '@/assets/global/Container';
 import {DarkBoldText, DarkText} from '@/assets/global/Text';
 import ModalTitleBox from '@/Component/Modal/ModalTitleBox';
-import {reduceItem} from '@/Page/Repair/ReservationProduct';
 import {modalClose} from '@/Store/modalState';
 import numberFormat from '@/Util/numberFormat';
+import {reduceItem} from '@/Util/reduceItem';
 import {useNavigation} from '@react-navigation/core';
 import React from 'react';
 import {View, Text} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
-export default function PaymentInformationCheck() {
+export default function PaymentInformationCheck({onPressComplete}) {
   const {
     size,
     shopInfo: {store_info},
@@ -18,18 +18,12 @@ export default function PaymentInformationCheck() {
     login,
     reservationInfo,
   } = useSelector(state => state);
-
-  const dispatch = useDispatch();
   const {
     selectProduct: {selectProduct},
     selectBike,
     selectDate,
     selectPayment,
   } = reservationInfo;
-  const onPressComplete = () => {
-    modal.navigator.navigate('ReservationPayment');
-    dispatch(modalClose());
-  };
 
   const firstProduct = selectProduct[0]?.item?.pt_title;
   const totalPrice = reduceItem(selectProduct, 'pt_dc_price');
@@ -76,7 +70,8 @@ export default function PaymentInformationCheck() {
           rightContent="취소"
           leftPress={onPressComplete}
           rightPress={() => dispatch(modalClose())}
-          isChange></FooterButton>
+          isChange
+        />
       </Box>
     </>
   );
