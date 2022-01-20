@@ -116,6 +116,9 @@ export default function RepairHistorySelectHistory() {
     navigation.navigate('Detail', {item: item});
   };
   const onChange = (event, selectedDate) => {
+    if (event.type !== 'set') {
+      return null;
+    }
     if (datePicker.start) {
       setDatePicker(prev => ({...prev, start: false}));
       if (!selectedDate) {
@@ -144,6 +147,7 @@ export default function RepairHistorySelectHistory() {
     }
     return false;
   };
+
 
   if (isLoading) {
     return (
@@ -208,13 +212,7 @@ export default function RepairHistorySelectHistory() {
               />
             </RowBox>
             {(datePicker?.start || datePicker?.end) && (
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode="date"
-                display="default"
-                onChange={onChange}
-              />
+              <DateTimePicker value={date} mode="date" display="default" onChange={onChange} />
             )}
           </>
         }

@@ -1,17 +1,14 @@
-import {BetweenBox, Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
+import {Box, PositionBox, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import React from 'react';
-import Default1 from '@assets/image/default_1.png';
 import {DarkBoldText, DarkText, DefaultText, MoneyText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import ShopDummyImage from '@assets/image/shop_default.png';
 import {useSelector} from 'react-redux';
-import {ScrollView, Text} from 'react-native';
 import ReviewComment from './ReviewComment';
-import {LinkButton, LinkWhiteButton} from '@/assets/global/Button';
+import {LinkWhiteButton} from '@/assets/global/Button';
 import {useNavigation} from '@react-navigation/core';
 import Swiper from './Swiper';
-import {DefaultInput} from '@/assets/global/Input';
 import {imageAddress} from '@assets/global/config';
 
 export default function Review({
@@ -26,7 +23,6 @@ export default function Review({
   const navigation = useNavigation();
   const imageArray = item?.srt_img;
 
-  console.log(item);
   return (
     <Box
       pd="20px 0px"

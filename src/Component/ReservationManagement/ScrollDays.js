@@ -40,7 +40,10 @@ export default function ScrollDays({setDaySelect, daySelect, isNotPrev, orderLis
 
   useLayoutEffect(() => {
     if (flatListRef?.current?.props?.data?.length) {
-      if (!isNotPrev) flatListRef.current.scrollToEnd();
+      if (!isNotPrev)
+        flatListRef.current.scrollToEnd({
+          animated: true,
+        });
     }
   }, []);
 

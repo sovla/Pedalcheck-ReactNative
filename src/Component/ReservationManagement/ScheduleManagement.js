@@ -28,7 +28,7 @@ export default function ScheduleManagement() {
   useEffect(() => {
     setSelectTime([]);
     getReservationDayList({
-      _mt_idx: login.idx, // 수정필요 login.idx
+      _mt_idx: login.idx,
       date: getDay(daySelect),
     })
       .then(res => res.data?.result === 'true' && res.data.data.data)

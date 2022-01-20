@@ -78,7 +78,7 @@ export default function Customer({navigation}) {
   };
 
   const onPressCustomer = item => {
-    navigation.navigate('CustomerDetail', {item: item});
+    navigation.navigate('CustomerDetail', {item});
   };
 
   return (

@@ -3,7 +3,7 @@ import React from 'react';
 import {Platform, TextInput, TouchableOpacity} from 'react-native';
 import styled, {css} from 'styled-components/native';
 import {Box, RowBox} from './Container';
-import {DefaultText, ErrorText} from './Text';
+import {DarkText, DefaultText, ErrorText} from './Text';
 import Theme from './Theme';
 import DefaultImage from './Image';
 import QuestionIcon from '@assets/image/btn_detail.png';
@@ -164,6 +164,25 @@ export const DefaultInput = ({
             paddingLeft: 15,
           }}
           value={value}
+          renderItem={item => {
+            const isEqual = item?.value === value;
+            return (
+              <Box
+                key={item}
+                width="auto"
+                height={`${44}px`}
+                alignItems="center"
+                justifyContent="center"
+                style={[
+                  isEqual && {
+                    backgroundColor: '#F6F7F8',
+                  },
+                  {borderRadius: 100},
+                ]}>
+                <DarkText>{item?.label}</DarkText>
+              </Box>
+            );
+          }}
         />
       )}
 

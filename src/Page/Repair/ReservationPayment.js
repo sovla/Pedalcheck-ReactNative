@@ -9,8 +9,8 @@ import RepairReservationHeader from './RepairReservationHeader';
 import BorderCheckIcon from '@assets/image/ic_complete.png';
 import DefaultImage from '@assets/global/Image';
 import {LinkButton, LinkWhiteButton} from '@/assets/global/Button';
-import {reduceItem} from './ReservationProduct';
 import numberFormat from '@/Util/numberFormat';
+import {reduceItem} from '@/Util/reduceItem';
 
 export default function ReservationPayment({navigation}) {
   const {

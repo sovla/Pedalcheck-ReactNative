@@ -21,7 +21,6 @@ export default function FAQ() {
   }, []);
 
   const apiGetFAQ = () => {
-    console.log('FAQ API 부름');
     if (isResult) return;
     getFAQ({page: page}).then(res => {
       if (res?.data?.result === 'true' && res?.data?.data?.data) {
@@ -32,7 +31,6 @@ export default function FAQ() {
       }
     });
   };
-  console.log(selectPost);
   return (
     <>
       <Header title="자주하는 질문" />

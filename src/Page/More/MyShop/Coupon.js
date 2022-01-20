@@ -8,13 +8,18 @@ import PlusIcon from '@assets/image/ic_plus_w.png';
 import Theme from '@/assets/global/Theme';
 import {DefaultInput} from '@/assets/global/Input';
 import {repairHistoryDropdownList} from '@/assets/global/dummy';
-import SearchIcon from '@assets/image/ic_search.png';
 import CouponItem from '@/Component/MyInformation/CouponItem';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {FlatList, TouchableOpacity} from 'react-native';
 import {getCouponList} from '@/API/More/Coupon';
 import {useState} from 'react';
 import {useEffect} from 'react';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import {dateFormat} from '@/Util/DateFormat';
+import SearchIcon from '@/Page/Customer/SearchIcon';
+import useUpdateEffect from '@/Hooks/useUpdateEffect';
+import {useSelector} from 'react-redux';
+import getDateList from '@/Util/getDateList';
 
 export default function Coupon() {
   // 날짜 선택 필요한 상태, 함수 시작
@@ -49,34 +54,86 @@ export default function Coupon() {
   // 날짜 선택 필요한 상태, 함수 종료 알아서 수정 ㅋ
 
   const navigation = useNavigation();
-
+  const login = useSelector(state => state.login);
   const isFocused = useIsFocused();
-
+  const [dropMenu, setDropMenu] = useState('전체');
   const [couponList, setCouponList] = useState([]);
+  const [open, setOpen] = useState('');
+  const [times, setTimes] = useState({
+    prev: '',
+    next: '',
+  });
+  const [isScroll, setIsScroll] = useState(false);
+  const [page, setPage] = useState(1);
+  const [isLast, setIsLast] = useState(false);
+  const [content, setContent] = useState('');
 
   useEffect(() => {
     if (isFocused) {
-      getCouponListHandle();
+      getCouponListHandle(1);
     }
   }, [isFocused]);
 
-  const getCouponListHandle = async () => {
+  useUpdateEffect(() => {
+    getCouponListHandle(1);
+  }, [dropMenu]);
+
+  const getCouponListHandle = async initPage => {
+    if (isLast && !initPage) {
+      return null;
+    }
+    if (initPage) {
+      setPage(1);
+      setIsLast(false);
+    }
+
     const data = await getCouponList({
-      _mt_idx: 10,
-      keyword: '',
-      page: '',
+      // 1미사용 2 사용완료 3 기간만료 4사용불가
+      //  수정 필요 드롭메뉴 값 추가, 날짜 값 추가
+      _mt_idx: 10, //  수정 필요 login.idx
+      keyword: content,
+      cst_status: '',
+      cst_s_wdate: times.prev ?? '',
+      cst_e_wdate: times.next ?? '',
     }).then(res => res.data?.result === 'true' && res.data.data.data);
 
     if (data?.length) {
-      setCouponList(data);
+      if (initPage) {
+        setCouponList(data);
+      } else {
+        setCouponList(prev => [...prev, ...data]);
+      }
+      setPage(prev => prev + 1);
     } else {
+      if (initPage) {
+        setCouponList([]);
+      }
+      setIsLast(true);
     }
+  };
+  const onChange = (event, selectDate) => {
+    if (event.type !== 'set') {
+      setOpen('');
+      return null;
+    }
+    // open 값은 next , prev 로 들어온다
+    setTimes(prev => ({...prev, [open]: dateFormat(selectDate)}));
+    setOpen('');
   };
   return (
     <>
       <Header title="쿠폰 관리" />
 
       <FlatList
+        onEndReached={() => {
+          if (isScroll) {
+            // getCouponListHandle();
+            setIsScroll(false);
+          }
+        }}
+        onMomentumScrollBegin={() => {
+          setIsScroll(true);
+        }}
         ListHeaderComponent={
           <Box pd="0px 16px">
             <ButtonTouch mg="20px 0px" onPress={() => navigation.navigate('CouponIssue')}>
@@ -86,32 +143,48 @@ export default function Coupon() {
               </RowBox>
             </ButtonTouch>
             <RowBox alignItems="center">
-              <BorderButton
-                width="135px"
-                height="36px"
-                borderColor="gray"
-                color={Theme.color.black}>
-                2021-10-14(미완)
-              </BorderButton>
-              <DarkText mg="0px 6.5px">~</DarkText>
-              <BorderButton
-                width="135px"
-                height="36px"
-                borderColor="gray"
-                color={Theme.color.black}>
-                2021-10-14(미완)
-              </BorderButton>
-              <Box mg="0px 0px 0px 10px">
-                <BorderButton width="78px" height="36px">
-                  조회
+              <TouchableOpacity
+                onPress={() => {
+                  setOpen('prev');
+                }}>
+                <BorderButton
+                  width="135px"
+                  height="36px"
+                  borderColor="gray"
+                  color={Theme.color.black}>
+                  {times.prev}
                 </BorderButton>
-              </Box>
+              </TouchableOpacity>
+              <DarkText mg="0px 6.5px">~</DarkText>
+              <TouchableOpacity
+                onPress={() => {
+                  setOpen('next');
+                }}>
+                <BorderButton
+                  width="135px"
+                  height="36px"
+                  borderColor="gray"
+                  color={Theme.color.black}>
+                  {times.next}
+                </BorderButton>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  getCouponListHandle(1);
+                }}>
+                <Box mg="0px 0px 0px 10px">
+                  <BorderButton width="78px" height="36px">
+                    조회
+                  </BorderButton>
+                </Box>
+              </TouchableOpacity>
             </RowBox>
             <Box mg="10px 0px 0px">
               <DefaultInput
                 isDropdown
                 dropdownItem={repairHistoryDropdownList}
-                changeFn={value => console.log(value)}
+                changeFn={value => setDropMenu(value)}
+                value={dropMenu}
               />
               <Box>
                 <DefaultInput
@@ -121,30 +194,26 @@ export default function Coupon() {
                   borderColor={Theme.borderColor.gray}
                   mg="10px 0px 0px"
                   height="43px"
+                  value={content}
+                  changeFn={setContent}
                 />
-                <PositionBox right="15px" bottom="11px">
-                  <DefaultImage source={SearchIcon} width="21px" height="21px" />
-                </PositionBox>
+                <SearchIcon
+                  top="8px"
+                  onPress={() => {
+                    getCouponListHandle(1);
+                  }}
+                />
               </Box>
             </Box>
           </Box>
         }
         data={couponList}
         renderItem={({item, index}) => {
-          //           cst_edate: "2022-02-01 23:59:59"
-          // cst_idx: "6"
-          // cst_sdate: "2022-01-07 17:46:26"
-          // cst_status: "미사용"
-          // cst_wdate: "2022-01-07 17:46:26"
-          // ct_code: "CP2201"
-          // ct_idx: "1"
-          // mt_name: "홍지훈"
           return (
             // 수정필요 cst_sdate ? cst_wdate ? 확인 필요
-            // 쿠폰이름 필요
             <TouchableOpacity onPress={() => navigation.navigate('CouponDetail', item)}>
               <CouponItem
-                couponName="쿠폰이름API에없음"
+                couponName={item?.ct_title}
                 badgeContent={item?.cst_status}
                 startOfAvailability={item?.cst_sdate.substring(0, 10)}
                 endOfAvailability={item?.cst_edate.substring(0, 10)}
@@ -156,6 +225,9 @@ export default function Coupon() {
           );
         }}
       />
+      {open?.length > 0 && (
+        <DateTimePicker value={new Date()} mode="date" display="default" onChange={onChange} />
+      )}
     </>
   );
 }

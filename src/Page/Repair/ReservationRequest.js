@@ -25,24 +25,27 @@ export default function ShopReservationRequest({navigation, route: {params}}) {
   const [selectPayment, setSelectPayment] = useState('');
   const [thirdParty, setThirdParty] = useState(false);
 
-  const onPressNext = () => {
+  const onPressNext = async () => {
     if (!selectPayment) {
       Alert.alert('', '결제 방법을 선택해주세요.');
       return;
     }
     if (thirdParty) {
-      dispatch(
+      await dispatch(
         setReservationPayment({
           repairRequest,
           selectPayment,
         }),
       );
-      dispatch(
+      await dispatch(
         modalOpenAndProp({
           modalComponent: 'paymentInformationCheck',
+          onPressComplete: () => {
+            navigation.navigate('ReservationPayment');
+            dispatch(modalClose());
+          },
         }),
       );
-      dispatch(setNavigator(navigation));
     } else {
       Alert.alert(
         '',

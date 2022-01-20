@@ -18,6 +18,7 @@ import {MediumText} from '@/assets/global/Text';
 import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {RequireLoginAlert} from '@/Util/Alert';
+import BackIcon from '@assets/image/ic_detail_back.png';
 
 // 2022-01-04 10:07:06
 // Junhan
@@ -25,7 +26,7 @@ import {RequireLoginAlert} from '@/Util/Alert';
 
 const ShopHeader = ({size}) => {
   const navigation = useNavigation();
-  const dummyImageArray = [ShopDummyImage, ShopDummyImage, ShopDummyImage];
+  const dummyImageArray = store_info?.mst_img ?? [ShopDummyImage];
   const {
     shopInfo: {store_info},
     login,
@@ -41,6 +42,14 @@ const ShopHeader = ({size}) => {
   return (
     <>
       <Box flex={1} zIndex={100}>
+        <PositionBox zIndex={100} top="5px" left="5px" backgroundColor="#0000">
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            <DefaultImage source={BackIcon} width="45px" height="45px" />
+          </TouchableOpacity>
+        </PositionBox>
         <Swiper imageArray={dummyImageArray} width={size.designWidth} height={250} />
         {isPartner ? (
           <>

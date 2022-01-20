@@ -46,9 +46,9 @@ export default function CouponManagement({navigation, route: {params}}) {
   useEffect(() => {
     if (isFocused) {
       if (selectMenu === '쿠폰함') {
-        getCouponListHandle();
+        getCouponListHandle(1);
       } else {
-        getCouponUsageStateListHandle();
+        getCouponUsageStateListHandle(1);
       }
     }
   }, [isFocused, selectSubMenu, selectMenu]);
@@ -154,7 +154,6 @@ export default function CouponManagement({navigation, route: {params}}) {
               setIsScroll(false);
             }
           }}
-          onEndReachedThreshold={0.5}
           onMomentumScrollBegin={() => {
             setIsScroll(true);
           }}
