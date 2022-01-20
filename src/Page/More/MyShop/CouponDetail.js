@@ -12,6 +12,11 @@ import {useNavigation} from '@react-navigation/native';
 import {useEffect} from 'react';
 import {getCouponDetail} from '@/API/More/Coupon';
 import {useState} from 'react';
+import Loading from '@Component/Layout/Loading';
+import {imageAddress} from '@assets/global/config';
+import {useLayoutEffect} from 'react';
+import {useSelector} from 'react-redux';
+
 // 처리완료시
 // 완료시간 데이터
 // 정비 자전거 정보 브랜드 모델명 추가
@@ -26,14 +31,22 @@ export default function CouponDetail({route: {params}}) {
     mt_email: '',
     mt_hp: '',
   });
+  const [isDone, setIsDone] = useState(true);
   const navigation = useNavigation();
-  useEffect(() => {
+
+  const login = useSelector(state => state.login);
+  useLayoutEffect(() => {
+    setIsDone(true);
     getCouponDetail({
-      _mt_idx: 10, //   수정필요
-      cst_idx: 1, //  수정필요
-    }).then(res => res.data?.result === 'true' && setCouponInfo(res.data.data.data));
+      _mt_idx: login.idx, //   수정필요
+      cst_idx: params?.cst_idx,
+    })
+      .then(res => res.data?.result === 'true' && setCouponInfo(res.data.data.data))
+      .finally(() => setIsDone(false));
   }, []);
-  console.log(couponInfo);
+  if (isDone) {
+    return <Loading />;
+  }
   return (
     <>
       <Header title="상세보기" />
@@ -67,7 +80,11 @@ export default function CouponDetail({route: {params}}) {
           <Box style={borderBottomWhiteGray} width="380px">
             <DarkBoldText mg="20px 0px 0px">정비 자전거 정보</DarkBoldText>
             <RowBox alignItems="center" mg="10px 0px 20px">
-              <DefaultImage source={DummyIcon} width="74px" height="74px" />
+              <DefaultImage
+                source={{uri: imageAddress + couponInfo?.mbt_image}}
+                width="74px"
+                height="74px"
+              />
               <Box mg="0px 0px 0px 20px">
                 <RowBox>
                   <DarkMediumText fontSize={Theme.fontSize.fs15}>APPALANCHIA</DarkMediumText>

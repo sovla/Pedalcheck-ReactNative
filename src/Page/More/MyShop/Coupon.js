@@ -8,7 +8,6 @@ import PlusIcon from '@assets/image/ic_plus_w.png';
 import Theme from '@/assets/global/Theme';
 import {DefaultInput} from '@/assets/global/Input';
 import {repairHistoryDropdownList} from '@/assets/global/dummy';
-import SearchIcon from '@assets/image/ic_search.png';
 import CouponItem from '@/Component/MyInformation/CouponItem';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {FlatList, TouchableOpacity} from 'react-native';
@@ -17,51 +16,85 @@ import {useState} from 'react';
 import {useEffect} from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {dateFormat} from '@/Util/DateFormat';
+import SearchIcon from '@/Page/Customer/SearchIcon';
+import useUpdateEffect from '@/Hooks/useUpdateEffect';
 
 export default function Coupon() {
   const navigation = useNavigation();
 
   const isFocused = useIsFocused();
-
+  const [dropMenu, setDropMenu] = useState('전체');
   const [couponList, setCouponList] = useState([]);
-  const [isOpen, setIsOpen] = useState(0);
+  const [open, setOpen] = useState('');
   const [times, setTimes] = useState({
     prev: '',
     next: '',
   });
+  const [isScroll, setIsScroll] = useState(false);
+  const [page, setPage] = useState(1);
+  const [isLast, setIsLast] = useState(false);
+  const [content, setContent] = useState('');
 
   useEffect(() => {
     if (isFocused) {
-      getCouponListHandle();
+      getCouponListHandle(1);
     }
   }, [isFocused]);
 
-  const getCouponListHandle = async () => {
+  useUpdateEffect(() => {
+    getCouponListHandle(1);
+  }, [dropMenu]);
+
+  const getCouponListHandle = async initPage => {
+    if (isLast && !initPage) {
+      return null;
+    }
+    if (initPage) {
+      setPage(1);
+      setIsLast(false);
+    }
+
     const data = await getCouponList({
+      //  수정 필요 드롭메뉴 값 추가, 날짜 값 추가
       _mt_idx: 10,
-      keyword: '',
-      page: '',
+      keyword: content,
+      page: initPage ?? page,
     }).then(res => res.data?.result === 'true' && res.data.data.data);
 
     if (data?.length) {
-      setCouponList(data);
+      if (initPage) {
+        setCouponList(data);
+      } else {
+        setCouponList(prev => [...prev, ...data]);
+      }
+      setPage(prev => prev + 1);
     } else {
+      setIsLast(true);
     }
   };
   const onChange = (event, selectDate) => {
-    console.log(selectDate);
-    if (isOpen % 2 === 1) {
-      setTimes(prev => ({...prev, ['prev']: dateFormat(selectDate)}));
-    } else {
-      setTimes(prev => ({...prev, ['next']: dateFormat(selectDate)}));
+    if (event.type !== 'set') {
+      setOpen('');
+      return null;
     }
-    setIsOpen(0);
+    // open 값은 next , prev 로 들어온다
+    setTimes(prev => ({...prev, [open]: dateFormat(selectDate)}));
+    setOpen('');
   };
   return (
     <>
       <Header title="쿠폰 관리" />
 
       <FlatList
+        onEndReached={() => {
+          if (isScroll) {
+            getCouponListHandle();
+            setIsScroll(false);
+          }
+        }}
+        onMomentumScrollBegin={() => {
+          setIsScroll(true);
+        }}
         ListHeaderComponent={
           <Box pd="0px 16px">
             <ButtonTouch mg="20px 0px" onPress={() => navigation.navigate('CouponIssue')}>
@@ -73,7 +106,7 @@ export default function Coupon() {
             <RowBox alignItems="center">
               <TouchableOpacity
                 onPress={() => {
-                  setIsOpen(1);
+                  setOpen('prev');
                 }}>
                 <BorderButton
                   width="135px"
@@ -86,7 +119,7 @@ export default function Coupon() {
               <DarkText mg="0px 6.5px">~</DarkText>
               <TouchableOpacity
                 onPress={() => {
-                  setIsOpen(2);
+                  setOpen('next');
                 }}>
                 <BorderButton
                   width="135px"
@@ -106,7 +139,8 @@ export default function Coupon() {
               <DefaultInput
                 isDropdown
                 dropdownItem={repairHistoryDropdownList}
-                changeFn={value => console.log(value)}
+                changeFn={value => setDropMenu(value)}
+                value={dropMenu}
               />
               <Box>
                 <DefaultInput
@@ -116,10 +150,15 @@ export default function Coupon() {
                   borderColor={Theme.borderColor.gray}
                   mg="10px 0px 0px"
                   height="43px"
+                  value={content}
+                  changeFn={setContent}
                 />
-                <PositionBox right="15px" bottom="11px">
-                  <DefaultImage source={SearchIcon} width="21px" height="21px" />
-                </PositionBox>
+                <SearchIcon
+                  top="8px"
+                  onPress={() => {
+                    getCouponListHandle(1);
+                  }}
+                />
               </Box>
             </Box>
           </Box>
@@ -151,7 +190,7 @@ export default function Coupon() {
           );
         }}
       />
-      {isOpen > 0 && (
+      {open?.length > 0 && (
         <DateTimePicker value={new Date()} mode="date" display="default" onChange={onChange} />
       )}
     </>
