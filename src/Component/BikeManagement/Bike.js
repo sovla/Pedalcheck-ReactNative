@@ -7,11 +7,7 @@ import {useSelector} from 'react-redux';
 export default function Bike({item, isUse = true}) {
   const {size} = useSelector(state => state);
   return (
-    <Box
-      width={size.minusPadding}
-      height="100px"
-      justifyContent="center"
-      style={{borderBottomWidth: 1, borderBottomColor: Theme.borderColor.gray}}>
+    <Box width={size.minusPadding} height="100px" justifyContent="center">
       <RowBox>
         {isUse ? (
           <>

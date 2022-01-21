@@ -206,6 +206,9 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
       value: 'drivetrain',
       isDropdown: false,
     },
+  ];
+
+  const selectionOptionElectro = [
     {
       title: '모터 제조사',
       placeHolder: '모터 제조사를 선택해주세요',
@@ -328,6 +331,27 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
               />
             );
           })}
+          {bike.type === '4' &&
+            selectionOptionElectro.map(item => {
+              return (
+                <DefaultInput
+                  key={item.title}
+                  title={item.title}
+                  placeHolder={item.placeHolder}
+                  width={size.minusPadding}
+                  fontSize={Theme.fontSize.fs16}
+                  mg="0px 0px 20px"
+                  pd="0px 0px 5px"
+                  onBlur={item?.onBlur}
+                  value={bike[item.value]}
+                  changeFn={text => setChangeBike(item.value, text)}
+                  isQuestion={item.question !== undefined}
+                  questionPress={item.question !== undefined && item.question}
+                  isDropdown={item.isDropdown}
+                  dropdownItem={item.isDropdown && item.dropdownItems}
+                />
+              );
+            })}
 
           <LinkButton
             content="등록하기"

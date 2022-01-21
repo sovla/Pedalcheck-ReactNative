@@ -42,43 +42,46 @@ export default function Detail({navigation, route}) {
     customerName: item.mt_name,
     customerEmail: item.mt_email,
     customerTel: item.mt_hp,
-    customerLevel: item.ot,
+    customerLevel: item.mt_status,
   };
   const changeBikeItem = {
+    bikeImage: item.bike_img,
     brand: item.ot_bike_brand,
     modelName: item.ot_bike_model,
     bikeName: item.ot_bike_nick,
     detail: [
       {
         title: '차대번호',
-        value: 'A12345678',
+        value: item.mbt_serial,
       },
       {
         title: '연식',
-        value: '21년식',
+        value: item.mbt_year,
       },
       {
         title: '타입',
-        value: '하이브리드',
+        value: item.mbt_type,
       },
       {
         title: '구동계',
-        value: '클라리스',
+        value: item.mbt_drive,
       },
       {
         title: '사이즈',
-        value: '591cm',
+        value: item.mbt_size,
       },
       {
         title: '컬러',
-        value: '블랙',
+        value: item.mbt_color,
       },
       {
         title: '모델상세',
-        value: '모델 상세 노출 영역',
+        value: item.mbt_model_detial,
       },
     ],
   };
+
+  console.log(item);
 
   return (
     <>
@@ -107,8 +110,8 @@ export default function Detail({navigation, route}) {
           </Box>
           <Box mg="20px 0px 0px">
             <DarkBoldText>정비 자전거 정보</DarkBoldText>
-            <BikeInformationHeader item={bikeInfo} mg="10px 0px" />
-            <BikeInformaitonBody bikeInfoDetail={bikeInfo.detail} />
+            <BikeInformationHeader item={changeBikeItem} mg="10px 0px" />
+            <BikeInformaitonBody bikeInfoDetail={changeBikeItem.detail} />
           </Box>
           <Box mg="10px 0px 0px" style={borderBottomWhiteGray}>
             <DarkBoldText>결제정보</DarkBoldText>
@@ -165,11 +168,13 @@ export default function Detail({navigation, route}) {
           <Box mg="20px 0px 0px">
             <DarkBoldText>고객정보</DarkBoldText>
             <Box width={size.minusPadding}>
-              <RowBox mg="10px 0px 0px">
+              <RowBox mg="10px 0px 0px" alignItems="center">
                 <DarkMediumText width="65px">이름</DarkMediumText>
 
                 <DarkText mg="0px 10px 0px 0px">{changeItem.customerName}</DarkText>
                 <BorderButton
+                  width={changeItem.customerLevel?.length === 4 ? '65px' : '38px'}
+                  fontSize="13px"
                   borderColor={Theme.borderColor.whiteGray}
                   color={Theme.color.black}
                   borderRadius="3px">
