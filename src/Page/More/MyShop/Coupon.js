@@ -19,6 +19,7 @@ import {dateFormat} from '@/Util/DateFormat';
 import SearchIcon from '@/Page/Customer/SearchIcon';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {useSelector} from 'react-redux';
+import DatePickerComponent from '@/Component/BikeManagement/DatePickerComponent';
 
 export default function Coupon() {
   // 날짜 선택 필요한 상태, 함수 시작
@@ -133,43 +134,13 @@ export default function Coupon() {
                 <DefaultText mg="0 0 0 5px">쿠폰 발급</DefaultText>
               </RowBox>
             </ButtonTouch>
-            <RowBox alignItems="center">
-              <TouchableOpacity
-                onPress={() => {
-                  setOpen('prev');
-                }}>
-                <BorderButton
-                  width="135px"
-                  height="36px"
-                  borderColor="gray"
-                  color={Theme.color.black}>
-                  {times.prev}
-                </BorderButton>
-              </TouchableOpacity>
-              <DarkText mg="0px 6.5px">~</DarkText>
-              <TouchableOpacity
-                onPress={() => {
-                  setOpen('next');
-                }}>
-                <BorderButton
-                  width="135px"
-                  height="36px"
-                  borderColor="gray"
-                  color={Theme.color.black}>
-                  {times.next}
-                </BorderButton>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  getCouponListHandle(1);
-                }}>
-                <Box mg="0px 0px 0px 10px">
-                  <BorderButton width="78px" height="36px">
-                    조회
-                  </BorderButton>
-                </Box>
-              </TouchableOpacity>
-            </RowBox>
+
+            <DatePickerComponent
+              onPressEnd={() => setDatePicker(prev => ({...prev, end: true}))}
+              onPressStart={() => setDatePicker(prev => ({...prev, start: true}))}
+              onPressSearch={() => getCouponListHandle(1)}
+              selectDate={selectDate}
+            />
             <Box mg="10px 0px 0px">
               <DefaultInput
                 isDropdown
@@ -216,7 +187,7 @@ export default function Coupon() {
           );
         }}
       />
-      {open?.length > 0 && (
+      {(datePicker.end || datePicker.start) && (
         <DateTimePicker value={new Date()} mode="date" display="default" onChange={onChange} />
       )}
     </>

@@ -18,12 +18,14 @@ import {useEffect} from 'react';
 import {useState} from 'react';
 import {getBikeList} from '@/API/Bike/Bike';
 
-export default function Information() {
+export default function Information({route: {params}}) {
   const {size, login} = useSelector(state => state);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [bikeNumber, setBikeNumber] = useState(0);
   const isFocused = useIsFocused();
+
+  const isAdmin = params?.isAdmin;
 
   useEffect(() => {
     isFocused && getBikeListHandle();
@@ -53,26 +55,35 @@ export default function Information() {
         </Box>
         <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
         <Box pd="10px 16px 0px">
-          <TouchableOpacity onPress={() => navigation.navigate('BikeManagement')}>
-            <RowBox
-              style={borderBottomWhiteGray}
-              alignItems="center"
-              justifyContent="space-between"
-              backgroundColor="#0000"
-              width={size.minusPadding}>
-              <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
-                자전거 관리
-              </DarkMediumText>
-              <DarkText fontSize={Theme.fontSize.fs15}>{bikeNumber ? bikeNumber : 0}/5</DarkText>
-            </RowBox>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('CouponManagement')}>
-            <RowBox backgroundColor="#0000" style={borderBottomWhiteGray} width={size.minusPadding}>
-              <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
-                쿠폰 관리
-              </DarkMediumText>
-            </RowBox>
-          </TouchableOpacity>
+          {!isAdmin && (
+            <>
+              <TouchableOpacity onPress={() => navigation.navigate('BikeManagement')}>
+                <RowBox
+                  style={borderBottomWhiteGray}
+                  alignItems="center"
+                  justifyContent="space-between"
+                  backgroundColor="#0000"
+                  width={size.minusPadding}>
+                  <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
+                    자전거 관리
+                  </DarkMediumText>
+                  <DarkText fontSize={Theme.fontSize.fs15}>
+                    {bikeNumber ? bikeNumber : 0}/5
+                  </DarkText>
+                </RowBox>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('CouponManagement')}>
+                <RowBox
+                  backgroundColor="#0000"
+                  style={borderBottomWhiteGray}
+                  width={size.minusPadding}>
+                  <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
+                    쿠폰 관리
+                  </DarkMediumText>
+                </RowBox>
+              </TouchableOpacity>
+            </>
+          )}
           <TouchableOpacity onPress={() => navigation.navigate('UpdateHome')}>
             <RowBox backgroundColor="#0000" style={borderBottomWhiteGray} width={size.minusPadding}>
               <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>

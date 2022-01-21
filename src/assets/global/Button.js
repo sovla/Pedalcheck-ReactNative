@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import {Platform, TouchableOpacity} from 'react-native';
 import Theme from './Theme';
 import {DefaultText, GrayText} from './Text';
 import {Box, PositionBox, RowBox} from './Container';
@@ -123,11 +123,14 @@ export const BorderButton = styled.Text`
   color: ${p => p.color ?? Theme.color.skyBlue};
   text-align: center;
   text-align-vertical: center;
+  include-font-padding: false;
   padding: ${p => pixelChange(p.pd) ?? pixelChange('3px 7px')};
   border-radius: ${p => p.borderRadius ?? pixelChange('3px')};
   background-color: ${p => p.backgroundColor ?? 'white'};
   justify-content: ${p => p.justifyContent ?? 'flex-start'};
   align-items: ${p => p.alignItems ?? 'flex-start'};
+
+  font-family: ${Platform.OS === 'android' ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF'};
 `;
 
 export const FooterButton = ({

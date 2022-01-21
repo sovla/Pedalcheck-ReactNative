@@ -9,9 +9,8 @@ import DefaultImage from '@assets/global/Image';
 import {DarkText, GrayText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import FooterButtons from '@/Component/Layout/FooterButtons';
-import {FlatList, Linking} from 'react-native';
+import {FlatList, Linking, TouchableOpacity} from 'react-native';
 import {getFeedList} from '@/API/Feed/Feed';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 // 웹뷰 작업 후 추가작업 필요
 
@@ -41,7 +40,7 @@ export default function Feed() {
     });
   };
   return (
-    <Container>
+    <Container backgroundColor="#F2F4F8">
       <FlatList
         ListHeaderComponent={<GradientHeader title="피드" imageSource={MenuIcon} />}
         data={feedList}
@@ -83,15 +82,30 @@ const FeedBox = ({item, size}) => {
   return (
     <Box
       width={size.minusPadding}
-      mg="20px 0px 0px"
+      mg="20px 0px 0px 16px"
       pd="0px 0px 20px"
       alignItems="center"
-      style={{borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}>
+      style={{
+        borderBottomLeftRadius: 15,
+        borderBottomRightRadius: 15,
+      }}>
       {item?.ft_store_img && (
-        <TouchableOpacity onPress={() => Linking.openURL(item?.ft_link)}>
-          <DefaultImage source={image} width={size.minusPadding} height="200px" />
+        <TouchableOpacity
+          style={{borderTopLeftRadius: 15, borderTopRightRadius: 15}}
+          onPress={() => Linking.openURL(item?.ft_link)}>
+          <DefaultImage
+            style={{
+              borderTopLeftRadius: 15,
+              borderTopRightRadius: 15,
+            }}
+            source={image}
+            height="200px"
+          />
         </TouchableOpacity>
       )}
+      <TouchableOpacity onPress={() => Linking.openURL(item?.ft_link)}>
+        <DefaultImage source={image} width={size.minusPadding} height="200px" />
+      </TouchableOpacity>
       <RowBox mg="15px 15px 0px" justifyContent="space-between">
         <Box width="75px" alignItems="center">
           <DefaultImage source={item?.userImage} width="45px" height="45px" borderRadius="100px" />
