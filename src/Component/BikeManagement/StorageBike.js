@@ -1,5 +1,6 @@
 import {Box, RowBox} from '@/assets/global/Container';
 import {DarkBoldText} from '@/assets/global/Text';
+import Theme from '@/assets/global/Theme';
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {useState} from 'react';
@@ -42,9 +43,11 @@ export default function StorageBike({size, item, getBikeListHandle}) {
           };
 
           return (
-            <TouchableOpacity onPress={() => onPressBike(item.mbt_idx)}>
-              <Bike item={changeItem} isUse={false} />
-            </TouchableOpacity>
+            <Box style={{borderBottomWidth: 1, borderBottomColor: Theme.borderColor.gray}}>
+              <TouchableOpacity onPress={() => onPressBike(item.mbt_idx)}>
+                <Bike item={changeItem} isUse={false} />
+              </TouchableOpacity>
+            </Box>
           );
         }}
       />

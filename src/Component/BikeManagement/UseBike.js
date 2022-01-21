@@ -55,9 +55,11 @@ export default function UseBike({items, size}) {
             repairCount: item.mbt_orders,
           };
           return (
-            <TouchableOpacity onPress={() => onPressBike(item.mbt_idx)}>
-              <Bike item={changeItem} />
-            </TouchableOpacity>
+            <Box style={{borderBottomWidth: 1, borderBottomColor: Theme.borderColor.gray}}>
+              <TouchableOpacity onPress={() => onPressBike(item.mbt_idx)}>
+                <Bike item={changeItem} />
+              </TouchableOpacity>
+            </Box>
           );
         }}
       />
