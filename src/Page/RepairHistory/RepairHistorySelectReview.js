@@ -74,7 +74,6 @@ export default function RepairHistorySelectReview() {
       }
     }
 
-    setKeyword('');
     setIsLoading(false);
   };
 
@@ -118,13 +117,6 @@ export default function RepairHistorySelectReview() {
     }
   };
 
-  if (isLoading) {
-    return (
-      <Box mg="200px 0px" width="412px" alignItems="center">
-        <Loading />
-      </Box>
-    );
-  }
   return (
     <Box pd="0px 16px">
       <FlatList
@@ -162,6 +154,7 @@ export default function RepairHistorySelectReview() {
                 </TouchableOpacity>
               </PositionBox>
             </RowBox>
+            {isLoading && <Loading isAbsolute />}
           </>
         }
         data={review}
@@ -182,7 +175,7 @@ export default function RepairHistorySelectReview() {
         onMomentumScrollBegin={() => setIsScroll(true)}
         ListEmptyComponent={
           <Box alignItems="center" mg="20px 0px">
-            <DarkBoldText>검색결과가 없습니다.</DarkBoldText>
+            {!isLoading && <DarkBoldText>검색결과가 없습니다.</DarkBoldText>}
           </Box>
         }
       />
