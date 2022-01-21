@@ -6,7 +6,7 @@ import {DarkBoldText, DarkText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import CheckBox, {DefaultCheckBox} from '@/Component/Home/CheckBox';
 import Header from '@/Component/Layout/Header';
-import {modalOpen, modalOpenAndProp, setNavigator} from '@/Store/modalState';
+import {modalClose, modalOpen, modalOpenAndProp, setNavigator} from '@/Store/modalState';
 import {setReservationPayment} from '@/Store/reservationState';
 import {useIsFocused} from '@react-navigation/native';
 import React from 'react';

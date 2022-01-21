@@ -18,6 +18,8 @@ export default function PaymentInformationCheck({onPressComplete}) {
     login,
     reservationInfo,
   } = useSelector(state => state);
+
+  const dispatch = useDispatch();
   const {
     selectProduct: {selectProduct},
     selectBike,

@@ -48,21 +48,17 @@ export default function ScheduleManagement() {
     let st_time = [];
     let flag = [];
 
-    timeList
-      .map((item, index) => {
-        // {st_time1:시간,flag1:Y||N} 처럼 객체로 데이터 가공
-        const findItem = selectTime.find(findItem => findItem === item.st_time);
-        if (findItem) {
-          st_time.push(item.st_time);
-          flag.push('N');
-        } else {
-          st_time.push(item.st_time);
-          flag.push(item.flag);
-        }
-      })
-      .forEach(item => {
-        Object.assign(result, item); // 배열모든 값을 하나의 객체에 취합
-      });
+    timeList.map((item, index) => {
+      // {st_time1:시간,flag1:Y||N} 처럼 객체로 데이터 가공
+      const findItem = selectTime.find(findItem => findItem === item.st_time);
+      if (findItem) {
+        st_time.push(item.st_time);
+        flag.push('N');
+      } else {
+        st_time.push(item.st_time);
+        flag.push(item.flag);
+      }
+    });
 
     reservationDayListSave({
       _mt_idx: login.idx,

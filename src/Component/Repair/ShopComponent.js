@@ -29,6 +29,8 @@ export default function ShopComponent({
   width = '380px',
 }) {
   const navigation = useNavigation();
+
+  const tagListText = tagList.map(item => `#${item} `);
   const ShopItem = () => {
     return (
       <RowBox
@@ -36,7 +38,7 @@ export default function ShopComponent({
         justifyContent="space-between"
         alignItems="center"
         width={width}
-        height="100px"
+        minHeight="100px"
         mg={mg}
         pd={pd}>
         <Box height="74px">
@@ -75,10 +77,10 @@ export default function ShopComponent({
               {numberFormat(repairCount)}
             </GrayText>
           </RowBox>
-          <RowBox height="33.33%" alignItems="center">
-            {tagList?.map(item => (
+          <RowBox width="286px" alignItems="center" flexWrap="wrap">
+            {tagList.map((item, index) => (
               <DefaultText
-                key={`${shopTitle}_tag_${item}`}
+                key={index}
                 fontSize={Theme.fontSize.fs13}
                 color={Theme.color.skyBlue}
                 mg="0px 5px 0px 0px">

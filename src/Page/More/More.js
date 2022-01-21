@@ -198,7 +198,7 @@ const UserButton = () => {
           borderColor={Theme.borderColor.gray}
           borderRadius="10px"
           pd="0px">
-          <RowBox>
+          <RowBox alignItems="center">
             <DefaultImage source={ListIcon} width="24px" height="24px" />
             <DarkMediumText fontSize={Theme.fontSize.fs15} mg="0px 0px 0px 5px">
               정비이력
@@ -216,7 +216,7 @@ const UserButton = () => {
           borderColor={Theme.borderColor.gray}
           borderRadius="10px"
           pd="0px">
-          <RowBox>
+          <RowBox alignItems="center">
             <DefaultImage source={HeartIcon} width="24px" height="24px" />
             <DarkMediumText fontSize={Theme.fontSize.fs15} mg="0px 0px 0px 5px">
               관심매장
