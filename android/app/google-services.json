@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "574869846797-6o37ht3is6j6l4eaobfrh2mjn3vtgud4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pedalchecka",
+            "certificate_hash": "918172c611d92a7aaddcdf67ee5ba63c7d3b2178"
+          }
+        },
+        {
           "client_id": "574869846797-vpu4mdn9enqepjdc686rrqcdbln4n9n8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -37,6 +45,13 @@
             {
               "client_id": "574869846797-38s3ud4d6svhar28qtqkjsditppgui87.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "574869846797-3i36jqlsa2338ugnrbshid2l2nrk7agm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dmonster.pedalcheck"
+              }
             }
           ]
         }
