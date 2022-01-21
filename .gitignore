@@ -64,3 +64,7 @@ buck-out/
 
 # history
 .history/
+
+# APK , ZIP 파일 제거
+android/app/release/*.apk
+android/app/release/*.zip
