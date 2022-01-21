@@ -68,7 +68,7 @@ export default function RepairHistorySelectQuestion() {
   };
 
   return (
-    <Box pd="0px 16px">
+    <Box pd="0px 16px 20px">
       <FlatList
         data={questionList}
         renderItem={({item, index}) => {

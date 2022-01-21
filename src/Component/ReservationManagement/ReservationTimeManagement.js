@@ -135,7 +135,7 @@ export default function ReservationTimeManagement() {
     setTimeList(prev => prev.filter((item, filterIndex) => filterIndex !== index));
   };
   return (
-    <Container>
+    <Container style={{paddingBottom: 80}}>
       <Box mg="20px 16px">
         <TouchableOpacity onPress={onPressAdd}>
           <Button backgroundColor={Theme.color.white} borderColor={Theme.borderColor.whiteGray}>

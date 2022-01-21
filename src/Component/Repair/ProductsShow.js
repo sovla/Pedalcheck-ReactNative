@@ -1,6 +1,6 @@
 import {BetweenBox, Box, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
-import {DarkBoldText, DefaultText, MoneyText} from '@/assets/global/Text';
+import {DarkBoldText, DarkMediumText, DefaultText, MoneyText} from '@/assets/global/Text';
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import QuestionIcon from '@assets/image/btn_detail.png';
@@ -18,6 +18,11 @@ export default function ProductsShow() {
       {pt_list?.map((item, index) => (
         <Product key={index} item={item}></Product>
       ))}
+      {!pt_list?.length && (
+        <Box alignItems="center" justifyContent="center" width="100%" mg="50px 0px 0px">
+          <DarkMediumText>정비 상품이 존재하지 않습니다.</DarkMediumText>
+        </Box>
+      )}
     </Box>
   );
 }

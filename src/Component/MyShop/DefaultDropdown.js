@@ -36,13 +36,12 @@ export default function DefaultDropdown({
       labelField="label"
       valueField="value"
       selectedTextStyle={{
-        width: getPixel(width),
-        height: height,
         color: Theme.color.black,
         fontSize: fontSize,
         fontFamily: fontFamily,
         letterSpacing: -0.45,
         justifyContent: 'center',
+        alignItems: 'center',
         paddingLeft: getPixel(pdLeft),
       }}
       style={{
