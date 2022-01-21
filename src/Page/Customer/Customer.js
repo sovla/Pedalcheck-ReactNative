@@ -23,7 +23,7 @@ import SearchIcon from './SearchIcon';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 
 export default function Customer({navigation}) {
-  const {size} = useSelector(state => state);
+  const {size, login} = useSelector(state => state);
   const [sortSelectItem, setSortSelectItem] = useState('전체');
   const [customerCount, setCustomerCount] = useState(0);
   const [searchText, setSearchText] = useState('');
@@ -52,7 +52,7 @@ export default function Customer({navigation}) {
     }
 
     const response = await getCustomer({
-      _mt_idx: 10, // 수정 필요
+      _mt_idx: login.idx,
       cate: sortSelectItem === '전체' ? 1 : sortSelectItem === '일반' ? 2 : 3,
       mt_name: searchText,
       page: insertPage ?? page,

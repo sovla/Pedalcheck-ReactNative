@@ -16,7 +16,7 @@ import {useState} from 'react';
 // 2021-12-15 09:16:45
 // Junhan
 
-// 2022-01-18 13:55:01 현태 수정 필요
+// 2022-01-18 13:55:01 현태 수정 필요  API 없음
 export default function ProductManagement() {
   const [productList, setProductList] = useState([]);
   useEffect(() => {}, []);

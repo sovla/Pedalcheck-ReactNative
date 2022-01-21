@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-const initialState = {
+const initialState1 = {
   idx: '',
   mt_account: null,
   mt_ad: '',
@@ -35,7 +35,7 @@ const initialState = {
   mt_zip: null,
   naver_id: null,
 };
-const initialState1 = {
+const initialState = {
   idx: '10',
   mt_login_type: '1',
   mt_level: '5',

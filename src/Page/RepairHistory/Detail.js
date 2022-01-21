@@ -14,6 +14,8 @@ import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
+// rejection: item.ot_cmemo, // 수정 필요 API 값없음
+
 export default function Detail({navigation, route}) {
   const {size} = useSelector(state => state);
   const dispatch = useDispatch();
@@ -35,7 +37,7 @@ export default function Detail({navigation, route}) {
     productName: item.ot_title,
     reservationDate: item.ot_pt_date,
     request: item.ot_meme,
-    rejection: item.ot_cmemo, // 수정 필요
+    rejection: item.ot_cmemo, // 수정 필요 API 값없음
     totalPrice: item.ot_price,
     customerName: item.mt_name,
     customerEmail: item.mt_email,

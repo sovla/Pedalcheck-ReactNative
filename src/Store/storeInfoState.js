@@ -74,8 +74,8 @@ const initialState = {
   naver_id: null,
 };
 
-export const storeSlice = createSlice({
-  name: 'store',
+export const storeInfoSlice = createSlice({
+  name: 'storeInfo',
   initialState,
   reducers: {
     setStoreInfo: (state, action) => {
@@ -87,6 +87,6 @@ export const storeSlice = createSlice({
   },
 });
 
-export const {setStoreInfo, ResetStoreInfo} = storeSlice.actions;
+export const {setStoreInfo, ResetStoreInfo} = storeInfoSlice.actions;
 
-export default storeSlice.reducer;
+export default storeInfoSlice.reducer;

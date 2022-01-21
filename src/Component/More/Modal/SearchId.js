@@ -26,7 +26,7 @@ export default function SearchId({setUser}) {
   const onPressSearch = () => {
     setisDone(true);
     getCouponIssueCustomer({
-      _mt_idx: 10, //  수정필요 login.idx
+      _mt_idx: login.idx,
       mt_id: search,
     })
       .then(res => res.data.result === 'true' && res.data.data.data)

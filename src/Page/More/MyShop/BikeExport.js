@@ -20,7 +20,7 @@ export default function BikeExport({route}) {
   const dispatch = useDispatch();
 
   const [bikeData, setBikeData] = useState({
-    _mt_idx: 10, // 수정 필요
+    _mt_idx: login.idx,
     sbt_idx: '',
     sbt_brand: '',
     sbt_model: '',

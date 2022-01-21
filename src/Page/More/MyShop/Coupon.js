@@ -90,7 +90,7 @@ export default function Coupon() {
     const data = await getCouponList({
       // 1미사용 2 사용완료 3 기간만료 4사용불가
       //  수정 필요 드롭메뉴 값 추가, 날짜 값 추가
-      _mt_idx: 10, //  수정 필요 login.idx
+      _mt_idx: login.idx, //  수정 필요 login.idx
       keyword: content,
       cst_status: '',
       cst_s_wdate: times.prev ?? '',
@@ -140,6 +140,7 @@ export default function Coupon() {
               onPressStart={() => setDatePicker(prev => ({...prev, start: true}))}
               onPressSearch={() => getCouponListHandle(1)}
               selectDate={selectDate}
+              setSelectDate={setSelectDate}
             />
             <Box mg="10px 0px 0px">
               <DefaultInput

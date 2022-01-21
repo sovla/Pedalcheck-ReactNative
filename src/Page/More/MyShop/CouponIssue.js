@@ -22,12 +22,13 @@ export default function CouponIssue() {
   const [issueCouponList, setIssueCouponList] = useState([]);
   const [issueCount, setIssueCount] = useState(0);
 
+  const login = useSelector(state => state.login);
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
     getCouponIssueList({
-      _mt_idx: 10, //  수정필요
+      _mt_idx: login.idx,
     }).then(res => {
       if (res.data?.result === 'true') {
         setIssueCouponList(res.data.data.data);
@@ -47,7 +48,7 @@ export default function CouponIssue() {
       return null;
     }
     const response = await couponIssue({
-      _mt_idx: 10, //  수정필요
+      _mt_idx: login.idx,
       ct_idx: selectCoupon.ct_idx,
       cst_num: issueCount,
       mt_idx: id.mt_idx,

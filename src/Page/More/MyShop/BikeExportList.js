@@ -10,7 +10,7 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import React from 'react';
 import PlusIcon from '@assets/image/ic_plus_w.png';
 import {Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import ModifyButton from '@/Component/Buttons/ModifyButton';
 import TrashButton from '@/Component/Buttons/TrashButton';
 import {AlertButtons} from '@/Util/Alert';
@@ -23,6 +23,7 @@ export default function BikeExportList() {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
+  const login = useSelector(state => state.login);
 
   const [ExportList, setExportList] = useState([]);
 
@@ -34,7 +35,7 @@ export default function BikeExportList() {
 
   const getBikeExportListHandle = async () => {
     const response = await getBikeExportList({
-      _mt_idx: 10, //수정 필요
+      _mt_idx: login.idx,
     });
 
     if (response?.data?.result === 'true') {
@@ -49,7 +50,7 @@ export default function BikeExportList() {
     AlertButtons('출고 이력을 삭제하시겠습니까?', '확인', '취소', () => onPressConfirm());
     const onPressConfirm = async () => {
       const response = await deleteBikeExport({
-        _mt_idx: 10, // 수정 필요
+        _mt_idx: login.idx,
         sbt_idx: item.sbt_idx,
       });
 

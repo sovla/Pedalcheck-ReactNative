@@ -5,8 +5,25 @@ import Theme from '@/assets/global/Theme';
 import {BorderButton} from '@/assets/global/Button';
 import {TouchableOpacity} from 'react-native';
 import {useEffect} from 'react';
+import {useSelector} from 'react-redux';
+import {dateFormat} from '@/Util/DateFormat';
 
-export default function DatePickerComponent({onPressStart, onPressEnd, selectDate, onPressSearch}) {
+export default function DatePickerComponent({
+  onPressStart,
+  onPressEnd,
+  selectDate,
+  onPressSearch,
+  setSelectDate,
+}) {
+  const storeInfo = useSelector(state => state.storeInfo);
+  console.log();
+  useEffect(() => {
+    setSelectDate({
+      start: storeInfo.mst_wdate.substring(0, 10),
+      end: dateFormat(new Date()),
+    });
+  }, []);
+
   return (
     <RowBox alignItems="center">
       <TouchableOpacity onPress={onPressStart}>

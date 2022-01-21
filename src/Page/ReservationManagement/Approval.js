@@ -1,34 +1,21 @@
 import {Box, RowBox, ScrollBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
-import {
-  DarkBoldText,
-  DarkMediumText,
-  DarkText,
-  DefaultText,
-  IndigoText,
-  MoneyText,
-} from '@/assets/global/Text';
+import {DarkBoldText, DarkMediumText, DarkText, IndigoText, MoneyText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import {DefaultCheckBox} from '@/Component/Home/CheckBox';
 import Header from '@/Component/Layout/Header';
-import BorderBottomBox from '@/Component/Repair/BorderBottomBox';
 import React from 'react';
 import {useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
-import ArrowUpIcon from '@assets/image/list_arr_top.png';
-import DefaultImage from '@assets/global/Image';
-import ProductCheckBox from '@/Component/ReservationManagement/ProductCheckBox';
 import {FooterButton} from '@/assets/global/Button';
-import {useCallback} from 'react';
 import Photo from '@/Component/Repair/Photo';
 import CheckList from '@/Component/ReservationManagement/CheckList';
 import {RequireFieldText} from '../Home/RegisterInformation';
 import {reservationComplete} from '@/API/ReservationManagement/ReservationManagement';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {showToastMessage} from '@/Util/Toast';
-import {isOrdered} from 'immutable';
 import {AlertButton} from '@/Util/Alert';
 
 export default function Approval({navigation, route: {params}}) {
@@ -78,8 +65,11 @@ export default function Approval({navigation, route: {params}}) {
     }).then(res => {
       const {data} = res;
       if (data.result === 'true') {
-        //  수정필요  정비내역 정비이력으로 이동
+        //  수정필요  정비내역 정비이력으로 이동 추가 확인 필요
         showToastMessage('정비 처리완료 되었습니다.');
+        navigation.navigate('RepairHistoryHome', {
+          menu: '정비이력',
+        });
       } else {
         showToastMessage(data.msg);
       }
