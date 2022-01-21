@@ -38,7 +38,7 @@ export default function CouponDetail({route: {params}}) {
   useLayoutEffect(() => {
     setIsDone(true);
     getCouponDetail({
-      _mt_idx: login.idx, //   수정필요
+      _mt_idx: login.idx,
       cst_idx: params?.cst_idx,
     })
       .then(res => res.data?.result === 'true' && setCouponInfo(res.data.data.data))

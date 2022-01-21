@@ -53,7 +53,7 @@ export default function RepairHistorySelectReview() {
     }
 
     const response = await getReview({
-      _mt_idx: 10, // 수정 필요
+      _mt_idx: login.idx,
       keyword: keyword,
       page: isSearch ? 1 : page,
     });
@@ -80,7 +80,7 @@ export default function RepairHistorySelectReview() {
 
   const commentSubmit = async (srt_idx, srt_res_content, srt_adate) => {
     const response = await addReview({
-      _mt_idx: 10, //수정 필요
+      _mt_idx: login.idx,
       srt_idx: srt_idx,
       srt_res_content: srt_res_content,
     });
@@ -100,7 +100,7 @@ export default function RepairHistorySelectReview() {
 
   const deleteHandle = async srt_idx => {
     const response = await deleteReview({
-      _mt_idx: 10, // 수정 필요
+      _mt_idx: login.idx,
       srt_idx: srt_idx,
     });
 
@@ -214,7 +214,6 @@ const ReviewRecomment = ({item, size, commentSubmit, deleteHandle}) => {
             <DarkText fontSize={Theme.fontSize.fs13}>APPALANCHIA</DarkText>
             <GrayText fontSize={Theme.fontSize.fs12}> | </GrayText>
             <DarkText fontSize={Theme.fontSize.fs13}>Momentum</DarkText>
-            {/* 수정 필요 */}
           </RowBox>
           <GrayText fontSize={Theme.fontSize.fs12}>{item?.srt_wdate?.slice(0, 10)}</GrayText>
         </Box>

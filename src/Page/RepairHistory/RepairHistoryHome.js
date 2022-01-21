@@ -12,13 +12,20 @@ import RepairHistorySelectReview from './RepairHistorySelectReview';
 import RepairHistorySelectQuestion from './RepairHistorySelectQuestion';
 import RepairHistorySelectHistory from './RepairHistorySelectHistory';
 import {FlatList} from 'react-native-gesture-handler';
+import {useLayoutEffect} from 'react';
+import {useIsFocused} from '@react-navigation/native';
 
-// 현태 : 수정 필요 모듈화 작업
+// 현태 : 수정 필요 API 추가 작업필요
 
-export default function RepairHistoryHome() {
+export default function RepairHistoryHome({route: {params}}) {
   const [select, setSelect] = useState('홈');
 
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
+
+  useLayoutEffect(() => {
+    if (isFocused) setSelect(params?.menu ?? '홈');
+  }, [isFocused]);
 
   return (
     <Container>

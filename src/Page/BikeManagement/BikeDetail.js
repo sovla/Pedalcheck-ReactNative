@@ -156,7 +156,7 @@ export default function BikeDetail({navigation, route}) {
           },
           {
             title: '모델상세',
-            value: bike.mbt_model_detail, // 수정 필요
+            value: bike.mbt_model_detail,
           },
         ],
       }

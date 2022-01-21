@@ -58,7 +58,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
     const sendData = {
       _mt_idx: login?.idx,
       mbt_idx: bike.mbt_idx,
-      mbt_flag: 'Y', // 수정 필요
+      mbt_flag: 'Y',
       mbt_nick: bike.bikeName,
       mbt_brand: bike.bikeModel.split('  ')[0],
       mbt_model: bike.bikeModel.split('  ')[1],
@@ -91,7 +91,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
 
   const bikeSerialCheckHandle = () => {
     bikeSerialCheck({
-      _mt_idx: login?.idx, // 수정 필요
+      _mt_idx: login?.idx,
       mbt_serial: bike.vehicleNumber,
     }).then(res => {
       if (res.data?.data?.data !== '') {

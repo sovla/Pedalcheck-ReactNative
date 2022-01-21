@@ -111,7 +111,7 @@ export default function More() {
   }, []);
   const getStoreInfoHandle = async () => {
     const response = await getStoreInfo({
-      _mt_idx: 10, // 수정 필요
+      _mt_idx: login.idx,
     });
 
     if (response?.data?.result === 'true') {

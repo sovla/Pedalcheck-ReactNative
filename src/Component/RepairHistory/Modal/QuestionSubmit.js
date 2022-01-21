@@ -26,7 +26,9 @@ import {useEffect} from 'react';
 export default function QuestionSubmit({item, setRecomment}) {
   const [answer, setAnswer] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
   const dispatch = useDispatch();
+  const login = useSelector(state => state.login);
 
   useEffect(() => {
     setAnswer(item?.qt_answer);
@@ -44,13 +46,13 @@ export default function QuestionSubmit({item, setRecomment}) {
 
     if (item.qt_status === '답변') {
       const response = await qnaUpdate({
-        _mt_idx: 10, // 수정필요
+        _mt_idx: login.idx,
         qt_idx: item.qt_idx,
         qt_answer: answer,
       });
     } else {
       const response = await qnaWrite({
-        _mt_idx: 10, // 수정필요
+        _mt_idx: login.idx,
         qt_idx: item.qt_idx,
         qt_answer: answer,
       });

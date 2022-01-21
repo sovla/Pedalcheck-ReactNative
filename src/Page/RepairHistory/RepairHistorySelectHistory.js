@@ -7,7 +7,7 @@ import Theme from '@/assets/global/Theme';
 import {BorderButton} from '@/assets/global/Button';
 import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
 import SpannerIcon from '@assets/image/menu01_on.png';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {DefaultInput} from '@/assets/global/Input';
 import {TouchableOpacity} from 'react-native';
@@ -51,6 +51,7 @@ export default function RepairHistorySelectHistory() {
   const [isLoading, setIsLoading] = useState(true);
 
   const navigation = useNavigation();
+  const login = useSelector(state => state.login);
 
   useEffect(() => {
     getOrderListHandle();
@@ -72,7 +73,7 @@ export default function RepairHistorySelectHistory() {
     }
 
     const response = await getOrderList({
-      _mt_idx: 10, //수정 필요
+      _mt_idx: login.idx,
       ot_name: searchText,
       ot_sdate: selectDate.start,
       ot_edate: selectDate.end,
@@ -148,7 +149,6 @@ export default function RepairHistorySelectHistory() {
     return false;
   };
 
-
   if (isLoading) {
     return (
       <Box mg="200px 0px" width="412px" alignItems="center">
@@ -185,6 +185,7 @@ export default function RepairHistorySelectHistory() {
               onPressEnd={() => setDatePicker({start: false, end: true})}
               selectDate={selectDate}
               onPressSearch={() => getOrderListHandle(1)}
+              setSelectDate={setSelectDate}
             />
             <DefaultDropdown
               data={productList}

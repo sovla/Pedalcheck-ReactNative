@@ -17,7 +17,6 @@ import Photo from '@/Component/Repair/Photo';
 import {RequireFieldText} from '@/Page/Home/RegisterInformation';
 import {modalOpenAndProp} from '@/Store/modalState';
 import {isEmail} from '@/Util/EmailCheck';
-import {GetLocation} from '@/Util/GetLocation';
 import {phoneNumber} from '@/Util/phoneFormatter';
 import {showToastMessage} from '@/Util/Toast';
 import Postcode from '@actbase/react-daum-postcode';
@@ -29,12 +28,12 @@ import {useDispatch, useSelector} from 'react-redux';
 
 export default function ShopUpdate() {
   const navigation = useNavigation();
-  const {size} = useSelector(state => state);
+  const {size, login} = useSelector(state => state);
   const [imageArray, setImageArray] = useState([]);
   const [selectDay, setSelectDay] = useState([]);
   const [isDaumOpen, setIsDaumOpen] = useState(false);
   const [shopInformation, setShopInformation] = useState({
-    _mt_idx: 10, // 수정 필요
+    _mt_idx: login.idx,
     mst_name: '',
     mst_company_num: '',
     mst_zip: '',

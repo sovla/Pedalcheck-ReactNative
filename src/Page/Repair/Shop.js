@@ -45,7 +45,7 @@ export default function Shop({route, navigation}) {
   const getShopDetailApi = async () => {
     await getShopDetail({
       _mt_idx: login?.idx,
-      mt_idx: mt_idx, // 수정필요 mt_idx
+      mt_idx: mt_idx,
     }).then(res => {
       dispatch(setShopInfo(res.data.data.data));
     });
