@@ -1,7 +1,8 @@
 import {getRepairHistory} from '@/API/More/More';
-import {Box, Container, ScrollBox} from '@/assets/global/Container';
+import {Box, Container, PositionBox, ScrollBox} from '@/assets/global/Container';
 import {repairHistoryDropdownList} from '@/assets/global/dummy';
 import {DefaultInput} from '@/assets/global/Input';
+import {DarkMediumText} from '@/assets/global/Text';
 import ShopRepairHistory from '@/Component/BikeManagement/ShopRepairHistory';
 import Header from '@/Component/Layout/Header';
 import RepairHistoryItem from '@/Component/More/RepairHistoryItem';
@@ -11,7 +12,7 @@ import {useNavigation} from '@react-navigation/core';
 import React from 'react';
 import {useEffect} from 'react';
 import {useState} from 'react';
-import {FlatList, TouchableOpacity} from 'react-native';
+import {Dimensions, FlatList, TouchableOpacity, View} from 'react-native';
 import {useSelector} from 'react-redux';
 
 export default function RepairHistory() {
@@ -43,7 +44,8 @@ export default function RepairHistory() {
   return (
     <>
       <Header title="정비이력" />
-      <Container>
+
+      <Container style={{flex: 1}} justifyContent="center" alignItems="center">
         <FlatList
           keyExtractor={(item, index) => index.toString()}
           ListHeaderComponent={
@@ -56,7 +58,6 @@ export default function RepairHistory() {
               />
             </Box>
           }
-          style={{flex: 1}}
           renderItem={({item, index}) => {
             const changeItem = {
               shopName: item?.mst_name,
@@ -79,7 +80,7 @@ export default function RepairHistory() {
           data={
             select === '전체'
               ? historyList
-              : historyList.filter(filterItem => filterItem.ot_status === select)
+              : historyList?.filter(filterItem => filterItem.ot_status === select)
           }
           onEndReached={() => {
             if (isScroll) {
@@ -92,6 +93,18 @@ export default function RepairHistory() {
             setIsScroll(true);
           }}
         />
+        {!historyList?.length && (
+          <PositionBox
+            top="45%"
+            left="0%"
+            alignItems="center"
+            backgroundColor="#0000"
+            justifyContent="center"
+            width="100%"
+            flexDirection="row">
+            <DarkMediumText>정비이력이 존재하지 않습니다.</DarkMediumText>
+          </PositionBox>
+        )}
       </Container>
     </>
   );

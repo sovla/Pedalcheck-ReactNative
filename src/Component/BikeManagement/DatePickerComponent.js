@@ -4,6 +4,7 @@ import {DarkText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {BorderButton} from '@/assets/global/Button';
 import {TouchableOpacity} from 'react-native';
+import {useEffect} from 'react';
 
 export default function DatePickerComponent({onPressStart, onPressEnd, selectDate, onPressSearch}) {
   return (

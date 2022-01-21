@@ -41,7 +41,7 @@ export default function More() {
   const onPressMenu = item => {
     switch (item) {
       case '내 정보':
-        return navigation.navigate('Information');
+        return navigation.navigate('Information', {isAdmin: isAdmin});
       case '공지 및 이벤트':
         return navigation.navigate('Post');
       case '자주하는 질문':
