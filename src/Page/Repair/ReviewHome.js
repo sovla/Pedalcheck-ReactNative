@@ -6,7 +6,6 @@ import {StyleSheet, Text, View} from 'react-native';
 import RepairLogo from '@assets/image/history_none.png';
 import {DarkText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
-import ShopComponent from '@/Component/Repair/ShopComponent';
 import ReviewRecord from '@/Component/Repair/ReviewRecord';
 import {useState} from 'react';
 import {Button, LinkButton} from '@/assets/global/Button';

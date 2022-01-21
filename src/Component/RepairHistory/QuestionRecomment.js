@@ -64,7 +64,7 @@ export default function QuestionRecomment({
         </Box>
       </TouchableOpacity>
       {isSelect && (
-        <Box style={borderBottomWhiteGray}>
+        <Box>
           <DarkText pd="10px" fontSize={Theme.fontSize.fs15}>
             {content}
           </DarkText>

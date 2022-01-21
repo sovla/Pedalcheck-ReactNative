@@ -57,6 +57,7 @@ export default function Feed() {
         renderItem={({item, index}) => {
           return <FeedBox item={item} size={size} />;
         }}
+        ListFooterComponent={<Box height="30px" backgroundColor="#0000" />}
       />
       <Box backgroundColor={Theme.color.backgroundWhiteGray}>
         <FooterButtons selectMenu={3} backgroundColor={Theme.color.backgroundWhiteGray} />

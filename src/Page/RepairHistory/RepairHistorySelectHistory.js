@@ -158,7 +158,7 @@ export default function RepairHistorySelectHistory() {
   }
 
   return (
-    <Box pd="0px 16px">
+    <Box pd="0px 16px 30px">
       <FlatList
         ListHeaderComponent={
           <>

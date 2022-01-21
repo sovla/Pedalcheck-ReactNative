@@ -70,6 +70,7 @@ export default function ReservationPayment({navigation}) {
               );
             })}
           </Box>
+          <DarkBoldText>아직 API 안침 - 수정필요</DarkBoldText>
         </ScrollBox>
       </Box>
       <Box mg="0px 16px 20px">

@@ -21,6 +21,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import {getPixel} from '@/Util/pixelChange';
 import SearchIcon from './SearchIcon';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
+import Loading from '@/Component/Layout/Loading';
 
 export default function Customer({navigation}) {
   const {size, login} = useSelector(state => state);
@@ -30,6 +31,7 @@ export default function Customer({navigation}) {
   const [page, setPage] = useState(1);
   const [customerList, setCustomerList] = useState([]);
   const [isScroll, setIsScroll] = useState(false);
+  const [isDone, setIsDone] = useState(true);
 
   const [isLast, setIsLast] = useState(false);
 
@@ -42,7 +44,11 @@ export default function Customer({navigation}) {
   }, [sortSelectItem]);
 
   const getCustomerHandle = async insertPage => {
+    setIsDone(true);
+
     if (isLast && !insertPage) {
+      setIsDone(false);
+
       return null;
     }
 
@@ -75,6 +81,7 @@ export default function Customer({navigation}) {
         }
       }
     }
+    setIsDone(false);
   };
 
   const onPressCustomer = item => {
@@ -83,6 +90,11 @@ export default function Customer({navigation}) {
 
   return (
     <Container>
+      {isDone && (
+        <PositionBox top="50%" left="50%" zIndex={100} backgroundColor="#0008">
+          <Loading isAbsolute />
+        </PositionBox>
+      )}
       <FlatList
         ListHeaderComponent={
           <>
@@ -157,9 +169,10 @@ export default function Customer({navigation}) {
         }}
         ListEmptyComponent={
           <Box alignItems="center">
-            <DarkBoldText>검색결과가 없습니다.</DarkBoldText>
+            {!isDone && <DarkBoldText>검색결과가 없습니다.</DarkBoldText>}
           </Box>
         }
+        ListFooterComponent={<Box height="30px" />}
       />
       <FooterButtons isAdmin selectMenu={3} />
     </Container>
