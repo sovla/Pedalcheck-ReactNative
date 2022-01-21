@@ -74,16 +74,20 @@ export default function ReservationTimeManagement() {
   };
 
   const onPressAdd = () => {
-    setTimeList(prev => [
-      ...prev,
-      {
-        flag: 'Y',
-        ot_time: '09:00',
-      },
-    ]);
+    if (timeList?.length)
+      setTimeList(prev => [
+        ...prev,
+        {
+          flag: 'Y',
+          ot_time: '09:00',
+        },
+      ]);
   };
 
   const onPressSave = () => {
+    if (!timeList?.length) {
+      return null;
+    }
     const copyTimeList = timeList.slice();
 
     const changeTime = time => {

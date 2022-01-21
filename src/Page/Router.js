@@ -150,7 +150,7 @@ const withScrollView = WrappedComponent => {
       return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
     }, [isFocus]);
 
-    const onBackPress = () => {
+    const onBackPress = async () => {
       if (count < 1) {
         count++;
         ToastAndroid.show('한번더 뒤로가기를 누르면 앱이 종료됩니다.', ToastAndroid.SHORT);

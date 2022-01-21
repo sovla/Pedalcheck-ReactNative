@@ -104,8 +104,8 @@ export default function Customer({navigation}) {
                 isBorder={false}
                 setValue={setSortSelectItem}
                 value={sortSelectItem}
-                pdLeft={40 - 8 * sortSelectItem.length}
-                width={90}
+                pdLeft={10}
+                width={50 + 10 * sortSelectItem.length}
                 fontType="Medium"
                 alignItems="center"
               />
