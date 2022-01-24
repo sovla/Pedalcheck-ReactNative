@@ -93,20 +93,26 @@ export default function Update({navigation}) {
 
     const sendData = {
       mt_idx: user.idx,
-      mt_image_type: imageType, // 수정 필요
+      mt_image_type: isNaN(selectImage) ? 2 : imageType, // 수정 필요
       mt_gender: sex === 'man' ? 'M' : 'F',
       mt_birth: birthDateValue,
     };
     if (selectImage.path) {
-      const addResponse = await AddInformationImage({
+      await AddInformationImage({
         ...sendData,
         mt_image: selectImage,
       });
     } else {
-      const addResponse = await AddInformation({
-        ...sendData,
-        mt_image_num: selectImage,
-      });
+      if (isNaN(selectImage)) {
+        await AddInformation({
+          ...sendData,
+        });
+      } else {
+        await AddInformation({
+          ...sendData,
+          mt_image_num: selectImage,
+        });
+      }
     }
 
     if (response?.data?.result === 'true') {
@@ -115,7 +121,7 @@ export default function Update({navigation}) {
       });
 
       if (response?.data?.result === 'true') {
-        const data = response?.data?.data?.data;
+        const data = responseMember?.data?.data?.data;
         dispatch(setUserInfo(data));
       }
       Alert.alert('', '저장되었습니다.', [
@@ -344,14 +350,14 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
           <TouchableOpacity>
             <BorderButton
               onPress={onPressAddImage}
-              width="100px"
+              width="105px"
               height="auto"
               fontSize={Theme.fontSize.fs15}>
               통장 사본 등록
             </BorderButton>
           </TouchableOpacity>
           <RowBox
-            width="264px"
+            width="259px"
             mg="0px 0px 0px 16px"
             alignItems="center"
             height="100%"

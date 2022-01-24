@@ -253,7 +253,7 @@ export const initCheckList = [
 ];
 
 export const bankList = [
-  {label: '은행을 선택하세요', value: '은행을 선택하세요'},
+  {label: '은행을 선택해주세요.', value: '은행을 선택해주세요.'},
   {label: '한국은행', value: '한국은행'},
   {label: 'KDB산업은행', value: 'KDB산업은행'},
   {label: '기업은행', value: '기업은행'},
