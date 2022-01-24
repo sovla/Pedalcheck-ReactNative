@@ -22,8 +22,8 @@ export default function RepairHistoryHome({route: {params}}) {
   const isFocused = useIsFocused();
 
   useLayoutEffect(() => {
-    if (isFocused) {
-      setSelect(params?.menu ?? '홈');
+    if (isFocused && params?.menu) {
+      setSelect(params.menu);
     }
   }, [isFocused]);
 

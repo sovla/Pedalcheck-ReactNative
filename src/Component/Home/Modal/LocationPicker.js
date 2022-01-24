@@ -62,10 +62,10 @@ export default function LocationPicker() {
     <>
       <ModalTitleBox size={size} title="지역 선택"></ModalTitleBox>
       <Box height="300px">
-        {!isLoading && (
-          <ScrollView style={{flex: 1}}>
-            <RowBox style={{flexWrap: 'wrap'}} width={`${BoxWidth}px`}>
-              {locationArray.map((item, index) => (
+        <ScrollView style={{flex: 1}}>
+          <RowBox style={{flexWrap: 'wrap'}} width={`${BoxWidth}px`}>
+            {!isLoading &&
+              locationArray.map((item, index) => (
                 <Fragment key={item.code + index}>
                   <TouchableOpacity
                     onPress={() => {
@@ -89,9 +89,8 @@ export default function LocationPicker() {
                     : (index + 1) % 3 !== 0 && <Box width="8px"></Box>}
                 </Fragment>
               ))}
-            </RowBox>
-          </ScrollView>
-        )}
+          </RowBox>
+        </ScrollView>
       </Box>
     </>
   );

@@ -23,7 +23,7 @@ import scrollSlideNumber from '@/Util/scrollSlideNumber';
 import {useEffect} from 'react';
 import {getShopList} from '@/API/Shop/Shop';
 import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
-import {modalOpen, setModalProp} from '@/Store/modalState';
+import {modalOpen} from '@/Store/modalState';
 import {getEventList} from '@/API/Repair/Repair';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
