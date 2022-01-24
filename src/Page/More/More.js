@@ -14,6 +14,7 @@ import DefaultLine from '@/assets/global/Line';
 import SwitchOnIcon from '@assets/image/toggle_on.png';
 import SwitchOffIcon from '@assets/image/toggle_off.png';
 import CustomerIcon from '@assets/image/ic_myinfo.png';
+import profileDefault from '@assets/image/profile_default.png';
 
 import ProductIcon from '@assets/image/box_Indigo.png';
 import CouponIcon from '@assets/image/coupon_Indigo.png';
@@ -118,7 +119,7 @@ export default function More() {
       dispatch(setStoreInfo(response?.data?.data?.data));
     }
   };
-  console.log(storeInfo);
+  console.log(login);
 
   return (
     <Container>
@@ -127,11 +128,13 @@ export default function More() {
         <BetweenBox width={size.designWidth} pd="20px 16px" alignItems="center">
           <RowBox alignItems="center">
             <DefaultImage
-              source={{uri: imageAddress + login.mt_image}}
+              source={login.mt_image ? {uri: imageAddress + login.mt_image} : profileDefault}
               width="50px"
               height="50px"
             />
-            <DarkBoldText fontSize={Theme.fontSize.fs18}>{login.mt_name}</DarkBoldText>
+            <DarkBoldText mg="0px 10px" fontSize={Theme.fontSize.fs18}>
+              {login.mt_name}
+            </DarkBoldText>
           </RowBox>
           <GrayText fontSize={Theme.fontSize.fs15}>{loginType[login.mt_login_type]}회원</GrayText>
         </BetweenBox>

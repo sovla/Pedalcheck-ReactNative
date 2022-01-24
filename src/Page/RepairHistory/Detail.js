@@ -118,7 +118,7 @@ export default function Detail({navigation, route}) {
             <BetweenBox mg="10px 0px 0px" width={size.minusPadding}>
               <DarkMediumText fontSize={Theme.fontSize.fs15}>가격</DarkMediumText>
               <RowBox alignItems="center">
-                <MoneyText disabled money={50000} />
+                {true && <MoneyText disabled money={50000} />}
                 <MoneyText
                   mg="0px 0px 0px 10px"
                   fontSize={Theme.fontSize.fs15}
@@ -159,7 +159,7 @@ export default function Detail({navigation, route}) {
           <BetweenBox style={borderBottomWhiteGray} width="380px" height="55px" alignItems="center">
             <DarkBoldText fontSize={Theme.fontSize.fs15}>합계</DarkBoldText>
             <MoneyText
-              money={35000}
+              money={changeItem.totalPrice}
               color={Theme.color.black}
               fontSize={Theme.fontSize.fs18}
               fontWeight={Theme.fontWeight.bold}
