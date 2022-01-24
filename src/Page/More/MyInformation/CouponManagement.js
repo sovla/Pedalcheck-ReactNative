@@ -1,6 +1,6 @@
 import {Button} from '@/assets/global/Button';
 import {Box, RowBox} from '@/assets/global/Container';
-import {DefaultText, IndigoText} from '@/assets/global/Text';
+import {DarkMediumText, DefaultText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import MenuNav from '@/Component/Layout/MenuNav';
@@ -28,7 +28,7 @@ export default function CouponManagement({navigation, route: {params}}) {
 
   const [availablePage, setAvailablePage] = useState(1); // 쿠폰함 - 보유 페이징
   const [usedPage, setUsedPage] = useState(1); // 쿠폰함 - 완료 . 만료 페이징
-  const [usagePage, setUsagePage] = useState(1);
+  const [usagePage, setUsagePage] = useState(1); // 쿠폰사용현황 페이징
 
   const [dropMenu, setDropMenu] = useState('전체');
   const [isScroll, setIsScroll] = useState(false);
@@ -37,6 +37,7 @@ export default function CouponManagement({navigation, route: {params}}) {
     used: false,
     usage: false,
   });
+  const [isDone, setIsDone] = useState(true);
 
   const isFocused = useIsFocused();
   const {login} = useSelector(state => state);
@@ -62,37 +63,45 @@ export default function CouponManagement({navigation, route: {params}}) {
 
   const getCouponListHandle = async () => {
     //  쿠폰리스트 얻어오는곳 쿠폰함()
+    setIsDone(true);
     const isHold = selectSubMenu === '보유';
     if ((isHold && isLastPage.available) || (!isHold && isLastPage.used)) {
+      setIsDone(false);
       return null;
     }
     await getCouponList({
       _mt_idx: login.idx,
       cst_status: isHold ? 1 : 2,
       page: isHold ? availablePage : usedPage,
-    }).then(res => {
-      if (res.data.result === 'true') {
-        // 데이터 정상적으로 전송
-        if (res.data.data.data) {
-          // 데이터가 들어있다면
-          if (isHold) {
-            setAvailableCouponList(prev => [...prev, ...res.data.data.data]);
-            setAvailablePage(prev => prev + 1);
+    })
+      .then(res => {
+        if (res.data.result === 'true') {
+          // 데이터 정상적으로 전송
+          if (res.data.data.data) {
+            // 데이터가 들어있다면
+            if (isHold) {
+              setAvailableCouponList(prev => [...prev, ...res.data.data.data]);
+              setAvailablePage(prev => prev + 1);
+            } else {
+              setUsedCouponList(prev => [...prev, ...res.data.data.data]);
+              setUsedPage(prev => prev + 1);
+            }
           } else {
-            setUsedCouponList(prev => [...prev, ...res.data.data.data]);
-            setUsedPage(prev => prev + 1);
+            setIsLastPage(prev => ({...prev, [isHold ? 'available' : 'used']: true}));
+            // 보유 혹은 완료 리스트 마지막 페이지 여부
           }
-        } else {
-          setIsLastPage(prev => ({...prev, [isHold ? 'available' : 'used']: true}));
-          // 보유 혹은 완료 리스트 마지막 페이지 여부
         }
-      }
-    });
+      })
+      .finally(() => {
+        setIsDone(false);
+      });
   };
 
   const getCouponUsageStateListHandle = async page => {
+    setIsDone(true);
     //  쿠폰 사용 현황 리스트
     if (isLastPage.usage && !page) {
+      setIsDone(false);
       return null;
     }
     if (page) {
@@ -118,6 +127,9 @@ export default function CouponManagement({navigation, route: {params}}) {
         } else {
           setIsLastPage(prev => ({...prev, usage: true}));
         }
+      })
+      .finally(() => {
+        setIsDone(false);
       });
   };
 
@@ -197,15 +209,25 @@ export default function CouponManagement({navigation, route: {params}}) {
             );
           }}
           keyExtractor={(item, index) => index.toString()}
+          ListEmptyComponent={
+            <Box flex={1} alignItems="center" justifyContent="center">
+              {!isDone && (
+                <DarkMediumText>
+                  {selectMenu === '쿠폰함' && selectSubMenu === '보유' && '보유중인 쿠폰이 없습니다'}
+                  {selectMenu === '쿠폰함' && selectSubMenu !== '보유' && '사용한 쿠폰이 없습니다.'}
+                  {selectMenu !== '쿠폰함' && '사용한 쿠폰이 없습니다.'}
+                </DarkMediumText>
+              )}
+            </Box>
+          }
+          contentContainerStyle={{flex: 1}}
           ListHeaderComponent={
             <>
               <MenuNav menuItem={menu} select={selectMenu} setSelect={setSelectMenu} />
               {selectMenu === '쿠폰함' && (
                 <CouponBox selectSubMenu={selectSubMenu} setSelectSubMenu={setSelectSubMenu} />
               )}
-              {selectMenu === '쿠폰 사용 현황' && (
-                <CouponUsageStatus setDropMenu={setDropMenu} dropMenu={dropMenu} />
-              )}
+              {selectMenu === '쿠폰 사용 현황' && <CouponUsageStatus setDropMenu={setDropMenu} dropMenu={dropMenu} />}
             </>
           }
         />
@@ -217,12 +239,7 @@ export default function CouponManagement({navigation, route: {params}}) {
 const CouponUsageStatus = ({dropMenu, setDropMenu}) => {
   return (
     <Box mg="20px 16px 0px">
-      <DefaultInput
-        value={dropMenu}
-        changeFn={setDropMenu}
-        isDropdown
-        dropdownItem={repairHistoryDropdownList}
-      />
+      <DefaultInput value={dropMenu} changeFn={setDropMenu} isDropdown dropdownItem={repairHistoryDropdownList} />
     </Box>
   );
 };

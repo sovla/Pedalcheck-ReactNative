@@ -40,17 +40,14 @@ export default function DefaultDropdown({
         fontSize: fontSize,
         fontFamily: fontFamily,
         letterSpacing: -0.45,
-        justifyContent: 'center',
-        alignItems: 'center',
         paddingLeft: getPixel(pdLeft),
+        includeFontPadding: false,
       }}
       style={{
         width: getPixel(width),
         height: height,
         color: 'black',
         borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
         borderWidth: isBorder ? 1 : 0,
         borderColor: isBorder ? Theme.borderColor.gray : Theme.color.white,
       }}
@@ -76,7 +73,7 @@ export default function DefaultDropdown({
       }}
       renderRightIcon={() => {
         return (
-          <Box>
+          <Box justifyContent="center" alignItems="center">
             <DefaultImage width="24px" height="24px" source={ArrowDownIcon} />
           </Box>
         );

@@ -3,15 +3,15 @@ import GradientHeader from '@/Component/Layout/GradientHeader';
 import React, {useEffect, useState} from 'react';
 import MenuIcon from '@assets/image/menu03_top.png';
 import {useSelector} from 'react-redux';
-import DefaultIcon from '@assets/image/default_4.png';
 import DummyImage from '@assets/image/bicycle_default.png';
+import DummyProfileImage from '@assets/image/dummy.png';
 import DefaultImage from '@assets/global/Image';
 import {DarkText, GrayText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import FooterButtons from '@/Component/Layout/FooterButtons';
 import {FlatList, Linking, TouchableOpacity} from 'react-native';
 import {getFeedList} from '@/API/Feed/Feed';
-
+import {imageAddress} from '@assets/global/config';
 // 웹뷰 작업 후 추가작업 필요
 
 export default function Feed() {
@@ -57,6 +57,7 @@ export default function Feed() {
         renderItem={({item, index}) => {
           return <FeedBox item={item} size={size} />;
         }}
+        style={{flex: 1}}
         ListFooterComponent={<Box height="30px" backgroundColor="#0000" />}
       />
       <Box backgroundColor={Theme.color.backgroundWhiteGray}>
@@ -79,7 +80,8 @@ export const ShadowStyle = {
 };
 
 const FeedBox = ({item, size}) => {
-  const image = item?.bikeImagel ? {uri: item.bikeImage} : DummyImage;
+  const image = item?.ft_store_img ? {uri: imageAddress + item.ft_store_img} : DummyImage;
+  console.log(image);
   return (
     <Box
       width={size.minusPadding}
@@ -99,17 +101,17 @@ const FeedBox = ({item, size}) => {
               borderTopLeftRadius: 15,
               borderTopRightRadius: 15,
             }}
+            resizeMode="contain"
             source={image}
+            width="380px"
             height="200px"
           />
         </TouchableOpacity>
       )}
-      <TouchableOpacity onPress={() => Linking.openURL(item?.ft_link)}>
-        <DefaultImage source={image} width={size.minusPadding} height="200px" />
-      </TouchableOpacity>
+
       <RowBox mg="15px 15px 0px" justifyContent="space-between">
         <Box width="75px" alignItems="center">
-          <DefaultImage source={item?.userImage} width="45px" height="45px" borderRadius="100px" />
+          <DefaultImage source={item?.DummyProfileImage} width="45px" height="45px" borderRadius="100px" />
         </Box>
         <Box>
           <DarkText fontSize={Theme.fontSize.fs15} width="290px" numberOfLines={2}>

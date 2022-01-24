@@ -20,7 +20,7 @@ export default function LocationPicker() {
   const dispatch = useDispatch();
 
   const [locationArray, setLocationArray] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const BoxWidth = size.designWidth - 72;
   const isDetail = modal.modalComponent === 'locationPickerDetail';
   const apiObject = !isDetail
@@ -32,23 +32,26 @@ export default function LocationPicker() {
         code: location?.code,
       };
 
-  useEffect(() => {
+  const itemWidth = isDetail ? (BoxWidth - 25) / 3 : (BoxWidth - 10) / 2;
+
+  useLayoutEffect(() => {
     if (!isDetail) {
       dispatch(DeleteLocation());
     }
-    const getLocationListHandle = async () => {
-      setIsLoading(true);
-      await getLocationList(apiObject).then(res => {
-        if (res.data?.result === 'true') {
-          setLocationArray(res.data.data.data);
-        }
-      });
-      setIsLoading(false);
-    };
+
     getLocationListHandle();
   }, [modal.modalComponent]);
 
-  const itemWidth = isDetail ? (BoxWidth - 25) / 3 : (BoxWidth - 10) / 2;
+  const getLocationListHandle = async () => {
+    setIsLoading(true);
+    await getLocationList(apiObject).then(res => {
+      if (res.data?.result === 'true') {
+        setLocationArray(res.data.data.data);
+      }
+    });
+    setIsLoading(false);
+  };
+  console.log(isLoading);
   const pressLocation = async location => {
     await dispatch(AddLocation(location));
     if (!isDetail) {

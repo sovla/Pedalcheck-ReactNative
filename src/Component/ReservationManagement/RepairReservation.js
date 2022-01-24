@@ -154,6 +154,11 @@ export default function RepairReservation({type}) {
             </TouchableOpacity>
           );
         }}
+        ListEmptyComponent={
+          <Box justifyContent="center" alignItems="center" pd="60px 0px">
+            <DarkMediumText>예약내역이 존재하지 않습니다.</DarkMediumText>
+          </Box>
+        }
         ListFooterComponent={
           <Box mg="20px 16px">
             <TouchableOpacity onPress={onPressAllApprove}>
