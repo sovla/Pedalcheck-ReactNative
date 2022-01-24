@@ -1,5 +1,5 @@
 import {BorderButton, Button, LinkButton} from '@/assets/global/Button';
-import {Box, Container, RowBox} from '@/assets/global/Container';
+import {Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import React from 'react';
 import {Alert, FlatList, TextInput, TouchableOpacity} from 'react-native';
@@ -166,14 +166,15 @@ export default function ReservationTimeManagement() {
               />
             );
           }}
+          ListFooterComponent={<Box height="80px" />}
         />
         {/* {timeList.map(item => (
           <TimeManagementCheckBox key={item + 'time'} time={item} />
         ))} */}
       </RowBox>
-      <Box mg="0px 16px 20px">
+      <PositionBox bottom="0px" left="16px" pd="0px 0px 20px">
         <LinkButton to={onPressSave} content="저장하기" />
-      </Box>
+      </PositionBox>
     </Container>
   );
 }

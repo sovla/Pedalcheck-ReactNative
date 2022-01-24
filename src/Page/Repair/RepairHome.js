@@ -23,7 +23,7 @@ import scrollSlideNumber from '@/Util/scrollSlideNumber';
 import {useEffect} from 'react';
 import {getShopList} from '@/API/Shop/Shop';
 import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
-import {modalOpen, setModalProp} from '@/Store/modalState';
+import {modalOpen} from '@/Store/modalState';
 import {getEventList} from '@/API/Repair/Repair';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
@@ -46,6 +46,8 @@ export default function RepairHome() {
   const [searchText, setSearchText] = useState(''); // 검색 텍스트
   const [isSearch, setIsSearch] = useState(false); // 검색 누를때
 
+  const [isLast, setisLast] = useState(false);
+  const [isScroll, setIsScroll] = useState(false);
   const onPressTag = tagName => {
     // By.Junhan tag에 값이 없다면 넣어주고 있다면 제거
     if (tag.find(item => item === tagName)) {
@@ -62,29 +64,58 @@ export default function RepairHome() {
     setInnerLocation(login.mt_addr === '' ? '전체' : login.mt_addr);
   }, []);
   // 현태 최초 실행 시 위치 상태
+  useEffect(() => {
+    if (isFocused) {
+      getShopListHandle(1);
+    }
+  }, [isFocused]);
 
   useUpdateEffect(() => {
     if (isFocused) {
-      let mst_tag = reduceItemSplit(tag, ',');
-      //  , 콤마 더해서 값 보내기
-
-      getShopList({
-        _mt_idx: login.idx,
-        page: apiPage,
-        mst_addr: innerLocation === '전체' ? '' : innerLocation, // 위치로 검색
-        mst_name: searchText ?? '', // 검색하는 경우 추가
-        mst_tag: mst_tag, //
-        mst_type: selectItem === '전체보기' ? '' : '1',
-        sorting: sortSelectItem === '정비횟수순' ? 2 : sortSelectItem === '거리순' ? 3 : 1, // 인기순 1 거리순 2 정비횟수순 3
-      }).then(res => setStoreList(res?.data?.data?.data?.store_list));
+      getShopListHandle(1);
     }
-  }, [isFocused, selectItem, sortSelectItem, tag, innerLocation, isSearch]);
+  }, [selectItem, sortSelectItem, tag, innerLocation, isSearch]);
   // 현태 태그 및 메뉴 선택 시 리렌더링
   useEffect(() => {
     if (location?.name) {
       setInnerLocation(location.name);
     }
   }, [location]);
+
+  const getShopListHandle = async initPage => {
+    if (isLast && !initPage) {
+      return null;
+    }
+    let mst_tag = reduceItemSplit(tag, ',');
+    //  , 콤마 더해서 값 보내기
+
+    await getShopList({
+      _mt_idx: login.idx,
+      page: initPage ?? apiPage,
+      mst_addr: innerLocation === '전체' ? '' : innerLocation, // 위치로 검색
+      mst_name: searchText ?? '', // 검색하는 경우 추가
+      mst_tag: mst_tag, //
+      mst_type: selectItem === '전체보기' ? '' : '1',
+      sorting: sortSelectItem === '정비횟수순' ? '2' : sortSelectItem === '거리순' ? '3' : '1', // 인기순 1 거리순 2 정비횟수순 3
+    }).then(res => {
+      const isTrue = res.data?.result === 'true';
+      if (isTrue) {
+        const isData = res.data?.data?.data?.store_list?.length > 0;
+        if (isData) {
+          if (initPage) {
+            setStoreList([...res?.data?.data?.data?.store_list]);
+          } else {
+            setStoreList(prev => [...prev, ...res?.data?.data?.data?.store_list]);
+          }
+          setisLast(false);
+        } else {
+          setStoreList([]);
+          setApiPage(prev => prev + 1);
+          setisLast(true);
+        }
+      }
+    });
+  };
 
   return (
     <Container>
@@ -133,6 +164,15 @@ export default function RepairHome() {
         }}
         style={{
           marginBottom: 20,
+        }}
+        onEndReached={() => {
+          if (isScroll) {
+            getShopListHandle();
+            setIsScroll(false);
+          }
+        }}
+        onMomentumScrollBegin={() => {
+          setIsScroll(true);
         }}
       />
       <FooterButtons selectMenu={1} />
@@ -247,35 +287,16 @@ const Header = ({
               showsHorizontalScrollIndicator={false}
               onMomentumScrollEnd={onScrollSlide}>
               {dummyImageArray.map((item, index) => (
-                <DefaultImage
-                  key={`image_${index}`}
-                  resizeMode="stretch"
-                  source={item}
-                  width={size.minusPadding}
-                />
+                <DefaultImage key={`image_${index}`} resizeMode="stretch" source={item} width={size.minusPadding} />
               ))}
             </ScrollView>
-            <PositionBox
-              style={{flexDirection: 'row'}}
-              right="20px"
-              top="20px"
-              backgroundColor="rgba(0,0,0,0)">
+            <PositionBox style={{flexDirection: 'row'}} right="20px" top="20px" backgroundColor="rgba(0,0,0,0)">
               {dummyImageArray.map((item, index) => {
                 const isEqual = selectImage === index;
                 return isEqual ? (
-                  <DefaultImage
-                    key={index + 'images'}
-                    source={BlackDot}
-                    width="15px"
-                    height="15px"
-                  />
+                  <DefaultImage key={index + 'images'} source={BlackDot} width="15px" height="15px" />
                 ) : (
-                  <DefaultImage
-                    key={index + 'images'}
-                    source={EmptyDot}
-                    width="15px"
-                    height="15px"
-                  />
+                  <DefaultImage key={index + 'images'} source={EmptyDot} width="15px" height="15px" />
                 );
               })}
             </PositionBox>
@@ -303,11 +324,7 @@ const Event = () => {
   }, [isFocused]);
   return (
     <>
-      <BorderBottomBox
-        title="EVENT"
-        height="28px"
-        titleColor={Theme.color.skyBlue}
-        borderColor={Theme.color.skyBlue}>
+      <BorderBottomBox title="EVENT" height="28px" titleColor={Theme.color.skyBlue} borderColor={Theme.color.skyBlue}>
         <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false}>
           {eventList.map((item, index) => (
             <TouchableOpacity
@@ -320,12 +337,7 @@ const Event = () => {
           ))}
         </ScrollView>
         <TouchableOpacity onPress={() => navigation.navigate('Post', {select: '이벤트'})}>
-          <DefaultImage
-            source={PlusIcon}
-            width="12px"
-            height="12px"
-            style={{marginRight: getPixel(10)}}
-          />
+          <DefaultImage source={PlusIcon} width="12px" height="12px" style={{marginRight: getPixel(10)}} />
         </TouchableOpacity>
       </BorderBottomBox>
     </>

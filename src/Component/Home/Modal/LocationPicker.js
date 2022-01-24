@@ -20,7 +20,7 @@ export default function LocationPicker() {
   const dispatch = useDispatch();
 
   const [locationArray, setLocationArray] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const BoxWidth = size.designWidth - 72;
   const isDetail = modal.modalComponent === 'locationPickerDetail';
   const apiObject = !isDetail
@@ -32,23 +32,25 @@ export default function LocationPicker() {
         code: location?.code,
       };
 
-  useEffect(() => {
+  const itemWidth = isDetail ? (BoxWidth - 25) / 3 : (BoxWidth - 10) / 2;
+
+  useLayoutEffect(() => {
     if (!isDetail) {
       dispatch(DeleteLocation());
     }
-    const getLocationListHandle = async () => {
-      setIsLoading(true);
-      await getLocationList(apiObject).then(res => {
-        if (res.data?.result === 'true') {
-          setLocationArray(res.data.data.data);
-        }
-      });
-      setIsLoading(false);
-    };
+
     getLocationListHandle();
   }, [modal.modalComponent]);
 
-  const itemWidth = isDetail ? (BoxWidth - 25) / 3 : (BoxWidth - 10) / 2;
+  const getLocationListHandle = async () => {
+    setIsLoading(true);
+    await getLocationList(apiObject).then(res => {
+      if (res.data?.result === 'true') {
+        setLocationArray(res.data.data.data);
+      }
+    });
+    setIsLoading(false);
+  };
   const pressLocation = async location => {
     await dispatch(AddLocation(location));
     if (!isDetail) {
@@ -62,10 +64,10 @@ export default function LocationPicker() {
     <>
       <ModalTitleBox size={size} title="지역 선택"></ModalTitleBox>
       <Box height="300px">
-        {!isLoading && (
-          <ScrollView style={{flex: 1}}>
-            <RowBox style={{flexWrap: 'wrap'}} width={`${BoxWidth}px`}>
-              {locationArray.map((item, index) => (
+        <ScrollView style={{flex: 1}}>
+          <RowBox style={{flexWrap: 'wrap'}} width={`${BoxWidth}px`}>
+            {!isLoading &&
+              locationArray.map((item, index) => (
                 <Fragment key={item.code + index}>
                   <TouchableOpacity
                     onPress={() => {
@@ -78,10 +80,7 @@ export default function LocationPicker() {
                       justifyContent="space-between"
                       alignItems="center">
                       <DarkText pd="0px 0px 0px 5px">{item.name}</DarkText>
-                      <DefaultImage
-                        width="24px"
-                        height="24px"
-                        source={ArrowRightIcon}></DefaultImage>
+                      <DefaultImage width="24px" height="24px" source={ArrowRightIcon}></DefaultImage>
                     </RowBox>
                   </TouchableOpacity>
                   {!isDetail
@@ -89,9 +88,8 @@ export default function LocationPicker() {
                     : (index + 1) % 3 !== 0 && <Box width="8px"></Box>}
                 </Fragment>
               ))}
-            </RowBox>
-          </ScrollView>
-        )}
+          </RowBox>
+        </ScrollView>
       </Box>
     </>
   );
