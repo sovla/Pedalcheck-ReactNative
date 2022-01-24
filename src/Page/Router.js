@@ -77,6 +77,7 @@ import CouponUseDateSelect from './More/Coupon/CouponUseDateSelect';
 import messaging from '@react-native-firebase/messaging';
 import {setToken} from '@/Store/tokenState';
 import {useState} from 'react';
+import {resetUserInfo} from '@/Store/loginState';
 
 const INIT_ROUTER_COMPONENT_NAME = 'Home';
 
@@ -142,6 +143,7 @@ export default function Router() {
 const withScrollView = WrappedComponent => {
   return props => {
     const isFocus = useIsFocused();
+    const dispatch = useDispatch();
 
     useEffect(() => {
       if (!props?.navigation?.canGoBack() && isFocus) {
@@ -155,6 +157,7 @@ const withScrollView = WrappedComponent => {
         count++;
         ToastAndroid.show('한번더 뒤로가기를 누르면 앱이 종료됩니다.', ToastAndroid.SHORT);
       } else {
+        dispatch(resetUserInfo());
         BackHandler.exitApp();
       }
       setTimeout(() => {

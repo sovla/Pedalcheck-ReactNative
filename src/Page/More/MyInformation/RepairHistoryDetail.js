@@ -21,6 +21,7 @@ import Dummy5 from '@assets/image/dummy5.png';
 import {useDispatch, useSelector} from 'react-redux';
 import {useEffect} from 'react';
 import {getRepairHistoryDetail} from '@/API/More/More';
+import {useLayoutEffect} from 'react';
 
 // 2022-01-03 14:50:20
 // Junhan
@@ -38,13 +39,14 @@ export default function RepairHistoryDetail({route: {params}}) {
   const onPressReservationCancle = () => {
     dispatch(modalOpen('reservationCancle'));
   };
+
   const onPressReview = () => {
     navigation.navigate('ReviewWrite', {
       navigate: 'RepairHistory',
     });
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     getRepairHistoryDetail({
       _mt_idx: login?.idx,
       od_idx: params?.item?.od_idx,
@@ -52,7 +54,6 @@ export default function RepairHistoryDetail({route: {params}}) {
       .then(res => res.data.result === 'true' && res.data.data.data)
       .then(data => setRepair(data));
   }, [isFocused]);
-  console.log(repair);
 
   return (
     <>
@@ -64,20 +65,26 @@ export default function RepairHistoryDetail({route: {params}}) {
               status={repair?.ot_status}
               productName={[repair?.pt_title]}
               shopName={repair?.pt_title}
-              rejectionReason="승인거절 사유 노출 영역 승인거절 사유노출 영역 승인거절 사유 노출 영역"
+              rejectionReason=""
               completeDate="2021-10-14 10:58"
             />
-            <Box mg="20px 16px">
-              <DarkBoldText>정비사진</DarkBoldText>
-              <Photo imageArray={[Dummy1, Dummy2, Dummy3, Dummy4, Dummy5]} isView />
-            </Box>
-            <Box mg="0px 16px 20px">
-              <DarkBoldText>정비노트</DarkBoldText>
-              <DarkText width={size.minusPadding} fontSize={Theme.fontSize.fs15}>
-                정비노트 노출 영역 정비노트 노출 영역 정비노트 노출 영역 정비노트 노출 영역 정비노트
-                노출 영역 정비노트 노출 영역 정비노트 노출 영역 정비노트 노출 영역
-              </DarkText>
-            </Box>
+            <Box height="20px" />
+            {repair?.opt_img?.length > 0 && (
+              <Box mg="0px 16px 20px">
+                <DarkBoldText>정비사진</DarkBoldText>
+                <Photo imageArray={repair?.opt_img} isView />
+              </Box>
+            )}
+
+            {repair?.ot_note && (
+              <Box mg="0px 16px 20px">
+                <DarkBoldText>정비노트</DarkBoldText>
+                <DarkText width={size.minusPadding} fontSize={Theme.fontSize.fs15}>
+                  {repair?.ot_note}
+                </DarkText>
+              </Box>
+            )}
+
             <Box mg="0px 16px">
               <CheckList disabled checkList={checkList} isShow={isShow} setIsShow={setIsShow} />
             </Box>
@@ -191,14 +198,18 @@ const RepairHistoryDetailHeader = ({
           <IndigoText fontSize={Theme.fontSize.fs15}>{shopName} </IndigoText>
         </Box>
       </RowBox>
-      <RowBox mg="0px 0px 10px">
-        <DarkMediumText width="110px">승인거절 사유</DarkMediumText>
-        <DarkText width="275px">{rejectionReason}</DarkText>
-      </RowBox>
-      <RowBox>
-        <DarkMediumText width="110px">완료시간</DarkMediumText>
-        <DarkText width="275px">{completeDate}</DarkText>
-      </RowBox>
+      {rejectionReason !== '' && (
+        <RowBox mg="0px 0px 10px">
+          <DarkMediumText width="110px">승인거절 사유</DarkMediumText>
+          <DarkText width="275px">{rejectionReason}</DarkText>
+        </RowBox>
+      )}
+      {completeDate !== '' && (
+        <RowBox>
+          <DarkMediumText width="110px">완료시간</DarkMediumText>
+          <DarkText width="275px">{completeDate}</DarkText>
+        </RowBox>
+      )}
     </Box>
   );
 };

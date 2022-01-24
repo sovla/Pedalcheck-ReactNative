@@ -10,7 +10,6 @@ import {FlatList, StyleSheet, Text, View} from 'react-native';
 import {useSelector} from 'react-redux';
 
 export default function FAQ() {
-  const {size} = useSelector(state => state);
   const [selectPost, setSelectPost] = useState([]);
   const [postList, setPostList] = useState([]);
   const [page, setPage] = useState(1);

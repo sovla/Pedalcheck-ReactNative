@@ -8,6 +8,7 @@ import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import Header from '@/Component/Layout/Header';
 import {getCategoryName, getCategoryNumber} from '@/Util/changeCategory';
+import {showToastMessage} from '@/Util/Toast';
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {useEffect} from 'react';
@@ -73,6 +74,7 @@ export default function RepairQuestion({route: {params}}) {
         qt_content: content,
       }).then(res => {
         if (res?.data?.result === 'true') {
+          showToastMessage('저장되었습니다.');
           navigation.goBack();
         }
       });
@@ -108,7 +110,7 @@ export default function RepairQuestion({route: {params}}) {
     }
   }, [isFocused]);
   return (
-    <Container>
+    <>
       <Header title="문의하기" />
       <Container height={`${size.screenHeight - 120}px`}>
         <ScrollBox pd="0px 16px">
@@ -159,6 +161,7 @@ export default function RepairQuestion({route: {params}}) {
             changeFn={setContent}
             errorMessage={errorMessage.content !== '' && errorMessage.content}
           />
+          <Box height="110px" />
         </ScrollBox>
         <PositionBox bottom="0px">
           <LinkButton
@@ -168,6 +171,6 @@ export default function RepairQuestion({route: {params}}) {
           />
         </PositionBox>
       </Container>
-    </Container>
+    </>
   );
 }

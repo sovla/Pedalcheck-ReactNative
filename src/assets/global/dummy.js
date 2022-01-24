@@ -107,6 +107,29 @@ export const repairHistoryDropdownList = [
   },
 ];
 
+export const couponDropdownList = [
+  {
+    label: '전체',
+    value: '전체',
+  },
+  {
+    label: '미사용',
+    value: '미사용',
+  },
+  {
+    label: '사용완료',
+    value: '사용완료',
+  },
+  {
+    label: '기간만료',
+    value: '기간만료',
+  },
+  {
+    label: '사용불가',
+    value: '사용불가',
+  },
+];
+
 export const initCheckList = [
   {
     title: '휠/허브',

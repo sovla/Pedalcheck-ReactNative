@@ -14,7 +14,7 @@ import React from 'react';
 import {useLayoutEffect} from 'react';
 import {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 export default function CouponIssue() {
   const [selectCoupon, setSelectCoupon] = useState('');
