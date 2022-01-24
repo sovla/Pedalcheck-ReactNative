@@ -29,6 +29,8 @@ import {useLayoutEffect} from 'react';
 import {AlertButtons} from '@/Util/Alert';
 import {showToastMessage} from '@/Util/Toast';
 import Loading from '@/Component/Layout/Loading';
+import {imageAddress} from '@assets/global/config';
+import profileDefault from '@assets/image/profile_default.png';
 
 // 2022-01-17 17:17:25 현태 수정 필요
 
@@ -198,15 +200,19 @@ const ReviewRecomment = ({item, size, commentSubmit, deleteHandle}) => {
   return (
     <Box mg="20px 0px 0px">
       <RowBox>
-        <DefaultImage source={DummyIcon} width="50px" height="50px" />
+        <DefaultImage
+          source={item?.mt_image ? imageAddress + item?.mt_image : profileDefault}
+          width="50px"
+          height="50px"
+        />
         <Box mg="0px 0px 0px 10px">
           <RowBox>
             <DarkBoldText mg="0px 10px 0px 0px" fontSize={Theme.fontSize.fs15}>
-              {item?.mbt_name}
+              {item?.mt_nickname}
             </DarkBoldText>
-            <DarkText fontSize={Theme.fontSize.fs13}>APPALANCHIA</DarkText>
+            <DarkText fontSize={Theme.fontSize.fs13}>{item?.mbt_brand}</DarkText>
             <GrayText fontSize={Theme.fontSize.fs12}> | </GrayText>
-            <DarkText fontSize={Theme.fontSize.fs13}>Momentum</DarkText>
+            <DarkText fontSize={Theme.fontSize.fs13}>{item?.mbt_model}</DarkText>
           </RowBox>
           <GrayText fontSize={Theme.fontSize.fs12}>{item?.srt_wdate?.slice(0, 10)}</GrayText>
         </Box>

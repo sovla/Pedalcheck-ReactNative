@@ -141,6 +141,7 @@ export default function Router() {
 }
 
 const withScrollView = WrappedComponent => {
+  const dispatch = useDispatch();
   return props => {
     const isFocus = useIsFocused();
     const dispatch = useDispatch();

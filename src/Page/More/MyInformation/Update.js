@@ -110,11 +110,18 @@ export default function Update({navigation}) {
     }
 
     if (response?.data?.result === 'true') {
+      const responseMember = await getUserInformation({
+        _mt_idx: login.idx,
+      });
+
+      if (response?.data?.result === 'true') {
+        const data = response?.data?.data?.data;
+        dispatch(setUserInfo(data));
+      }
       Alert.alert('', '저장되었습니다.', [
         {
           text: '확인',
           onPress: () => {
-            dispatch(setUserInfo(user));
             navigation.goBack();
           },
         },
