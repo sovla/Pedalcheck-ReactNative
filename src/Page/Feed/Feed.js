@@ -1,4 +1,4 @@
-import {Box, Container, RowBox, ScrollBox} from '@/assets/global/Container';
+import {Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
 import GradientHeader from '@/Component/Layout/GradientHeader';
 import React, {useEffect, useState} from 'react';
 import MenuIcon from '@assets/image/menu03_top.png';
@@ -6,12 +6,14 @@ import {useSelector} from 'react-redux';
 import DummyImage from '@assets/image/bicycle_default.png';
 import DummyProfileImage from '@assets/image/dummy.png';
 import DefaultImage from '@assets/global/Image';
-import {DarkText, GrayText, IndigoText} from '@/assets/global/Text';
+import {DarkMediumText, DarkText, GrayText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import FooterButtons from '@/Component/Layout/FooterButtons';
-import {FlatList, Linking, TouchableOpacity} from 'react-native';
+import {FlatList, Linking, Modal, TouchableOpacity, View} from 'react-native';
 import {getFeedList} from '@/API/Feed/Feed';
 import {imageAddress} from '@assets/global/config';
+import WebView from 'react-native-webview';
+import CloseWhiteIcon from '@assets/image/close_white.png';
 // 웹뷰 작업 후 추가작업 필요
 
 export default function Feed() {
@@ -21,6 +23,8 @@ export default function Feed() {
 
   const [isLast, setIsLast] = useState(false);
   const [isScroll, setIsScroll] = useState(false);
+
+  const [webUri, setWebUri] = useState('');
 
   useEffect(() => {
     getFeedListHandle();
@@ -39,31 +43,61 @@ export default function Feed() {
       }
     });
   };
+
+  const onPressImage = uri => {
+    setWebUri(uri);
+  };
+
   return (
-    <Container backgroundColor="#F2F4F8">
-      <FlatList
-        ListHeaderComponent={<GradientHeader title="피드" imageSource={MenuIcon} />}
-        data={feedList}
-        keyExtractor={(item, index) => index.toString()}
-        onEndReached={() => {
-          if (isScroll) {
-            getFeedListHandle();
-            setIsScroll(false);
-          }
-        }}
-        onMomentumScrollBegin={() => {
-          setIsScroll(true);
-        }}
-        renderItem={({item, index}) => {
-          return <FeedBox item={item} size={size} />;
-        }}
-        style={{flex: 1}}
-        ListFooterComponent={<Box height="30px" backgroundColor="#0000" />}
-      />
-      <Box backgroundColor={Theme.color.backgroundWhiteGray}>
-        <FooterButtons selectMenu={3} backgroundColor={Theme.color.backgroundWhiteGray} />
-      </Box>
-    </Container>
+    <>
+      <Container backgroundColor="#F2F4F8">
+        <FlatList
+          ListHeaderComponent={<GradientHeader title="피드" imageSource={MenuIcon} />}
+          data={feedList}
+          keyExtractor={(item, index) => index.toString()}
+          onEndReached={() => {
+            if (isScroll) {
+              getFeedListHandle();
+              setIsScroll(false);
+            }
+          }}
+          onMomentumScrollBegin={() => {
+            setIsScroll(true);
+          }}
+          renderItem={({item, index}) => {
+            return <FeedBox item={item} size={size} onPressImage={onPressImage} />;
+          }}
+          style={{flex: 1}}
+          ListFooterComponent={<Box height="30px" backgroundColor="#0000" />}
+        />
+
+        <Box backgroundColor={Theme.color.backgroundWhiteGray}>
+          <FooterButtons selectMenu={3} backgroundColor={Theme.color.backgroundWhiteGray} />
+        </Box>
+        {webUri !== '' && (
+          <Modal visible>
+            <PositionBox
+              top="0px"
+              left="0px"
+              backgroundColor="#0004"
+              height="60px"
+              width="100%"
+              alignItems="flex-end"
+              justifyContent="center"
+              zIndex={100}>
+              <TouchableOpacity
+                style={{paddingRight: 15}}
+                onPress={() => {
+                  setWebUri('');
+                }}>
+                <DefaultImage source={CloseWhiteIcon} width="30px" height="30px" />
+              </TouchableOpacity>
+            </PositionBox>
+            <WebView style={{flex: 1}} source={{uri: webUri}}></WebView>
+          </Modal>
+        )}
+      </Container>
+    </>
   );
 }
 export const ShadowStyle = {
@@ -79,7 +113,8 @@ export const ShadowStyle = {
   elevation: 5,
 };
 
-const FeedBox = ({item, size}) => {
+const FeedBox = ({item, size, onPressImage}) => {
+  //item?.ft_link
   const image = item?.ft_store_img ? {uri: imageAddress + item.ft_store_img} : DummyImage;
   console.log(image);
   return (
@@ -95,7 +130,7 @@ const FeedBox = ({item, size}) => {
       {item?.ft_store_img && (
         <TouchableOpacity
           style={{borderTopLeftRadius: 15, borderTopRightRadius: 15}}
-          onPress={() => Linking.openURL(item?.ft_link)}>
+          onPress={() => onPressImage(item?.ft_link)}>
           <DefaultImage
             style={{
               borderTopLeftRadius: 15,
@@ -111,7 +146,7 @@ const FeedBox = ({item, size}) => {
 
       <RowBox mg="15px 15px 0px" justifyContent="space-between">
         <Box width="75px" alignItems="center">
-          <DefaultImage source={item?.DummyProfileImage} width="45px" height="45px" borderRadius="100px" />
+          <DefaultImage source={DummyProfileImage} width="45px" height="45px" borderRadius="100px" />
         </Box>
         <Box>
           <DarkText fontSize={Theme.fontSize.fs15} width="290px" numberOfLines={2}>
