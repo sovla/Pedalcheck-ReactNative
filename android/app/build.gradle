@@ -11,7 +11,7 @@ import com.android.build.OutputFile
  * These basically call `react-native bundle` with the correct arguments during the Android build
  * cycle. By default, bundleDebugJsAndAssets is skipped, as in debug/dev mode we prefer to load the
  * bundle directly from the development server. Below you can see all the possible configurations
- * and their defaults. If you decide to add a configuration block, make sure to add it before the
+* and their defaults. If you decide to add a configuration block, make sure to add it before the
  * `apply from: "../../node_modules/react-native/react.gradle"` line.
  *
  * project.ext.react = [
@@ -204,6 +204,11 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:29.0.3')
 
     implementation 'com.google.firebase:firebase-analytics'
+
+    implementation 'com.google.android.gms:play-services-base:17.2.1'
+    implementation 'com.google.firebase:firebase-core:17.0.0'
+    implementation "com.google.firebase:firebase-messaging:20.0.0"
+    implementation 'me.leolin:ShortcutBadger:1.1.21@aar'
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion

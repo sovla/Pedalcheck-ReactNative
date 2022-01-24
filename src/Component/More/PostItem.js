@@ -22,24 +22,26 @@ export default function PostItem({item, index, selectPost, setSelectPost}) {
   const isSelect = selectPost.find(findItem => findItem === (isIdx ? item.idx : index + 1));
   return (
     <Box key={index} alignItems="center" style={isSelect && borderBottomWhiteGray}>
-      <TouchableOpacity onPress={() => onPressPost(item?.idx ?? index + 1, item?.idx)}>
-        <BetweenBox pd="16p 10px" width={size.minusPadding} style={borderBottomWhiteGray}>
-          <Box>
-            <DarkBoldText fontSize={Theme.fontSize.fs15}>{item.title}</DarkBoldText>
-            <GrayText fontSize={Theme.fontSize.fs12}>{item.date}</GrayText>
-          </Box>
-          <DefaultImage
-            style={
-              !isSelect && {
-                transform: [{rotate: '180deg'}],
+      <Box style={borderBottomWhiteGray}>
+        <TouchableOpacity onPress={() => onPressPost(item?.idx ?? index + 1, item?.idx)}>
+          <BetweenBox pd="16p 10px" width={size.minusPadding}>
+            <Box>
+              <DarkBoldText fontSize={Theme.fontSize.fs15}>{item.title}</DarkBoldText>
+              <GrayText fontSize={Theme.fontSize.fs12}>{item.date}</GrayText>
+            </Box>
+            <DefaultImage
+              style={
+                !isSelect && {
+                  transform: [{rotate: '180deg'}],
+                }
               }
-            }
-            source={ArrowUpIcon}
-            width="24px"
-            height="24px"
-          />
-        </BetweenBox>
-      </TouchableOpacity>
+              source={ArrowUpIcon}
+              width="24px"
+              height="24px"
+            />
+          </BetweenBox>
+        </TouchableOpacity>
+      </Box>
       {isSelect && (
         <>
           {item.image && (
@@ -53,7 +55,7 @@ export default function PostItem({item, index, selectPost, setSelectPost}) {
             </Box>
           )}
 
-          <Box width="360px" mg="15px 0px 20px">
+          <Box width="360px" mg="15px 0px 20px 10px">
             <DarkText fontSize={Theme.fontSize.fs15}>{item.content}</DarkText>
           </Box>
         </>

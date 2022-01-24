@@ -3,11 +3,12 @@ import React, {useEffect, useState} from 'react';
 import {Provider} from 'react-redux';
 import Router from './src/Page/Router';
 import SplashScreen from 'react-native-splash-screen';
-import {BackHandler, PermissionsAndroid, Text, ToastAndroid, View} from 'react-native';
+import {Alert, BackHandler, PermissionsAndroid, Text, ToastAndroid, View} from 'react-native';
 import Toast from 'react-native-toast-message';
 import {DefaultText} from './src/assets/global/Text';
 import {useFocusEffect} from '@react-navigation/native';
 import {check, requestMultiple, PERMISSIONS} from 'react-native-permissions';
+import messaging from '@react-native-firebase/messaging';
 
 const STORYBOOK_START = false;
 
@@ -50,6 +51,11 @@ function App() {
       SplashScreen.hide();
     }, 300);
     requestPermissions();
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+
+    return unsubscribe;
   }, []);
 
   const toastConfig = {

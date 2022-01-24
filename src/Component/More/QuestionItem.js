@@ -28,43 +28,45 @@ export default function QuestionItem({
   const color = status === '답변' ? Theme.color.skyBlue : Theme.color.red;
   return (
     <Box>
-      <TouchableOpacity onPress={onPressItem}>
-        <Box pd="0px 0px 0px 10px" style={borderBottomWhiteGray} width={size.minusPadding}>
-          <BetweenBox width="370px" mg="16px 0px">
-            <Box>
-              {categoryName && (
-                <IndigoText fontSize={Theme.fontSize.fs14}>{categoryName}</IndigoText>
-              )}
+      <Box style={borderBottomWhiteGray}>
+        <TouchableOpacity onPress={onPressItem}>
+          <Box pd="0px 0px 0px 10px" width={size.minusPadding}>
+            <BetweenBox width="370px" mg="16px 0px">
+              <Box>
+                {categoryName && (
+                  <IndigoText fontSize={Theme.fontSize.fs14}>{categoryName}</IndigoText>
+                )}
 
-              <DarkBoldText fontSize={Theme.fontSize.fs15}>{questionTitle}</DarkBoldText>
-              <GrayText fontSize={Theme.fontSize.fs12} letterSpacing="0px">
-                {writeDate}
-              </GrayText>
-            </Box>
-
-            <RowBox>
-              <BorderButton
-                backgroundColor={color}
-                borderColor={color}
-                color={Theme.color.white}
-                width="56px"
-                height="25px">
-                {status}
-              </BorderButton>
-              <Box mg="0px 0px 0px 10px">
-                <DefaultImage
-                  source={isSelect ? ArrowUpIcon : ArrowDownIcon}
-                  width="24px"
-                  height="24px"
-                />
+                <DarkBoldText fontSize={Theme.fontSize.fs15}>{questionTitle}</DarkBoldText>
+                <GrayText fontSize={Theme.fontSize.fs12} letterSpacing="0px">
+                  {writeDate}
+                </GrayText>
               </Box>
-            </RowBox>
-          </BetweenBox>
-        </Box>
-      </TouchableOpacity>
+
+              <RowBox>
+                <BorderButton
+                  backgroundColor={color}
+                  borderColor={color}
+                  color={Theme.color.white}
+                  width="56px"
+                  height="25px">
+                  {status}
+                </BorderButton>
+                <Box mg="0px 0px 0px 10px">
+                  <DefaultImage
+                    source={isSelect ? ArrowUpIcon : ArrowDownIcon}
+                    width="24px"
+                    height="24px"
+                  />
+                </Box>
+              </RowBox>
+            </BetweenBox>
+          </Box>
+        </TouchableOpacity>
+      </Box>
       {isSelect && (
         <Box style={borderBottomWhiteGray}>
-          <DarkText fontSize={Theme.fontSize.fs15} mg="15px 0px 0px">
+          <DarkText fontSize={Theme.fontSize.fs15} mg="15px 0px 0px 10px">
             {content}
           </DarkText>
           <RowBox mg="10px 0px" width="100%" justifyContent="flex-end">

@@ -13,6 +13,7 @@ import {deleteQna, getQnaList} from '@/API/More/More';
 import QuestionAddition from '@/Component/More/Question/QuestionAddition';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {useSelector} from 'react-redux';
+import {showToastMessage} from '@/Util/Toast';
 
 // 2022-01-03 10:51:16
 // Junhan
@@ -83,6 +84,7 @@ export default function Question() {
           await setShopList(prev => prev.filter(item => item.qt_idx !== idx));
         }
         await dispatch(modalClose());
+        showToastMessage('삭제했습니다.');
       }
     });
   };

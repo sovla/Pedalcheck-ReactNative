@@ -5,11 +5,11 @@ import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import Swiper from '@/Component/Repair/Swiper';
 import React from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView} from 'react-native';
 import {useSelector} from 'react-redux';
 import ShopDummyImage from '@assets/image/shop_default.png';
 
-export default function ProductDetail() {
+export default function ProductDetail({route: {params}}) {
   const shopTitle = '인천신스';
   const productName = '정비 - 기본점검';
   const salePrice = 32000;

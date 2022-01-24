@@ -23,7 +23,12 @@ export default function Loading({
           <ActivityIndicator size="large" color={Theme.color.gray} />
         </PositionBox>
       ) : (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
           <ActivityIndicator size="large" color={Theme.color.gray} />
         </View>
       )}

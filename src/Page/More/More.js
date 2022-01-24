@@ -157,23 +157,23 @@ export default function More() {
         {!isAdmin && <UserButton />}
         <Box pd="10px 16px 0px">
           {menuItem.map((item, index) => (
-            <TouchableOpacity onPress={() => onPressMenu(item.content)} key={item.content}>
-              <RowBox
-                width={size.minusPadding}
-                alignItems="center"
-                pd="0px 16px"
-                style={[
-                  borderBottomWhiteGray,
-                  !isLastChild(menuItem.length, index)
-                    ? {borderBottomColor: Theme.borderColor.gray}
-                    : {borderBottomColor: Theme.borderColor.whiteLine},
-                ]}>
-                <DefaultImage source={item.icon} width="24px" height="24px" />
-                <DarkMediumText fontSize={Theme.fontSize.fs15} mg="15px 0px 15px 5px">
-                  {item.content}
-                </DarkMediumText>
-              </RowBox>
-            </TouchableOpacity>
+            <Box
+              key={item.content}
+              style={[
+                borderBottomWhiteGray,
+                !isLastChild(menuItem.length, index)
+                  ? {borderBottomColor: Theme.borderColor.gray}
+                  : {borderBottomColor: Theme.borderColor.whiteLine},
+              ]}>
+              <TouchableOpacity onPress={() => onPressMenu(item.content)}>
+                <RowBox width={size.minusPadding} alignItems="center" pd="0px 16px">
+                  <DefaultImage source={item.icon} width="24px" height="24px" />
+                  <DarkMediumText fontSize={Theme.fontSize.fs15} mg="15px 0px 15px 5px">
+                    {item.content}
+                  </DarkMediumText>
+                </RowBox>
+              </TouchableOpacity>
+            </Box>
           ))}
         </Box>
         <MoreFooter />
