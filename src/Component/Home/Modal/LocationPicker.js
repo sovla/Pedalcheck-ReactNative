@@ -51,7 +51,6 @@ export default function LocationPicker() {
     });
     setIsLoading(false);
   };
-  console.log(isLoading);
   const pressLocation = async location => {
     await dispatch(AddLocation(location));
     if (!isDetail) {
@@ -81,10 +80,7 @@ export default function LocationPicker() {
                       justifyContent="space-between"
                       alignItems="center">
                       <DarkText pd="0px 0px 0px 5px">{item.name}</DarkText>
-                      <DefaultImage
-                        width="24px"
-                        height="24px"
-                        source={ArrowRightIcon}></DefaultImage>
+                      <DefaultImage width="24px" height="24px" source={ArrowRightIcon}></DefaultImage>
                     </RowBox>
                   </TouchableOpacity>
                   {!isDetail
