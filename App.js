@@ -1,14 +1,12 @@
 import {store} from '@/Store/store';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Provider} from 'react-redux';
 import Router from './src/Page/Router';
 import SplashScreen from 'react-native-splash-screen';
-import {Alert, BackHandler, PermissionsAndroid, Text, ToastAndroid, View} from 'react-native';
+import {Text, View, TouchableOpacity} from 'react-native';
 import Toast from 'react-native-toast-message';
 import {DefaultText} from './src/assets/global/Text';
-import {useFocusEffect} from '@react-navigation/native';
-import {check, requestMultiple, PERMISSIONS} from 'react-native-permissions';
-import messaging from '@react-native-firebase/messaging';
+import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
 
 const STORYBOOK_START = false;
 
@@ -51,16 +49,12 @@ function App() {
       SplashScreen.hide();
     }, 300);
     requestPermissions();
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-    });
-
-    return unsubscribe;
   }, []);
 
   const toastConfig = {
-    customToast: ({text1, props}) => (
+    customToast: ({text1, onPress, props}) => (
       <View
+        onStartShouldSetResponder={onPress}
         style={{
           width: '92%',
           justifyContent: 'center',
@@ -79,6 +73,45 @@ function App() {
           <DefaultText>{text1}</DefaultText>
         </View>
       </View>
+    ),
+    pushToast: ({text1, text2, onPress, props, ...rest}) => (
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={onPress}
+        style={{
+          width: '100%',
+          justifyContent: 'center',
+          padding: 16,
+          marginTop: Platform.OS === 'ios' ? 44 : 0,
+          backgroundColor: '#22222290',
+        }}>
+        <View
+          style={{
+            width: '100%',
+          }}>
+          <Text
+            numberOfLines={1}
+            style={[
+              {
+                color: '#fff',
+                textAlign: 'center',
+              },
+            ]}>
+            {text1}
+          </Text>
+          <Text
+            numberOfLines={2}
+            style={[
+              {
+                color: '#fff',
+                textAlign: 'center',
+                marginTop: 10,
+              },
+            ]}>
+            {text2}
+          </Text>
+        </View>
+      </TouchableOpacity>
     ),
   };
 

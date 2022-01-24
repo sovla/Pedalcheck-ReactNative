@@ -17,6 +17,7 @@ import SnsLogin from '@/Hooks/SnsLogin';
 import {setUserInfo} from '@/Store/loginState';
 import {imageAddress} from '@assets/global/config';
 import ImageCropPicker from 'react-native-image-crop-picker';
+import {login} from '@react-native-seoul/kakao-login';
 
 export default function RegisterAdditional({navigation, route}) {
   const {snsLogin, token, birthDate} = useSelector(state => state);
@@ -64,6 +65,7 @@ export default function RegisterAdditional({navigation, route}) {
         setSex={setSex}
         imageType={imageType}
         setImageType={setImageType}
+        information={information}
       />
       <Box mg="0px 16px 20px">
         <FooterButton
@@ -84,6 +86,7 @@ export const RegisterAdditionalBody = ({
   selectImage,
   imageType,
   setImageType,
+  login,
 }) => {
   const {size} = useSelector(state => state);
 
@@ -95,6 +98,11 @@ export const RegisterAdditionalBody = ({
     birthDate?.year !== '' ? `${birthDate.year}년 ${birthDate.month}월 ${birthDate.day}일` : '';
 
   let image = selectImage ? charImage[selectImage] : ProfileImage;
+  if (!image) {
+    image = {
+      uri: imageAddress + selectImage,
+    };
+  }
 
   const onPressAddImage = () => {
     ImageCropPicker.openPicker({
@@ -114,7 +122,14 @@ export const RegisterAdditionalBody = ({
       </Box>
       <RowBox mg="0px 0px 20px">
         <DefaultImage
-          source={imageType === 2 ? {uri: selectImage.path} : image}
+          source={
+            imageType === 2
+              ? {
+                  uri:
+                    selectImage.path !== undefined ? selectImage.path : imageAddress + selectImage,
+                }
+              : image
+          }
           width="80px"
           height="80px"
         />

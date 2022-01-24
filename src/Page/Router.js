@@ -78,6 +78,8 @@ import messaging from '@react-native-firebase/messaging';
 import {setToken} from '@/Store/tokenState';
 import {useState} from 'react';
 import {resetUserInfo} from '@/Store/loginState';
+import {showPushToastMessage, showToastMessage} from '@/Util/Toast';
+import {useRef} from 'react';
 
 const INIT_ROUTER_COMPONENT_NAME = 'Home';
 
@@ -88,6 +90,7 @@ const Stack = createNativeStackNavigator();
 export default function Router() {
   const dispatch = useDispatch();
   const {height, width} = useWindowDimensions();
+  const navigationRef = useRef(null);
 
   const getToken = async () => {
     try {
@@ -101,7 +104,6 @@ export default function Router() {
   };
 
   useEffect(() => {
-    getToken();
     dispatch(
       initSetting({
         screenWidth: width,
@@ -109,13 +111,30 @@ export default function Router() {
         minusPadding: `380px`,
       }),
     );
-
-    return () => {};
   }, [height]);
+
+  useEffect(() => {
+    getToken();
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      showPushToastMessage({
+        remoteMessage: remoteMessage,
+        onPress: () => {
+          navigationRef.current.navigate(remoteMessage?.data?.intent, {
+            menu: remoteMessage?.data?.menu,
+          });
+        },
+      });
+    });
+    return () => {
+      dispatch(resetUserInfo());
+      unsubscribe();
+      getToken();
+    };
+  }, []);
 
   return (
     <>
-      <NavigationContainer>
+      <NavigationContainer ref={navigationRef}>
         <Stack.Navigator
           initialRouteName={INIT_ROUTER_COMPONENT_NAME}
           screenOptions={{
@@ -134,6 +153,7 @@ export default function Router() {
               }}
             />
           ))}
+          <></>
         </Stack.Navigator>
       </NavigationContainer>
     </>
@@ -141,29 +161,29 @@ export default function Router() {
 }
 
 const withScrollView = WrappedComponent => {
-  const dispatch = useDispatch();
   return props => {
     const isFocus = useIsFocused();
-    const dispatch = useDispatch();
-
     useEffect(() => {
       if (!props?.navigation?.canGoBack() && isFocus) {
         BackHandler.addEventListener('hardwareBackPress', onBackPress);
       }
-      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+      };
     }, [isFocus]);
 
     const onBackPress = async () => {
       if (count < 1) {
         count++;
-        ToastAndroid.show('한번더 뒤로가기를 누르면 앱이 종료됩니다.', ToastAndroid.SHORT);
+        //ToastAndroid.show('한번더 뒤로가기를 누르면 앱이 종료됩니다.', ToastAndroid.SHORT);
+        showToastMessage('뒤로가기를 한번 더 누르면 앱이 종료됩니다.', 1500);
       } else {
-        dispatch(resetUserInfo());
         BackHandler.exitApp();
       }
       setTimeout(() => {
         count = 0;
-      }, 2000);
+      }, 1500);
 
       return true;
     };
