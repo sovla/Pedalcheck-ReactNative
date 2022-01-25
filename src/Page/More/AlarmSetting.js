@@ -36,8 +36,6 @@ export default function AlarmSetting() {
     dispatch(setUserInfo(userInformation));
   }, [userInformation]);
 
-  console.log('userInformation ::::', userInformation);
-
   return (
     <>
       <Header title="알림 설정" />

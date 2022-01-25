@@ -3,7 +3,7 @@ import DefaultImage from '@/assets/global/Image';
 import Header from '@/Component/Layout/Header';
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import DummyIcon from '@assets/image/default_5.png';
+import profileDefault from '@assets/image/profile_default.png';
 import {DarkBoldText, DarkMediumText, DarkText, GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import DefaultLine from '@/assets/global/Line';
@@ -45,7 +45,11 @@ export default function Information({route: {params}}) {
       <Header title="내 정보" />
       <Container>
         <Box mg="20px 0px" width={size.designWidth} alignItems="center">
-          <DefaultImage source={{uri: imageAddress + login.mt_image}} width="80px" height="80px" />
+          <DefaultImage
+            source={login?.mt_image ? {uri: imageAddress + login.mt_image} : profileDefault}
+            width="80px"
+            height="80px"
+          />
           <DarkBoldText fontSize={Theme.fontSize.fs18}>
             {login.mt_name}
             <DarkText fontSize={Theme.fontSize.fs18}>님</DarkText>
@@ -67,16 +71,11 @@ export default function Information({route: {params}}) {
                   <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
                     자전거 관리
                   </DarkMediumText>
-                  <DarkText fontSize={Theme.fontSize.fs15}>
-                    {bikeNumber ? bikeNumber : 0}/5
-                  </DarkText>
+                  <DarkText fontSize={Theme.fontSize.fs15}>{bikeNumber ? bikeNumber : 0}/5</DarkText>
                 </RowBox>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('CouponManagement')}>
-                <RowBox
-                  backgroundColor="#0000"
-                  style={borderBottomWhiteGray}
-                  width={size.minusPadding}>
+                <RowBox backgroundColor="#0000" style={borderBottomWhiteGray} width={size.minusPadding}>
                   <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
                     쿠폰 관리
                   </DarkMediumText>

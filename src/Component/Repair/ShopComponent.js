@@ -33,14 +33,7 @@ export default function ShopComponent({
   const tagListText = tagList.map(item => `#${item} `);
   const ShopItem = () => {
     return (
-      <RowBox
-        style={isBorder && borderBottomWhiteGray}
-        justifyContent="space-between"
-        alignItems="center"
-        width={width}
-        minHeight="100px"
-        mg={mg}
-        pd={pd}>
+      <RowBox justifyContent="space-between" alignItems="center" width={width} minHeight="100px" mg={mg} pd={pd}>
         <Box height="74px">
           <RowBox height="33.33%" alignItems="center">
             <DarkBoldText mg="0px 5px 0px 0px" fontSize={titleFontSize ?? Theme.fontSize.fs16}>
@@ -49,10 +42,7 @@ export default function ShopComponent({
             {isPartner && (
               <RowBox alignItems="center">
                 <DefaultImage source={ParterIcon} width="12px" height="12px" />
-                <DefaultText
-                  color={Theme.color.indigo}
-                  fontSize={Theme.fontSize.fs12}
-                  mg="0px 0px 0px 3px">
+                <DefaultText color={Theme.color.indigo} fontSize={Theme.fontSize.fs12} mg="0px 0px 0px 3px">
                   파트너매장
                 </DefaultText>
               </RowBox>
@@ -79,11 +69,7 @@ export default function ShopComponent({
           </RowBox>
           <RowBox width="286px" alignItems="center" flexWrap="wrap">
             {tagList.map((item, index) => (
-              <DefaultText
-                key={index}
-                fontSize={Theme.fontSize.fs13}
-                color={Theme.color.skyBlue}
-                mg="0px 5px 0px 0px">
+              <DefaultText key={index} fontSize={Theme.fontSize.fs13} color={Theme.color.skyBlue} mg="0px 5px 0px 0px">
                 #{item}
               </DefaultText>
             ))}
@@ -96,16 +82,22 @@ export default function ShopComponent({
   return (
     <>
       {isPress && (
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('Shop', {
-              mt_idx: item?.mt_idx,
-            })
-          }>
-          <ShopItem />
-        </TouchableOpacity>
+        <RowBox style={isBorder && borderBottomWhiteGray}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('Shop', {
+                mt_idx: item?.mt_idx,
+              })
+            }>
+            <ShopItem />
+          </TouchableOpacity>
+        </RowBox>
       )}
-      {!isPress && <ShopItem />}
+      {!isPress && (
+        <RowBox style={isBorder && borderBottomWhiteGray}>
+          <ShopItem />
+        </RowBox>
+      )}
     </>
   );
 }

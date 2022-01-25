@@ -109,7 +109,10 @@ export default function RepairHome() {
           }
           setisLast(false);
         } else {
-          setStoreList([]);
+          if (initPage) {
+            setStoreList([]);
+          }
+
           setApiPage(prev => prev + 1);
           setisLast(true);
         }
