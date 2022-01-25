@@ -7,8 +7,9 @@ import {useSelector} from 'react-redux';
 import DefaultImage from '@/assets/global/Image';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import {TouchableOpacity} from 'react-native';
+import {imageAddress} from '@assets/global/config';
 
-export default function PostItem({item, index, selectPost, setSelectPost}) {
+export default function PostItem({item, index, selectPost, setSelectPost, isImage = true}) {
   const {size} = useSelector(state => state);
   const isIdx = item?.idx !== undefined;
   const onPressPost = (idx, type) => {
@@ -18,7 +19,6 @@ export default function PostItem({item, index, selectPost, setSelectPost}) {
       setSelectPost(prev => [...prev, idx]);
     }
   };
-
   const isSelect = selectPost.find(findItem => findItem === (isIdx ? item.idx : index + 1));
   return (
     <Box key={index} alignItems="center" style={isSelect && borderBottomWhiteGray}>
@@ -44,11 +44,11 @@ export default function PostItem({item, index, selectPost, setSelectPost}) {
       </Box>
       {isSelect && (
         <>
-          {item.image && (
+          {item?.image && isImage && (
             <Box mg="15px 0px 0px">
               <DefaultImage
                 style={{borderRadius: 15}}
-                source={item.image}
+                source={{uri: imageAddress + item.image}}
                 width="360px"
                 height="150px"
               />

@@ -119,7 +119,6 @@ export default function More() {
       dispatch(setStoreInfo(response?.data?.data?.data));
     }
   };
-  console.log(login);
 
   return (
     <Container>
@@ -147,11 +146,7 @@ export default function More() {
           <BetweenBox width={size.designWidth} pd="20px 16px 10px 16px" alignItems="center">
             <DarkBoldText>정비소 관리자 화면으로 전환</DarkBoldText>
             <TouchableOpacity onPress={() => setIsAdmin(!isAdmin)}>
-              <DefaultImage
-                source={isAdmin ? SwitchOnIcon : SwitchOffIcon}
-                width="61px"
-                height="27px"
-              />
+              <DefaultImage source={isAdmin ? SwitchOnIcon : SwitchOffIcon} width="61px" height="27px" />
             </TouchableOpacity>
           </BetweenBox>
         ) : (
@@ -236,17 +231,13 @@ const MoreFooter = () => {
   return (
     <Box alignItems="center" flex={1} backgroundColor={Theme.borderColor.whiteLine}>
       <RowBox backgroundColor={Theme.borderColor.whiteLine} mg="30px 0px 10px">
-        <TouchableOpacity
-          style={{padding: 3}}
-          onPress={() => navigation.navigate('PrivacyPolicy', {st_agree: 1})}>
+        <TouchableOpacity style={{padding: 3}} onPress={() => navigation.navigate('PrivacyPolicy', {st_agree: 1})}>
           <GrayText fontSize={Theme.fontSize.fs13}>개인정보 처리방침</GrayText>
         </TouchableOpacity>
         <GrayText fontSize={Theme.fontSize.fs13} mg="0px 10px">
           |
         </GrayText>
-        <TouchableOpacity
-          style={{padding: 3}}
-          onPress={() => navigation.navigate('PrivacyPolicy', {st_agree: 2})}>
+        <TouchableOpacity style={{padding: 3}} onPress={() => navigation.navigate('PrivacyPolicy', {st_agree: 2})}>
           <GrayText fontSize={Theme.fontSize.fs13}>서비스 이용약관</GrayText>
         </TouchableOpacity>
       </RowBox>
@@ -303,9 +294,7 @@ const PedalCheckInfo = () => {
       </RowBox>
 
       <RowBox mg="0px 0px 5px" backgroundColor="#0000" width="380px">
-        <GrayText fontSize={Theme.fontSize.fs13}>
-          Copyright ⓒ 2022 와이크 All rights reserved
-        </GrayText>
+        <GrayText fontSize={Theme.fontSize.fs13}>Copyright ⓒ 2022 와이크 All rights reserved</GrayText>
       </RowBox>
     </Box>
   );

@@ -54,6 +54,7 @@ export default function FAQ() {
               index={index}
               selectPost={selectPost}
               setSelectPost={setSelectPost}
+              isImage={false}
             />
           );
         }}

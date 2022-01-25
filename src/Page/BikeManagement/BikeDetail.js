@@ -239,12 +239,7 @@ export default function BikeDetail({navigation, route}) {
                 placeHolder="주행거리를 입력하세요"
                 mg="0px 10px 0px 0px"
               />
-              <LinkButton
-                width="60px"
-                height="44px"
-                content="저장"
-                to={() => setBikeDistacneHandle()}
-              />
+              <LinkButton width="60px" height="44px" content="저장" to={() => setBikeDistacneHandle()} />
             </RowBox>
           </Box>
           <Box>
@@ -255,11 +250,7 @@ export default function BikeDetail({navigation, route}) {
           </Box>
           <Box>
             <TouchableOpacity onPress={() => navigation.navigate('RepairHistory')}>
-              <RowBox
-                mg="20px 0px 0px"
-                alignItems="center"
-                justifyContent="space-between"
-                width={size.minusPadding}>
+              <RowBox mg="20px 0px 0px" alignItems="center" justifyContent="space-between" width={size.minusPadding}>
                 <DarkText fontWeight={Theme.fontWeight.medium}>정비이력</DarkText>
                 <DefaultImage source={ArrowRightIcon} width="24px" height="24px" />
               </RowBox>
@@ -275,14 +266,10 @@ export default function BikeDetail({navigation, route}) {
                         status: item.ot_status,
                       }
                     : {};
-                  return <ShopRepairHistory item={shopItem} />;
+                  return <ShopRepairHistory key={index} item={shopItem} />;
                 })
               ) : (
-                <Box
-                  alignItems="center"
-                  justifyContent="space-between"
-                  width="380px"
-                  mg="30px 0px 30px 0px">
+                <Box alignItems="center" justifyContent="space-between" width="380px" mg="30px 0px 30px 0px">
                   <DarkText>정비이력이 없습니다.</DarkText>
                 </Box>
               )}

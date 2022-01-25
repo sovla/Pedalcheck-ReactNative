@@ -9,12 +9,12 @@ import DefaultImage from '@assets/global/Image';
 import {DarkMediumText, DarkText, GrayText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import FooterButtons from '@/Component/Layout/FooterButtons';
-import {FlatList, Linking, Modal, TouchableOpacity, View} from 'react-native';
+import {BackHandler, FlatList, Linking, Modal, TouchableOpacity, View} from 'react-native';
 import {getFeedList} from '@/API/Feed/Feed';
 import {imageAddress} from '@assets/global/config';
 import WebView from 'react-native-webview';
 import CloseWhiteIcon from '@assets/image/close_white.png';
-// 웹뷰 작업 후 추가작업 필요
+import {useRef} from 'react';
 
 export default function Feed() {
   const {size} = useSelector(state => state);
@@ -25,6 +25,9 @@ export default function Feed() {
   const [isScroll, setIsScroll] = useState(false);
 
   const [webUri, setWebUri] = useState('');
+
+  const ref = useRef();
+  const [navState, setNavState] = useState();
 
   useEffect(() => {
     getFeedListHandle();
@@ -44,10 +47,6 @@ export default function Feed() {
     });
   };
 
-  const onPressImage = uri => {
-    setWebUri(uri);
-  };
-
   return (
     <>
       <Container backgroundColor="#F2F4F8">
@@ -65,7 +64,15 @@ export default function Feed() {
             setIsScroll(true);
           }}
           renderItem={({item, index}) => {
-            return <FeedBox item={item} size={size} onPressImage={onPressImage} />;
+            return (
+              <FeedBox
+                item={item}
+                size={size}
+                onPressImage={uri => {
+                  setWebUri(uri);
+                }}
+              />
+            );
           }}
           style={{flex: 1}}
           ListFooterComponent={<Box height="30px" backgroundColor="#0000" />}
@@ -93,7 +100,8 @@ export default function Feed() {
                 <DefaultImage source={CloseWhiteIcon} width="30px" height="30px" />
               </TouchableOpacity>
             </PositionBox>
-            <WebView style={{flex: 1}} source={{uri: webUri}}></WebView>
+
+            <WebView ref={ref} onNavigationStateChange={setNavState} style={{flex: 1}} source={{uri: webUri}}></WebView>
           </Modal>
         )}
       </Container>
@@ -116,7 +124,6 @@ export const ShadowStyle = {
 const FeedBox = ({item, size, onPressImage}) => {
   //item?.ft_link
   const image = item?.ft_store_img ? {uri: imageAddress + item.ft_store_img} : DummyImage;
-  console.log(image);
   return (
     <Box
       width={size.minusPadding}

@@ -1,7 +1,4 @@
-import {
-  getReservationDayList,
-  reservationDayListSave,
-} from '@/API/ReservationManagement/ReservationManagement';
+import {getReservationDayList, reservationDayListSave} from '@/API/ReservationManagement/ReservationManagement';
 import {Box, Container} from '@/assets/global/Container';
 import {GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
@@ -34,7 +31,10 @@ export default function ScheduleManagement() {
       .then(res => res.data?.result === 'true' && res.data.data.data)
       .then(data => {
         setTimeList(data.store_time);
-        setOrderList(data.order_date);
+        if (orderList.length === 0) {
+          setOrderList(data.order_date);
+        }
+
         setAllOff(data.st_off === 'Y');
         setRepeat(data.st_repeat === 'Y');
         setMemo(data.st_memo);
@@ -78,12 +78,7 @@ export default function ScheduleManagement() {
   };
   return (
     <Container>
-      <ScrollDays
-        daySelect={daySelect}
-        setDaySelect={setDaySelect}
-        isNotPrev
-        orderList={orderList}
-      />
+      <ScrollDays daySelect={daySelect} setDaySelect={setDaySelect} isNotPrev orderList={orderList} />
       <Box mg="0px 16px 40px">
         <GrayText fontSize={Theme.fontSize.fs13}>
           좌/우로 슬라이드하여 지난 주/다음 주 예약내역을 볼 수 있습니다.
