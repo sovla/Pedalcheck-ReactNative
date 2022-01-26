@@ -330,6 +330,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
                 questionPress={item.question !== undefined && item.question}
                 isDropdown={item.isDropdown}
                 dropdownItem={item.isDropdown && item.dropdownItems}
+                maxLength={item?.maxLength}
               />
             );
           })}
