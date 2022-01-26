@@ -50,10 +50,7 @@ export const DefaultInput = ({
     <Box mg={mg}>
       {title && ( // 헤더 영역
         <RowBox pd={pd}>
-          <DefaultText
-            color={Theme.color.black}
-            fontSize={fontSize}
-            fontWeight={Theme.fontWeight.bold}>
+          <DefaultText color={Theme.color.black} fontSize={fontSize} fontWeight={Theme.fontWeight.bold}>
             {title}
           </DefaultText>
           {isQuestion && (
@@ -109,9 +106,7 @@ export const DefaultInput = ({
       {RenderCondition === 'isText' && ( // 텍스트 형태
         <TouchableOpacity onPress={PressText}>
           <DefaultInputTextStyle width={width} height={height}>
-            <DefaultText
-              fontSize={fontSize}
-              color={value !== '' ? Theme.color.black : Theme.color.gray}>
+            <DefaultText fontSize={fontSize} color={value !== '' ? Theme.color.black : Theme.color.gray}>
               {value !== '' ? value : placeHolder}
             </DefaultText>
           </DefaultInputTextStyle>
@@ -132,14 +127,12 @@ export const DefaultInput = ({
           placeholderStyle={{
             color: Theme.color.black,
             fontSize: 15,
-            fontFamily:
-              Platform.OS === 'android' ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF',
+            fontFamily: Platform.OS === 'android' ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF',
           }}
           selectedTextStyle={{
             color: Theme.color.black,
             fontSize: 15,
-            fontFamily:
-              Platform.OS === 'android' ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF',
+            fontFamily: Platform.OS === 'android' ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF',
             lineHeight: 20,
             height: 20,
           }}

@@ -41,5 +41,8 @@ export default function ShopRepairHistory({
 
 export const borderBottomWhiteGray = {
   borderBottomWidth: 1,
+
   borderBottomColor: Theme.borderColor.whiteGray,
+  borderTopColor: Theme.color.white,
+  borderTopWidth: 0,
 };

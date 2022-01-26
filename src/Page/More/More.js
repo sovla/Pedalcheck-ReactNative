@@ -25,6 +25,7 @@ import HeartIcon from '@assets/image/heart_SkyBlue.png';
 import HeadsetIcon from '@assets/image/ic_inquiry.png';
 import QuestionIcon from '@assets/image/ic_question.png';
 import BoxIcon from '@assets/image/box_Indigo.png';
+
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import {isLastChild} from '@/Util/nthMap';
 import {BorderButton} from '@/assets/global/Button';

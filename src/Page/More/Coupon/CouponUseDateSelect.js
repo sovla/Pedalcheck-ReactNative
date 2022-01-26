@@ -21,7 +21,6 @@ import {AlertButton} from '@/Util/Alert';
 export default function ReservationDate({navigation, route: {params}}) {
   const isFocused = useIsFocused();
   const now = new Date(moment().format('YYYY-MM-DD HH:mm:ss'));
-
   const {shopInfo, reservationInfo} = useSelector(state => state);
   const [selectItem, setSelectItem] = useState(''); // 선택한 시간
   const [selectDate, setSelectDate] = useState(null); // 선택한 날짜
@@ -60,9 +59,7 @@ export default function ReservationDate({navigation, route: {params}}) {
     if (isFocused) {
       onChangeMonth(
         selectDate?.substr(0, 7) ??
-          `${now.getFullYear()}-${
-            now.getMonth() + 1 < 10 ? '0' + (now.getMonth() + 1) : now.getMonth() + 1
-          }`,
+          `${now.getFullYear()}-${now.getMonth() + 1 < 10 ? '0' + (now.getMonth() + 1) : now.getMonth() + 1}`,
       );
     }
   }, [isFocused]);

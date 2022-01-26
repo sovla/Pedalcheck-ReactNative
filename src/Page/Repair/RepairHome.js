@@ -28,6 +28,7 @@ import {getEventList} from '@/API/Repair/Repair';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {reduceItemSplit} from '@/Util/reduceItem';
+import Loading from '@/Component/Layout/Loading';
 
 export default function RepairHome() {
   const {size, login, location, modal} = useSelector(state => state);
@@ -48,6 +49,8 @@ export default function RepairHome() {
 
   const [isLast, setisLast] = useState(false);
   const [isScroll, setIsScroll] = useState(false);
+  const [isDone, setIsDone] = useState(true);
+
   const onPressTag = tagName => {
     // By.Junhan tag에 값이 없다면 넣어주고 있다면 제거
     if (tag.find(item => item === tagName)) {
@@ -83,7 +86,9 @@ export default function RepairHome() {
   }, [location]);
 
   const getShopListHandle = async initPage => {
+    setIsDone(true);
     if (isLast && !initPage) {
+      setIsDone(false);
       return null;
     }
     let mst_tag = reduceItemSplit(tag, ',');
@@ -97,89 +102,96 @@ export default function RepairHome() {
       mst_tag: mst_tag, //
       mst_type: selectItem === '전체보기' ? '' : '1',
       sorting: sortSelectItem === '정비횟수순' ? '2' : sortSelectItem === '거리순' ? '3' : '1', // 인기순 1 거리순 2 정비횟수순 3
-    }).then(res => {
-      const isTrue = res.data?.result === 'true';
-      if (isTrue) {
-        const isData = res.data?.data?.data?.store_list?.length > 0;
-        if (isData) {
-          if (initPage) {
-            setStoreList([...res?.data?.data?.data?.store_list]);
+    })
+      .then(res => {
+        const isTrue = res.data?.result === 'true';
+        if (isTrue) {
+          const isData = res.data?.data?.data?.store_list?.length > 0;
+          if (isData) {
+            if (initPage) {
+              setStoreList([...res?.data?.data?.data?.store_list]);
+            } else {
+              setStoreList(prev => [...prev, ...res?.data?.data?.data?.store_list]);
+            }
+            setisLast(false);
           } else {
-            setStoreList(prev => [...prev, ...res?.data?.data?.data?.store_list]);
-          }
-          setisLast(false);
-        } else {
-          if (initPage) {
-            setStoreList([]);
-          }
+            if (initPage) {
+              setStoreList([]);
+            }
 
-          setApiPage(prev => prev + 1);
-          setisLast(true);
+            setApiPage(prev => prev + 1);
+            setisLast(true);
+          }
         }
-      }
-    });
+      })
+      .finally(() => {
+        setIsDone(false);
+      });
   };
 
   return (
-    <Container>
-      <FlatList
-        ListHeaderComponent={
-          <Header
-            size={size}
-            tag={tag}
-            selectItem={selectItem}
-            setSelectItem={setSelectItem}
-            sortSelectItem={sortSelectItem}
-            setSortSelectItem={setSortSelectItem}
-            innerLocation={innerLocation}
-            selectImage={selectImage}
-            onScrollSlide={onScrollSlide}
-            onPressTag={onPressTag}
-            dispatch={dispatch}
-            searchText={searchText}
-            setSearchText={setSearchText}
-            setIsSearch={setIsSearch}
-          />
-        }
-        data={storeList}
-        renderItem={({item, index}) => (
-          <Box width="380px" mg="0px 16px">
-            <ShopComponent
-              mg="0px"
-              pd="14px 10px"
-              item={item}
-              shopTitle={item?.mst_name}
-              isPartner={item?.mst_type === '1'}
-              likeCount={item?.mst_likes ?? 0}
-              reviewCount={item?.mst_reviews ?? 0}
-              repairCount={item?.mst_orders ?? 0}
-              tagList={item.mst_tag.split(',')}
-              isImage
+    <>
+      {isDone && <Loading isAbsolute />}
+      <Container>
+        <FlatList
+          ListHeaderComponent={
+            <Header
+              size={size}
+              tag={tag}
+              selectItem={selectItem}
+              setSelectItem={setSelectItem}
+              sortSelectItem={sortSelectItem}
+              setSortSelectItem={setSortSelectItem}
+              innerLocation={innerLocation}
+              selectImage={selectImage}
+              onScrollSlide={onScrollSlide}
+              onPressTag={onPressTag}
+              dispatch={dispatch}
+              searchText={searchText}
+              setSearchText={setSearchText}
+              setIsSearch={setIsSearch}
             />
-          </Box>
-        )}
-        ListEmptyComponent={() => {
-          return (
-            <Box justifyContent="center" alignItems="center" mg="20px 0px">
-              <DarkBoldText>검색 결과가 없습니다.</DarkBoldText>
-            </Box>
-          );
-        }}
-        style={{
-          marginBottom: 20,
-        }}
-        onEndReached={() => {
-          if (isScroll) {
-            getShopListHandle();
-            setIsScroll(false);
           }
-        }}
-        onMomentumScrollBegin={() => {
-          setIsScroll(true);
-        }}
-      />
-      <FooterButtons selectMenu={1} />
-    </Container>
+          data={storeList}
+          renderItem={({item, index}) => (
+            <Box width="380px" mg="0px 16px">
+              <ShopComponent
+                mg="0px"
+                pd="14px 10px"
+                item={item}
+                shopTitle={item?.mst_name}
+                isPartner={item?.mst_type === '1'}
+                likeCount={item?.mst_likes ?? 0}
+                reviewCount={item?.mst_reviews ?? 0}
+                repairCount={item?.mst_orders ?? 0}
+                tagList={item.mst_tag.split(',')}
+                isImage
+              />
+            </Box>
+          )}
+          ListEmptyComponent={() => {
+            return (
+              <Box justifyContent="center" alignItems="center" mg="20px 0px">
+                <DarkBoldText>검색 결과가 없습니다.</DarkBoldText>
+              </Box>
+            );
+          }}
+          style={{
+            marginBottom: 20,
+          }}
+          onEndReached={() => {
+            if (isScroll) {
+              getShopListHandle();
+              setIsScroll(false);
+            }
+          }}
+          onMomentumScrollBegin={() => {
+            setIsScroll(true);
+          }}
+        />
+        <FooterButtons selectMenu={1} />
+      </Container>
+    </>
   );
 }
 const Header = ({
