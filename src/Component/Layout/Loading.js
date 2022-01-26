@@ -4,10 +4,17 @@ import {getHeightPixel} from '@/Util/pixelChange';
 import React from 'react';
 import {ActivityIndicator, View} from 'react-native';
 
-export default function Loading({isAbsolute = false, top = '0px', right = '0px', left = '0px', bottom = '0px'}) {
+export default function Loading({
+  isAbsolute = false,
+  isFullSize = true,
+  top = '0px',
+  right = '0px',
+  left = '0px',
+  bottom = '0px',
+}) {
   return (
     <>
-      {isAbsolute ? (
+      {isAbsolute && isFullSize && (
         <PositionBox
           top="0px"
           left="0px"
@@ -19,7 +26,13 @@ export default function Loading({isAbsolute = false, top = '0px', right = '0px',
           justifyContent="center">
           <ActivityIndicator size="large" color={Theme.color.gray} />
         </PositionBox>
-      ) : (
+      )}
+      {isAbsolute && !isFullSize && (
+        <PositionBox top={top} right={right} left={left} bottom={bottom} alignItems="center" justifyContent="center">
+          <ActivityIndicator size="large" color={Theme.color.gray} />
+        </PositionBox>
+      )}
+      {!isAbsolute && (
         <View
           style={{
             flex: 1,

@@ -34,10 +34,7 @@ export default function ReservationPayment({navigation}) {
     {title: '매장명', content: store_info?.mst_name},
     {
       title: '정비상품',
-      content:
-        selectProduct?.length > 1
-          ? `${firstProduct} 외 ${selectProduct.length - 1}건`
-          : firstProduct,
+      content: selectProduct?.length > 1 ? `${firstProduct} 외 ${selectProduct.length - 1}건` : firstProduct,
     },
     {title: '결제금액', content: numberFormat(totalPrice) + '원'},
     {title: '예약시간', content: reservationTime},
@@ -75,11 +72,7 @@ export default function ReservationPayment({navigation}) {
       </Box>
       <Box mg="0px 16px 20px">
         <LinkWhiteButton content="장비 신청 확인하기"></LinkWhiteButton>
-        <LinkButton
-          mg="10px 0px 0px 0px"
-          to={() => navigation.navigate('RepairHome')}
-          content="홈으로 돌아가기"
-        />
+        <LinkButton mg="10px 0px 0px 0px" to={() => navigation.navigate('RepairHome')} content="홈으로 돌아가기" />
       </Box>
     </>
   );
