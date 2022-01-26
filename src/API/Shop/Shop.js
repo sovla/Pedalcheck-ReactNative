@@ -93,3 +93,12 @@ export const sendOrder = async args => {
     console.log(error);
   }
 };
+
+export const getOrderCheck = async args => {
+  try {
+    const response = await API.post('order_check.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -18,20 +18,26 @@ export function Payment({navigation}) {
   /* [필수입력] 결제 종료 후, 라우터를 변경하고 결과를 전달합니다. */
   function callback(response) {
     console.log(response);
-    navigation.replace('ReservationPayment', response);
+    if (response.imp_success === 'true') {
+      navigation.replace('ReservationPayment', response);
+    } else {
+      navigation.goBack();
+    }
+    // 결제완료
   }
-  /* [필수입력] 결제에 필요한 데이터를 입력합니다. */
-  console.log(reservationInfo);
+
   useLayoutEffect(() => {
     if (!responseData) {
       const pt_idx = [];
       const pt_title = [];
       const pt_price = [];
+      const pt_sprice = [];
 
-      selectProduct.selectProduct.forEach(foreachItem => {
-        pt_idx.push(foreachItem.item.pt_idx);
-        pt_title.push(foreachItem.item.pt_title);
-        pt_price.push(foreachItem.item.pt_price);
+      selectProduct.selectProduct.forEach(forItem => {
+        pt_idx.push(forItem.item.pt_idx);
+        pt_title.push(forItem.item.pt_title);
+        pt_price.push(forItem.item.pt_dc_price);
+        pt_sprice.push(forItem.item.pt_price);
       });
       sendOrder({
         _mt_idx: login.idx,
@@ -48,41 +54,49 @@ export function Payment({navigation}) {
         pt_idx: pt_idx,
         pt_title: pt_title,
         pt_price: pt_price,
+        pt_sprice: pt_sprice,
       })
         .then(res => res.data?.result === 'true' && res.data.data.data)
         .then(data => {
           if (data) {
+            if (data?.price_zero && data?.price_zero === 'true') {
+              navigation.replace('ReservationPayment', {
+                price_zero: true,
+              });
+            }
             setresponseData(data);
           }
         });
     }
   }, []);
 
-  const changePayment = payment => {
+  const changePayment = (payment, type = 'api') => {
+    // card:신용카드/trans:계좌이체/kakaopay:카카오페이/vbank:무통장
+
     switch (payment) {
       case '신용카드':
-        return '1';
+        return 'card';
       case '실시간 계좌이체':
-        return '2';
+        return type === 'api' ? 'kakaopay' : 'card';
       case '카카오페이':
-        return '3';
+        return 'card';
       case '무통장 입금':
-        return '4';
-      // 1:신용카드/2:계좌이체/3:카카오페이/4:무통장
+        return 'vbank';
     }
   };
 
   if (responseData?.ot_code && isLoading) {
+    //  useLayoutEffect 내에 api 치고 나서 데이터가 있고 로딩인 경우 로딩 제거
     setIsLoading(false);
   }
 
   if (isLoading) {
     return <Loading />;
   }
-
+  /* [필수입력] 결제에 필요한 데이터를 입력합니다. */
   const data = {
-    pg: 'kakaopay',
-    pay_method: 'card',
+    pg: selectPayment.selectPayment === '카카오페이' ? 'kakaopay' : 'html5_inicis',
+    pay_method: changePayment(selectPayment.selectPayment, 'non-api'),
     name: `페달체크 결제`,
     merchant_uid: responseData.ot_code,
     amount: `${selectProduct?.totalPrice}`,

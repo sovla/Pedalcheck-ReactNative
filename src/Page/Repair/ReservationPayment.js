@@ -11,8 +11,14 @@ import DefaultImage from '@assets/global/Image';
 import {LinkButton, LinkWhiteButton} from '@/assets/global/Button';
 import numberFormat from '@/Util/numberFormat';
 import {reduceItem} from '@/Util/reduceItem';
+import {useState} from 'react';
+import Loading from '@/Component/Layout/Loading';
+import {useLayoutEffect} from 'react';
+import {getOrderCheck} from '@/API/Shop/Shop';
+import {AlertButton} from '@/Util/Alert';
 
-export default function ReservationPayment({navigation}) {
+export default function ReservationPayment({navigation, route: {params}}) {
+  const [isLoading, setIsLoading] = useState(true);
   const {
     reservationInfo,
     shopInfo: {store_info},
@@ -43,6 +49,38 @@ export default function ReservationPayment({navigation}) {
     {title: '전화번호', content: login?.mt_sms},
     {title: '요청사항', content: selectPayment?.repairRequest},
   ];
+  useLayoutEffect(() => {
+    if (params?.merchant_uid) {
+      //  가상계좌 일때
+      //  ot_pay_status : "ready" 넘기기
+      //  ot_pay_status : "paid" // 결제 완료상태
+      getOrderCheck({
+        ot_code: params.merchant_uid,
+        // 가상계좌일때 값 추가 필요 params.imp_uid <
+      }).then(res => {
+        if (res.data?.result === 'true') {
+          // 가상계좌 추가 수정필요
+
+          setIsLoading(false);
+        } else {
+          // 결제실패시 리턴
+          AlertButton('결제 실패했습니다. 다시 시도해주세요.', '확인', () => {
+            navigation.goBack();
+          });
+        }
+      });
+    } else {
+      params?.price_zero && setIsLoading(false);
+    }
+
+    return () => {
+      second;
+    };
+  }, []);
+
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <>
       <Header title="정비예약" />
