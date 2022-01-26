@@ -6,6 +6,7 @@ import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {modalOpen, setModalProp} from '@/Store/modalState';
+import {phoneNumber} from '@/Util/phoneFormatter';
 import {showToastMessage} from '@/Util/Toast';
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
@@ -82,22 +83,22 @@ export default function BikeExport({route}) {
   const RegJoin = () => {
     let RegCheck = true;
 
-    if (bikeData.sbt_model === '') {
+    if (bikeData?.sbt_model === '') {
       setErrorMessage(prev => ({...prev, sbt_brand: '모델을 선택해 주세요'}));
       RegCheck = false;
     }
 
-    if (bikeData.sbt_brand === '') {
+    if (bikeData?.sbt_brand === '') {
       setErrorMessage(prev => ({...prev, sbt_brand: '브랜드를 선택해 주세요'}));
       RegCheck = false;
     }
 
-    if (bikeData.sbt_serial === '') {
+    if (bikeData?.sbt_serial === '') {
       setErrorMessage(prev => ({...prev, sbt_serial: '차대번호를 입력해 주세요'}));
       RegCheck = false;
     }
 
-    if (bikeData.sbt_year === '') {
+    if (bikeData?.sbt_year === '') {
       setErrorMessage(prev => ({...prev, sbt_year: '연식을 입력해 주세요'}));
       RegCheck = false;
     }
@@ -157,6 +158,7 @@ export default function BikeExport({route}) {
           placeHolder="연도 2자리를 입력해주세요"
           width="380px"
           mg="0px 0px 20px"
+          maxLength={2}
           changeFn={text => setBikeData(prev => ({...prev, sbt_year: text}))}
           errorMessage={errorMessage.sbt_year !== '' && errorMessage.sbt_year}
           value={bikeData.sbt_year}
@@ -176,8 +178,9 @@ export default function BikeExport({route}) {
           placeHolder="고객 연락처를 입력해주세요 (선택)"
           width="380px"
           mg="0px 0px 20px"
-          changeFn={text => setBikeData(prev => ({...prev, sbt_hp: text}))}
+          changeFn={text => setBikeData(prev => ({...prev, sbt_hp: phoneNumber(text)}))}
           value={bikeData.sbt_hp}
+          maxLength={13}
         />
         <DefaultInput
           fontSize={Theme.fontSize.fs15}
@@ -190,6 +193,7 @@ export default function BikeExport({route}) {
           mg="0px 0px 20px"
           changeFn={text => setBikeData(prev => ({...prev, sbt_memo: text}))}
           value={bikeData.sbt_memo}
+          maxLength={200}
         />
       </ScrollBox>
       <LinkButton content="확인" to={() => registerBikeExport()} mg="0px 16px 20px" />
