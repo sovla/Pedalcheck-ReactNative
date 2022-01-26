@@ -41,8 +41,9 @@ export default function ShopReservationRequest({navigation, route: {params}}) {
         modalOpenAndProp({
           modalComponent: 'paymentInformationCheck',
           onPressComplete: () => {
-            navigation.navigate('ReservationPayment');
             dispatch(modalClose());
+
+            navigation.navigate('Payment');
           },
         }),
       );

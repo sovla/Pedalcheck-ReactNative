@@ -1,24 +1,15 @@
 import {getMyBikeList} from '@/API/Shop/Shop';
-import {BorderButton, Button, ButtonTouch, LinkButton} from '@/assets/global/Button';
-import {
-  BetweenBox,
-  Box,
-  Container,
-  PositionBox,
-  RowBox,
-  ScrollBox,
-} from '@/assets/global/Container';
+import {ButtonTouch, LinkButton} from '@/assets/global/Button';
+import {BetweenBox, Box, ScrollBox} from '@/assets/global/Container';
 import DefaultLine from '@/assets/global/Line';
 import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import ReservationBikeSelect from '@/Component/Repair/ReservationBikeSelect';
 import RepairReservationHeader from '@/Page/Repair/RepairReservationHeader';
-import {getPixel} from '@/Util/pixelChange';
 import {useNavigation} from '@react-navigation/core';
 import React from 'react';
 import {useLayoutEffect} from 'react';
 import {useState} from 'react';
-import {Alert, ScrollView, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
 import {DefaultInput} from '@/assets/global/Input';
@@ -43,12 +34,16 @@ export default function CouponUseBikeSelect({route: {params}}) {
     mst_idx: '',
     mst_name: '',
   });
-
   const onPressNext = () => {
     if (selectItem !== '' && shopInfo.mst_name !== '') {
       navigation.navigate('CouponUseDateSelect', {
         shopInfo: shopInfo,
-        selectBike: selectItem !== 2000 ? bikeList[selectItem] : bikeName,
+        selectBike:
+          selectItem !== 2000
+            ? bikeList[selectItem]
+            : {
+                mbt_nick: bikeName.bikeBrand + bikeName.bikeModel,
+              },
         ...params,
       });
     } else {

@@ -16,11 +16,13 @@ import {ResetShopInfo, setShopInfo} from '@/Store/shopInfoState';
 import ShopHeader from '@/Component/Repair/ShopHeader';
 import {RequireLoginAlert} from '@/Util/Alert';
 import Loading from '@/Component/Layout/Loading';
+import useUpdateEffect from '@/Hooks/useUpdateEffect';
 
 export default function Shop({route, navigation}) {
   const {mt_idx} = route.params;
   const [selectMenu, setSelectMenu] = useState('매장소개');
   const [isDone, setIsDone] = useState(true);
+  const [isLike, setIsLike] = useState(false);
   const {size, login, shopInfo} = useSelector(state => state);
 
   const menu = ['매장소개', '상품보기', '리뷰'];
@@ -33,14 +35,18 @@ export default function Shop({route, navigation}) {
       dispatch(ResetShopInfo());
     };
   }, []);
+  useUpdateEffect(() => {
+    setIsLike(shopInfo?.store_info?.like_on === 'on');
+  }, [shopInfo?.store_info]);
 
   const onPressLike = async () => {
     if (RequireLoginAlert(login, navigation)) {
+      //  로그인 여부 확인
       await sendLikeShop({
+        //  좋아요 API 치고
         _mt_idx: login?.idx,
         mt_idx: mt_idx,
-      });
-      await getShopDetailApi();
+      }).then(res => res?.data?.result === 'true' && setIsLike(prev => !prev)); // 좋아요 상태 바꾸기
     }
   };
 
@@ -73,20 +79,14 @@ export default function Shop({route, navigation}) {
           }
           data={selectMenu === '리뷰' ? shopInfo?.review_list : []}
           renderItem={({item, index}) => (
-            <Review
-              item={item}
-              index={index}
-              width="380px"
-              mg="0px 16px"
-              isRecomment={!item?.srt_res_content}
-            />
+            <Review item={item} index={index} width="380px" mg="0px 16px" isRecomment={!item?.srt_res_content} />
           )}
           keyExtractor={(item, index) => index.toString()}
           ListFooterComponent={<View style={{marginBottom: 70}}></View>}
         />
         <FooterButtons
           isRepair={shopInfo?.store_info?.mst_type === '1'}
-          isLike={shopInfo?.store_info?.like_on === 'on'}
+          isLike={isLike}
           onPressLike={onPressLike}
           my_bike={shopInfo?.my_bike}
         />

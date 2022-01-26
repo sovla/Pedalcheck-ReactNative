@@ -61,6 +61,7 @@ export default function ShopReservationProduct({navigation}) {
         setReservationProduct({
           selectProduct,
           totalPrice: money + saleMoney,
+          totalNonSalePrice: money,
         }),
       );
       navigation.navigate('ReservationBike');
@@ -151,10 +152,7 @@ export const ReservationProduct = ({item, onPressMain, selectItem}) => {
         <Box>
           <RowBox width="190px">
             <RowBox style={{maxWidth: getPixel(190)}}>
-              <DarkText
-                fontWeight={Theme.fontWeight.medium}
-                numberOfLines={2}
-                mg="0px 7px 0px 10px">
+              <DarkText fontWeight={Theme.fontWeight.medium} numberOfLines={2} mg="0px 7px 0px 10px">
                 {item.title}
               </DarkText>
             </RowBox>

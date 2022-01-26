@@ -1,5 +1,5 @@
 import {Button} from '@/assets/global/Button';
-import {Box, RowBox} from '@/assets/global/Container';
+import {Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
 import {DarkMediumText, DefaultText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
@@ -17,7 +17,8 @@ import {getCouponList, getCouponUsageStateList} from '@/API/More/More';
 import UseCouponItem from '@/Component/MyInformation/UseCouponItem';
 import {useLayoutEffect} from 'react';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
-import useStateWithPromise from '@/Hooks/useStateWithPromise';
+import Loading from '@/Component/Layout/Loading';
+import {getHeightPixel} from '@/Util/pixelChange';
 
 export default function CouponManagement({navigation, route: {params}}) {
   const [selectMenu, setSelectMenu] = useState('쿠폰함');
@@ -108,24 +109,28 @@ export default function CouponManagement({navigation, route: {params}}) {
       // 페이지 인자가 있을경우 초기화
       await setUsagePage(1);
       await setIsLastPage(prev => ({...prev, usage: false}));
-      await setCouponUsageState([]);
     }
     await getCouponUsageStateList({
       _mt_idx: login.idx,
       ot_status: changeDropMenu(dropMenu),
       page: page ?? usagePage,
     })
-      .then(res => {
+      .then(async res => {
         if (res.data?.result === 'true') {
           return res.data.data.data;
         }
       })
       .then(data => {
         if (data) {
-          setCouponUsageState(data);
+          if (page) {
+            setCouponUsageState(data);
+          } else {
+            setCouponUsageState(prev => [...prev, data]);
+          }
           setUsagePage(prev => prev + 1);
         } else {
           setIsLastPage(prev => ({...prev, usage: true}));
+          if (page) setCouponUsageState([]);
         }
       })
       .finally(() => {
@@ -148,90 +153,82 @@ export default function CouponManagement({navigation, route: {params}}) {
       return couponUsageState;
     }
   };
+  const data = flatListData();
   return (
     <>
+      {isDone && <Loading isAbsolute />}
       <Header title="쿠폰 관리" />
-
-      <Box style={{flex: 1}}>
-        <FlatList
-          data={flatListData()}
-          onEndReached={e => {
-            if (isScroll) {
-              if (selectMenu === '쿠폰함') {
-                getCouponListHandle();
-              } else {
-                getCouponUsageStateListHandle();
-              }
-
-              setIsScroll(false);
-            }
-          }}
-          onMomentumScrollBegin={() => {
-            setIsScroll(true);
-          }}
-          renderItem={({item, index}) => {
-            return (
-              <>
-                {selectMenu === '쿠폰함' && selectSubMenu === '보유' && (
-                  <CouponItem
-                    couponName={item?.ct_title}
-                    shopName={item?.mst_name}
-                    issueDate={item?.cst_wdate}
-                    startOfAvailability={item?.cst_sdate}
-                    endOfAvailability={item?.cst_edate}
-                    status={item?.cst_status === '미사용' && '사용'}
-                    onPressCouponUse={() => {
-                      navigation.navigate('CouponUseBikeSelect', {item});
-                    }}
-                  />
-                )}
-                {selectMenu === '쿠폰함' && selectSubMenu === '완료 · 만료' && (
-                  <CouponItem
-                    couponName={item?.ct_title}
-                    shopName={item?.mst_name}
-                    issueDate={item?.cst_wdate}
-                    startOfAvailability={item?.cst_sdate}
-                    endOfAvailability={item?.cst_edate}
-                    badgeContent={item?.cst_status}
-                  />
-                )}
-                {selectMenu === '쿠폰 사용 현황' && (
-                  <UseCouponItem
-                    couponName={item?.ct_title}
-                    shopName={item?.mst_name}
-                    bikeNickName={item?.ot_bike_nick}
-                    useCouponDate={item?.ot_pt_date + ' ' + item?.ot_pt_time.substr(0, 5)}
-                    badgeContent={item?.ot_status}
-                    // rejectionContent={item?.cst_edate}
-                  />
-                )}
-              </>
-            );
-          }}
-          keyExtractor={(item, index) => index.toString()}
-          ListEmptyComponent={
-            <Box flex={1} alignItems="center" justifyContent="center">
-              {!isDone && (
-                <DarkMediumText>
-                  {selectMenu === '쿠폰함' && selectSubMenu === '보유' && '보유중인 쿠폰이 없습니다'}
-                  {selectMenu === '쿠폰함' && selectSubMenu !== '보유' && '사용한 쿠폰이 없습니다.'}
-                  {selectMenu !== '쿠폰함' && '사용한 쿠폰이 없습니다.'}
-                </DarkMediumText>
-              )}
-            </Box>
-          }
-          contentContainerStyle={{flex: 1}}
-          ListHeaderComponent={
+      <MenuNav menuItem={menu} select={selectMenu} setSelect={setSelectMenu} />
+      {selectMenu === '쿠폰함' && <CouponBox selectSubMenu={selectSubMenu} setSelectSubMenu={setSelectSubMenu} />}
+      {selectMenu === '쿠폰 사용 현황' && <CouponUsageStatus setDropMenu={setDropMenu} dropMenu={dropMenu} />}
+      <FlatList
+        data={data}
+        renderItem={({item, index}) => {
+          return (
             <>
-              <MenuNav menuItem={menu} select={selectMenu} setSelect={setSelectMenu} />
-              {selectMenu === '쿠폰함' && (
-                <CouponBox selectSubMenu={selectSubMenu} setSelectSubMenu={setSelectSubMenu} />
+              {selectMenu === '쿠폰함' && selectSubMenu === '보유' && (
+                <CouponItem
+                  couponName={item?.ct_title}
+                  shopName={item?.mst_name}
+                  issueDate={item?.cst_wdate?.substr(0, 16)}
+                  startOfAvailability={item?.cst_sdate?.substr(0, 10)}
+                  endOfAvailability={item?.cst_edate?.substr(0, 10)}
+                  status={item?.cst_status === '미사용' && '사용'}
+                  onPressCouponUse={() => {
+                    navigation.navigate('CouponUseBikeSelect', {item});
+                  }}
+                />
               )}
-              {selectMenu === '쿠폰 사용 현황' && <CouponUsageStatus setDropMenu={setDropMenu} dropMenu={dropMenu} />}
+              {selectMenu === '쿠폰함' && selectSubMenu === '완료 · 만료' && (
+                <CouponItem
+                  couponName={item?.ct_title}
+                  shopName={item?.mst_name}
+                  issueDate={item?.cst_wdate?.substr(0, 16)}
+                  startOfAvailability={item?.cst_sdate?.substr(0, 10)}
+                  endOfAvailability={item?.cst_edate?.substr(0, 10)}
+                  badgeContent={item?.cst_status}
+                />
+              )}
+              {selectMenu === '쿠폰 사용 현황' && (
+                <UseCouponItem
+                  couponName={item?.ct_title}
+                  shopName={item?.mst_name}
+                  bikeNickName={item?.ot_bike_nick}
+                  useCouponDate={item?.ot_pt_date + ' ' + item?.ot_pt_time.substr(0, 5)}
+                  badgeContent={item?.ot_status}
+                  // rejectionContent={item?.cst_edate}
+                />
+              )}
             </>
+          );
+        }}
+        keyExtractor={(item, index) => index.toString()}
+        ListEmptyComponent={
+          <Box width="412px" height="300px" alignItems="center" justifyContent="center">
+            {!isDone && (
+              <DarkMediumText>
+                {selectMenu === '쿠폰함' && selectSubMenu === '보유' && '보유중인 쿠폰이 없습니다'}
+                {selectMenu === '쿠폰함' && selectSubMenu !== '보유' && '사용한 쿠폰이 없습니다.'}
+                {selectMenu !== '쿠폰함' && '사용한 쿠폰이 없습니다.'}
+              </DarkMediumText>
+            )}
+          </Box>
+        }
+        onEndReached={e => {
+          if (isScroll) {
+            if (selectMenu === '쿠폰함') {
+              getCouponListHandle();
+            } else {
+              getCouponUsageStateListHandle();
+            }
+
+            setIsScroll(false);
           }
-        />
-      </Box>
+        }}
+        onMomentumScrollBegin={() => {
+          setIsScroll(true);
+        }}
+      />
     </>
   );
 }

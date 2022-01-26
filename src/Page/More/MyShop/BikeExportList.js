@@ -18,6 +18,7 @@ import {useEffect} from 'react';
 import {deleteBikeExport, getBikeExportList} from '@/API/Manager/More';
 import {useState} from 'react';
 import {showToastMessage} from '@/Util/Toast';
+import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 
 export default function BikeExportList() {
   const navigation = useNavigation();
@@ -90,16 +91,9 @@ export default function BikeExportList() {
   );
 }
 
-const BikeListItem = ({
-  brandName,
-  modelName,
-  vehicleNumber,
-  year,
-  onPressModify,
-  onPressDelete,
-}) => {
+const BikeListItem = ({brandName, modelName, vehicleNumber, year, onPressModify, onPressDelete}) => {
   return (
-    <BetweenBox height="100px" width="380px" mg="0px 16px" pd="16px 10px 0px">
+    <BetweenBox height="100px" width="380px" mg="0px 16px" pd="16px 10px 0px" style={borderBottomWhiteGray}>
       <Box>
         <RowBox>
           <DarkMediumText fontSize={Theme.fontSize.fs15}>{brandName}</DarkMediumText>

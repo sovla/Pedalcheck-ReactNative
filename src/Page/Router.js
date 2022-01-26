@@ -68,7 +68,7 @@ import ModalBasic from '@/Component/Modal/ModalBasic';
 import {initSetting} from '@/Store/sizeState';
 import ProductDetail from './Repair/ProductDetail';
 import BikeRegisterFirst from './BikeManagement/BikeRegisterFirst';
-import {useIsFocused} from '@react-navigation/core';
+import {useIsFocused, useNavigation} from '@react-navigation/core';
 import RepairHistoryDetail from './More/MyInformation/RepairHistoryDetail';
 import {PositionBox} from '@/assets/global/Container';
 import {DarkBoldText} from '@/assets/global/Text';
@@ -163,8 +163,9 @@ export default function Router() {
 const withScrollView = WrappedComponent => {
   return props => {
     const isFocus = useIsFocused();
+    const navigation = useNavigation();
     useEffect(() => {
-      if (!props?.navigation?.canGoBack() && isFocus) {
+      if (!navigation?.canGoBack() && isFocus) {
         BackHandler.addEventListener('hardwareBackPress', onBackPress);
       }
 

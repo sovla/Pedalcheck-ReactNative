@@ -144,6 +144,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
       question: undefined,
       value: 'vehicleYear',
       isDropdown: false,
+      maxLength: 2,
     },
     {
       title: '타입',
@@ -268,6 +269,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
               <BorderButton onPress={onPressAddImage}>등록</BorderButton>
             </Box>
             <DefaultImage
+              borderRadius="10px"
               source={image !== undefined ? {uri: image?.path ?? imageAddress + image} : DummyImage}
               width="90px"
               height="90px"
@@ -299,7 +301,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
               );
               dispatch(modalOpen('bikeModel'));
             }}
-            fontSize={16}
+            fontSize={Theme.fontSize.fs16}
             isText
             mg="0px 0px 0px"
             pd="0px 0px 5px"
@@ -328,6 +330,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
                 questionPress={item.question !== undefined && item.question}
                 isDropdown={item.isDropdown}
                 dropdownItem={item.isDropdown && item.dropdownItems}
+                maxLength={item?.maxLength}
               />
             );
           })}
@@ -349,6 +352,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
                   questionPress={item.question !== undefined && item.question}
                   isDropdown={item.isDropdown}
                   dropdownItem={item.isDropdown && item.dropdownItems}
+                  maxLength={item?.maxLength}
                 />
               );
             })}

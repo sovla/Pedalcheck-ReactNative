@@ -49,9 +49,7 @@ export default function Update({navigation}) {
     mt_bank_image: '',
   });
   const birthDateValue =
-    birthDate?.year !== ''
-      ? `${birthDate.year}-${birthDate.month}-${birthDate.day}`
-      : login.mt_birth;
+    birthDate?.year !== '' ? `${birthDate.year}-${birthDate.month}-${birthDate.day}` : login.mt_birth;
 
   const dispatch = useDispatch();
 
@@ -242,7 +240,7 @@ export default function Update({navigation}) {
 const menuItem = ['기본 정보 수정', '추가 정보 수정'];
 
 const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispatch}) => {
-  const {size} = useSelector(state => state);
+  const {size, login} = useSelector(state => state);
 
   const onPressAddImage = () => {
     ImageCropPicker.openPicker({
@@ -315,57 +313,61 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
             pd="0px 0px 5px"
           />
         </Box>
+        {login.mt_level >= 5 && (
+          <>
+            <Box>
+              <DefaultInput
+                errorMessage={errorMessage.bname !== '' && errorMessage.bname}
+                title="계좌정보"
+                placeHolder="예금주명을 입력하세요"
+                width={size.minusPadding}
+                fontSize={Theme.fontSize.fs15}
+                pd="0px 0px 3px"
+                value={user?.mt_bname}
+                changeFn={text => setUser(prev => ({...prev, mt_bname: text}))}
+                maxLength={10}
+              />
+              <DefaultInput
+                mg="10px 0px"
+                isDropdown
+                dropdownItem={bankList}
+                changeFn={text => setUser(prev => ({...prev, mt_bank: text}))}
+                value={user?.mt_bank ?? ''}
+                placeHolder={'은행을 선택하세요.'}
+              />
+            </Box>
+            <Box mg="0px 0px 10px">
+              <DefaultInput
+                placeHolder="계좌번호를 입력하세요"
+                errorMessage={errorMessage.account !== '' && errorMessage.account}
+                width={size.minusPadding}
+                fontSize={Theme.fontSize.fs15}
+                pd="0px 0px 3px"
+                value={user?.mt_account}
+                changeFn={text => setUser(prev => ({...prev, mt_account: text}))}
+                maxLength={20}
+                keyboardType={'numeric'}
+              />
+            </Box>
+            <RowBox width={size.minusPadding} alignItems="flex-end" mg="0px 0px 10px">
+              <TouchableOpacity>
+                <BorderButton onPress={onPressAddImage} width="105px" height="auto" fontSize={Theme.fontSize.fs15}>
+                  통장 사본 등록
+                </BorderButton>
+              </TouchableOpacity>
+              <RowBox
+                width="259px"
+                mg="0px 0px 0px 16px"
+                alignItems="center"
+                height="100%"
+                style={borderBottomWhiteGray}>
+                <DarkText fontSize={Theme.fontSize.fs13}>{image && '통장 사본.jpg'}</DarkText>
+              </RowBox>
+            </RowBox>
+            {errorMessage.mt_bank_image !== '' && <ErrorText>{errorMessage.mt_bank_image}</ErrorText>}
+          </>
+        )}
 
-        <Box>
-          <DefaultInput
-            errorMessage={errorMessage.bname !== '' && errorMessage.bname}
-            title="계좌정보"
-            placeHolder="예금주명을 입력하세요"
-            width={size.minusPadding}
-            fontSize={Theme.fontSize.fs15}
-            pd="0px 0px 3px"
-            value={user?.mt_bname}
-            changeFn={text => setUser(prev => ({...prev, mt_bname: text}))}
-          />
-          <DefaultInput
-            mg="10px 0px"
-            isDropdown
-            dropdownItem={bankList}
-            changeFn={text => setUser(prev => ({...prev, mt_bank: text}))}
-            value={user?.mt_bank === '' ? '은행을 선택해주세요.' : user?.mt_bank}
-          />
-        </Box>
-        <Box mg="0px 0px 10px">
-          <DefaultInput
-            placeHolder="계좌번호를 입력하세요"
-            errorMessage={errorMessage.account !== '' && errorMessage.account}
-            width={size.minusPadding}
-            fontSize={Theme.fontSize.fs15}
-            pd="0px 0px 3px"
-            value={user?.mt_account}
-            changeFn={text => setUser(prev => ({...prev, mt_account: text}))}
-          />
-        </Box>
-        <RowBox width={size.minusPadding} alignItems="flex-end" mg="0px 0px 10px">
-          <TouchableOpacity>
-            <BorderButton
-              onPress={onPressAddImage}
-              width="105px"
-              height="auto"
-              fontSize={Theme.fontSize.fs15}>
-              통장 사본 등록
-            </BorderButton>
-          </TouchableOpacity>
-          <RowBox
-            width="259px"
-            mg="0px 0px 0px 16px"
-            alignItems="center"
-            height="100%"
-            style={borderBottomWhiteGray}>
-            <DarkText fontSize={Theme.fontSize.fs13}>{image && '통장 사본.jpg'}</DarkText>
-          </RowBox>
-        </RowBox>
-        {errorMessage.mt_bank_image !== '' && <ErrorText>{errorMessage.mt_bank_image}</ErrorText>}
         <Box mg="0px 0px 60px"></Box>
       </Box>
     </Box>

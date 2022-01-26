@@ -22,7 +22,7 @@ export default function StorageBike({size, item, getBikeListHandle}) {
       </RowBox>
 
       <FlatList
-        keyExtractor={({item, index}) => index}
+        keyExtractor={(item, index) => index.toString()}
         data={item}
         onEndReached={() => {
           if (isScroll) {
