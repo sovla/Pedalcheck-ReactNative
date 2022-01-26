@@ -172,7 +172,7 @@ export default function BikeExport({route}) {
         />
         <DefaultInput
           fontSize={Theme.fontSize.fs15}
-          title="메모"
+          title="연락처"
           placeHolder="고객 연락처를 입력해주세요 (선택)"
           width="380px"
           mg="0px 0px 20px"
@@ -181,7 +181,7 @@ export default function BikeExport({route}) {
         />
         <DefaultInput
           fontSize={Theme.fontSize.fs15}
-          title="모델"
+          title="메모"
           placeHolder="메모를 입력해주세요 (선택)"
           width="380px"
           height="100px"
