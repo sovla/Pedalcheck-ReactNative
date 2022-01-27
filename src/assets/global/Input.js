@@ -105,7 +105,7 @@ export const DefaultInput = ({
       )}
       {RenderCondition === 'isText' && ( // 텍스트 형태
         <TouchableOpacity onPress={PressText}>
-          <DefaultInputTextStyle width={width} height={height}>
+          <DefaultInputTextStyle pd="0px 0px 0px 10px" width={width} height={height}>
             <DefaultText fontSize={fontSize} color={value !== '' ? Theme.color.black : Theme.color.gray}>
               {value !== '' ? value : placeHolder}
             </DefaultText>
@@ -224,18 +224,17 @@ const DefaultInputTextStyle = styled.View`
   background-color: ${Theme.color.backgroundBlue};
   border-radius: 10px;
   justify-content: center;
-  padding: ${pixelChange('0px 16px')};
-
-  ${p =>
-    p.width &&
-    css`
-      width: ${pixelChange(p.width)};
-    `}
-  ${p =>
-    p.height &&
-    css`
-      height: ${pixelChange(p.height)};
-    `}
+  padding: ${p => p.pd ?? pixelChange('0px 16px')}
+    ${p =>
+      p.width &&
+      css`
+        width: ${pixelChange(p.width)};
+      `}
+    ${p =>
+      p.height &&
+      css`
+        height: ${pixelChange(p.height)};
+      `};
 `;
 
 export const WhiteInput = styled(DefaultInputStyle)`
