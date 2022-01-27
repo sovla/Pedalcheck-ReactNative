@@ -36,9 +36,9 @@ export default function Update({navigation}) {
   const [imageType, setImageType] = useState(1);
   const [select, setSelect] = useState('기본 정보 수정');
   const {sizem, login, location, birthDate} = useSelector(state => state);
-  const [user, setUser] = useState();
-  const [image, setImage] = useState();
-  const [selectImage, setSelectImage] = useState();
+  const [user, setUser] = useState(); //  기본정보 (유저정보)
+  const [image, setImage] = useState(); //  기본정보
+  const [selectImage, setSelectImage] = useState(); //  추가정보
   const [sex, setSex] = useState();
   const [errorMessage, setErrorMessage] = useState({
     name: '',

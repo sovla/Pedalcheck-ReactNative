@@ -18,16 +18,17 @@ export default function DefaultDropdown({
   isBorder = true,
   fontType = 'normal',
   fontSize = 15,
+  disabled,
 }) {
   let fontFamily = '';
   if (Platform.OS === 'android') {
     fontFamily = fontType === 'normal' ? 'NotoSansKR-Regular' : `NotoSansKR-${fontType}`;
   } else {
-    fontFamily =
-      fontType === 'normal' ? 'NotoSansCJKkr-RegularTTF' : `NotoSansCJKkr-${fontType}TTF`;
+    fontFamily = fontType === 'normal' ? 'NotoSansCJKkr-RegularTTF' : `NotoSansCJKkr-${fontType}TTF`;
   }
   return (
     <Dropdown
+      disable={disabled}
       data={data}
       value={value}
       onChange={item => {
@@ -52,7 +53,8 @@ export default function DefaultDropdown({
         borderColor: isBorder ? Theme.borderColor.gray : Theme.color.white,
       }}
       maxHeight={data.length * height}
-      showsVerticalScrollIndicator={false}
+      autoScroll={false}
+      showsVerticalScrollIndicator={true}
       renderItem={item => {
         const isEqual = item?.value === value;
         return (

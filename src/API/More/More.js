@@ -180,5 +180,4 @@ export const getStoreInfo = async args => {
     console.log(error);
   }
 };
-
 // 태그 불러오기

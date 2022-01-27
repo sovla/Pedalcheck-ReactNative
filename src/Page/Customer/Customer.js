@@ -92,16 +92,13 @@ export default function Customer({navigation}) {
     <Container>
       {isDone && (
         <PositionBox top="50%" left="50%" zIndex={100} backgroundColor="#0008">
-          <Loading isAbsolute />
+          <Loading isAbsolute isFullSize={false} />
         </PositionBox>
       )}
       <FlatList
         ListHeaderComponent={
           <>
-            <GradientHeader
-              height={76}
-              title="고객"
-              imageSource={CustomerCheckIcon}></GradientHeader>
+            <GradientHeader height={76} title="고객" imageSource={CustomerCheckIcon}></GradientHeader>
             <CustomerHeader
               totalCustomer={customerCount?.tot_cnt}
               likeShopCustomer={customerCount?.like_cnt}
@@ -152,9 +149,7 @@ export default function Customer({navigation}) {
         data={customerList}
         renderItem={({item, index}) => {
           return (
-            <TouchableOpacity
-              style={{marginHorizontal: getPixel(16)}}
-              onPress={() => onPressCustomer(item)}>
+            <TouchableOpacity style={{marginHorizontal: getPixel(16)}} onPress={() => onPressCustomer(item)}>
               <CustomerInformation
                 nestedScrollEnabled
                 name={item.mt_name}
@@ -168,9 +163,7 @@ export default function Customer({navigation}) {
           );
         }}
         ListEmptyComponent={
-          <Box alignItems="center">
-            {!isDone && <DarkBoldText>검색결과가 없습니다.</DarkBoldText>}
-          </Box>
+          <Box alignItems="center">{!isDone && <DarkBoldText>검색결과가 없습니다.</DarkBoldText>}</Box>
         }
         ListFooterComponent={<Box height="30px" />}
       />
