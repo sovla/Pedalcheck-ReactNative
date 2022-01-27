@@ -8,19 +8,14 @@ import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistor
 import {useNavigation} from '@react-navigation/native';
 import {Alert} from 'react-native';
 
-export default function ProductPost({
-  item = {
-    title: '정비 - 오버홀',
-    price: 19000,
-  },
-}) {
+export default function ProductPost({title = '정비 - 오버홀', price = 19000, item}) {
   const navigation = useNavigation();
   return (
     <RowBox height="50px" pd="10px" alignItems="center" style={borderBottomWhiteGray}>
-      <DarkMediumText width="225px">{item.title}</DarkMediumText>
-      <MoneyText fontWeight={Theme.fontWeight.bold} money={item.price} color={Theme.color.black} />
+      <DarkMediumText width="225px">{title}</DarkMediumText>
+      <MoneyText fontWeight={Theme.fontWeight.bold} money={price} color={Theme.color.black} />
       <RowBox mg="0px 0px 0px 10px">
-        <ModifyButton onPress={() => navigation.navigate('ProductRegister')} />
+        <ModifyButton onPress={() => navigation.navigate('ProductRegister', item)} />
         <Box mg="0px 0px 0px 5px">
           <TrashButton onPress={() => Alert.alert('', '삭제하시겠습니까?(테스트중)')} />
         </Box>
