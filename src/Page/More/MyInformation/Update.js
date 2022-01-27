@@ -29,6 +29,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import Geolocation from 'react-native-geolocation-service';
 import {useIsFocused} from '@react-navigation/native';
 import {setUserInfo} from '@/Store/loginState';
+import {phoneNumber} from '@/Util/phoneFormatter';
 
 export default function Update({navigation}) {
   const isFocused = useIsFocused();
@@ -44,6 +45,7 @@ export default function Update({navigation}) {
     nickname: '',
     account: '',
     bname: '',
+    mt_hp: '',
     mt_addr: '',
     location: '',
     mt_bank_image: '',
@@ -57,6 +59,7 @@ export default function Update({navigation}) {
     setUserInformation();
     getGeo();
   }, [isFocused]);
+
   useLayoutEffect(() => {
     // 지역 모달 데이터 클릭시 사용
     if (location?.name) {
@@ -94,6 +97,7 @@ export default function Update({navigation}) {
       mt_image_type: isNaN(selectImage) ? 2 : imageType, // 수정 필요
       mt_gender: sex === 'man' ? 'M' : 'F',
       mt_birth: birthDateValue,
+      mt_hp: user.mt_hp,
     };
     if (selectImage.path) {
       await AddInformationImage({
@@ -168,38 +172,49 @@ export default function Update({navigation}) {
       }));
       result = true;
     }
-    if (emptyData(user.mt_account)) {
+    if (user.mt_hp?.length < 12) {
       setErrorMessage(prev => ({
         ...prev,
-        account: '계좌번호를 입력해주세요.',
+        mt_hp: '전화번호가 올바르지 않습니다.',
       }));
       result = true;
     }
-    if (emptyData(user.mt_bname)) {
-      setErrorMessage(prev => ({
-        ...prev,
-        bname: '예금주명을 입력해주세요.',
-      }));
-      result = true;
-    }
-    if (emptyData(user.mt_bank_image)) {
-      setErrorMessage(prev => ({
-        ...prev,
-        mt_bank_image: '통장 사본을 등록해주세요.',
-      }));
-      result = true;
+
+    if (login.mt_level >= 5) {
+      if (emptyData(user.mt_account)) {
+        setErrorMessage(prev => ({
+          ...prev,
+          account: '계좌번호를 입력해주세요.',
+        }));
+        result = true;
+      }
+      if (emptyData(user.mt_bname)) {
+        setErrorMessage(prev => ({
+          ...prev,
+          bname: '예금주명을 입력해주세요.',
+        }));
+        result = true;
+      }
+      if (emptyData(selectImage)) {
+        setErrorMessage(prev => ({
+          ...prev,
+          mt_bank_image: '통장 사본을 등록해주세요.',
+        }));
+        result = true;
+      }
     }
     return result;
   };
 
   const emptyData = data => {
-    if (data === '' || data === null || !data) {
+    // "" null !data Object일경우 key값이 없는경우
+    // true 리턴
+    if (data === '' || data === null || !data || (typeof data === 'object' && Object.keys(data).length === 0)) {
       return true;
     } else {
       return false;
     }
   };
-
   return (
     <>
       <Header title="정보 수정" />
@@ -294,6 +309,21 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
             width={size.minusPadding}
             fontSize={Theme.fontSize.fs15}
             pd="0px 0px 3px"
+          />
+        </Box>
+        <Box mg="0px 0px 20px">
+          <DefaultInput
+            title="전화번호"
+            placeHolder="전화번호를 입력해주세요."
+            value={user?.mt_hp}
+            changeFn={text => {
+              setUser(prev => ({...prev, mt_hp: phoneNumber(text)}));
+            }}
+            maxLength={13}
+            width={size.minusPadding}
+            fontSize={Theme.fontSize.fs15}
+            pd="0px 0px 3px"
+            errorMessage={errorMessage.mt_hp !== '' && errorMessage.mt_hp}
           />
         </Box>
         <Box mg="0px 0px 20px">
