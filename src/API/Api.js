@@ -43,8 +43,7 @@ export const API = axios.create({
 
     try {
       if (jsonParseData.result === 'true') {
-        const jwtDecodeData =
-          jsonParseData.data !== '' ? jwtDecode(jsonParseData.data, SECRETKEY) : jsonParseData;
+        const jwtDecodeData = jsonParseData.data !== '' ? jwtDecode(jsonParseData.data, SECRETKEY) : jsonParseData;
         console.log('API Result Success :::', jwtDecodeData);
         return {
           ...jsonParseData,
@@ -67,36 +66,39 @@ export const ImageAPI = async (data, field, url, isIndex = false) => {
   try {
     console.log('data :::', data);
     let cloneData = Object.assign({}, data);
+    //  객체복사
     delete cloneData[field];
+    //  이미지 부분제거
 
     const jwt_data = jwt_encode(cloneData, SECRETKEY);
-    // isIndex
+    //  이미지 제외 데이터 JWTEncode
+
     let imageResultObject = {};
+    let imageResult = [];
     let index = 1;
 
-    let imageResult = [];
     if (data[field]) {
+      //  데이터 필드에 값이있다면
       if (Array.isArray(data[field])) {
+        //   배열이라면
         for (const imageItem of data[field]) {
+          // for문
           !isIndex
             ? imageResult.push({
+                //  아닌경우 하나의 배열에 푸쉬
                 [field]: {
                   key: 'poto' + new Date().getTime(),
-                  uri:
-                    Platform.OS === 'android'
-                      ? imageItem.path
-                      : imageItem.path.replace('file://', ''),
+                  uri: Platform.OS === 'android' ? imageItem.path : imageItem.path.replace('file://', ''),
                   type: imageItem.mime,
                   name: 'auto.jpg',
                 },
               })
             : Object.assign(imageResultObject, {
                 [`${field}${index}`]: {
+                  //  isIndex 값이 있을경우 mt_img1,mt_img2,mt_img3으로 들어감
+
                   key: 'poto' + new Date().getTime(),
-                  uri:
-                    Platform.OS === 'android'
-                      ? imageItem.path
-                      : imageItem.path.replace('file://', ''),
+                  uri: Platform.OS === 'android' ? imageItem.path : imageItem.path.replace('file://', ''),
                   type: imageItem.mime,
                   name: 'auto.jpg',
                 },
@@ -105,6 +107,7 @@ export const ImageAPI = async (data, field, url, isIndex = false) => {
           index++;
         }
       } else {
+        //  배열이 아니라 하나의 객체에 들어있다면
         const imageItem = data[field];
         imageResult = {
           key: 'poto' + new Date().getTime(),

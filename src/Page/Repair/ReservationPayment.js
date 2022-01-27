@@ -19,6 +19,8 @@ import {AlertButton} from '@/Util/Alert';
 
 export default function ReservationPayment({navigation, route: {params}}) {
   const [isLoading, setIsLoading] = useState(true);
+  const [virtualAccount, setVirtualAccount] = useState(null);
+
   const {
     reservationInfo,
     shopInfo: {store_info},
@@ -36,7 +38,7 @@ export default function ReservationPayment({navigation, route: {params}}) {
 
   const reservationTime = `${selectDate?.date} ${selectDate?.time}`;
 
-  const paymentObject = [
+  let paymentObject = [
     {title: '매장명', content: store_info?.mst_name},
     {
       title: '정비상품',
@@ -60,22 +62,30 @@ export default function ReservationPayment({navigation, route: {params}}) {
       }).then(res => {
         if (res.data?.result === 'true') {
           // 가상계좌 추가 수정필요
-
-          setIsLoading(false);
+          const {data} = res.data.data;
+          if (data.ot_pay_type === 'vbank') {
+            //  가상계좌일때
+            setVirtualAccount(data);
+            setIsLoading(false);
+          } else {
+            // 가상계좌 아닐때
+            if (data.ot_pay_status === 'ready') {
+              //  결제 준비 상태이면 실패 리턴
+              AlertButton('결제 실패했습니다. 다시 시도해주세요.', '확인', () => {
+                navigation.goBack();
+              });
+            } else {
+              //  결제 완료 일때? paid 확인 필요한가 애매
+              setIsLoading(false);
+            }
+          }
         } else {
           // 결제실패시 리턴
-          AlertButton('결제 실패했습니다. 다시 시도해주세요.', '확인', () => {
-            navigation.goBack();
-          });
         }
       });
     } else {
       params?.price_zero && setIsLoading(false);
     }
-
-    return () => {
-      second;
-    };
   }, []);
 
   if (isLoading) {
@@ -99,13 +109,17 @@ export default function ReservationPayment({navigation, route: {params}}) {
               }
               return (
                 <RowBox key={item.title} justifyContent="space-between" mg="0px 0px 10px">
-                  <DarkBoldText width="100px">{item.title}</DarkBoldText>
+                  <DarkBoldText width="100px"></DarkBoldText>
                   <DarkText>{item.content}</DarkText>
                 </RowBox>
               );
             })}
           </Box>
-          <DarkBoldText>아직 API 안침 - 수정필요</DarkBoldText>
+          {/* 가상계좌 정보 뿌리기 */}
+          <RowBox justifyContent="space-between" mg="0px 0px 10px">
+            <DarkBoldText width="100px">{item.title}</DarkBoldText>
+            <DarkText>{item.content}</DarkText>
+          </RowBox>
         </ScrollBox>
       </Box>
       <Box mg="0px 16px 20px">
