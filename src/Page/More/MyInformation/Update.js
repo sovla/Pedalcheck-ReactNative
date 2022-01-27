@@ -340,7 +340,7 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
               dispatch(DeleteLocation());
               dispatch(modalOpen('locationPicker'));
             }}
-            pd="0px 0px 5px"
+            pd="0px 0px 3px"
           />
         </Box>
         {login.mt_level >= 5 && (
