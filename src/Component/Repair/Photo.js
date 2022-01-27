@@ -67,12 +67,7 @@ export default function Photo({imageArray, setImageArray, imageCount = 5, isView
             backgroundColor={Theme.color.white}
             borderColor={Theme.borderColor.gray}
             borderRadius="5px">
-            <DefaultImage
-              source={CameraIcon}
-              style={{borderRadius: 5}}
-              width="24px"
-              height="24px"
-            />
+            <DefaultImage source={CameraIcon} style={{borderRadius: 5}} width="24px" height="24px" />
             <DarkText fontSize={Theme.fontSize.fs13} fontWeight={Theme.fontWeight.medium}>
               사진 추가
             </DarkText>
@@ -93,13 +88,7 @@ const MapInnerItem = ({index, mg, item, onPressDelete, isView}) => {
         resizeMode="stretch"
       />
       {!isView && (
-        <PositionBox
-          top="5px"
-          right="5px"
-          width="24px"
-          height="24px"
-          borderRadius="100px"
-          backgroundColor="#0000">
+        <PositionBox top="5px" right="5px" width="24px" height="24px" borderRadius="100px" backgroundColor="#0000">
           <TouchableOpacity onPress={() => onPressDelete(index)}>
             <DefaultImage source={CloseIcon} width="24px" height="24px" />
           </TouchableOpacity>

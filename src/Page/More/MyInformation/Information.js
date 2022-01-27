@@ -17,6 +17,8 @@ import {loginType} from '@/assets/global/dummy';
 import {useEffect} from 'react';
 import {useState} from 'react';
 import {getBikeList} from '@/API/Bike/Bike';
+import {ResetShopInfo} from '@/Store/shopInfoState';
+import {ResetStoreInfo} from '@/Store/storeInfoState';
 
 export default function Information({route: {params}}) {
   const {size, login} = useSelector(state => state);
@@ -94,6 +96,7 @@ export default function Information({route: {params}}) {
             onPress={() => {
               dispatch(resetSnsInfo());
               dispatch(resetUserInfo());
+              dispatch(ResetStoreInfo());
               navigation.reset({routes: [{name: 'Home'}]});
             }}>
             <RowBox backgroundColor="#0000" style={borderBottomWhiteGray} width={size.minusPadding}>

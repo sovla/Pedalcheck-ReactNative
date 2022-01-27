@@ -1,13 +1,6 @@
-import {updateStore, updateStoreImage} from '@/API/More/More';
+import {getStoreInfo, updateStore, updateStoreImage} from '@/API/More/More';
 import {BorderButton, Button, LinkButton} from '@/assets/global/Button';
-import {
-  BetweenBox,
-  Box,
-  Container,
-  PositionBox,
-  RowBox,
-  ScrollBox,
-} from '@/assets/global/Container';
+import {BetweenBox, Box, Container, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
 import {DarkBoldText, DarkMediumText, ErrorText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
@@ -20,34 +13,23 @@ import {isEmail} from '@/Util/EmailCheck';
 import {phoneNumber} from '@/Util/phoneFormatter';
 import {showToastMessage} from '@/Util/Toast';
 import Postcode from '@actbase/react-daum-postcode';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import React from 'react';
+import {useEffect} from 'react';
 import {useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import {imageAddress} from '@assets/global/config';
+import {setStoreInfo} from '@/Store/storeInfoState';
 
 export default function ShopUpdate() {
   const navigation = useNavigation();
-  const {size, login} = useSelector(state => state);
+  const isFocused = useIsFocused();
+  const {size, login, storeInfo} = useSelector(state => state);
   const [imageArray, setImageArray] = useState([]);
   const [selectDay, setSelectDay] = useState([]);
   const [isDaumOpen, setIsDaumOpen] = useState(false);
-  const [shopInformation, setShopInformation] = useState({
-    _mt_idx: login.idx,
-    mst_name: '',
-    mst_company_num: '',
-    mst_zip: '',
-    mst_addr1: '',
-    mst_addr2: '',
-    mst_lat: '35.244125',
-    mst_lng: '129.088150',
-    mst_brand: '',
-    mst_tel: '',
-    mst_worktime: '',
-    mst_intro: '',
-    mst_tag: '',
-    mst_email: '',
-  });
+  const [shopInformation, setShopInformation] = useState(null);
   const [errorMessage, setErrorMessage] = useState({
     mst_name: '',
     mst_company_num: '',
@@ -59,6 +41,28 @@ export default function ShopUpdate() {
 
   const dispatch = useDispatch();
   const [postData, setPostData] = useState([]);
+
+  useEffect(() => {
+    if (isFocused) {
+      setShopInformation(storeInfo);
+      const changeValue = storeInfo?.mst_holiday?.split(',');
+      setSelectDay(
+        changeValue.map(value => {
+          return value * 1;
+        }),
+      );
+      let resultArray = [];
+      for (let i = 1; i < 16; i++) {
+        const mstImage = storeInfo[`mst_image${i}`];
+        if (mstImage) {
+          resultArray.push({
+            path: imageAddress + mstImage,
+          });
+        }
+      }
+      setImageArray([...resultArray]);
+    }
+  }, [isFocused]);
 
   const onPressDay = dayIndex => {
     const day = dayIndex + 1;
@@ -83,12 +87,20 @@ export default function ShopUpdate() {
         ...shopInformation,
         mst_holiday: selectDay.sort().join(),
         mst_image: imageArray,
+        _mt_idx: login.idx,
       });
     } else {
-      response = await updateStore({...shopInformation, mst_holiday: selectDay.sort().join()});
+      response = await updateStore({...shopInformation, mst_holiday: selectDay.sort().join(), _mt_idx: login.idx});
     }
 
     if (response?.data?.result === 'true') {
+      await getStoreInfo({
+        _mt_idx: login.idx,
+      }).then(res => {
+        if (res?.data?.result === 'true') {
+          dispatch(setStoreInfo({...res?.data?.data?.data}));
+        }
+      });
       showToastMessage('저장되었습니다.');
       navigation.goBack();
     }
@@ -97,7 +109,7 @@ export default function ShopUpdate() {
   const RegJoin = () => {
     let check = true;
 
-    if (shopInformation.mst_name === '') {
+    if (shopInformation?.mst_name === '') {
       setErrorMessage(prev => ({...prev, mst_name: '업체명을 입력해주세요.'}));
       check = false;
     }
@@ -142,7 +154,7 @@ export default function ShopUpdate() {
             errorMessage={errorMessage.mst_name !== '' && errorMessage.mst_name}
             pd="0px 0px 5px"
             mg="0px 0px 20px"
-            value={shopInformation.mst_name}
+            value={shopInformation?.mst_name}
             changeFn={text => {
               setShopInformation(prev => ({
                 ...prev,
@@ -158,7 +170,7 @@ export default function ShopUpdate() {
             errorMessage={errorMessage.mst_company_num !== '' && errorMessage.mst_company_num}
             pd="0px 0px 5px"
             mg="0px 0px 20px"
-            value={shopInformation.mst_company_num}
+            value={shopInformation?.mst_company_num}
             changeFn={text => {
               setShopInformation(prev => ({
                 ...prev,
@@ -176,7 +188,7 @@ export default function ShopUpdate() {
               pd="0px 0px 5px"
               mg="0px 10px 0px 0px"
               disabled
-              value={shopInformation.mst_zip}
+              value={shopInformation?.mst_zip}
             />
 
             <TouchableOpacity onPress={() => openDaumPost()}>
@@ -187,7 +199,7 @@ export default function ShopUpdate() {
           </BetweenBox>
           {errorMessage.mst_zip !== '' ? (
             <Box alignSelf="flex-start" mg="0px 15px 0px">
-              <ErrorText>{errorMessage.mst_zip}</ErrorText>
+              <ErrorText>{errorMessage?.mst_zip}</ErrorText>
             </Box>
           ) : (
             <Box mg="0px 0px 10px" />
@@ -199,7 +211,7 @@ export default function ShopUpdate() {
             placeHolder="기본주소를 입력해주세요"
             pd="0px 0px 5px"
             mg="0px 0px 10px"
-            value={shopInformation.mst_addr1}
+            value={shopInformation?.mst_addr1}
           />
           <DefaultInput
             width={size.minusPadding}
@@ -207,7 +219,7 @@ export default function ShopUpdate() {
             placeHolder="상세주소를 입력해주세요"
             pd="0px 0px 5px"
             mg="0px 0px 30px"
-            value={shopInformation.mst_addr2}
+            value={shopInformation?.mst_addr2}
             errorMessage={errorMessage.mst_addr2 !== '' && errorMessage.mst_addr2}
             changeFn={text => {
               setShopInformation(prev => ({
@@ -228,7 +240,7 @@ export default function ShopUpdate() {
             placeHolder="브랜드를 선택해주세요"
             pd="0px 0px 5px"
             mg="20px 0px 20px"
-            value={shopInformation.mst_brand}
+            value={shopInformation?.mst_brand}
             PressText={() => {
               dispatch(
                 modalOpenAndProp({
@@ -247,7 +259,7 @@ export default function ShopUpdate() {
             placeHolder="전화번호를 등록해주세요"
             pd="0px 0px 5px"
             mg="0px 0px 20px"
-            value={shopInformation.mst_tel}
+            value={shopInformation?.mst_tel}
             changeFn={text => {
               setShopInformation(prev => ({
                 ...prev,
@@ -272,7 +284,7 @@ export default function ShopUpdate() {
             height="100px"
             pd="0px 0px 5px"
             mg="20px 0px"
-            value={shopInformation.mst_worktime}
+            value={shopInformation?.mst_worktime}
             changeFn={text => {
               setShopInformation(prev => ({
                 ...prev,
@@ -288,9 +300,7 @@ export default function ShopUpdate() {
             <BetweenBox width={size.minusPadding}>
               {dayList.map((item, Index) => {
                 const isSelect = selectDay.find(findItem => findItem === Index + 1) !== undefined;
-                const backgroundColor = isSelect
-                  ? Theme.color.skyBlue
-                  : Theme.color.backgroundWhiteGray;
+                const backgroundColor = isSelect ? Theme.color.skyBlue : Theme.color.backgroundWhiteGray;
                 const color = isSelect ? Theme.color.white : Theme.color.gray;
 
                 return (
@@ -319,7 +329,7 @@ export default function ShopUpdate() {
             height="100px"
             pd="0px 0px 5px"
             mg="20px 0px"
-            value={shopInformation.mst_intro}
+            value={shopInformation?.mst_intro}
             changeFn={text => {
               setShopInformation(prev => ({
                 ...prev,
@@ -335,7 +345,7 @@ export default function ShopUpdate() {
             placeHolder="태그를 선택해주세요"
             pd="0px 0px 5px"
             isText
-            value={shopInformation.mst_tag}
+            value={shopInformation?.mst_tag}
             PressText={() => {
               dispatch(
                 modalOpenAndProp({
@@ -354,7 +364,7 @@ export default function ShopUpdate() {
             errorMessage={errorMessage.mst_email !== '' && errorMessage.mst_email}
             pd="0px 0px 5px"
             mg="20px 0px"
-            value={shopInformation.mst_email}
+            value={shopInformation?.mst_email}
             changeFn={text => {
               setShopInformation(prev => ({
                 ...prev,

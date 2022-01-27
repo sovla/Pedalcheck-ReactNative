@@ -104,7 +104,7 @@ export default function RepairHome() {
       sorting: sortSelectItem === '정비횟수순' ? '2' : sortSelectItem === '거리순' ? '3' : '1', // 인기순 1 거리순 2 정비횟수순 3
     })
       .then(res => {
-        const isTrue = res.data?.result === 'true';
+        const isTrue = res?.data?.result === 'true';
         if (isTrue) {
           const isData = res.data?.data?.data?.store_list?.length > 0;
           if (isData) {
@@ -333,7 +333,7 @@ const Event = () => {
         view_mode: 'main',
         board: 'event',
       })
-        .then(res => res.data.result === 'true' && res.data.data.data)
+        .then(res => res?.data?.result === 'true' && res?.data?.data?.data)
         .then(data => setEventList(data?.board));
     }
   }, [isFocused]);

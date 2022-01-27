@@ -156,7 +156,7 @@ export const updateStore = async args => {
 export const updateStoreImage = async args => {
   try {
     const data = args;
-    const response = await ImageAPI(data, 'mst_image', 'mng/store_edit.php');
+    const response = await ImageAPI(data, 'mst_image', 'mng/store_edit.php', true);
     return response;
   } catch (error) {
     console.log(error);
