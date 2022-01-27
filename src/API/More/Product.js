@@ -11,6 +11,8 @@ export const getProductInfoList = async args => {
 
 export const sendProductInfo = async args => {
   try {
+    console.log(args, 'sendProductInfo');
+
     const response = await API.post('mng/product_add.php', args);
     return response;
   } catch (error) {

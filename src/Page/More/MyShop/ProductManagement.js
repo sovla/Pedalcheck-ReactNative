@@ -24,13 +24,13 @@ import {useSelector} from 'react-redux';
 // 2022-01-27 09:26:52 준한 API 작업
 export default function ProductManagement() {
   const [productList, setProductList] = useState([]);
-  const [iseLoading, setiseLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const isFocused = useIsFocused();
 
   const {login} = useSelector(state => state);
 
   useLayoutEffect(() => {
-    if (productList.length === 0 && isFocused)
+    if (isFocused)
       getProductInfoList({
         _mt_idx: login.idx,
       })
@@ -39,6 +39,7 @@ export default function ProductManagement() {
   }, [isFocused]);
 
   const navigation = useNavigation();
+  console.log(productList, 'productList');
   return (
     <Container pd="0px 16px">
       <FlatList

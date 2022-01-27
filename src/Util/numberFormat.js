@@ -2,22 +2,30 @@ export default function numberFormat(inputNumber) {
   // By.Junhan  10000 -> 10,000  11-25
   const typeStringInputNumber = () => {
     switch (typeof inputNumber) {
-      case 'string':
+      case 'string': {
+        if (inputNumber.includes(',')) {
+          const changeInputNumber = inputNumber.replaceAll(',', '');
+          return parseInt(changeInputNumber);
+        }
         return parseInt(inputNumber);
+      }
       case 'number':
         return inputNumber;
       case 'object':
-        return '0';
+        return 0;
       case 'undefined':
-        return '0';
+        return 0;
       case 'null':
-        return '0';
+        return 0;
+      default:
+        return 0;
     }
   };
-
-  return typeStringInputNumber()
-    .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const result = typeStringInputNumber().toLocaleString('ko-KR');
+  if (result.includes('N') || result === '') {
+    return '';
+  }
+  return result;
 }
 
 export function numberChangeFormat(number) {

@@ -1,11 +1,4 @@
-import {
-  BetweenBox,
-  Box,
-  Container,
-  PositionBox,
-  RowBox,
-  ScrollBox,
-} from '@/assets/global/Container';
+import {BetweenBox, Box, Container, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
 import React from 'react';
 import {useState} from 'react';
 import DefaultImage from '@/assets/global/Image';
@@ -156,7 +149,7 @@ export default function RepairHistorySelectReview() {
                 </TouchableOpacity>
               </PositionBox>
             </RowBox>
-            {isLoading && <Loading isAbsolute />}
+            {isLoading && <Loading isAbsolute isFullSize={false} />}
           </>
         }
         data={review}
@@ -192,9 +185,7 @@ const ReviewRecomment = ({item, size, commentSubmit, deleteHandle}) => {
   const navigation = useNavigation();
 
   const deletePress = async srt_idx => {
-    AlertButtons('댓글을 삭제하시겠습니까? 삭제하면 복구할 수 없습니다.', '확인', '취소', () =>
-      deleteHandle(srt_idx),
-    );
+    AlertButtons('댓글을 삭제하시겠습니까? 삭제하면 복구할 수 없습니다.', '확인', '취소', () => deleteHandle(srt_idx));
   };
 
   return (
