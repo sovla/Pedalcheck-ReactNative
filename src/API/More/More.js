@@ -181,3 +181,12 @@ export const getStoreInfo = async args => {
   }
 };
 // 태그 불러오기
+
+export const deleteImage = async args => {
+  try {
+    const response = await API.post('mng/image_del.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

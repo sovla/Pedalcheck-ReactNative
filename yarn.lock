@@ -10368,6 +10368,11 @@ react-native-element-dropdown@1.4.8:
   resolved "https://registry.yarnpkg.com/react-native-element-dropdown/-/react-native-element-dropdown-1.4.8.tgz#41100ac7ea5ed4a6820dd753bc65b8588a8e7b6c"
   integrity sha512-Od/WLjBG3RNkRcpl3+6szuNJWJP5ZaXEt2jZJCvuVquapA7/utM9KbMwK9m5TczaRLBF8UC6anqWJ5QXrO+3iA==
 
+react-native-fast-image@8.5.11:
+  version "8.5.11"
+  resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-8.5.11.tgz#e3dc969d0e4e8df026646bf18194465aa55cbc2b"
+  integrity sha512-cNW4bIJg3nvKaheG8vGMfqCt5LMWX9MS5+wMudgKIHbGO51spRr4sgnlhVgwHLcZ5aeNOVJ8CPRxDIWKRq/0QA==
+
 react-native-geolocation-service@5.3.0-beta.4:
   version "5.3.0-beta.4"
   resolved "https://registry.yarnpkg.com/react-native-geolocation-service/-/react-native-geolocation-service-5.3.0-beta.4.tgz#8061396f734028b0ecbf8316a2cda9179df19210"

@@ -10,8 +10,7 @@ import {useSelector} from 'react-redux';
 import {FlatList, ScrollView} from 'react-native';
 import {numberCheck} from '@/Page/Repair/RepairHome';
 import scrollSlideNumber from '@/Util/scrollSlideNumber';
-
-export default function Swiper({imageArray, width, height, borderRadius = 'Bottom'}) {
+function SwiperComponent({imageArray, width, height, borderRadius = 'Bottom'}) {
   const transformWidth = typeof width === 'string' ? parseInt(width.split('px')[0]) : width;
   const transformHeight = typeof height === 'string' ? parseInt(height.split('px')[0]) : height;
   const [imageNumber, setImageNumber] = useState(0);
@@ -39,6 +38,7 @@ export default function Swiper({imageArray, width, height, borderRadius = 'Botto
       <FlatList
         horizontal
         pagingEnabled
+        initialNumToRender={15}
         showsHorizontalScrollIndicator={false}
         data={imageArray}
         renderItem={({item, index}) => (
@@ -80,3 +80,6 @@ export default function Swiper({imageArray, width, height, borderRadius = 'Botto
     </Box>
   );
 }
+const Swiper = React.memo(SwiperComponent);
+
+export default Swiper;

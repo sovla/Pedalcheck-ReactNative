@@ -24,6 +24,10 @@ import {useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import {imageAddress} from '@assets/global/config';
+import {deleteImage} from '@/API/More/More';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {filter} from 'domutils';
+import {useEffect} from 'react';
 
 export default function ProductRegister({route: {params}}) {
   const {login} = useSelector(state => state);
@@ -40,10 +44,11 @@ export default function ProductRegister({route: {params}}) {
   const [mainCategory, setMainCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   const [imageArray, setImageArray] = useState([]);
+  const [lastSortNumber, setLastSortNumber] = useState(0);
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const isItem = params?.item !== undefined; // item 있는경우 true 수정페이지
-
+  console.log(lastSortNumber);
   const regJoin = () => {
     let result = false;
     if (product.pt_title === '') {
@@ -67,17 +72,34 @@ export default function ProductRegister({route: {params}}) {
       setErrorMessage(prev => ({...prev, pt_weeken_time: '주말 종료시간은 주말 시작시간 이후여야 합니다.'}));
       result = true;
     }
-    // if (product.pt_title === '') {
-    //   setErrorMessage(prev => ({...prev, pt_weeken_time: '주말 종료시간은 주말 시작시간 이후여야 합니다.'}));
-    //   result = true;
-    // }
+
     return result;
   };
 
+  const onPressDelete = async item => {
+    const path = item.path.split('/');
+    const fname = path[path.length - 1];
+
+    const result = await deleteImage({
+      mode: 'product',
+      idx: item.idx,
+      fname,
+    })
+      .then(res => res.data?.result === 'true')
+      .then(() => {
+        return true;
+      })
+      .catch(err => {
+        console.log(err);
+        return false;
+      });
+    return result;
+  };
   const onPressSubmit = () => {
     if (regJoin()) {
       return null;
     }
+
     const api = isItem ? editProductInfo : sendProductInfo;
     api({
       _mt_idx: login.idx,
@@ -99,15 +121,22 @@ export default function ProductRegister({route: {params}}) {
       pt_proc_time: product.pt_proc_time,
       pt_proc_min: product.pt_proc_min,
       pt_etc: product.pt_etc,
-      pt_image: imageArray,
+      pt_image: imageArray.filter(filterItem => !filterItem?.sort),
+      pt_image_num: imageArray
+        .filter(filterItem => !filterItem?.sort)
+        .map((mapItem, index) => {
+          const result = mapItem?.sort ?? `${lastSortNumber + index + 1}`;
+          return result;
+        }),
     }).then(res => {
       if (res.data?.result === 'true') {
+        console.log(res);
         showToastMessage('저장되었습니다.');
         navigation.navigate('ProductManagement');
       }
     });
   };
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (isFocused) {
       if (isItem) {
         setProduct({
@@ -117,7 +146,8 @@ export default function ProductRegister({route: {params}}) {
           pt_price: numberFormat(params.item.pt_price),
           pt_image: undefined,
         });
-        params?.item?.pt_image &&
+
+        if (params?.item?.pt_image) {
           setImageArray(
             params.item.pt_image.map(mapItem => {
               return {
@@ -127,6 +157,11 @@ export default function ProductRegister({route: {params}}) {
               };
             }),
           );
+          const maxNumber = Math.max(
+            ...params.item.pt_image.filter(filterItem => filterItem?.sort).map(mapItem => parseInt(mapItem.sort)),
+          );
+          setLastSortNumber(isFinite(maxNumber) ? maxNumber : 0);
+        }
       }
       getProductCategoryList()
         .then(res => res.data?.result === 'true' && res.data.data.data)
@@ -139,6 +174,7 @@ export default function ProductRegister({route: {params}}) {
       .then(res => res.data?.result === 'true' && res.data.data.data)
       .then(data => setSubCategory(data));
   }, [product.ct_pid]);
+  console.log(imageArray);
   return (
     <>
       <Header title={`정비상품 ${isItem ? '수정' : '등록'}`} />
@@ -355,7 +391,7 @@ export default function ProductRegister({route: {params}}) {
             <DarkMediumText fontSize={Theme.fontSize.fs15}>사진첨부</DarkMediumText>
             <IndigoText fontSize={Theme.fontSize.fs14}>최대 10장까지 등록가능</IndigoText>
           </BetweenBox>
-          <Photo imageArray={imageArray} setImageArray={setImageArray} imageCount={10} />
+          <Photo onPressDelete={onPressDelete} imageArray={imageArray} setImageArray={setImageArray} imageCount={10} />
         </Box>
         <LinkButton content="등록하기" mg="0px 0px 20px" to={onPressSubmit} />
       </ScrollBox>
