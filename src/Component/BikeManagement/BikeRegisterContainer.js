@@ -137,6 +137,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
       onBlur: () => {
         bikeSerialCheckHandle();
       },
+      maxLength: 20,
     },
     {
       title: '연식',
@@ -168,6 +169,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
       question: undefined,
       value: 'modelDetail',
       isDropdown: false,
+      maxLength: 50,
     },
     {
       title: '사이즈',
@@ -175,6 +177,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
       question: undefined,
       value: 'size',
       isDropdown: false,
+      maxLength: 10,
     },
     {
       title: '컬러',
@@ -182,6 +185,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
       question: undefined,
       value: 'color',
       isDropdown: false,
+      maxLength: 15,
     },
     {
       title: '휠 사이즈',
@@ -206,6 +210,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
       question: undefined,
       value: 'drivetrain',
       isDropdown: false,
+      maxLength: 40,
     },
   ];
 
@@ -227,6 +232,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
       question: undefined,
       value: 'power',
       isDropdown: false,
+      maxLength: 20,
     },
   ];
 
@@ -286,6 +292,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
             mg="0px 0px 20px"
             pd="0px 0px 5px"
             errorMessage={errorMessage.bikeName !== '' && errorMessage.bikeName}
+            maxLength={20}
           />
           <DefaultInput
             title="모델"

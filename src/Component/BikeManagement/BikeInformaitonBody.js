@@ -3,6 +3,7 @@ import React from 'react';
 import Theme from '@/assets/global/Theme';
 import {DarkBoldText, DarkText} from '@/assets/global/Text';
 import {useSelector} from 'react-redux';
+import {Text} from 'react-native';
 
 export default function BikeInformaitonBody({bikeInfoDetail}) {
   const {size} = useSelector(state => state);
@@ -34,7 +35,9 @@ export default function BikeInformaitonBody({bikeInfoDetail}) {
               <DarkBoldText width="67px" fontSize={Theme.fontSize.fs15}>
                 {item.title}
               </DarkBoldText>
-              <DarkText fontSize={Theme.fontSize.fs15}>{item.value}</DarkText>
+              <DarkText style={{flex: 1}} fontSize={Theme.fontSize.fs15}>
+                {item.value}
+              </DarkText>
             </RowBox>
           );
         })}

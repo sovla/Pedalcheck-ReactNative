@@ -2,12 +2,13 @@ import {Box, RowBox} from '@/assets/global/Container';
 import {DarkBoldText, DarkText, GrayBoldText, GrayText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import React from 'react';
+import {Text} from 'react-native';
 import {useSelector} from 'react-redux';
 
 export default function Bike({item, isUse = true}) {
   const {size} = useSelector(state => state);
   return (
-    <Box width={size.minusPadding} height="100px" justifyContent="center">
+    <Box width={size.minusPadding} minHeight="100px" justifyContent="center">
       <RowBox>
         {isUse ? (
           <>

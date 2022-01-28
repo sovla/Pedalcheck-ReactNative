@@ -18,14 +18,11 @@ export default function BikeInformationHeader({item, mg = '20px 0px'}) {
     <RowBox mg={mg} alignItems="center">
       <DefaultImage source={{uri: imageAddress + item?.bikeImage}} width="74px" height="74px" />
       <Box mg="0px 0px 0px 20px">
-        <RowBox>
+        <RowBox flexWrap="wrap">
           <DarkText fontSize={Theme.fontSize.fs15} fontWeight={Theme.fontWeight.medium}>
             {item.brand}
           </DarkText>
-          <DarkText
-            mg="0px 0px 0px 10px"
-            fontSize={Theme.fontSize.fs15}
-            fontWeight={Theme.fontWeight.medium}>
+          <DarkText mg="0px 0px 0px 10px" fontSize={Theme.fontSize.fs15} fontWeight={Theme.fontWeight.medium}>
             {item.modelName}
           </DarkText>
         </RowBox>
