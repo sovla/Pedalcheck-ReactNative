@@ -8,79 +8,122 @@ import React from 'react';
 import {ScrollView} from 'react-native';
 import {useSelector} from 'react-redux';
 import ShopDummyImage from '@assets/image/shop_default.png';
+import {useState} from 'react';
+import {getProductCategoryList} from '@/API/More/Product';
+import useUpdateEffect from '@/Hooks/useUpdateEffect';
+import {imageAddress} from '@assets/global/config';
+import {useEffect} from 'react';
 
 export default function ProductDetail({route: {params}}) {
-  const shopTitle = '인천신스';
-  const productName = '정비 - 기본점검';
-  const salePrice = 32000;
-  const Price = 50000;
-  const weekdayAvailableTime = '09시 ~ 18시';
-  const holydayAvailableTime = '09시 ~ 18시';
+  const {
+    shopInfo: {store_info},
+    login,
+  } = useSelector(state => state);
+  const item = params?.item;
+  const shopTitle = store_info?.mst_name;
+  const productName = item?.pt_title;
+  const salePrice = item?.pt_dc_price;
+  const Price = item?.pt_price;
+  const weekdayAvailableTime = `${item?.pt_stime?.slice(0, 2)}시 ~ ${item?.pt_etime?.slice(0, 2)}시`;
+  const holydayAvailableTime = `${item?.pt_weekend_stime?.slice(0, 2)}시 ~ ${item?.pt_weekend_etime?.slice(0, 2)}시`;
   const {size} = useSelector(state => state);
+  const [category, setCategory] = useState([]);
+  const [imageArray, setImageArray] = useState([]);
+
+  useEffect(() => {
+    // getProductCategoryList({ct_pid: item?.ct_pid})
+    //   .then(res => res.data?.result === 'true' && res.data.data.data)
+    //   .then(data => setCategory(data));
+    const originImageArray = item?.pt_image;
+    let tmpImageArray = [];
+    for (let i = 0; i < item?.pt_image?.length; i++) {
+      tmpImageArray.push({uri: imageAddress + originImageArray[i]});
+    }
+    setImageArray(tmpImageArray);
+  }, []);
+
   const contentArray = [
     {
       title: '사용 가능시간',
       content: weekdayAvailableTime,
+      isShow: true,
     },
     {
       title: '주말 이용시간',
-      content: holydayAvailableTime,
+      content: item?.pt_weekend_time === 'Y' ? holydayAvailableTime : weekdayAvailableTime,
+      isShow: item?.pt_weekend === 'Y' ? true : false,
     },
     {
       title: '카테고리',
-      content: '전체 카테고리 / 세부 카테고리',
+      content: item?.ct_pname + ' / ' + item?.ct_name,
+      isShow: true,
     },
     {
       title: '상품설명',
-      content:
-        '상품 설명 노출영역입니다. 상품 설명 노출영역입니다. 상품 설명 노출영역입니다. 상품      설명 노출영역입니다. 상품 설명 노출영역입니다. 상품 설명 노출영역입니다. 상품 설명        노출영역입니다.',
+      content: item?.pt_content,
+      isShow: true,
     },
     {
       title: '평균 작업시간',
-      content: '2일 4시간 30분',
+      content: setWorkTime(),
+      isShow: true,
     },
     {
       title: '유의사항',
-      content:
-        '유의사항 노출 영역입니다. 유의사항 노출 영역입니다. 유의사항 노출 영역입니다.        유의사항 노출 영역입니다. 유의사항 노출 영역입니다.',
+      content: item?.pt_etc,
+      isShow: true,
     },
   ];
-  const dummyImageArray = [ShopDummyImage, ShopDummyImage, ShopDummyImage];
+
+  function setWorkTime() {
+    let workTime = '';
+
+    if (item?.pt_proc_day) {
+      workTime += `${item?.pt_proc_day}일`;
+    }
+    if (item?.pt_proc_time) {
+      workTime += `${item?.pt_proc_time}시간`;
+    }
+    if (item?.pt_proc_min) {
+      workTime += `${item?.pt_proc_min}분`;
+    }
+
+    return workTime;
+  }
+
+  console.log(item?.pt_image);
   return (
     <>
       <Header title="상품 상세" />
       <ScrollView>
         <Container alignItems="center" pd="20px 0px">
-          <Box width={size.minusPadding} height="200px" mg="0px 0px 20px">
-            <Swiper
-              imageArray={dummyImageArray}
-              width={size.designWidth - 32}
-              height={200}
-              borderRadius="All"
-            />
-          </Box>
+          {item?.pt_image?.length > 0 && (
+            <Box width={size.minusPadding} height="200px" mg="0px 0px 20px">
+              <Swiper imageArray={imageArray} width={size.designWidth - 32} height={200} borderRadius="All" />
+            </Box>
+          )}
           <Box width={size.minusPadding} alignItems="center">
             <DefaultText fontSize={Theme.fontSize.fs15} color={Theme.color.gray}>
               {shopTitle}
             </DefaultText>
             <DarkBoldText fontSize={Theme.fontSize.fs18}>{productName}</DarkBoldText>
             <MoneyText fontSize={Theme.fontSize.fs13} money={Price} disabled />
-            <MoneyText
-              fontSize={Theme.fontSize.fs18}
-              money={salePrice}
-              color={Theme.color.indigo}
-            />
+            <MoneyText fontSize={Theme.fontSize.fs18} money={salePrice} color={Theme.color.indigo} />
           </Box>
           <Box mg="20px 0px 0px" width={size.designWidth}>
             <DefaultLine height="10px" width={size.designWidth} />
           </Box>
           <Box pd="0px 16px" width="100%">
-            {contentArray.map((item, index) => (
-              <Box mg="20px 0px 0px" key={item.title + index}>
-                <DarkBoldText>{item.title}</DarkBoldText>
-                <DarkText mg="5px 0px 0px">{item.content}</DarkText>
-              </Box>
-            ))}
+            {contentArray.map((item, index) => {
+              if (item.isShow) {
+                return (
+                  <Box mg="20px 0px 0px" key={item.title + index}>
+                    <DarkBoldText>{item.title}</DarkBoldText>
+                    <DarkText mg="5px 0px 0px">{item.content}</DarkText>
+                  </Box>
+                );
+              }
+            })}
           </Box>
         </Container>
       </ScrollView>
