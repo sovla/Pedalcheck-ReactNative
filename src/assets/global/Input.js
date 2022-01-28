@@ -18,7 +18,7 @@ export const DefaultInput = ({
   width,
   height = '44px',
   backgroundColor,
-  fontSize = 13, //   상단 제목, placeHolder, 내부 내용 폰트사이트
+  fontSize = '13px', //   상단 제목, placeHolder, 내부 내용 폰트사이트
   disabled,
   borderColor,
   isText, //          Input이 아닌 Text 의 경우 적용

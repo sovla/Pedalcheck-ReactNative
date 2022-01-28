@@ -14,8 +14,10 @@ import {FlatList} from 'react-native-gesture-handler';
 import {useEffect} from 'react';
 import {useState} from 'react';
 import {useLayoutEffect} from 'react';
-import {getProductInfoList} from '@/API/More/Product';
+import {deleteProduct, getProductInfoList} from '@/API/More/Product';
 import {useSelector} from 'react-redux';
+import {showToastMessage} from '@/Util/Toast';
+import {AlertButtons} from '@/Util/Alert';
 // 2021-12-15 09:16:45
 // Junhan
 
@@ -29,23 +31,47 @@ export default function ProductManagement() {
 
   const {login} = useSelector(state => state);
 
-  useLayoutEffect(() => {
-    if (isFocused)
-      getProductInfoList({
+  const onPressDelete = item => {
+    const deleteProductHandle = AlertButtons('정비 상품을 삭제하시겠습니까?', '확인', '취소', () => {
+      deleteProduct({
         _mt_idx: login.idx,
+        pt_idx: item.pt_idx,
       })
-        .then(res => res.data?.result === 'true' && res.data.data.data)
-        .then(data => setProductList(data));
+        .then(res => res.data?.result === 'true')
+        .then(() => {
+          getProductInfoListHandle();
+          showToastMessage('삭제 되었습니다.');
+        });
+    });
+  };
+
+  useLayoutEffect(() => {
+    if (isFocused) getProductInfoListHandle();
   }, [isFocused]);
 
+  const getProductInfoListHandle = () => {
+    getProductInfoList({
+      _mt_idx: login.idx,
+    })
+      .then(res => res.data?.result === 'true' && res.data.data.data)
+      .then(data => setProductList(data));
+  };
   const navigation = useNavigation();
-  console.log(productList, 'productList');
   return (
     <Container pd="0px 16px">
       <FlatList
         data={productList}
         renderItem={({item, index}) => {
-          return <ProductPost item={item} title={item.pt_title} price={item.pt_price} />;
+          return (
+            <ProductPost
+              item={item}
+              title={item.pt_title}
+              price={item.pt_price}
+              onPressDelete={() => {
+                onPressDelete(item);
+              }}
+            />
+          );
         }}
         ListHeaderComponent={
           <>

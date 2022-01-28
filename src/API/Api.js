@@ -60,9 +60,9 @@ export const API = axios.create({
   },
 });
 
-export const ImageAPI = async (data, field, url, isIndex = false) => {
+export const ImageAPI = async (data, field, url, isIndex = false, isArray = false) => {
   // 이미지 API 2022-01-05 16:40:31 Junhan
-  //
+  //  data = args , field 이미지가 들어갈 이름
   try {
     console.log('data :::', data);
     let cloneData = Object.assign({}, data);
@@ -86,12 +86,10 @@ export const ImageAPI = async (data, field, url, isIndex = false) => {
           !isIndex
             ? imageResult.push({
                 //  아닌경우 하나의 배열에 푸쉬
-                [field]: {
-                  key: 'poto' + new Date().getTime(),
-                  uri: Platform.OS === 'android' ? imageItem.path : imageItem.path.replace('file://', ''),
-                  type: imageItem.mime,
-                  name: 'auto.jpg',
-                },
+                key: 'poto' + new Date().getTime(),
+                uri: Platform.OS === 'android' ? imageItem.path : imageItem.path.replace('file://', ''),
+                type: imageItem.mime,
+                name: 'auto.jpg',
               })
             : Object.assign(imageResultObject, {
                 [`${field}${index}`]: {
@@ -121,7 +119,7 @@ export const ImageAPI = async (data, field, url, isIndex = false) => {
       ? formFormatter({
           jwt_data,
           secretKey: SECRETKEY,
-          [field]: imageResult,
+          [`${field}`]: imageResult,
         })
       : formFormatter({
           jwt_data,
