@@ -105,7 +105,6 @@ export default function ProductRegister({route: {params}}) {
       }
     });
   };
-  console.log(errorMessage);
   useLayoutEffect(() => {
     if (isFocused) {
       if (isItem) {

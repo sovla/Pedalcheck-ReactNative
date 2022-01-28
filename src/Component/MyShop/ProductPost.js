@@ -8,7 +8,7 @@ import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistor
 import {useNavigation} from '@react-navigation/native';
 import {Alert} from 'react-native';
 
-export default function ProductPost({title = '정비 - 오버홀', price = 19000, item}) {
+export default function ProductPost({title = '정비 - 오버홀', price = 19000, item, onPressDelete}) {
   const navigation = useNavigation();
   return (
     <BetweenBox width="380px" height="50px" pd="10px 5px" alignItems="center" style={borderBottomWhiteGray}>
@@ -24,7 +24,7 @@ export default function ProductPost({title = '정비 - 오버홀', price = 19000
             }
           />
           <Box backgroundColor="#0000" mg="0px 0px 0px 5px">
-            <TrashButton onPress={() => Alert.alert('', '삭제하시겠습니까?(테스트중)')} />
+            <TrashButton onPress={onPressDelete} />
           </Box>
         </RowBox>
       </RowBox>
