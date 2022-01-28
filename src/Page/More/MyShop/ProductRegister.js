@@ -23,6 +23,7 @@ import {useLayoutEffect} from 'react';
 import {useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
+import {imageAddress} from '@assets/global/config';
 
 export default function ProductRegister({route: {params}}) {
   const {login} = useSelector(state => state);
@@ -98,6 +99,7 @@ export default function ProductRegister({route: {params}}) {
       pt_proc_time: product.pt_proc_time,
       pt_proc_min: product.pt_proc_min,
       pt_etc: product.pt_etc,
+      pt_image: imageArray,
     }).then(res => {
       if (res.data?.result === 'true') {
         showToastMessage('저장되었습니다.');
@@ -115,6 +117,16 @@ export default function ProductRegister({route: {params}}) {
           pt_price: numberFormat(params.item.pt_price),
           pt_image: undefined,
         });
+        params?.item?.pt_image &&
+          setImageArray(
+            params.item.pt_image.map(mapItem => {
+              return {
+                path: imageAddress + mapItem.fname,
+                idx: mapItem.idx,
+                sort: mapItem.sort,
+              };
+            }),
+          );
       }
       getProductCategoryList()
         .then(res => res.data?.result === 'true' && res.data.data.data)
@@ -363,22 +375,22 @@ const DropdownTimeBox = ({title = '시작시간', value, setValue, disabled}) =>
   );
 };
 const initProductInfo = {
-  ct_id: '',
+  ct_id: '1529',
   ct_name: '',
-  ct_pid: '',
+  ct_pid: '1521',
   ct_pname: '',
-  pt_content: '',
-  pt_discount_per: '0',
+  pt_content: '내용',
+  pt_discount_per: '10',
   pt_etc: '',
-  pt_etime: '',
+  pt_etime: '10',
   pt_idx: '',
-  pt_price: '',
+  pt_price: '15000',
   pt_proc_day: '0',
   pt_proc_min: '0',
   pt_proc_time: '0',
   pt_stime: '00:00:00',
   pt_etime: '00:00:00',
-  pt_title: '',
+  pt_title: '상품명',
   pt_type: '1',
   pt_wdate: '',
   pt_weekend: 'N',

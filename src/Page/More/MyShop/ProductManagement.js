@@ -57,7 +57,6 @@ export default function ProductManagement() {
       .then(data => setProductList(data));
   };
   const navigation = useNavigation();
-  console.log(productList, 'productList');
   return (
     <Container pd="0px 16px">
       <FlatList

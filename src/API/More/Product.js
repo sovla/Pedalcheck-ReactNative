@@ -11,7 +11,7 @@ export const getProductInfoList = async args => {
 
 export const sendProductInfo = async args => {
   try {
-    const response = await ImageAPI(args, pt_image, 'mng/product_add.php');
+    const response = await ImageAPI(args, 'pt_image', 'mng/product_add.php', false, true);
     return response;
   } catch (error) {
     console.log(error);
