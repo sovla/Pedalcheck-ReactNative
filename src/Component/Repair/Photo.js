@@ -11,8 +11,17 @@ import {Button} from '@/assets/global/Button';
 import {useCallback} from 'react';
 import CameraIcon from '@assets/image/ic_cam.png';
 import ImageCropPicker from 'react-native-image-crop-picker';
-
-export default function Photo({imageArray, setImageArray, imageCount = 5, isView}) {
+import {getPixel} from '@/Util/pixelChange';
+import FastImage from 'react-native-fast-image';
+const PhotoComponent = ({
+  imageArray,
+  setImageArray,
+  imageCount = 5,
+  isView,
+  onPressDelete = () => {
+    return true;
+  },
+}) => {
   const {size} = useSelector(state => state);
 
   const onPressAddPhoto = () => {
@@ -24,6 +33,10 @@ export default function Photo({imageArray, setImageArray, imageCount = 5, isView
       height: 400,
       cropping: true, // 자르기 활성화
       multiple: true,
+      compressImageQuality: 0.8,
+      compressImageMaxWidth: 1000,
+      compressImageMaxHeight: 1000,
+      forceJpg: true,
     }).then(images => {
       if (checkImageCount(images)) {
         return null;
@@ -31,8 +44,11 @@ export default function Photo({imageArray, setImageArray, imageCount = 5, isView
       setImageArray(prev => [...prev, ...images]);
     });
   };
-  const onPressDelete = deleteIndex => {
-    setImageArray(prev => prev.filter((item, index) => index !== deleteIndex));
+  const onPressDeleteHandle = async (deleteIndex, item) => {
+    const result = await onPressDelete(item);
+    if (result) {
+      setImageArray(prev => prev.filter((item, index) => index !== deleteIndex));
+    }
   };
 
   const checkImageCount = images => {
@@ -54,7 +70,7 @@ export default function Photo({imageArray, setImageArray, imageCount = 5, isView
             rowNum={3}
             betweenMargin="0px 10px 10px 0px"
             item={item}
-            onPressDelete={onPressDelete}
+            onPressDelete={onPressDeleteHandle}
             isView={isView}
           />
         );
@@ -76,20 +92,31 @@ export default function Photo({imageArray, setImageArray, imageCount = 5, isView
       )}
     </RowBox>
   );
-}
+};
+
+const Photo = React.memo(PhotoComponent);
+
+export default Photo;
 
 const MapInnerItem = ({index, mg, item, onPressDelete, isView}) => {
   return (
     <Box width="120px" height="80px" mg={mg} style={{borderRadius: 5}}>
-      <DefaultImage
-        source={item?.path !== undefined ? {uri: item?.path} : item}
-        width="120px"
-        style={{borderRadius: 5}}
-        resizeMode="stretch"
+      <FastImage
+        source={
+          item?.path !== undefined
+            ? {uri: item?.path, cache: FastImage.cacheControl.web, priority: FastImage.priority.high}
+            : item
+        }
+        resizeMode={FastImage.resizeMode.stretch}
+        style={{
+          width: getPixel(120),
+          height: 80,
+          borderRadius: 5,
+        }}
       />
       {!isView && (
         <PositionBox top="5px" right="5px" width="24px" height="24px" borderRadius="100px" backgroundColor="#0000">
-          <TouchableOpacity onPress={() => onPressDelete(index)}>
+          <TouchableOpacity onPress={() => onPressDelete(index, item)}>
             <DefaultImage source={CloseIcon} width="24px" height="24px" />
           </TouchableOpacity>
         </PositionBox>
@@ -97,4 +124,5 @@ const MapInnerItem = ({index, mg, item, onPressDelete, isView}) => {
     </Box>
   );
 };
+
 const Result = withNthMap(MapInnerItem);

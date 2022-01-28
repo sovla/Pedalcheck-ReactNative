@@ -32,7 +32,7 @@ export default function ProductManagement() {
   const {login} = useSelector(state => state);
 
   const onPressDelete = item => {
-    const deleteProductHandle = AlertButtons('정비 상품을 삭제하시겠습니까?', '확인', '취소', () => {
+    AlertButtons('정비 상품을 삭제하시겠습니까?', '확인', '취소', () => {
       deleteProduct({
         _mt_idx: login.idx,
         pt_idx: item.pt_idx,

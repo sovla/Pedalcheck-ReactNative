@@ -1,4 +1,13 @@
 import {API, ImageAPI} from '../Api';
+import formFormatter from '@/Util/formFormatter';
+import axios, {Axios} from 'axios';
+import jwt_encode from 'jwt-encode';
+import jwtDecode from 'jwt-decode';
+import {Platform} from 'react-native';
+
+const baseURL = 'https://dmonster1744.cafe24.com/api/';
+
+const SECRETKEY = '3B9027B713FABE0C75AD3A1F9F7646CB1514DE99';
 
 export const getProductInfoList = async args => {
   try {
@@ -20,7 +29,36 @@ export const sendProductInfo = async args => {
 
 export const editProductInfo = async args => {
   try {
-    const response = await API.post('mng/product_edit.php', args);
+    const field = 'pt_image';
+    let cloneData = Object.assign({}, args);
+    delete cloneData[field];
+    const jwt_data = jwt_encode(cloneData, SECRETKEY);
+
+    const formData = new FormData();
+    formData.append('jwt_data', jwt_data);
+    formData.append('secretKey', SECRETKEY);
+
+    if (Array.isArray(args[field])) {
+      args[field].forEach((value, index) => {
+        if (value?.idx) {
+          const pathList = value.path.split('/');
+          const path = pathList[pathList.length - 1];
+          formData.append(`${field}[${index}]`, path);
+        } else {
+          const imageItem = {
+            key: 'poto' + new Date().getTime(),
+            uri: Platform.OS === 'android' ? value.path : value.path.replace('file://', ''),
+            type: value.mime,
+            name: 'auto.jpg',
+          };
+          formData.append(`${field}[${index}]`, imageItem);
+        }
+      });
+    }
+    console.log('editProductInfo :::', args);
+    console.log('editProductInfo :::', formData);
+
+    const response = await axios.post(baseURL + 'mng/product_edit.php', formData);
     return response;
   } catch (error) {
     console.log(error);

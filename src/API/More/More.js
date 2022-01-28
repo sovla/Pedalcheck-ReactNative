@@ -180,7 +180,10 @@ export const getStoreInfo = async args => {
     console.log(error);
   }
 };
-export const imageDelete = async args => {
+
+// 태그 불러오기
+
+export const deleteImage = async args => {
   try {
     const response = await API.post('mng/image_del.php', args);
     return response;
@@ -188,6 +191,7 @@ export const imageDelete = async args => {
     console.log(error);
   }
 };
+
 
 export const cancelOrder = async args => {
   try {
@@ -197,3 +201,4 @@ export const cancelOrder = async args => {
     console.log(error);
   }
 };
+

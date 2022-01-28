@@ -9,8 +9,7 @@ const DefaultImageStyle = styled.Image`
 
 const withResizeMode = WrappedComponent => {
   return props => {
-    const resizeMode = props?.resizeMode !== undefined ? props.resizeMode : 'cover';
-    return <WrappedComponent {...props} resizeMode={resizeMode} />;
+    return <WrappedComponent {...props} resizeMethod="resize" />;
   };
 };
 const DefaultImage = withResizeMode(DefaultImageStyle);
