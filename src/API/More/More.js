@@ -180,6 +180,7 @@ export const getStoreInfo = async args => {
     console.log(error);
   }
 };
+
 // 태그 불러오기
 
 export const deleteImage = async args => {
@@ -190,3 +191,14 @@ export const deleteImage = async args => {
     console.log(error);
   }
 };
+
+
+export const cancelOrder = async args => {
+  try {
+    const response = await API.post('order_cancel.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+

@@ -18,6 +18,7 @@ import {LinkButton} from '@/assets/global/Button';
 import {clearReservation, setReservationProduct} from '@/Store/reservationState';
 import {useEffect} from 'react';
 import {reduceItem} from '@/Util/reduceItem';
+import {useNavigation} from '@react-navigation/native';
 
 export default function ShopReservationProduct({navigation}) {
   const dispatch = useDispatch();
@@ -91,6 +92,7 @@ export default function ShopReservationProduct({navigation}) {
               Question: innerItem?.pt_content,
               price: innerItem?.pt_dc_price,
               salePrice: innerItem?.pt_price,
+              discountPercent: innerItem?.pt_discount_per,
               ...innerItem,
             };
             return (
@@ -102,6 +104,11 @@ export default function ShopReservationProduct({navigation}) {
                 }}
                 onPressCargo={() => {
                   onPressItem(innerItem, index);
+                }}
+                onPressDetail={() => {
+                  navigation.navigate('ProductDetail', {
+                    item: innerItem,
+                  });
                 }}
                 selectItem={selectProduct.find(item => item.index === index)}
               />
@@ -142,7 +149,7 @@ export default function ShopReservationProduct({navigation}) {
   );
 }
 
-export const ReservationProduct = ({item, onPressMain, selectItem}) => {
+export const ReservationProduct = ({item, onPressMain, selectItem, onPressDetail}) => {
   const {size} = useSelector(state => state);
 
   return (
@@ -156,7 +163,7 @@ export const ReservationProduct = ({item, onPressMain, selectItem}) => {
                 {item.title}
               </DarkText>
             </RowBox>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity onPress={onPressDetail}>
               <DefaultImage source={QuestionIcon} width="22px" height="22px" />
             </TouchableOpacity>
           </RowBox>
@@ -172,7 +179,7 @@ export const ReservationProduct = ({item, onPressMain, selectItem}) => {
       </RowBox>
 
       <RowBox width="115px" justifyContent="flex-end">
-        {item.salePrice && <MoneyText money={item.salePrice} disabled mg="0px 8px 0px 0px" />}
+        {item.discountPercent > 0 && <MoneyText money={item.salePrice} disabled mg="0px 8px 0px 0px" />}
 
         <MoneyText color={Theme.color.black} money={item.price} />
       </RowBox>

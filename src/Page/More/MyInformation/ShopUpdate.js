@@ -94,15 +94,14 @@ export default function ShopUpdate() {
     }
 
     if (response?.data?.result === 'true') {
-      await getStoreInfo({
+      const getResponse = await getStoreInfo({
         _mt_idx: login.idx,
-      }).then(res => {
-        if (res?.data?.result === 'true') {
-          dispatch(setStoreInfo({...res?.data?.data?.data}));
-        }
       });
-      showToastMessage('저장되었습니다.');
-      navigation.goBack();
+      if (getResponse?.data?.result === 'true') {
+        dispatch(setStoreInfo({...getResponse?.data?.data?.data}));
+        showToastMessage('저장되었습니다.');
+        navigation.goBack();
+      }
     }
   };
 

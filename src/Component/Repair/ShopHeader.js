@@ -53,12 +53,7 @@ const ShopHeader = ({size}) => {
         <Swiper imageArray={dummyImageArray} width={size.designWidth} height={250} />
         {isPartner ? (
           <>
-            <PositionBox
-              backgroundColor="#0000"
-              bottom="-35px"
-              right="87px"
-              zIndex={100}
-              alignItems="center">
+            <PositionBox backgroundColor="#0000" bottom="-35px" right="87px" zIndex={100} alignItems="center">
               <TouchableOpacity
                 onPress={() => Linking.openURL(`tel:${store_info?.mst_tel}`)}
                 style={{flex: 1, alignItems: 'center'}}>
@@ -68,12 +63,7 @@ const ShopHeader = ({size}) => {
                 </MediumText>
               </TouchableOpacity>
             </PositionBox>
-            <PositionBox
-              backgroundColor="#0000"
-              bottom="-35px"
-              right="26px"
-              zIndex={100}
-              alignItems="center">
+            <PositionBox backgroundColor="#0000" bottom="-35px" right="26px" zIndex={100} alignItems="center">
               <TouchableOpacity onPress={onPressQuestion} style={{flex: 1, alignItems: 'center'}}>
                 <DefaultImage source={QuestionIcon} width="57px" height="57px" />
                 <MediumText color={Theme.color.skyBlue} fontSize={Theme.fontSize.fs13}>
@@ -83,12 +73,7 @@ const ShopHeader = ({size}) => {
             </PositionBox>
           </>
         ) : (
-          <PositionBox
-            backgroundColor="#0000"
-            bottom="-35px"
-            right="26px"
-            zIndex={100}
-            alignItems="center">
+          <PositionBox backgroundColor="#0000" bottom="-35px" right="26px" zIndex={100} alignItems="center">
             <TouchableOpacity
               onPress={() => Linking.openURL(`tel:${store_info?.mst_tel}`)}
               style={{flex: 1, alignItems: 'center'}}>
