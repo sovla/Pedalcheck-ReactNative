@@ -1,4 +1,4 @@
-import {FooterButton} from '@/assets/global/Button';
+import {FooterButton, LinkWhiteButton} from '@/assets/global/Button';
 import {BetweenBox, Box, Container, RowBox, ScrollBox} from '@/assets/global/Container';
 import {initCheckList} from '@/assets/global/dummy';
 import {DarkBoldText, DarkMediumText, DarkText, IndigoText, MoneyText} from '@/assets/global/Text';
@@ -22,6 +22,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useEffect} from 'react';
 import {getRepairHistoryDetail} from '@/API/More/More';
 import {useLayoutEffect} from 'react';
+import {AlertButtons} from '@/Util/Alert';
 
 // 2022-01-03 14:50:20
 // Junhan
@@ -35,9 +36,19 @@ export default function RepairHistoryDetail({route: {params}}) {
 
   const [isShow, setIsShow] = useState(false);
   const [repair, setRepair] = useState({});
-  const checkList = initCheckList;
+  const [checkList, setCheckList] = useState(initCheckList);
   const onPressReservationCancle = () => {
-    dispatch(modalOpen('reservationCancle'));
+    if (repair?.ot_pay_type === 'vbank') {
+      dispatch(modalOpen('reservationCancle'));
+    } else {
+      AlertButtons(
+        '정비예약을 취소 하시겠습니까?',
+        '확인',
+        '취소',
+        () => {},
+        () => {},
+      );
+    }
   };
 
   const onPressReview = () => {
@@ -45,14 +56,19 @@ export default function RepairHistoryDetail({route: {params}}) {
       navigate: 'RepairHistory',
     });
   };
+  // const cancelOrderApi = async () => {
+  //   await cancelOrder({});
+  // };
 
   useLayoutEffect(() => {
     getRepairHistoryDetail({
       _mt_idx: login?.idx,
-      od_idx: params?.item?.od_idx,
+      od_idx: 1, //params?.item?.od_idx,
     })
       .then(res => res.data.result === 'true' && res.data.data.data)
-      .then(data => setRepair(data));
+      .then(data => {
+        setRepair(data);
+      });
   }, [isFocused]);
 
   return (
@@ -65,7 +81,7 @@ export default function RepairHistoryDetail({route: {params}}) {
               status={repair?.ot_status}
               productName={[repair?.pt_title]}
               shopName={repair?.pt_title}
-              rejectionReason=""
+              rejectionReason={repair?.ot_cmemo ? repair?.ot_cmemo : ''}
               completeDate="2021-10-14 10:58"
             />
             <Box height="20px" />
@@ -75,7 +91,6 @@ export default function RepairHistoryDetail({route: {params}}) {
                 <Photo imageArray={repair?.opt_img} isView />
               </Box>
             )}
-
             {repair?.ot_note && (
               <Box mg="0px 16px 20px">
                 <DarkBoldText>정비노트</DarkBoldText>
@@ -84,7 +99,6 @@ export default function RepairHistoryDetail({route: {params}}) {
                 </DarkText>
               </Box>
             )}
-
             <Box mg="0px 16px">
               <CheckList disabled checkList={checkList} isShow={isShow} setIsShow={setIsShow} />
             </Box>
@@ -97,7 +111,7 @@ export default function RepairHistoryDetail({route: {params}}) {
                   정비 자전거
                 </DarkMediumText>
                 <DarkText style={{flex: 1}} fontSize={Theme.fontSize.fs15}>
-                  따릉이
+                  {repair?.ot_bike_nick}
                 </DarkText>
               </RowBox>
               <RowBox>
@@ -105,40 +119,58 @@ export default function RepairHistoryDetail({route: {params}}) {
                   예약시간
                 </DarkMediumText>
                 <DarkText style={{flex: 1}} fontSize={Theme.fontSize.fs15}>
-                  2021-10-20 10:08
+                  {repair?.ot_pt_date}&nbsp;{repair?.ot_pt_time?.slice(0, 5)}
                 </DarkText>
               </RowBox>
 
-              <RowBox mg="10px 0px">
-                <DarkMediumText width="110px" fontSize={Theme.fontSize.fs15}>
-                  요청사항
-                </DarkMediumText>
-                <DarkText style={{flex: 1}} fontSize={Theme.fontSize.fs15}>
-                  요청사항 영역입니다
-                </DarkText>
-              </RowBox>
+              {repair?.ot_memo && repair?.ot_memo !== '' ? (
+                <RowBox mg="10px 0px">
+                  <DarkMediumText width="110px" fontSize={Theme.fontSize.fs15}>
+                    요청사항
+                  </DarkMediumText>
+                  <DarkText style={{flex: 1}} fontSize={Theme.fontSize.fs15}>
+                    {repair?.ot_memo}
+                  </DarkText>
+                </RowBox>
+              ) : (
+                <Box mg="10px 0px" />
+              )}
             </Box>
-            <Box mg="10px 16px 0px">
-              <RowBox>
-                <DarkBoldText>추가/반환 공임비</DarkBoldText>
-              </RowBox>
-              <BetweenBox mg="10px 0px" width={size.minusPadding}>
-                <DarkMediumText fontSize={Theme.fontSize.fs15}>추가 공임비</DarkMediumText>
-                <MoneyText money={8000} fontSize={Theme.fontSize.fs15} color={Theme.color.black} />
-              </BetweenBox>
-            </Box>
+            {repair?.opt_return === 'Y' && (
+              <Box mg="10px 16px 0px">
+                <RowBox>
+                  <DarkBoldText>추가/반환 공임비</DarkBoldText>
+                </RowBox>
+                <BetweenBox mg="10px 0px" width={size.minusPadding}>
+                  <DarkMediumText fontSize={Theme.fontSize.fs15}>추가 공임비</DarkMediumText>
+                  <MoneyText
+                    money={repair?.opt_return_price}
+                    fontSize={Theme.fontSize.fs15}
+                    color={Theme.color.black}
+                  />
+                </BetweenBox>
+              </Box>
+            )}
             <Box mg="10px 16px 0px" style={borderBottomWhiteGray}>
               <RowBox>
                 <DarkBoldText>결제정보</DarkBoldText>
               </RowBox>
               <BetweenBox mg="10px 0px" width={size.minusPadding}>
                 <DarkMediumText fontSize={Theme.fontSize.fs15}>결제수단</DarkMediumText>
-                <DarkText fontSize={Theme.fontSize.fs15}>실시간 계좌이체</DarkText>
+                <DarkText fontSize={Theme.fontSize.fs15}>
+                  {repair?.ot_pay_type === 'card'
+                    ? '카드'
+                    : repair?.ot_pay_type === 'trans'
+                    ? '계좌이체'
+                    : repair?.ot_pay_type === 'kakaopay'
+                    ? '카카오 페이'
+                    : '무통장'}
+                </DarkText>
               </BetweenBox>
               <BetweenBox width={size.minusPadding}>
                 <DarkMediumText fontSize={Theme.fontSize.fs15}>가격</DarkMediumText>
                 <MoneyText
-                  money={50000}
+                  money={repair?.ot_price}
                   fontSize={Theme.fontSize.fs15}
                   color={Theme.color.black}
                   fontWeight={Theme.fontWeight.bold}

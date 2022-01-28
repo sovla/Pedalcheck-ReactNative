@@ -60,11 +60,7 @@ export const LinkButton = ({
         borderColor={borderColor}
         pd={pd}
         mg={mg}>
-        <DefaultText
-          fontWeight={fontWeight}
-          color={color}
-          fontSize={fontSize}
-          borderRadius={borderRadius}>
+        <DefaultText fontWeight={fontWeight} color={color} fontSize={fontSize} borderRadius={borderRadius}>
           {content}
         </DefaultText>
       </Button>
@@ -72,8 +68,8 @@ export const LinkButton = ({
   );
 };
 export const LinkWhiteButton = ({
-  to,
-  content,
+  to, //  눌럿을때
+  content, //  버튼내용
   width,
   height,
   color = Theme.color.black,

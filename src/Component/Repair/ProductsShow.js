@@ -34,17 +34,19 @@ export const Product = ({item}) => {
       <Box>
         <RowBox alignItems="center">
           <DarkBoldText mg="0px 7px 0px 0px">{item?.pt_title}</DarkBoldText>
-          <TouchableOpacity onPress={() => navigation.navigate('ProductDetail')}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('ProductDetail', {
+                item: item,
+              })
+            }>
             <DefaultImage source={QuestionIcon} width="20px" height="20px" />
           </TouchableOpacity>
         </RowBox>
         {item?.isCargo && (
           <RowBox alignItems="center">
             <DefaultImage source={Icon} width="15px" height="15px" />
-            <DefaultText
-              fontSize={Theme.fontSize.fs13}
-              color={Theme.color.skyBlue}
-              mg="0px 7px 0px 0px">
+            <DefaultText fontSize={Theme.fontSize.fs13} color={Theme.color.skyBlue} mg="0px 7px 0px 0px">
               입고수리 필요
             </DefaultText>
           </RowBox>
@@ -53,7 +55,7 @@ export const Product = ({item}) => {
       <RowBox alignItems="center">
         {item.pt_dc_price ? (
           <>
-            <MoneyText money={item?.pt_price} disabled mg="0px 8px 0px 0px" />
+            {item.pt_discount_per !== '0' && <MoneyText money={item?.pt_price} disabled mg="0px 8px 0px 0px" />}
             <MoneyText color={Theme.color.black} money={item?.pt_dc_price} />
           </>
         ) : (

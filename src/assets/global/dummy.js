@@ -137,10 +137,12 @@ export const initCheckList = [
       {
         itemTitle: '휠 정렬',
         select: '',
+        indexName: 'opt_chk_1_1',
       },
       {
         itemTitle: '구름성',
         select: '',
+        indexName: 'opt_chk_1_2',
       },
     ],
   },
@@ -150,14 +152,17 @@ export const initCheckList = [
       {
         itemTitle: '헤드셋 유격',
         select: '',
+        indexName: 'opt_chk_2_1',
       },
       {
         itemTitle: '핸들바 위치',
         select: '',
+        indexName: 'opt_chk_2_2',
       },
       {
         itemTitle: '바테입',
         select: '',
+        indexName: 'opt_chk_2_3',
       },
     ],
   },
@@ -167,14 +172,17 @@ export const initCheckList = [
       {
         itemTitle: '세척상태',
         select: '',
+        indexName: 'opt_chk_3_1',
       },
       {
         itemTitle: '녹 발생',
         select: '',
+        indexName: 'opt_chk_3_2',
       },
       {
         itemTitle: '프레임 외관',
         select: '',
+        indexName: 'opt_chk_3_3',
       },
     ],
   },
@@ -184,14 +192,17 @@ export const initCheckList = [
       {
         itemTitle: '비비 유격',
         select: '',
+        indexName: 'opt_chk_4_1',
       },
       {
         itemTitle: '페달 조립',
         select: '',
+        indexName: 'opt_chk_4_2',
       },
       {
         itemTitle: '구름성',
         select: '',
+        indexName: 'opt_chk_4_3',
       },
     ],
   },
@@ -201,14 +212,17 @@ export const initCheckList = [
       {
         itemTitle: '공기압',
         select: '',
+        indexName: 'opt_chk_5_1',
       },
       {
         itemTitle: '마모상태(프론트)',
         select: '',
+        indexName: 'opt_chk_5_2',
       },
       {
         itemTitle: '마모상태(리어)',
         select: '',
+        indexName: 'opt_chk_5_3',
       },
     ],
   },
@@ -218,10 +232,12 @@ export const initCheckList = [
       {
         itemTitle: '안장 위치',
         select: '',
+        indexName: 'opt_chk_6_1',
       },
       {
         itemTitle: '싯클램프 체결',
         select: '',
+        indexName: 'opt_chk_6_2',
       },
     ],
   },
@@ -231,22 +247,27 @@ export const initCheckList = [
       {
         itemTitle: '체인 윤활',
         select: '',
+        indexName: 'opt_chk_7_1',
       },
       {
         itemTitle: '체인 수명',
         select: '',
+        indexName: 'opt_chk_7_2',
       },
       {
         itemTitle: '체인 청소상태',
         select: '',
+        indexName: 'opt_chk_7_3',
       },
       {
         itemTitle: '스프라켓 청소상태',
         select: '',
+        indexName: 'opt_chk_7_4',
       },
       {
         itemTitle: '기어 변속',
         select: '',
+        indexName: 'opt_chk_7_5',
       },
     ],
   },
