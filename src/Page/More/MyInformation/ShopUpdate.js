@@ -88,6 +88,9 @@ export default function ShopUpdate() {
         mst_holiday: selectDay.sort().join(),
         mst_image: imageArray,
         _mt_idx: login.idx,
+        'store_image_num[]': imageArray.map((item, index) => {
+          return index + 1;
+        }),
       });
     } else {
       response = await updateStore({...shopInformation, mst_holiday: selectDay.sort().join(), _mt_idx: login.idx});
@@ -134,7 +137,7 @@ export default function ShopUpdate() {
       check = false;
     }
   };
-
+  console.log('imageArray', imageArray);
   return (
     <>
       <Header title="정보 수정" />

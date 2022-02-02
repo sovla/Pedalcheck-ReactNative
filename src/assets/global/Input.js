@@ -46,6 +46,7 @@ export const DefaultInput = ({
   } else if (isDropdown) {
     RenderCondition = 'isDropdown';
   }
+
   return (
     <Box mg={mg}>
       {title && ( // 헤더 영역
@@ -138,7 +139,7 @@ export const DefaultInput = ({
           }}
           containerStyle={{
             //  드롭다운 클릭시 내부 View
-            width: getPixel(380),
+            width: getPixel(width ? width?.slice(0, width?.length - 2) : 380),
             height: 10,
             backgroundColor: Theme.color.white,
             borderColor: Theme.borderColor.gray,
@@ -147,7 +148,7 @@ export const DefaultInput = ({
           }}
           style={{
             //  드롭다운 외면 보여주기
-            width: getPixel(380),
+            width: getPixel(width ? width?.slice(0, width?.length - 2) : 380),
             height: 44,
             backgroundColor: Theme.color.white,
             borderColor: Theme.borderColor.gray,

@@ -23,16 +23,15 @@ import scrollSlideNumber from '@/Util/scrollSlideNumber';
 import {useEffect} from 'react';
 import {getShopList} from '@/API/Shop/Shop';
 import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
-import {modalOpen, modalOpenAndProp} from '@/Store/modalState';
+import {modalOpenAndProp} from '@/Store/modalState';
 import {getEventList} from '@/API/Repair/Repair';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {reduceItemSplit} from '@/Util/reduceItem';
 import Loading from '@/Component/Layout/Loading';
-import {useLayoutEffect} from 'react';
 
 export default function RepairHome() {
-  const {size, login, location, modal} = useSelector(state => state);
+  const {size, login} = useSelector(state => state);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
@@ -91,7 +90,7 @@ export default function RepairHome() {
     setIsDone(true);
 
     await getShopList({
-      _mt_idx: login.idx,
+      _mt_idx: login?.idx,
       page: initPage ?? apiPage,
       mst_addr: innerLocation === '전체' ? '' : innerLocation, // 위치로 검색
       mst_name: searchText ?? '', // 검색하는 경우 추가
@@ -147,7 +146,7 @@ export default function RepairHome() {
             />
           }
           data={storeList}
-          renderItem={({item, index}) => (
+          renderItem={({item}) => (
             <Box width="380px" mg="0px 16px">
               <ShopComponent
                 mg="0px"
@@ -172,8 +171,6 @@ export default function RepairHome() {
           }}
           style={{
             paddingBottom: 70,
-
-            backgroundColor: 'red',
           }}
           onEndReached={() => {
             console.log('onEndReached', isScroll);

@@ -6,14 +6,22 @@ import {View, Text} from 'react-native';
 
 export default function Badge({badgeContent}) {
   let backgroundColor = Theme.color.skyBlue;
-  if (badgeContent === '예약') {
-    backgroundColor = Theme.color.indigo;
-  } else if (badgeContent === '처리완료') {
-    backgroundColor = Theme.color.black;
-  } else if (badgeContent === '승인거부') {
-    backgroundColor = Theme.color.red;
-  } else if (badgeContent === '예약취소' || badgeContent === '미사용') {
-    backgroundColor = Theme.color.yellow;
+  switch (badgeContent) {
+    case '예약':
+    case '결제대기':
+      backgroundColor = Theme.color.indigo;
+      break;
+    case '처리완료':
+      backgroundColor = Theme.color.black;
+      break;
+    case '승인거부':
+    case '결제취소':
+      backgroundColor = Theme.color.red;
+      break;
+    case '예약취소':
+    case '미사용':
+      backgroundColor = Theme.color.yellow;
+      break;
   }
 
   return (
@@ -23,10 +31,7 @@ export default function Badge({badgeContent}) {
       borderRadius="5px"
       backgroundColor={backgroundColor}
       borderColor={backgroundColor}>
-      <DefaultText
-        fontSize={Theme.fontSize.fs13}
-        fontWeight={Theme.fontWeight.medium}
-        color={Theme.color.white}>
+      <DefaultText fontSize={Theme.fontSize.fs13} fontWeight={Theme.fontWeight.medium} color={Theme.color.white}>
         {badgeContent}
       </DefaultText>
     </Button>

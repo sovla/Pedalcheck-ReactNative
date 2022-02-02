@@ -1,5 +1,7 @@
+import {cancelOrder} from '@/API/More/More';
 import {FooterButton} from '@/assets/global/Button';
 import {Box, Container, RowBox} from '@/assets/global/Container';
+import {bankList} from '@/assets/global/dummy';
 import {DefaultInput} from '@/assets/global/Input';
 import {DarkMediumText} from '@/assets/global/Text';
 import ModalTitleBox from '@/Component/Modal/ModalTitleBox';
@@ -8,24 +10,38 @@ import React from 'react';
 import {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
-export default function ReservationCancle() {
-  const {size} = useSelector(state => state);
+export default function ReservationCancle({ot_code, cancelComplete}) {
+  const {size, login} = useSelector(state => state);
   const dispatch = useDispatch();
   const [user, setUser] = useState({
     accountName: '',
     bankName: '',
     accountNumber: '',
   });
+  const [bankCode, setBankCode] = useState('');
   const onChange = (value, name) => {
     setUser(prev => ({...prev, [name]: value}));
+    if (name === 'bankName') {
+      setBankCode(
+        bankList.map(v => {
+          if (v.label === value) {
+            return v.bankCode;
+          }
+        }),
+      );
+    }
   };
   const onPressConfirm = async () => {
     const response = await cancelOrder({
       _mt_idx: login?.idx,
-      ot_code: repair?.ot_code,
+      ot_code: ot_code,
+      ot_bank_code: bankCode,
+      ot_bank_name: user?.accountName,
+      ot_bank_num: user?.accountNumber,
     });
     if (response?.data?.result === 'true') {
       await dispatch(modalClose());
+      await cancelComplete();
     }
   };
   const onPressCancle = () => {
@@ -54,10 +70,14 @@ export default function ReservationCancle() {
                 <DarkMediumText>{title}</DarkMediumText>
               </RowBox>
               <DefaultInput
+                isDropdown={item === 'bankName' && true}
+                dropdownItem={bankList}
                 placeHolder={placeholder}
                 width="265px"
                 value={user[item]}
-                changeFn={value => onChange(value, item)}
+                changeFn={value => {
+                  onChange(value, item);
+                }}
               />
             </RowBox>
           );
