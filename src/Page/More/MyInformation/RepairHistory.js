@@ -79,7 +79,7 @@ export default function RepairHistory() {
             }
           }}
           onEndReachedThreshold={0.1}
-          onMomentumScrollBegin={() => {
+          onScrollBeginDrag={() => {
             setIsScroll(true);
           }}
         />

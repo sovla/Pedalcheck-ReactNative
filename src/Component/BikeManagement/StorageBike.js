@@ -30,7 +30,7 @@ export default function StorageBike({size, item, getBikeListHandle}) {
             setIsScroll(false);
           }
         }}
-        onMomentumScrollBegin={() => {
+        onScrollBeginDrag={() => {
           setIsScroll(true);
         }}
         renderItem={({item, index}) => {

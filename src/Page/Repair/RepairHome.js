@@ -29,6 +29,7 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {reduceItemSplit} from '@/Util/reduceItem';
 import Loading from '@/Component/Layout/Loading';
+import {useLayoutEffect} from 'react';
 
 export default function RepairHome() {
   const {size, login, location, modal} = useSelector(state => state);
@@ -42,7 +43,7 @@ export default function RepairHome() {
   const [selectImage, setSelectImage] = useState(0);
 
   const [tag, setTag] = useState([]);
-  const [innerLocation, setInnerLocation] = useState('');
+  const [innerLocation, setInnerLocation] = useState(login.mt_addr === '' ? '전체' : login.mt_addr);
   const [storeList, setStoreList] = useState([]);
   const [searchText, setSearchText] = useState(''); // 검색 텍스트
   const [isSearch, setIsSearch] = useState(false); // 검색 누를때
@@ -63,9 +64,7 @@ export default function RepairHome() {
   const onScrollSlide = e => {
     setSelectImage(scrollSlideNumber(e, size.designWidth - 36));
   };
-  useEffect(() => {
-    setInnerLocation(login.mt_addr === '' ? '전체' : login.mt_addr);
-  }, []);
+
   // 현태 최초 실행 시 위치 상태
   useEffect(() => {
     if (isFocused) {
@@ -81,13 +80,15 @@ export default function RepairHome() {
   // 현태 태그 및 메뉴 선택 시 리렌더링
 
   const getShopListHandle = async initPage => {
-    setIsDone(true);
     if (isLast && !initPage) {
-      setIsDone(false);
       return null;
     }
     let mst_tag = reduceItemSplit(tag, ',');
     //  , 콤마 더해서 값 보내기
+    if (initPage) {
+      setApiPage(1);
+    }
+    setIsDone(true);
 
     await getShopList({
       _mt_idx: login.idx,
@@ -99,8 +100,7 @@ export default function RepairHome() {
       sorting: sortSelectItem === '정비횟수순' ? '2' : sortSelectItem === '거리순' ? '3' : '1', // 인기순 1 거리순 2 정비횟수순 3
     })
       .then(res => {
-        const isTrue = res?.data?.result === 'true';
-        if (isTrue) {
+        if (res?.data?.result === 'true') {
           const isData = res.data?.data?.data?.store_list?.length > 0;
           if (isData) {
             if (initPage) {
@@ -113,17 +113,15 @@ export default function RepairHome() {
             if (initPage) {
               setStoreList([]);
             }
-
-            setApiPage(prev => prev + 1);
             setisLast(true);
           }
         }
       })
       .finally(() => {
+        setApiPage(prev => prev + 1);
         setIsDone(false);
       });
   };
-
   return (
     <>
       {isDone && <Loading isAbsolute />}
@@ -173,20 +171,25 @@ export default function RepairHome() {
             );
           }}
           style={{
-            marginBottom: 20,
+            paddingBottom: 70,
+
+            backgroundColor: 'red',
           }}
           onEndReached={() => {
+            console.log('onEndReached', isScroll);
             if (isScroll) {
               getShopListHandle();
               setIsScroll(false);
             }
           }}
-          onMomentumScrollBegin={() => {
+          onEndReachedThreshold={0.1}
+          onScrollBeginDrag={() => {
             setIsScroll(true);
           }}
         />
-        <FooterButtons selectMenu={1} />
+        <Box height="20px" backgroundColor="#000" />
       </Container>
+      <FooterButtons selectMenu={1} />
     </>
   );
 }

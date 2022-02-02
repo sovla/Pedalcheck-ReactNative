@@ -119,7 +119,7 @@ export default function Post({route: {params}}) {
               setIsScroll(false);
             }
           }}
-          onMomentumScrollBegin={() => {
+          onScrollBeginDrag={() => {
             setIsScroll(true);
           }}
           style={{flex: 1}}

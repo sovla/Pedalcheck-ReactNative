@@ -106,7 +106,7 @@ export default function RepairReservation({type}) {
             setIsScroll(false);
           }
         }}
-        onMomentumScrollBegin={() => {
+        onScrollBeginDrag={() => {
           setIsScroll(true);
         }}
         ListHeaderComponent={

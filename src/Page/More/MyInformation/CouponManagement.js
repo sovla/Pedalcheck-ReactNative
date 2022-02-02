@@ -226,7 +226,7 @@ export default function CouponManagement({navigation, route: {params}}) {
             setIsScroll(false);
           }
         }}
-        onMomentumScrollBegin={() => {
+        onScrollBeginDrag={() => {
           setIsScroll(true);
         }}
       />
