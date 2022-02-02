@@ -29,6 +29,8 @@ export default function ReservationPayment({navigation, route: {params}}) {
     ot_vbank_num: '',
   });
 
+  const [orderIdx, setOrderIdx] = useState('');
+
   const {
     reservationInfo,
     shopInfo: {store_info},
@@ -69,6 +71,8 @@ export default function ReservationPayment({navigation, route: {params}}) {
       }).then(res => {
         if (res.data?.result === 'true') {
           const {data} = res.data.data;
+
+          setOrderIdx(data?.od_idx);
           if (data.ot_pay_type === 'vbank') {
             //  가상계좌일때
             setVirtualAccount(data);
@@ -111,7 +115,8 @@ export default function ReservationPayment({navigation, route: {params}}) {
             <DarkBoldText mg="0px 0px 0px 7px">예약이 접수되었습니다.</DarkBoldText>
           </RowBox>
           <Box mg="0px 16px">
-            <VirtualAccountItem {...virtualAccount} />
+            {virtualAccount?.ot_vbank !== '' && <VirtualAccountItem {...virtualAccount} />}
+
             {paymentObject.map(item => {
               if (!item?.content) {
                 return null;
@@ -132,7 +137,7 @@ export default function ReservationPayment({navigation, route: {params}}) {
           to={() => {
             navigation.navigate('RepairHistoryDetail', {
               item: {
-                od_idx: 1,
+                od_idx: orderIdx,
               },
             });
           }}
@@ -144,10 +149,6 @@ export default function ReservationPayment({navigation, route: {params}}) {
 }
 
 const VirtualAccountItem = ({ot_vbank, ot_vbank_date, ot_vbank_name, ot_vbank_num}) => {
-  const now = new Date();
-
-  now.setMilliseconds(ot_vbank_date);
-
   return (
     <Box width="380px" mg="0px 0px 15px" style={borderBottomWhiteGray}>
       <RowBox justifyContent="space-between" mg="0px 0px 10px">
@@ -164,7 +165,7 @@ const VirtualAccountItem = ({ot_vbank, ot_vbank_date, ot_vbank_name, ot_vbank_nu
       </RowBox>
       <RowBox justifyContent="space-between" mg="0px 0px 10px">
         <DarkBoldText width="100px">입금기간</DarkBoldText>
-        <DarkText>{now.toLocaleString()}</DarkText>
+        <DarkText>{ot_vbank_date}</DarkText>
       </RowBox>
     </Box>
   );

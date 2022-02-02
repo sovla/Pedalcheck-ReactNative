@@ -20,7 +20,11 @@ export const modalSlice = createSlice({
       });
     },
     modalClose: state => {
-      return initialState;
+      return (state = {
+        ...state,
+        isOpenModal: false,
+        isDone: true,
+      });
     },
     modalOpenAndProp: (state, action) => {
       return (state = {

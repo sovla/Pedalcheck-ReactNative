@@ -11,7 +11,6 @@ import {DarkText, DefaultText} from '@/assets/global/Text';
 import {modalClose, modalOpen, setModalProp} from '@/Store/modalState';
 import ArrowRightIcon from '@assets/image/arr_right.png';
 import {useEffect} from 'react';
-import {ScrollView} from 'react-native-gesture-handler';
 import {useState} from 'react';
 import {getBikeModel} from '@/API/Bike/Bike';
 
@@ -85,11 +84,9 @@ export default function BikeModel() {
             </TouchableOpacity>
           </PositionBox>
         </Box>
-        <ScrollBox maxHeight="150px">
+        <ScrollBox maxHeight="200px">
           {bikeModel?.map((item, index) => (
-            <TouchableOpacity
-              onPress={() => onPressBrand(item.bt_brand)}
-              key={item.bt_brand + index}>
+            <TouchableOpacity onPress={() => onPressBrand(item.bt_brand)} key={item.bt_brand + index}>
               <Box
                 width="340px"
                 height="35px"

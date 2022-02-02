@@ -35,7 +35,7 @@ const initialState1 = {
   mt_zip: null,
   naver_id: null,
 };
-const initialState = {
+const initialState2 = {
   idx: '10',
   mt_login_type: '1',
   mt_level: '5',
@@ -74,6 +74,47 @@ const initialState = {
   mt_rdate: '',
   mt_retire_memo: '',
   mt_idx: '10',
+};
+
+const initialState = {
+  idx: '2',
+  mt_login_type: '1',
+  mt_level: '5',
+  mt_seller: '2',
+  mt_id: 'lotion3_@naver.com',
+  mt_pwd: '',
+  mt_app_token:
+    'cX4uwZHXc068kCLRSHWfjV:APA91bHlVXGl4KtfPTA5cfNsnkr5t9c_die_iRyjNIDmRZmxXSOnTbw8BnkzsC2M7Zqtnr2Bd21NZMGyxhGovO0OwZlQtr5LpDfeCTLm3HewBJW0oiZC7qZkoGcrrG7yVI7XA7oq-AKS',
+  mt_ci: 'YXQiOjE2Mzk5ODQzMjIsImp0aSI6IjNCOTAyN0I',
+  mt_di: 'xNERFOTkiLCJpc3MiOiJ0ZXJyYWNsb3NlIiwibmJmIjoxNjM5OT',
+  mt_name: '테스터2',
+  mt_nickname: null,
+  mt_hp: '010-6464-6464',
+  mt_image: '/images/uploads/file.png',
+  mt_gender: 'F',
+  mt_birth: '1999-12-12',
+  mt_zip: null,
+  mt_addr: '부산 금정구',
+  mt_lat: '35.258003',
+  mt_lng: '129.055283',
+  mt_bname: null,
+  mt_bank: null,
+  mt_account: null,
+  mt_bank_image: null,
+  mt_ad: 'Y',
+  mt_agree: 'N',
+  mt_pushing: 'Y',
+  mt_status: 'Y',
+  kakao_id: null,
+  naver_id: null,
+  google_id: null,
+  apple_id: null,
+  mt_wdate: '',
+  mt_ldate: '',
+  mt_lgdate: null,
+  mt_rdate: '',
+  mt_retire_memo: '',
+  mt_idx: '2',
 };
 
 export const loginSlice = createSlice({

@@ -42,10 +42,9 @@ export function Payment({navigation}) {
       sendOrder({
         _mt_idx: login.idx,
         mbt_idx: selectBike.selectItem !== 2000 && selectBike.selectBike.mbt_idx,
-        ot_bike_nick:
-          selectBike.selectItem !== 2000
-            ? selectBike.selectBike.mbt_nick
-            : selectBike.selectBike.bikeBrand + selectBike.selectBike.bikeModel,
+        ot_bike_nick: selectBike.selectItem !== 2000 && selectBike.selectBike.mbt_nick,
+        ot_bike_brand: selectBike.selectItem === 2000 && selectBike.selectBike.bikeBrand,
+        ot_bike_model: selectBike.selectItem === 2000 && selectBike.selectBike.bikeModel,
         mst_idx: shopInfo.store_info.mst_idx,
         ot_pt_date: selectDate.date,
         ot_pt_time: selectDate.time,

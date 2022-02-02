@@ -13,7 +13,6 @@ export default function BikeInformationHeader({item, mg = '20px 0px'}) {
   //   modelName:"",
   //   bikeName:""
   // }
-  console.log(imageAddress + item?.bikeImage);
   return (
     <RowBox mg={mg} alignItems="center">
       <DefaultImage source={{uri: imageAddress + item?.bikeImage}} width="74px" height="74px" />

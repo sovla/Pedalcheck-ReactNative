@@ -16,11 +16,11 @@ export default function Loading({
     <>
       {isAbsolute && isFullSize && (
         <PositionBox
-          top="0px"
-          left="0px"
+          top={top}
+          left={left}
           width="412px"
           height={`${getHeightPixel(712)}px`}
-          zIndex={500}
+          zIndex={1000}
           backgroundColor="#0004"
           alignItems="center"
           justifyContent="center">
