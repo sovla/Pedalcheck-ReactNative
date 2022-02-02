@@ -128,6 +128,9 @@ export default function ProductRegister({route: {params}}) {
           const result = mapItem?.sort ?? `${lastSortNumber + index + 1}`;
           return result;
         }),
+
+      //  pt_image 로컬 이미지만 들어간다 4개면
+      //  pt_image_num [마지막번호 +1,+2,+3,+4 ]
     }).then(res => {
       if (res.data?.result === 'true') {
         console.log(res);
