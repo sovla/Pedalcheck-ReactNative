@@ -14,8 +14,11 @@ import {getLocationList} from '@/API/Location/Location';
 import {useState} from 'react';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import {useLayoutEffect} from 'react';
+// 2022-02-02 09:58:47
+// Junhan
+// prop , setLocation 추가 / 정비소 홈에서 API를 두번 쳐서 추가했음
 
-export default function LocationPicker() {
+export default function LocationPicker({setLocation}) {
   const {modal, size, location} = useSelector(state => state);
   const dispatch = useDispatch();
 
@@ -51,11 +54,13 @@ export default function LocationPicker() {
     });
     setIsLoading(false);
   };
-  const pressLocation = async location => {
-    await dispatch(AddLocation(location));
+  const pressLocation = async locationObject => {
+    //  지역 눌럿을때
+    await dispatch(AddLocation(locationObject));
     if (!isDetail) {
       await dispatch(modalOpen('locationPickerDetail'));
     } else {
+      if (setLocation) setLocation(location.name + ' ' + locationObject.name);
       await dispatch(DeleteLocation());
       await dispatch(modalClose());
     }

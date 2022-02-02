@@ -28,7 +28,7 @@ export default function BikeRegister({route}) {
       setBike({
         mbt_idx: data.idx,
         bikeName: data.mbt_nick,
-        bikeModel: data.mbt_brand + '  ' + data.mbt_model,
+        bikeModel: data.mbt_brand + '\t\t' + data.mbt_model,
         vehicleNumber: data.mbt_serial,
         vehicleYear: data.mbt_year,
         size: data.mbt_size,
@@ -46,13 +46,5 @@ export default function BikeRegister({route}) {
   }, []);
 
   const [image, setImage] = useState();
-  return (
-    <BikeRegisterContainer
-      isUpdate={isUpdate}
-      bike={bike}
-      setBike={setBike}
-      image={image}
-      setImage={setImage}
-    />
-  );
+  return <BikeRegisterContainer isUpdate={isUpdate} bike={bike} setBike={setBike} image={image} setImage={setImage} />;
 }

@@ -25,7 +25,7 @@ export function Payment({navigation}) {
     }
     // 결제완료
   }
-
+  console.log(selectBike);
   useLayoutEffect(() => {
     if (!responseData) {
       const pt_idx = [];
@@ -42,8 +42,9 @@ export function Payment({navigation}) {
       sendOrder({
         _mt_idx: login.idx,
         mbt_idx: selectBike.selectItem !== 2000 && selectBike.selectBike.mbt_idx,
-        ot_bike_nick:
-          selectBike.selectItem !== 2000 ? selectBike.selectBike.mbt_nick : selectBike.bikeBrand + bikeModel,
+        ot_bike_nick: selectBike.selectItem !== 2000 && selectBike.selectBike.mbt_nick,
+        ot_bike_brand: selectBike.selectItem === 2000 && selectBike.selectBike.bikeBrand,
+        ot_bike_model: selectBike.selectItem === 2000 && selectBike.selectBike.bikeModel,
         mst_idx: shopInfo.store_info.mst_idx,
         ot_pt_date: selectDate.date,
         ot_pt_time: selectDate.time,
@@ -77,9 +78,9 @@ export function Payment({navigation}) {
       case '신용카드':
         return 'card';
       case '실시간 계좌이체':
-        return type === 'api' ? 'kakaopay' : 'card';
+        return 'trans';
       case '카카오페이':
-        return 'card';
+        return type === 'api' ? 'kakaopay' : 'card';
       case '무통장 입금':
         return 'vbank';
     }

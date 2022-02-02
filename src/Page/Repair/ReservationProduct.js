@@ -60,7 +60,7 @@ export default function ShopReservationProduct({navigation}) {
     if (filterItem.length > 0) {
       dispatch(
         setReservationProduct({
-          selectProduct,
+          selectProduct: filterItem,
           totalPrice: money + saleMoney,
           totalNonSalePrice: money,
         }),
@@ -76,7 +76,6 @@ export default function ShopReservationProduct({navigation}) {
       dispatch(clearReservation());
     };
   }, []);
-
   return (
     <>
       <Header title="정비예약" />
@@ -121,11 +120,11 @@ export default function ShopReservationProduct({navigation}) {
         <DarkBoldText mg="20px 0px 15px">결제금액</DarkBoldText>
         <RowBox justifyContent="space-between" width={size.minusPadding}>
           <DarkText>가격</DarkText>
-          <MoneyText money={money} color={Theme.color.black} fontWeight={Theme.fontWeight.bold} />
+          <MoneyText money={money > 0 ? money : 0} color={Theme.color.black} fontWeight={Theme.fontWeight.bold} />
         </RowBox>
         <RowBox mg="10px 0px 20px" justifyContent="space-between" width={size.minusPadding}>
           <DarkText>할인</DarkText>
-          <MoneyText money={saleMoney} color={Theme.color.black} />
+          <MoneyText money={saleMoney > 0 ? saleMoney : 0} color={Theme.color.black} />
         </RowBox>
         <DefaultLine />
         <RowBox mg="10px 0px 20px" justifyContent="space-between" width={size.minusPadding}>
@@ -135,7 +134,7 @@ export default function ShopReservationProduct({navigation}) {
             </IndigoText>
           </RowBox>
           <MoneyText
-            money={money + saleMoney}
+            money={money + saleMoney > 0 ? money + saleMoney : 0}
             color={Theme.color.black}
             fontSize={Theme.fontSize.fs18}
             fontWeight={Theme.fontWeight.bold}

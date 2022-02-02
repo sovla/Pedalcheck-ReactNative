@@ -264,7 +264,6 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
       cropping: true, // 자르기 활성화
     }).then(images => {
       setImage(images);
-      console.log(images);
     });
   };
 

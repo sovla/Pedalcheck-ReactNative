@@ -115,7 +115,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
 
     const approveFunction = type === 'coupon' ? couponReservationEdit : reservationEdit;
     const response = await approveFunction({
-      _mt_idx: 10,
+      _mt_idx: login?.idx,
       od_idx: params?.od_idx,
       ot_status,
     });
@@ -208,10 +208,9 @@ export default function ReservationManagementDetail({navigation, route: {params}
                 <DarkText mg="0px 10px 0px 0px">
                   {`${reservationInfo?.ot_pt_date} ${reservationInfo?.ot_pt_time?.substring(0, 5)}`}{' '}
                 </DarkText>
-                {(reservationInfo?.ot_status === '변경' ||
-                  reservationInfo?.ot_status === '승인') && (
+                {(reservationInfo?.ot_status === '변경' || reservationInfo?.ot_status === '승인') && (
                   <TouchableOpacity onPress={onPressChangeDate}>
-                    <BorderButton>변경</BorderButton>
+                    <BorderButton width="auto">변경</BorderButton>
                   </TouchableOpacity>
                 )}
               </RowBox>
@@ -258,10 +257,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
                 <DarkMediumText width="65px">이름</DarkMediumText>
 
                 <DarkText mg="0px 10px 0px 0px">{reservationInfo?.mt_name}</DarkText>
-                <BorderButton
-                  borderColor={Theme.borderColor.whiteGray}
-                  color={Theme.color.black}
-                  borderRadius="3px">
+                <BorderButton borderColor={Theme.borderColor.whiteGray} color={Theme.color.black} borderRadius="3px">
                   {reservationInfo?.customerLevel}
                 </BorderButton>
               </RowBox>

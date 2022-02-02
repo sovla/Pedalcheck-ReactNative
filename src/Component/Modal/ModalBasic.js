@@ -27,6 +27,7 @@ import AlertModal from './AlertModal';
 import SearchBrand from '../More/Modal/SearchBrand';
 import SearchTag from '../More/Modal/SearchTag';
 import SearchId from '../More/Modal/SearchId';
+import BikeBrand from '../BikeManagement/Modal/BikeBrand';
 
 // 2022-01-04 08:31:15
 // Junhan
@@ -34,7 +35,7 @@ import SearchId from '../More/Modal/SearchId';
 // slide, fullSize, default
 // 사용법 modal.modalComponent에 원하는 값을 넣고 switch문을 추가하면 됩니다.
 
-export default function ModalBasic({navigation}) {
+export default function ModalBasic() {
   const modal = useSelector(state => state.modal);
   const size = useSelector(state => state.size);
   const dispatch = useDispatch();
@@ -44,7 +45,7 @@ export default function ModalBasic({navigation}) {
   let RenderItem = <></>;
 
   const childrenProps = modal?.modalProp ? modal.modalProp : {}; // 모달 프롭 넣는 부분
-
+  console.log(modal);
   const selectRenderItem = () => {
     switch (modal?.modalComponent) {
       case 'service':
@@ -67,10 +68,10 @@ export default function ModalBasic({navigation}) {
         return DatePicker;
       case 'paymentInformationCheck':
         return PaymentInformationCheck;
-      case 'bikeModel':
-        return BikeModel;
       case 'bikeModelStepTwo':
         return BikeModel;
+      case 'bikeModel':
+        return BikeBrand;
       case 'vehicleNumber':
         return VehicleNumber;
       case 'repairRejection':
@@ -103,13 +104,15 @@ export default function ModalBasic({navigation}) {
         return SearchTag;
       case 'searchId':
         return SearchId;
+      default:
+        return AlertModal;
     }
   };
 
   const isSlide = modal?.modalComponent?.split('/')[0] === 'slide';
   const isFullSize = modal?.modalComponent?.split('/')[0] === 'fullSize';
-
   RenderItem = selectRenderItem();
+  console.log(childrenProps);
   if (RenderItem !== <></>) {
     return (
       <Modal

@@ -8,14 +8,7 @@ import {useSelector} from 'react-redux';
 import 'moment/locale/ko';
 import EqualsDay from '@/Util/EqualsDay';
 
-export default function TimeList({
-  timeList = [],
-  disabled = [],
-  selectItem,
-  setSelectItem,
-  selectDate,
-  isMultiple,
-}) {
+export default function TimeList({timeList = [], disabled = [], selectItem, setSelectItem, selectDate, isMultiple}) {
   const TimeBoxWithNthChild = withNthMap(mapInnerItem);
   const {size} = useSelector(state => state);
 
@@ -41,14 +34,12 @@ export default function TimeList({
               index={index}
               time={item}
               isDisabled={
-                disabled?.find(findItem => item === findItem) ||
+                (!isMultiple && disabled?.find(findItem => item === findItem)) ||
                 (!isMultiple &&
                   EqualsDay(now, newSelectDate) && // 날짜가 같고
                   newSelectDate.setHours(time[0], time[1]) < now.getTime()) // 현재보다 이전인 시간은 disabled
               }
-              isSelect={
-                !isMultiple ? selectItem === item : selectItem.find(findItem => findItem === item)
-              }
+              isSelect={!isMultiple ? selectItem === item : selectItem.find(findItem => findItem === item)}
               betweenMargin="0px 10px 10px 0px"
               onPress={() => onPressTime(item)}
               isMultiple={isMultiple}
@@ -62,6 +53,7 @@ export default function TimeList({
 
 const mapInnerItem = ({time, mg, isSelect, isDisabled, onPress, isMultiple}) => {
   function threeCond(firstCond, secondCond, type) {
+    //  색상 선택
     if (firstCond) {
       const color = isMultiple ? Theme.color.darkGray : Theme.color.white;
       const backgroundColor = isMultiple ? Theme.color.backgroundDisabled : Theme.color.skyBlue;
@@ -80,11 +72,7 @@ const mapInnerItem = ({time, mg, isSelect, isDisabled, onPress, isMultiple}) => 
   return (
     <Box width="87.5px" mg={mg}>
       <TouchableOpacity disabled={isDisabled} onPress={onPress}>
-        <BorderButton
-          color={color}
-          backgroundColor={backgroundColor}
-          borderColor={borderColor}
-          width="87.5px">
+        <BorderButton color={color} backgroundColor={backgroundColor} borderColor={borderColor} width="87.5px">
           {time}
         </BorderButton>
       </TouchableOpacity>

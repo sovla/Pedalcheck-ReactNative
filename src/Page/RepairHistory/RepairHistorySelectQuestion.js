@@ -9,6 +9,7 @@ import {useEffect} from 'react';
 import {getQnaList} from '@/API/Manager/RepairHistory';
 import {FlatList} from 'react-native-gesture-handler';
 import {isList} from 'immutable';
+import {login} from '@react-native-seoul/kakao-login';
 
 export default function RepairHistorySelectQuestion() {
   //const {login} = useSelector(state => state);
@@ -23,6 +24,8 @@ export default function RepairHistorySelectQuestion() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const isFocus = navigation.isFocused();
+
+  const {login} = useSelector(state => state);
 
   const onPressRecomment = index => {
     if (selectComment.find(findIndex => findIndex === index)) {
@@ -54,7 +57,7 @@ export default function RepairHistorySelectQuestion() {
     }
 
     const response = await getQnaList({
-      _mt_idx: 10, //login.idx,
+      _mt_idx: login.idx,
       page: page,
     });
     if (response?.data?.result === 'true') {

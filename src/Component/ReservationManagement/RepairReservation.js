@@ -14,10 +14,7 @@ import {useNavigation} from '@react-navigation/core';
 import ScrollDays from './ScrollDays';
 import MenuNav from '../Layout/MenuNav';
 import {useEffect} from 'react';
-import {
-  getCouponReservationList,
-  getReservationList,
-} from '@/API/ReservationManagement/ReservationManagement';
+import {getCouponReservationList, getReservationList} from '@/API/ReservationManagement/ReservationManagement';
 import {getPixel} from '@/Util/pixelChange';
 import DefaultDropdown from '../MyShop/DefaultDropdown';
 import {repairHistoryDropdownList} from '@/assets/global/dummy';
@@ -54,7 +51,6 @@ export default function RepairReservation({type}) {
       type,
     });
   };
-  useLayoutEffect(() => {}, []);
   useEffect(() => {
     if (isFocused) {
       getReservationListHandle(1);
