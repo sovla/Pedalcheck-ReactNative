@@ -8,7 +8,7 @@ import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistor
 import Header from '@/Component/Layout/Header';
 import Photo from '@/Component/Repair/Photo';
 import CheckList from '@/Component/ReservationManagement/CheckList';
-import {modalOpen} from '@/Store/modalState';
+import {modalOpen, modalOpenAndProp} from '@/Store/modalState';
 import {useNavigation} from '@react-navigation/core';
 import React from 'react';
 import {useState} from 'react';
@@ -39,9 +39,17 @@ export default function RepairHistoryDetail({route: {params}}) {
   const [repair, setRepair] = useState({});
   const [checkList, setCheckList] = useState(initCheckList);
   const [isCheckListShow, setIsCheckListShow] = useState(true);
-  const onPressReservationCancle = () => {
+  const onPressReservationCancle = async () => {
     if (repair?.ot_pay_type === 'vbank') {
-      dispatch(modalOpen('reservationCancle'));
+      dispatch(
+        modalOpenAndProp({
+          modalComponent: 'reservationCancle',
+          ot_code: repair?.ot_code,
+          cancelComplete: () => {
+            navigation.goBack();
+          },
+        }),
+      );
     } else {
       AlertButtons(
         '정비예약을 취소 하시겠습니까?',
@@ -63,7 +71,7 @@ export default function RepairHistoryDetail({route: {params}}) {
   const cancelOrderApi = async () => {
     const response = await cancelOrder({
       _mt_idx: login?.idx,
-      ot_code: 1, //repair?.ot_code,
+      ot_code: repair?.ot_code,
     });
 
     if (response?.data?.result === 'true') {
@@ -75,9 +83,7 @@ export default function RepairHistoryDetail({route: {params}}) {
   useLayoutEffect(() => {
     getRepairHistoryDetail({
       _mt_idx: login?.idx,
-
       od_idx: params?.item?.od_idx,
-
     })
       .then(res => res.data.result === 'true' && res.data.data.data)
       .then(data => {
@@ -228,7 +234,7 @@ export default function RepairHistoryDetail({route: {params}}) {
                 <BetweenBox mg="20px 0px" width={size.minusPadding}>
                   <DarkBoldText>결제 금액</DarkBoldText>
                   <RowBox alignItems="center">
-                    <Badge badgeContent="결제완료" />
+                    <Badge badgeContent={payState(repair?.ot_pay_status)} />
                     <MoneyText
                       mg="0px 0px 0px 10px"
                       fontSize={Theme.fontSize.fs18}
@@ -255,7 +261,7 @@ export default function RepairHistoryDetail({route: {params}}) {
                 <LinkWhiteButton width="185px" content="예약 취소" to={onPressReservationCancle} />
               )}
 
-              {repair?.ot_status === '처리완료' && <LinkButton width="185px" content="리뷰작성" />}
+              {repair?.ot_status === '처리완료' && <LinkButton to={onPressReview} width="185px" content="리뷰작성" />}
             </RowBox>
           </>
         )}
@@ -296,4 +302,18 @@ const RepairHistoryDetailHeader = ({
       )}
     </Box>
   );
+};
+
+const payState = state => {
+  //ready / paid / failed
+  switch (state) {
+    case 'ready':
+      return '결제대기';
+    case 'paid':
+      return '결제완료';
+    case 'failed':
+      return '결제취소';
+    default:
+      return '';
+  }
 };
