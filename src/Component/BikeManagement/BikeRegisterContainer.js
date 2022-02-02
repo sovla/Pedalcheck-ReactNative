@@ -11,19 +11,18 @@ import DummyImage from '@assets/image/bicycle_default.png';
 import {DefaultInput} from '@/assets/global/Input';
 import DefaultLine from '@/assets/global/Line';
 import {useDispatch} from 'react-redux';
-import {modalOpen, setModalProp} from '@/Store/modalState';
+import {modalOpen, modalOpenAndProp, setModalProp} from '@/Store/modalState';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {addBike, bikeEdit, bikeSerialCheck} from '@/API/Bike/Bike';
 import {useState} from 'react';
 import {Alert} from 'react-native';
-import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {AlertButton} from '@/Util/Alert';
 import {imageAddress} from '@assets/global/config';
 
 export default function BikeRegisterContainer({isUpdate, bike, setBike, image, setImage}) {
-  const {size, modal, login} = useSelector(state => state);
+  const {size, login} = useSelector(state => state);
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const setChangeBike = (name, value) => {
@@ -34,12 +33,6 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
     bikeModel: '',
     bikeImage: '',
   });
-
-  useUpdateEffect(() => {
-    if (modal?.modalProp && modal?.isDone) {
-      setBike(prev => ({...prev, bikeModel: modal?.modalProp}));
-    }
-  }, [modal?.isDone]);
 
   const onPressAddImage = () => {
     ImageCropPicker.openPicker({
@@ -55,13 +48,14 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
     if (RegJoin()) {
       return;
     }
+    const bikeInfo = bike.bikeModel.split('\t\t');
     const sendData = {
       _mt_idx: login?.idx,
       mbt_idx: bike.mbt_idx,
       mbt_flag: 'Y',
       mbt_nick: bike.bikeName,
-      mbt_brand: bike.bikeModel.split('  ')[0],
-      mbt_model: bike.bikeModel.split('  ')[1],
+      mbt_brand: bikeInfo[0],
+      mbt_model: bikeInfo[1],
       mbt_serial: bike.vehicleNumber,
       mbt_year: bike.vehicleYear,
       mbt_size: bike.size,
@@ -106,7 +100,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
             onPress: () => {
               setBike({
                 bikeName: data.mbt_nick,
-                bikeModel: data.mbt_brand + '  ' + data.mbt_model,
+                bikeModel: data.mbt_brand + '\t\t' + data.mbt_model,
                 vehicleNumber: data.mbt_serial,
                 vehicleYear: data.mbt_year,
                 size: data.mbt_size,
@@ -301,12 +295,13 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
             value={bike.bikeModel}
             PressText={() => {
               dispatch(
-                setModalProp({
-                  modalProp: undefined,
-                  isDone: false,
+                modalOpenAndProp({
+                  modalComponent: 'bikeModel',
+                  setBikeInfo: text => {
+                    setBike(prev => ({...prev, bikeModel: text}));
+                  },
                 }),
               );
-              dispatch(modalOpen('bikeModel'));
             }}
             fontSize={Theme.fontSize.fs16}
             isText

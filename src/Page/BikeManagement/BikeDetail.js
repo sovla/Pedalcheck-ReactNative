@@ -212,7 +212,12 @@ export default function BikeDetail({navigation, route}) {
           <BikeInformationHeader item={bikeInfo} />
           <Box>
             <RowBox width={size.minusPadding} justifyContent="space-between">
-              <DarkText fontWeight={Theme.fontWeight.medium}>자전거 정보</DarkText>
+              {bikeInfo.detail?.filter(item => item.value)?.length > 0 ? (
+                <DarkText fontWeight={Theme.fontWeight.medium}>자전거 정보</DarkText>
+              ) : (
+                <Box />
+              )}
+
               <RowBox>
                 {bike?.mbt_flag === 'Y' ? (
                   <TouchableOpacity onPress={() => changeBikeStatusHandle('N')}>

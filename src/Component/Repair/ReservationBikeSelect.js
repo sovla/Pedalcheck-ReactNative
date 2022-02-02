@@ -6,8 +6,9 @@ import Theme from '@/assets/global/Theme';
 import {DefaultCheckBox} from '@/Component/Home/CheckBox';
 import {useNavigation} from '@react-navigation/core';
 import React from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useRoute} from '@react-navigation/native';
+import {modalOpenAndProp} from '@/Store/modalState';
 
 export default function ReservationBikeSelect({
   bikeArray = bikeArrayDummy,
@@ -22,7 +23,7 @@ export default function ReservationBikeSelect({
   const {size} = useSelector(state => state);
   const navigation = useNavigation();
   const route = useRoute();
-
+  const dispatch = useDispatch();
   return (
     <>
       <ScrollBox mg="0px 16px">
@@ -36,20 +37,11 @@ export default function ReservationBikeSelect({
           };
           return (
             <RowBox mg="0px 0px 10px" key={changeItem.idx + index} alignItems="center">
-              <DefaultCheckBox
-                setIsCheck={() => setSelectItem(index)}
-                isCheck={parseInt(selectItem) === index}
-              />
-              <DarkText
-                mg="0px 0px 0px 10px"
-                fontSize={Theme.fontSize.fs15}
-                fontWeight={Theme.fontWeight.medium}>
+              <DefaultCheckBox setIsCheck={() => setSelectItem(index)} isCheck={parseInt(selectItem) === index} />
+              <DarkText mg="0px 0px 0px 10px" fontSize={Theme.fontSize.fs15} fontWeight={Theme.fontWeight.medium}>
                 {changeItem.brand}
               </DarkText>
-              <DarkText
-                mg="0px 10px"
-                fontSize={Theme.fontSize.fs15}
-                fontWeight={Theme.fontWeight.medium}>
+              <DarkText mg="0px 10px" fontSize={Theme.fontSize.fs15} fontWeight={Theme.fontWeight.medium}>
                 {changeItem.model}
               </DarkText>
               <GrayText fontSize={Theme.fontSize.fs15} fontWeight={Theme.fontWeight.medium}>
@@ -60,14 +52,8 @@ export default function ReservationBikeSelect({
         })}
         <Box>
           <RowBox mg="0px 0px 10px">
-            <DefaultCheckBox
-              setIsCheck={() => setSelectItem(2000)}
-              isCheck={parseInt(selectItem) === 2000}
-            />
-            <DarkText
-              mg="0px 0px 0px 10px"
-              fontSize={Theme.fontSize.fs15}
-              fontWeight={Theme.fontWeight.medium}>
+            <DefaultCheckBox setIsCheck={() => setSelectItem(2000)} isCheck={parseInt(selectItem) === 2000} />
+            <DarkText mg="0px 0px 0px 10px" fontSize={Theme.fontSize.fs15} fontWeight={Theme.fontWeight.medium}>
               직접입력
             </DarkText>
           </RowBox>
@@ -75,8 +61,22 @@ export default function ReservationBikeSelect({
             <BetweenBox onFocus={() => setSelectItem(2000)} width="380px">
               <DefaultInput
                 placeHolder="브랜드명"
-                width={'185px'}
+                width="185px"
                 value={bikeName.bikeBrand}
+                isText
+                fontSize={Theme.fontSize.fs16}
+                PressText={() => {
+                  dispatch(
+                    modalOpenAndProp({
+                      modalComponent: 'bikeModel',
+                      setBrand: text =>
+                        setBikeName(prev => ({
+                          ...prev,
+                          bikeBrand: text,
+                        })),
+                    }),
+                  );
+                }}
                 changeFn={text =>
                   setBikeName(prev => ({
                     ...prev,
@@ -86,8 +86,10 @@ export default function ReservationBikeSelect({
               />
               <DefaultInput
                 placeHolder="모델명"
-                width={'185px'}
+                width="185px"
                 value={bikeName.bikeModel}
+                isText
+                fontSize={Theme.fontSize.fs16}
                 changeFn={text =>
                   setBikeName(prev => ({
                     ...prev,
