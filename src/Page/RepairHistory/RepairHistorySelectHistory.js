@@ -174,9 +174,7 @@ export default function RepairHistorySelectHistory() {
                 <DarkBoldText mg="0px 0px 0px 5px">누적장비</DarkBoldText>
               </RowBox>
               <RowBox backgroundColor="#0000" alignItems="center">
-                <IndigoText fontWeight={Theme.fontWeight.bold}>
-                  {numberFormat(totalCount)}
-                </IndigoText>
+                <IndigoText fontWeight={Theme.fontWeight.bold}>{numberFormat(totalCount)}</IndigoText>
                 <IndigoText fontWeight={Theme.fontWeight.bold}>건</IndigoText>
               </RowBox>
             </BetweenBox>
@@ -235,7 +233,7 @@ export default function RepairHistorySelectHistory() {
             setIsScroll(false);
           }
         }}
-        onMomentumScrollBegin={() => {
+        onScrollBeginDrag={() => {
           setIsScroll(true);
         }}
       />
@@ -252,12 +250,7 @@ const ReceiptProduct = ({
 }) => {
   return (
     <TouchableOpacity onPress={onPress}>
-      <BetweenBox
-        width="380px"
-        pd="0px 10px"
-        height="92px"
-        alignItems="center"
-        style={borderBottomWhiteGray}>
+      <BetweenBox width="380px" pd="0px 10px" height="92px" alignItems="center" style={borderBottomWhiteGray}>
         <Box>
           <DarkBoldText>{productName}</DarkBoldText>
           <DarkText fontSize={Theme.fontSize.fs13}>{name}</DarkText>

@@ -167,7 +167,7 @@ export default function RepairHistorySelectReview() {
             getReviewHandle();
           }
         }}
-        onMomentumScrollBegin={() => setIsScroll(true)}
+        onScrollBeginDrag={() => setIsScroll(true)}
         ListEmptyComponent={
           <Box alignItems="center" mg="20px 0px">
             {!isLoading && <DarkBoldText>검색결과가 없습니다.</DarkBoldText>}

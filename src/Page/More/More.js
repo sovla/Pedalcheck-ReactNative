@@ -128,7 +128,7 @@ export default function More() {
         <BetweenBox width={size.designWidth} pd="20px 16px" alignItems="center">
           <RowBox alignItems="center">
             <DefaultImage
-              source={login.mt_image ? {uri: imageAddress + login.mt_image} : profileDefault}
+              source={login?.mt_image ? {uri: imageAddress + login?.mt_image} : profileDefault}
               width="50px"
               height="50px"
             />

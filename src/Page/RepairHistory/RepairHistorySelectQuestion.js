@@ -119,7 +119,7 @@ export default function RepairHistorySelectQuestion() {
             setIsScroll(false);
           }
         }}
-        onMomentumScrollBegin={() => {
+        onScrollBeginDrag={() => {
           setIsScroll(true);
         }}
       />

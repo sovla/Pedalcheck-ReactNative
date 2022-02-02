@@ -60,7 +60,7 @@ export default function Feed() {
               setIsScroll(false);
             }
           }}
-          onMomentumScrollBegin={() => {
+          onScrollBeginDrag={() => {
             setIsScroll(true);
           }}
           renderItem={({item, index}) => {

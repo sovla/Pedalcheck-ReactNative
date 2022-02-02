@@ -120,7 +120,7 @@ export default function Coupon() {
             setIsScroll(false);
           }
         }}
-        onMomentumScrollBegin={() => {
+        onScrollBeginDrag={() => {
           setIsScroll(true);
         }}
         ListHeaderComponent={

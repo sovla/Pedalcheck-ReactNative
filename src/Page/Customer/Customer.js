@@ -143,7 +143,7 @@ export default function Customer({navigation}) {
             setIsScroll(false);
           }
         }}
-        onMomentumScrollBegin={() => {
+        onScrollBeginDrag={() => {
           setIsScroll(true);
         }}
         data={customerList}
