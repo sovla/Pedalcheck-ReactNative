@@ -15,9 +15,11 @@ import ItemStats from '@/Component/RepairHistory/ItemStats';
 import {modalOpen} from '@/Store/modalState';
 import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
 
 export default function RepairHistorySelectHome() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const [date, setDate] = useState(new Date());
   const [selectDate, setSelectDate] = useState('지난 6개월');

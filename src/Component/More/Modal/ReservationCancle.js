@@ -19,8 +19,14 @@ export default function ReservationCancle() {
   const onChange = (value, name) => {
     setUser(prev => ({...prev, [name]: value}));
   };
-  const onPressConfirm = () => {
-    dispatch(modalClose());
+  const onPressConfirm = async () => {
+    const response = await cancelOrder({
+      _mt_idx: login?.idx,
+      ot_code: repair?.ot_code,
+    });
+    if (response?.data?.result === 'true') {
+      await dispatch(modalClose());
+    }
   };
   const onPressCancle = () => {
     dispatch(modalClose());

@@ -37,8 +37,9 @@ export default function RepairHistory() {
   };
 
   useEffect(() => {
-    console.log(isFocused);
-    getHistoryListApi();
+    if (isFocused) {
+      getHistoryListApi();
+    }
   }, [isFocused]);
 
   return (
@@ -50,12 +51,7 @@ export default function RepairHistory() {
           keyExtractor={(item, index) => index.toString()}
           ListHeaderComponent={
             <Box mg="20px 16px 10px">
-              <DefaultInput
-                value={select}
-                changeFn={setSelect}
-                isDropdown
-                dropdownItem={repairHistoryDropdownList}
-              />
+              <DefaultInput value={select} changeFn={setSelect} isDropdown dropdownItem={repairHistoryDropdownList} />
             </Box>
           }
           renderItem={({item, index}) => {
@@ -70,18 +66,12 @@ export default function RepairHistory() {
             };
 
             return (
-              <TouchableOpacity
-                style={{marginHorizontal: getPixel(16)}}
-                onPress={() => onPressHistory(item)}>
+              <TouchableOpacity style={{marginHorizontal: getPixel(16)}} onPress={() => onPressHistory(item)}>
                 <RepairHistoryItem {...changeItem} />
               </TouchableOpacity>
             );
           }}
-          data={
-            select === '전체'
-              ? historyList
-              : historyList?.filter(filterItem => filterItem.ot_status === select)
-          }
+          data={select === '전체' ? historyList : historyList?.filter(filterItem => filterItem.ot_status === select)}
           onEndReached={() => {
             if (isScroll) {
               getHistoryListApi();
