@@ -9,7 +9,7 @@ import {useState} from 'react';
 import {FlatList, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import {DefaultInput} from '@/assets/global/Input';
-import {repairHistoryDropdownList} from '@/assets/global/dummy';
+import {couponDropdownList, repairHistoryDropdownList} from '@/assets/global/dummy';
 import CouponItem from '@/Component/MyInformation/CouponItem';
 import {useEffect} from 'react';
 import {useIsFocused} from '@react-navigation/native';
@@ -19,6 +19,7 @@ import {useLayoutEffect} from 'react';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import Loading from '@/Component/Layout/Loading';
 import {getHeightPixel} from '@/Util/pixelChange';
+import {getCouponCategoryNumber} from '@/Util/changeCategory';
 
 export default function CouponManagement({navigation, route: {params}}) {
   const [selectMenu, setSelectMenu] = useState('쿠폰함');
@@ -112,7 +113,7 @@ export default function CouponManagement({navigation, route: {params}}) {
     }
     await getCouponUsageStateList({
       _mt_idx: login.idx,
-      ot_status: changeDropMenu(dropMenu),
+      ot_status: getCouponCategoryNumber(dropMenu),
       page: page ?? usagePage,
     })
       .then(async res => {
@@ -236,7 +237,7 @@ export default function CouponManagement({navigation, route: {params}}) {
 const CouponUsageStatus = ({dropMenu, setDropMenu}) => {
   return (
     <Box mg="20px 16px 0px">
-      <DefaultInput value={dropMenu} changeFn={setDropMenu} isDropdown dropdownItem={repairHistoryDropdownList} />
+      <DefaultInput value={dropMenu} changeFn={setDropMenu} isDropdown dropdownItem={couponDropdownList} />
     </Box>
   );
 };
