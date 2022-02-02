@@ -20,11 +20,7 @@ export const modalSlice = createSlice({
       });
     },
     modalClose: state => {
-      return (state = {
-        ...state,
-        isOpenModal: false,
-        isDone: true,
-      });
+      return initialState;
     },
     modalOpenAndProp: (state, action) => {
       return (state = {
@@ -44,7 +40,6 @@ export const modalSlice = createSlice({
   },
 });
 
-export const {modalOpen, modalClose, setNavigator, setModalProp, modalOpenAndProp} =
-  modalSlice.actions;
+export const {modalOpen, modalClose, setNavigator, setModalProp, modalOpenAndProp} = modalSlice.actions;
 
 export default modalSlice.reducer;
