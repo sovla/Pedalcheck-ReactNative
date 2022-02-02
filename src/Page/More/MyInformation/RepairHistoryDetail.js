@@ -63,7 +63,7 @@ export default function RepairHistoryDetail({route: {params}}) {
   useLayoutEffect(() => {
     getRepairHistoryDetail({
       _mt_idx: login?.idx,
-      od_idx: 1, //params?.item?.od_idx,
+      od_idx: params?.item?.od_idx, //params?.item?.od_idx,
     })
       .then(res => res.data.result === 'true' && res.data.data.data)
       .then(data => {

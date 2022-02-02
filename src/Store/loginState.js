@@ -53,7 +53,7 @@ const initialState = {
   mt_gender: 'F',
   mt_birth: '1991-06-25',
   mt_zip: '23415',
-  mt_addr: '부산시 금정구',
+  mt_addr: '부산 금정구',
   mt_lat: '35.258003',
   mt_lng: '129.055283',
   mt_bname: '김미라',

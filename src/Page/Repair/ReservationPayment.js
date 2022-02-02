@@ -16,10 +16,18 @@ import Loading from '@/Component/Layout/Loading';
 import {useLayoutEffect} from 'react';
 import {getOrderCheck} from '@/API/Shop/Shop';
 import {AlertButton} from '@/Util/Alert';
+import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 
 export default function ReservationPayment({navigation, route: {params}}) {
   const [isLoading, setIsLoading] = useState(true);
-  const [virtualAccount, setVirtualAccount] = useState(null);
+  const [virtualAccount, setVirtualAccount] = useState({
+    ot_pay_status: '',
+    ot_pay_type: '',
+    ot_vbank: '',
+    ot_vbank_date: 0,
+    ot_vbank_name: '',
+    ot_vbank_num: '',
+  });
 
   const {
     reservationInfo,
@@ -38,7 +46,7 @@ export default function ReservationPayment({navigation, route: {params}}) {
 
   const reservationTime = `${selectDate?.date} ${selectDate?.time}`;
 
-  let paymentObject = [
+  const paymentObject = [
     {title: '매장명', content: store_info?.mst_name},
     {
       title: '정비상품',
@@ -58,10 +66,8 @@ export default function ReservationPayment({navigation, route: {params}}) {
       //  ot_pay_status : "paid" // 결제 완료상태
       getOrderCheck({
         ot_code: params.merchant_uid,
-        // 가상계좌일때 값 추가 필요 params.imp_uid <
       }).then(res => {
         if (res.data?.result === 'true') {
-          // 가상계좌 추가 수정필요
           const {data} = res.data.data;
           if (data.ot_pay_type === 'vbank') {
             //  가상계좌일때
@@ -75,12 +81,14 @@ export default function ReservationPayment({navigation, route: {params}}) {
                 navigation.goBack();
               });
             } else {
-              //  결제 완료 일때? paid 확인 필요한가 애매
               setIsLoading(false);
             }
           }
         } else {
           // 결제실패시 리턴
+          AlertButton('결제 실패했습니다. 다시 시도해주세요.', '확인', () => {
+            navigation.goBack();
+          });
         }
       });
     } else {
@@ -93,7 +101,7 @@ export default function ReservationPayment({navigation, route: {params}}) {
   }
   return (
     <>
-      <Header title="정비예약" />
+      <Header title="정비예약" isGoBack={false} />
       <Box style={{flex: 1}}>
         <ScrollBox>
           <RepairReservationHeader step={5} content="결제완료" />
@@ -103,29 +111,61 @@ export default function ReservationPayment({navigation, route: {params}}) {
             <DarkBoldText mg="0px 0px 0px 7px">예약이 접수되었습니다.</DarkBoldText>
           </RowBox>
           <Box mg="0px 16px">
+            <VirtualAccountItem {...virtualAccount} />
             {paymentObject.map(item => {
               if (!item?.content) {
                 return null;
               }
               return (
                 <RowBox key={item.title} justifyContent="space-between" mg="0px 0px 10px">
-                  <DarkBoldText width="100px"></DarkBoldText>
+                  <DarkBoldText width="100px">{item.title}</DarkBoldText>
                   <DarkText>{item.content}</DarkText>
                 </RowBox>
               );
             })}
           </Box>
           {/* 가상계좌 정보 뿌리기 */}
-          <RowBox justifyContent="space-between" mg="0px 0px 10px">
-            <DarkBoldText width="100px">{item.title}</DarkBoldText>
-            <DarkText>{item.content}</DarkText>
-          </RowBox>
         </ScrollBox>
       </Box>
       <Box mg="0px 16px 20px">
-        <LinkWhiteButton content="장비 신청 확인하기"></LinkWhiteButton>
+        <LinkWhiteButton
+          to={() => {
+            navigation.navigate('RepairHistoryDetail', {
+              item: {
+                od_idx: 1,
+              },
+            });
+          }}
+          content="장비 신청 확인하기"></LinkWhiteButton>
         <LinkButton mg="10px 0px 0px 0px" to={() => navigation.navigate('RepairHome')} content="홈으로 돌아가기" />
       </Box>
     </>
   );
 }
+
+const VirtualAccountItem = ({ot_vbank, ot_vbank_date, ot_vbank_name, ot_vbank_num}) => {
+  const now = new Date();
+
+  now.setMilliseconds(ot_vbank_date);
+
+  return (
+    <Box width="380px" mg="0px 0px 15px" style={borderBottomWhiteGray}>
+      <RowBox justifyContent="space-between" mg="0px 0px 10px">
+        <DarkBoldText width="100px">은행명</DarkBoldText>
+        <DarkText>{ot_vbank}</DarkText>
+      </RowBox>
+      <RowBox justifyContent="space-between" mg="0px 0px 10px">
+        <DarkBoldText width="100px">계좌번호</DarkBoldText>
+        <DarkText>{ot_vbank_num}</DarkText>
+      </RowBox>
+      <RowBox justifyContent="space-between" mg="0px 0px 10px">
+        <DarkBoldText width="100px">예금주</DarkBoldText>
+        <DarkText>{ot_vbank_name}</DarkText>
+      </RowBox>
+      <RowBox justifyContent="space-between" mg="0px 0px 10px">
+        <DarkBoldText width="100px">입금기간</DarkBoldText>
+        <DarkText>{now.toLocaleString()}</DarkText>
+      </RowBox>
+    </Box>
+  );
+};
