@@ -5,11 +5,9 @@ import {modalClose} from '@/Store/modalState';
 import React from 'react';
 import {useState} from 'react';
 import {TouchableOpacity} from 'react-native';
-import {useDispatch} from 'react-redux';
 import SearchIcon from '@assets/image/ic_search.png';
 import {DefaultInput} from '@/assets/global/Input';
 import DefaultImage from '@/assets/global/Image';
-import {getShopList} from '@/API/More/More';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import {getBikeModel} from '@/API/Bike/Bike';
 import {useEffect} from 'react';
@@ -18,7 +16,6 @@ import {BorderButton, Button, DisabledBorderButton, FooterButton} from '@/assets
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 
 export default function SearchBrand({setShopInformation, shopInformation}) {
-  const dispatch = useDispatch();
   const [brand, setBrand] = useState('');
   const [brandList, setBrandList] = useState([]);
   const [selectList, setSelectList] = useState([]);
@@ -87,9 +84,7 @@ export default function SearchBrand({setShopInformation, shopInformation}) {
                   style={borderBottomWhiteGray}>
                   <DarkText>{item.bt_brand}</DarkText>
 
-                  <BorderButton
-                    backgroundColor={isSelect && Theme.color.skyBlue}
-                    color={isSelect && Theme.color.white}>
+                  <BorderButton backgroundColor={isSelect && Theme.color.skyBlue} color={isSelect && Theme.color.white}>
                     선택
                   </BorderButton>
                 </BetweenBox>

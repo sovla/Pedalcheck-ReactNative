@@ -1,4 +1,4 @@
-import {Container} from '@/assets/global/Container';
+import {Box, Container} from '@/assets/global/Container';
 import Header from '@/Component/Layout/Header';
 import MenuNav from '@/Component/Layout/MenuNav';
 import React from 'react';
@@ -9,6 +9,7 @@ import {useEffect} from 'react';
 import {getBoardList} from '@/API/More/More';
 import {FlatList} from 'react-native-gesture-handler';
 import {useFocusEffect} from '@react-navigation/native';
+import {DarkMediumText} from '@/assets/global/Text';
 
 export default function Post({route: {params}}) {
   const menuItem = ['공지', '이벤트'];
@@ -26,6 +27,7 @@ export default function Post({route: {params}}) {
     notice: false,
     event: false,
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     getBoardListHandle();
@@ -41,9 +43,12 @@ export default function Post({route: {params}}) {
   );
 
   const getBoardListHandle = () => {
+    setIsLoading(true);
     if (select === '이벤트' && last.event) {
+      setIsLoading(false);
       return;
     } else if (select === '공지' && last.notice) {
+      setIsLoading(false);
       return;
     }
 
@@ -74,6 +79,7 @@ export default function Post({route: {params}}) {
           }
         }
       });
+    setIsLoading(false);
   };
 
   return (
@@ -116,6 +122,12 @@ export default function Post({route: {params}}) {
           onMomentumScrollBegin={() => {
             setIsScroll(true);
           }}
+          style={{flex: 1}}
+          ListEmptyComponent={
+            <Box mg="100px 0px 0px" justifyContent="center" alignItems="center">
+              {!isLoading && <DarkMediumText>등록된 게시물이 없습니다.</DarkMediumText>}
+            </Box>
+          }
         />
       </Container>
     </>

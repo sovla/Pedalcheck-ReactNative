@@ -1,5 +1,6 @@
 import {getFAQ} from '@/API/More/More';
 import {Box, ScrollBox} from '@/assets/global/Container';
+import {DarkMediumText} from '@/assets/global/Text';
 import Header from '@/Component/Layout/Header';
 import PostItem from '@/Component/More/PostItem';
 import {getPixel} from '@/Util/pixelChange';
@@ -14,13 +15,18 @@ export default function FAQ() {
   const [postList, setPostList] = useState([]);
   const [page, setPage] = useState(1);
   const [isResult, setIsResult] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     apiGetFAQ();
   }, []);
 
   const apiGetFAQ = () => {
-    if (isResult) return;
+    setIsLoading(true);
+    if (isResult) {
+      setIsLoading(false);
+      return;
+    }
     getFAQ({page: page}).then(res => {
       if (res?.data?.result === 'true' && res?.data?.data?.data) {
         setPostList(prev => [...prev, ...res?.data?.data?.data]);
@@ -29,6 +35,7 @@ export default function FAQ() {
         setIsResult(true);
       }
     });
+    setIsLoading(false);
   };
   return (
     <>
@@ -58,6 +65,11 @@ export default function FAQ() {
             />
           );
         }}
+        ListEmptyComponent={
+          <Box mg="100px 0px 0px" justifyContent="center" alignItems="center">
+            {!isLoading && <DarkMediumText>등록된 게시물이 없습니다.</DarkMediumText>}
+          </Box>
+        }
       />
     </>
   );

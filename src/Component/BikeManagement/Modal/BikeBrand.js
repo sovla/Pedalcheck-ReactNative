@@ -8,14 +8,14 @@ import DefaultImage from '@assets/global/Image';
 import SearchIcon from '@assets/image/ic_search.png';
 import Theme from '@/assets/global/Theme';
 import {DarkText, DefaultText} from '@/assets/global/Text';
-import {modalClose, modalOpen, setModalProp} from '@/Store/modalState';
+import {modalClose, modalOpen, modalOpenAndProp, setModalProp} from '@/Store/modalState';
 import ArrowRightIcon from '@assets/image/arr_right.png';
 import {useEffect} from 'react';
 import {useState} from 'react';
 import {getBikeModel} from '@/API/Bike/Bike';
 import Loading from '@/Component/Layout/Loading';
 
-export default function BikeModel({setBikeInfo}) {
+export default function BikeBrand() {
   const {size, modal} = useSelector(state => state);
   const dispatch = useDispatch();
 
@@ -24,9 +24,14 @@ export default function BikeModel({setBikeInfo}) {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const onPressBrand = async item => {
-    modal.modalProp.setBikeInfo(modal?.modalProp.brand + '\t\t' + item);
-    dispatch(modalClose());
+  const onPressBrand = item => {
+    dispatch(
+      modalOpenAndProp({
+        modalComponent: 'bikeModelStepTwo',
+        setBikeInfo: modal?.modalProp?.setBikeInfo,
+        brand: item,
+      }),
+    );
   };
 
   useEffect(() => {
@@ -36,8 +41,8 @@ export default function BikeModel({setBikeInfo}) {
   const getBikeModelHandle = () => {
     setIsLoading(true);
     getBikeModel({
-      bt_step: 2,
-      bt_brand: modal?.modalProp?.brand ?? '',
+      bt_step: 1,
+      bt_brand: modal?.modalProp ?? '',
       search_txt: searchText,
     }).then(res => setBikeModel(res?.data?.data?.data));
     setSearchText('');
@@ -51,16 +56,9 @@ export default function BikeModel({setBikeInfo}) {
       <ModalTitleBox title="모델 검색"></ModalTitleBox>
       <Box>
         <Box width={`${size.designWidth - 32 - 40}px`}>
-          {modal?.modalProp?.brand !== '' && modal?.modalProp?.brand !== undefined && (
-            <RowBox alignItems="center">
-              <DefaultText color={Theme.color.skyBlue}>{modal.modalProp.brand}</DefaultText>
-              <DefaultImage source={ArrowRightIcon} width="24px" height="24px" />
-              <DarkText>모델 선택</DarkText>
-            </RowBox>
-          )}
           <DefaultInput
-            title={modal?.modalProp?.brand}
-            placeHolder="모델명을 입력해주세요"
+            title={'브랜드 선택'}
+            placeHolder="브랜드명을 입력해주세요"
             width={`${size.designWidth - 32 - 40}px`}
             changeFn={item => setSearchText(item)}
             value={searchText}
@@ -73,7 +71,7 @@ export default function BikeModel({setBikeInfo}) {
         </Box>
         <ScrollBox maxHeight="200px">
           {bikeModel?.map((item, index) => (
-            <TouchableOpacity onPress={() => onPressBrand(item.bt_model)} key={item.bt_model + index}>
+            <TouchableOpacity onPress={() => onPressBrand(item.bt_brand)} key={item.bt_brand + index}>
               <Box
                 width="340px"
                 height="35px"
@@ -81,7 +79,7 @@ export default function BikeModel({setBikeInfo}) {
                 backgroundColor="#0000"
                 justifyContent="center"
                 style={{borderBottomWidth: 1, borderBottomColor: Theme.borderColor.whiteGray}}>
-                <DarkText>{item.bt_model}</DarkText>
+                <DarkText>{item.bt_brand}</DarkText>
               </Box>
             </TouchableOpacity>
           ))}

@@ -23,7 +23,7 @@ import scrollSlideNumber from '@/Util/scrollSlideNumber';
 import {useEffect} from 'react';
 import {getShopList} from '@/API/Shop/Shop';
 import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
-import {modalOpen} from '@/Store/modalState';
+import {modalOpen, modalOpenAndProp} from '@/Store/modalState';
 import {getEventList} from '@/API/Repair/Repair';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
@@ -79,11 +79,6 @@ export default function RepairHome() {
     }
   }, [selectItem, sortSelectItem, tag, innerLocation, isSearch]);
   // 현태 태그 및 메뉴 선택 시 리렌더링
-  useEffect(() => {
-    if (location?.name) {
-      setInnerLocation(location.name);
-    }
-  }, [location]);
 
   const getShopListHandle = async initPage => {
     setIsDone(true);
@@ -146,10 +141,11 @@ export default function RepairHome() {
               selectImage={selectImage}
               onScrollSlide={onScrollSlide}
               onPressTag={onPressTag}
-              dispatch={dispatch}
               searchText={searchText}
               setSearchText={setSearchText}
               setIsSearch={setIsSearch}
+              setInnerLocation={setInnerLocation}
+              dispatch={dispatch}
             />
           }
           data={storeList}
@@ -209,6 +205,7 @@ const Header = ({
   searchText,
   setSearchText,
   setIsSearch,
+  setInnerLocation,
 }) => {
   return (
     <>
@@ -283,7 +280,12 @@ const Header = ({
           </Box>
           <TouchableOpacity
             onPress={() => {
-              dispatch(modalOpen('locationPicker'));
+              dispatch(
+                modalOpenAndProp({
+                  modalComponent: 'locationPicker',
+                  setLocation: setInnerLocation,
+                }),
+              );
             }}>
             <RowBox height="100%" alignItems="center" mg="0px 0px 0px 5px">
               <DarkMediumText fontSize={Theme.fontSize.fs15}>{innerLocation}</DarkMediumText>
