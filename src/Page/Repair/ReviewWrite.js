@@ -24,18 +24,24 @@ export default function ReviewWrite({navigation, route}) {
   const onPressSend = () => {
     sendReview({
       _mt_idx: login?.idx,
-      mst_idx: shopInfo?.store_info?.mst_idx,
+      mst_idx: shopInfo?.store_info?.mst_idx ? shopInfo?.store_info?.mst_idx : shopItem?.mst_idx,
       od_idx: shopItem?.od_idx,
       srt_content: content,
       srt_img: imageArray,
     }).then(res => {
       if (res.data.result === 'true') {
-        navigation.navigate(`${route?.params?.navigate ?? 'Shop'}`);
+        if (route?.params?.navigate) {
+          navigation.navigate(`${route?.params?.navigate}`);
+        } else {
+          navigation.goBack();
+        }
       } else {
         Alert.alert('', res.data.msg);
       }
     });
   };
+
+  console.log(shopItem);
 
   return (
     <>

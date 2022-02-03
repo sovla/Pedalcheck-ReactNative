@@ -24,10 +24,7 @@ export default function ReviewRecord({itemArray, isSelect = true, pd = '20px 10p
     });
   };
   return (
-    <Box
-      pd={pd}
-      width="100%"
-      style={isSelect && {borderBottomWidth: 1, borderBottomColor: Theme.borderColor.gray}}>
+    <Box pd={pd} width="100%" style={isSelect && {borderBottomWidth: 1, borderBottomColor: Theme.borderColor.gray}}>
       <RowBox justifyContent="space-between" width="100%">
         <Box>
           <RowBox alignItems="center">
@@ -37,10 +34,7 @@ export default function ReviewRecord({itemArray, isSelect = true, pd = '20px 10p
             {showItem.isPartner && (
               <>
                 <DefaultImage source={ParterIcon} width="12px" height="12px"></DefaultImage>
-                <DefaultText
-                  color={Theme.color.indigo}
-                  fontSize={Theme.fontSize.fs12}
-                  mg="0px 0px 0px 3px">
+                <DefaultText color={Theme.color.indigo} fontSize={Theme.fontSize.fs12} mg="0px 0px 0px 3px">
                   파트너매장
                 </DefaultText>
               </>
@@ -50,10 +44,7 @@ export default function ReviewRecord({itemArray, isSelect = true, pd = '20px 10p
             <GrayText fontSize={Theme.fontSize.fs13}>{showItem.date}</GrayText>
           </RowBox>
           <RowBox alignItems="center">
-            <IndigoText
-              fontSize={Theme.fontSize.fs15}
-              fontWeight={Theme.fontWeight.bold}
-              mg="0px 10px 0px 0px">
+            <IndigoText fontSize={Theme.fontSize.fs15} fontWeight={Theme.fontWeight.bold} mg="0px 10px 0px 0px">
               {showItem.product}
             </IndigoText>
             <MoneyText
@@ -62,9 +53,7 @@ export default function ReviewRecord({itemArray, isSelect = true, pd = '20px 10p
               color={Theme.color.black}
               mg="0px 7px 0px 0px"
             />
-            {itemArrayLength > 1 && (
-              <DefaultText color={Theme.color.gray}>{`외 ${itemArrayLength - 1}건`}</DefaultText>
-            )}
+            {itemArrayLength > 1 && <DefaultText color={Theme.color.gray}>{`외 ${itemArrayLength - 1}건`}</DefaultText>}
           </RowBox>
         </Box>
         {isSelect && (

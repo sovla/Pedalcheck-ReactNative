@@ -120,7 +120,11 @@ export default function Router() {
         remoteMessage: remoteMessage,
         onPress: () => {
           navigationRef.current.navigate(remoteMessage?.data?.intent, {
-            menu: remoteMessage?.data?.menu,
+            menu:
+              remoteMessage?.data?.content_idx === '1:1문의'
+                ? remoteMessage?.data?.content_idx
+                : remoteMessage?.data?.content_idx2,
+            notificationIdx: remoteMessage?.data?.content_idx,
           });
         },
       });

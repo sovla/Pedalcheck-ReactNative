@@ -62,7 +62,19 @@ export default function RepairHistory() {
               date: `${item?.ot_pt_date} ${item?.ot_pt_time}`,
               status: item?.ot_status,
               isReview: item?.ot_review === 'Y' && item?.ot_status === '처리완료',
-              onPressReview: () => {},
+              onPressReview: () => {
+                navigation.navigate('ReviewWrite', {
+                  navigate: 'RepairHistory',
+                  item: {
+                    title: changeItem?.shopName,
+                    date: changeItem?.date?.slice(0, 10),
+                    product: changeItem?.productNames,
+                    price: changeItem?.ot_price,
+                    od_idx: item?.od_idx,
+                    mst_idx: item?.mst_idx,
+                  },
+                });
+              },
             };
 
             return (
