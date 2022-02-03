@@ -155,17 +155,17 @@ export default function BikeExport({route}) {
         <DefaultInput
           fontSize={Theme.fontSize.fs15}
           title="연식"
-          placeHolder="연도 2자리를 입력해주세요"
+          placeHolder="연도 4자리를 입력해주세요"
           width="380px"
           mg="0px 0px 20px"
-          maxLength={2}
+          maxLength={4}
           changeFn={text => setBikeData(prev => ({...prev, sbt_year: text}))}
           errorMessage={errorMessage.sbt_year !== '' && errorMessage.sbt_year}
           value={bikeData.sbt_year}
         />
         <DefaultInput
           fontSize={Theme.fontSize.fs15}
-          title="연락처"
+          title="고객명"
           placeHolder="고객명을 입력해주세요 (선택)"
           width="380px"
           mg="0px 0px 20px"

@@ -115,10 +115,7 @@ export default function RepairQuestion({route: {params}}) {
       <Container height={`${size.screenHeight - 120}px`}>
         <ScrollBox pd="0px 16px">
           <RowBox style={borderBottomWhiteGray} width={size.minusPadding} mg="20px 0px 20px">
-            <DarkText
-              mg="0px 0px 20px"
-              fontSize={Theme.fontSize.fs16}
-              fontWeight={Theme.fontWeight.bold}>
+            <DarkText mg="0px 0px 20px" fontSize={Theme.fontSize.fs16} fontWeight={Theme.fontWeight.bold}>
               필수 입력 항목{' '}
             </DarkText>
             <Box>
@@ -151,7 +148,7 @@ export default function RepairQuestion({route: {params}}) {
             fontSize={Theme.fontSize.fs15}
             pd="20px 0px 5px"
             title="내용"
-            placeHolder="내용을 입력하세요 (10자 이상 2000자 이내)"
+            placeHolder="내용을 입력하세요 (10자 이상 2000자 이내)\n이모티콘을 삽입할시 글 내용이 깨질수 있습니다."
             width="380px"
             height="300px"
             isAlignTop

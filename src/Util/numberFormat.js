@@ -4,7 +4,7 @@ export default function numberFormat(inputNumber) {
     switch (typeof inputNumber) {
       case 'string': {
         if (inputNumber.includes(',')) {
-          const changeInputNumber = inputNumber.replaceAll(',', '');
+          const changeInputNumber = inputNumber.split(',').reduce((prev, curr) => prev + curr);
           return parseInt(changeInputNumber);
         }
         return parseInt(inputNumber);

@@ -6,16 +6,14 @@ import numberFormat from '@/Util/numberFormat';
 import {LinkWhiteButton} from '@/assets/global/Button';
 import {useNavigation} from '@react-navigation/native';
 
-const CalculateStats = ({totalIncome = 100000000, unSettled = 98000000}) => {
+const CalculateStats = ({totalIncome = 100000000, unSettled = 98000000, doneIncome = 200000}) => {
   const navigation = useNavigation();
 
   return (
     <Box width="380px" pd="10px 16px 20px" borderRadius="10px" mg="26px 0px 0px">
       <BetweenBox width="348px" mg="10px 0px 0px" alignItems="center">
         <IndigoText fontWeight={Theme.fontWeight.bold}>전체수입</IndigoText>
-        <IndigoText fontWeight={Theme.fontWeight.bold}>{`${numberFormat(
-          totalIncome,
-        )} 원`}</IndigoText>
+        <IndigoText fontWeight={Theme.fontWeight.bold}>{`${numberFormat(totalIncome)} 원`}</IndigoText>
       </BetweenBox>
       <BetweenBox width="348px" mg="10px 0px 0px" alignItems="center">
         <DarkMediumText fontSize={Theme.fontSize.fs15}>미정산</DarkMediumText>
@@ -23,7 +21,7 @@ const CalculateStats = ({totalIncome = 100000000, unSettled = 98000000}) => {
       </BetweenBox>
       <BetweenBox width="348px" mg="10px 0px 0px" alignItems="center">
         <DarkMediumText fontSize={Theme.fontSize.fs15}>정산완료</DarkMediumText>
-        <DarkBoldText>{numberFormat(totalIncome - unSettled)} 원</DarkBoldText>
+        <DarkBoldText>{numberFormat(doneIncome)} 원</DarkBoldText>
       </BetweenBox>
       <LinkWhiteButton
         mg="16px 0px 0px"

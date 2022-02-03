@@ -123,6 +123,7 @@ export const ShadowStyle = {
 
 const FeedBox = ({item, size, onPressImage}) => {
   //item?.ft_link
+  const thumbImage = item?.ft_thumb ? {uri: imageAddress + item.ft_thumb} : DummyImage;
   const image = item?.ft_store_img ? {uri: imageAddress + item.ft_store_img} : DummyImage;
   return (
     <Box
@@ -134,7 +135,7 @@ const FeedBox = ({item, size, onPressImage}) => {
         borderBottomLeftRadius: 15,
         borderBottomRightRadius: 15,
       }}>
-      {item?.ft_store_img && (
+      {item?.ft_thumb && (
         <TouchableOpacity
           style={{borderTopLeftRadius: 15, borderTopRightRadius: 15}}
           onPress={() => onPressImage(item?.ft_link)}>
@@ -144,7 +145,7 @@ const FeedBox = ({item, size, onPressImage}) => {
               borderTopRightRadius: 15,
             }}
             resizeMode="contain"
-            source={image}
+            source={thumbImage}
             width="380px"
             height="200px"
           />
@@ -153,7 +154,7 @@ const FeedBox = ({item, size, onPressImage}) => {
 
       <RowBox mg="15px 15px 0px" justifyContent="space-between">
         <Box width="75px" alignItems="center">
-          <DefaultImage source={DummyProfileImage} width="45px" height="45px" borderRadius="100px" />
+          <DefaultImage source={image} width="45px" height="45px" borderRadius="100px" />
         </Box>
         <Box>
           <DarkText fontSize={Theme.fontSize.fs15} width="290px" numberOfLines={2}>
