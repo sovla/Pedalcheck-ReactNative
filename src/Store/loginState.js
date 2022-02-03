@@ -43,7 +43,7 @@ const initialState = {
   mt_id: 'lotion_@naver.com',
   mt_pwd: '',
   mt_app_token:
-    'cX4uwZHXc068kCLRSHWfjV:APA91bHlVXGl4KtfPTA5cfNsnkr5t9c_die_iRyjNIDmRZmxXSOnTbw8BnkzsC2M7Zqtnr2Bd21NZMGyxhGovO0OwZlQtr5LpDfeCTLm3HewBJW0oiZC7qZkoGcrrG7yVI7XA7oq-AKS',
+    'e7BaQc3aQ_yYdSlKDrnrFD:APA91bF2t54wiW3Fy5U_8ybJF5CbR7hIHIFbWEIYc-4Dwm1q2D67MmlNFA1Zh-9nbqKxVmBzEk-4Fo-x9cgSXoeez08wWvMTejvn94FOpQwvSWLT5aYOvNv6KBOklIAFQMr2KlA8KJqT',
   mt_ci: '',
   mt_di: '',
   mt_name: '신혜수',

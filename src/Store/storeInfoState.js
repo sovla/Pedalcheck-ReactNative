@@ -1,4 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
+import {imageAddress} from '@assets/global/config';
 
 const initialState = {
   apple_id: null,
@@ -12,21 +13,7 @@ const initialState = {
   mst_email: '',
   mst_holiday: '',
   mst_idx: '',
-  mst_image1: '',
-  mst_image2: '',
-  mst_image3: '',
-  mst_image4: '',
-  mst_image5: '',
-  mst_image6: '',
-  mst_image7: '',
-  mst_image8: '',
-  mst_image9: '',
-  mst_image10: '',
-  mst_image11: '',
-  mst_image12: '',
-  mst_image13: '',
-  mst_image14: '.',
-  mst_image15: null,
+  mst_image: [],
   mst_intro: '',
   mst_lat: '',
   mst_lng: '',
@@ -79,7 +66,15 @@ export const storeInfoSlice = createSlice({
   initialState,
   reducers: {
     setStoreInfo: (state, action) => {
-      return action.payload;
+      return {
+        ...action.payload,
+        mst_image: action.payload.mst_image.map(item => {
+          return {
+            ...item,
+            path: imageAddress + item.fname,
+          };
+        }),
+      };
     },
     ResetStoreInfo: state => {
       return initialState;

@@ -4,24 +4,21 @@ export default function numberFormat(inputNumber) {
     switch (typeof inputNumber) {
       case 'string': {
         if (inputNumber.includes(',')) {
-          const changeInputNumber = inputNumber.replaceAll(',', '');
+          const changeInputNumber = inputNumber.split(',').reduce((prev, curr) => prev + curr);
           return parseInt(changeInputNumber);
         }
         return parseInt(inputNumber);
       }
       case 'number':
-        return inputNumber;
-      case 'object':
-        return 0;
-      case 'undefined':
-        return 0;
-      case 'null':
-        return 0;
+        return parseInt(inputNumber);
       default:
         return 0;
     }
   };
-  const result = typeStringInputNumber().toLocaleString('ko-KR');
+  const result = typeStringInputNumber()
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
   if (result.includes('N') || result === '') {
     return '';
   }

@@ -1,4 +1,4 @@
-import {getStoreInfo, updateStore, updateStoreImage} from '@/API/More/More';
+import {deleteImage, getStoreInfo, updateStore, updateStoreImage} from '@/API/More/More';
 import {BorderButton, Button, LinkButton} from '@/assets/global/Button';
 import {BetweenBox, Box, Container, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
@@ -34,13 +34,13 @@ export default function ShopUpdate() {
     mst_name: '',
     mst_company_num: '',
     mst_zip: '',
-
     mst_addr2: '',
     mst_email: '',
   });
 
   const dispatch = useDispatch();
-  const [postData, setPostData] = useState([]);
+  const [postData, setPostData] = useState([]); // ??
+  const [lastSortCount, setLastSortCount] = useState(0);
 
   useEffect(() => {
     if (isFocused) {
@@ -51,16 +51,17 @@ export default function ShopUpdate() {
           return value * 1;
         }),
       );
-      let resultArray = [];
-      for (let i = 1; i < 16; i++) {
-        const mstImage = storeInfo[`mst_image${i}`];
-        if (mstImage) {
-          resultArray.push({
-            path: imageAddress + mstImage,
-          });
+
+      setImageArray(storeInfo.mst_image);
+      let maxSort = 0;
+      for (const item of storeInfo.mst_image) {
+        // sort 값중 제일 큰값을 찾기
+        const sortInt = parseInt(item.sort);
+        if (sortInt > maxSort) {
+          maxSort = sortInt;
         }
       }
-      setImageArray([...resultArray]);
+      setLastSortCount(maxSort);
     }
   }, [isFocused]);
 
@@ -83,13 +84,14 @@ export default function ShopUpdate() {
     }
     let response;
     if (imageArray.length > 0) {
+      const localImageArray = imageArray.filter(item => !item?.sort);
       response = await updateStoreImage({
         ...shopInformation,
         mst_holiday: selectDay.sort().join(),
-        mst_image: imageArray,
+        mst_image: localImageArray,
         _mt_idx: login.idx,
-        'store_image_num[]': imageArray.map((item, index) => {
-          return index + 1;
+        store_image_num: localImageArray.map((item, index) => {
+          return lastSortCount + index + 1;
         }),
       });
     } else {
@@ -106,6 +108,16 @@ export default function ShopUpdate() {
         navigation.goBack();
       }
     }
+  };
+
+  const deleteImageHandle = async item => {
+    const response = await deleteImage({
+      mode: 'member_seller',
+      idx: item.idx,
+      fname: item.fname,
+    });
+
+    return response.data?.result === 'true';
   };
 
   const RegJoin = () => {
@@ -137,7 +149,7 @@ export default function ShopUpdate() {
       check = false;
     }
   };
-  console.log('imageArray', imageArray);
+  console.log('imageArray', imageArray, lastSortCount);
   return (
     <>
       <Header title="정보 수정" />
@@ -274,7 +286,12 @@ export default function ShopUpdate() {
             <DarkMediumText fontSize={Theme.fontSize.fs15} mg="0px 0px 5px">
               대표 이미지 (375×237px 권장)
             </DarkMediumText>
-            <Photo imageCount={15} imageArray={imageArray} setImageArray={setImageArray} />
+            <Photo
+              imageCount={15}
+              imageArray={imageArray}
+              setImageArray={setImageArray}
+              onPressDelete={deleteImageHandle}
+            />
           </Box>
           <DefaultInput
             title="영업시간"

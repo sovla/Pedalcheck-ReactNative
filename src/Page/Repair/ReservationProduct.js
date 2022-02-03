@@ -76,6 +76,8 @@ export default function ShopReservationProduct({navigation}) {
       dispatch(clearReservation());
     };
   }, []);
+  console.log(saleMoney);
+
   return (
     <>
       <Header title="정비예약" />
@@ -124,7 +126,7 @@ export default function ShopReservationProduct({navigation}) {
         </RowBox>
         <RowBox mg="10px 0px 20px" justifyContent="space-between" width={size.minusPadding}>
           <DarkText>할인</DarkText>
-          <MoneyText money={saleMoney > 0 ? saleMoney : 0} color={Theme.color.black} />
+          <MoneyText money={saleMoney * -1 > 0 ? saleMoney : 0} color={Theme.color.black} />
         </RowBox>
         <DefaultLine />
         <RowBox mg="10px 0px 20px" justifyContent="space-between" width={size.minusPadding}>

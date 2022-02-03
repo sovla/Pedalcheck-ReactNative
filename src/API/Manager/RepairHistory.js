@@ -63,3 +63,12 @@ export const deleteReview = async args => {
     console.log(error);
   }
 };
+
+export const getRepairHomeInformation = async args => {
+  try {
+    const response = await API.post('mng/home.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

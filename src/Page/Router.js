@@ -116,6 +116,7 @@ export default function Router() {
   useEffect(() => {
     getToken();
     const unsubscribe = messaging().onMessage(async remoteMessage => {
+      console.log(remoteMessage);
       showPushToastMessage({
         remoteMessage: remoteMessage,
         onPress: () => {

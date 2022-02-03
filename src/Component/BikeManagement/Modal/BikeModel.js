@@ -15,7 +15,7 @@ import {useState} from 'react';
 import {getBikeModel} from '@/API/Bike/Bike';
 import Loading from '@/Component/Layout/Loading';
 
-export default function BikeModel({setBikeInfo}) {
+export default function BikeModel() {
   const {size, modal} = useSelector(state => state);
   const dispatch = useDispatch();
 

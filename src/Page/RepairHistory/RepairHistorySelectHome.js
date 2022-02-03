@@ -15,14 +15,27 @@ import ItemStats from '@/Component/RepairHistory/ItemStats';
 import {modalOpen} from '@/Store/modalState';
 import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {useLayoutEffect} from 'react';
+import {getRepairHomeInformation} from '@/API/Manager/RepairHistory';
 
 export default function RepairHistorySelectHome() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const {login} = useSelector(state => state);
 
   const [date, setDate] = useState(new Date());
   const [selectDate, setSelectDate] = useState('지난 6개월');
+  const [isLoading, setIsLoading] = useState(true);
+  const [homeInfo, setHomeInfo] = useState(initData);
+
+  useLayoutEffect(() => {
+    getRepairHomeInformation({
+      _mt_idx: login?.idx,
+    })
+      .then(res => res.data?.result === 'true' && res.data.data.data)
+      .then(data => setHomeInfo(data));
+  }, []);
 
   return (
     <Box pd="0px 16px" backgroundColor="#F8F8F8">
@@ -39,8 +52,18 @@ export default function RepairHistorySelectHome() {
           <DefaultImage source={ArrowRightIcon} width="24px" height="24px" />
         </TouchableOpacity>
       </BetweenBox>
-      <ReservationStats />
-      <CalculateStats />
+      <ReservationStats
+        reservationCount={homeInfo.order_cnt.order}
+        approvalCount={homeInfo.order_cnt.ok}
+        completeCount={homeInfo.order_cnt.done}
+        reservationCancleCount={homeInfo.order_cnt.cancel}
+        rejectionCount={homeInfo.order_cnt.reject}
+      />
+      <CalculateStats
+        totalIncome={homeInfo.calculator.tot}
+        unSettled={homeInfo.calculator.incomplete}
+        doneIncome={homeInfo.calculator.complete}
+      />
       <Box width="380px" pd="10px 16px 20px" borderRadius="10px" mg="26px 0px 0px">
         <BetweenBox width="348px" mg="10px 0px 0px" alignItems="center">
           <DarkBoldText fontSize={Theme.fontSize.fs15}>정비 통계 그래프</DarkBoldText>
@@ -58,15 +81,182 @@ export default function RepairHistorySelectHome() {
         </BetweenBox>
         <DefaultImage width="348px" height="220px" source={DummyChart} resizeMode="contain" />
       </Box>
-      <ShopCustomerStats />
-      <ItemStats onPressMore={() => navigation.navigate('BikeStats')} />
-      <ItemStats title="자전거 종류별 통계" onPressMore={() => navigation.navigate('BikeStats')} />
-      <ItemStats title="브랜드별 통계" onPressMore={() => navigation.navigate('BikeStats')} />
+      <ShopCustomerStats
+        customer={homeInfo.quick.customers}
+        likeCount={homeInfo.quick.likes}
+        likeCustomer={homeInfo.quick.likes}
+        repairCount={homeInfo.quick.orders}
+      />
+      <ItemStats
+        itemList={dataToItemList(homeInfo.product.data, 'repair')}
+        onPressMore={
+          homeInfo.product.data.length >= 3 &&
+          (() =>
+            navigation.navigate('BikeStats', {
+              itemList: dataToItemList(homeInfo.product.data, 'repair'),
+            }))
+        }
+        showCount={3}
+      />
+      <ItemStats
+        itemList={dataToItemList(Object.values(homeInfo.bike_type.data), 'bike')}
+        title="자전거 종류별 통계"
+        onPressMore={
+          Object.values(homeInfo.bike_type.data).length >= 3 &&
+          (() =>
+            navigation.navigate('BikeStats', {
+              itemList: dataToItemList(Object.values(homeInfo.bike_type.data), 'bike'),
+            }))
+        }
+        showCount={3}
+      />
+      {!homeInfo.brand.data?.length && (
+        <ItemStats
+          title="브랜드별 통계"
+          itemList={dataToItemList(homeInfo.brand.data)}
+          onPressMore={() => navigation.navigate('BikeStats')}
+          showCount={3}
+        />
+      )}
     </Box>
   );
 }
+
+const dataToItemList = (data, type) => {
+  let result;
+  if (type === 'repair') {
+    result = data.map(item => ({
+      title: item.pt_title,
+      count: item.cnt,
+      rate: item.percent + '%',
+    }));
+  } else if (type === 'bike') {
+    result = data.map(item => ({
+      title: item.mbt_type_name,
+      count: item.mbt_type_cnt,
+      rate: item.percent + '%',
+    }));
+  }
+  return result;
+};
 
 const dateDummyList = [
   {label: '지난 6개월', value: '지난 6개월'},
   {label: '지난 12개월', value: '지난 12개월'},
 ];
+
+const initData = {
+  order_cnt: {
+    order: '0',
+    ok: '0',
+    done: '0',
+    cancel: '0',
+    reject: '0',
+  },
+  calculator: {
+    tot: null,
+    complete: '40980',
+    incomplete: -40980,
+  },
+  static: {
+    data: {
+      '2022-02': '0',
+      '2022-01': '4',
+      '2021-12': '0',
+      '2021-11': '0',
+      '2021-10': '0',
+      '2021-09': '0',
+      '2021-08': '0',
+      '2021-07': '0',
+      '2021-06': '0',
+      '2021-05': '0',
+      '2021-04': '0',
+      '2021-03': '0',
+    },
+    max_cnt: '4',
+  },
+  quick: {
+    likes: '7',
+    customers: '4',
+    orders: '4',
+  },
+  product: {
+    data: [
+      {
+        pt_idx: '2',
+        pt_title: '종합정비',
+        cnt: '51',
+        percent: 35.42,
+      },
+      {
+        pt_idx: '4',
+        pt_title: '타이어교환',
+        cnt: '36',
+        percent: 25,
+      },
+      {
+        pt_idx: '12',
+        pt_title: '상품명',
+        cnt: '26',
+        percent: 18.06,
+      },
+      {
+        pt_idx: '30',
+        pt_title: '상품명1',
+        cnt: '17',
+        percent: 11.81,
+      },
+      {
+        pt_idx: '31',
+        pt_title: '체달바퀴',
+        cnt: '14',
+        percent: 9.72,
+      },
+    ],
+    tot_cnt: '144',
+  },
+  bike_type: {
+    data: {
+      1: {
+        mbt_type_name: '로드바이크',
+        mbt_type_cnt: '5',
+        percent: 83.33,
+      },
+      2: {
+        mbt_type_name: '미니벨로',
+        mbt_type_cnt: '0',
+        percent: 0,
+      },
+      3: {
+        mbt_type_name: 'MTB',
+        mbt_type_cnt: '1',
+        percent: 16.67,
+      },
+      4: {
+        mbt_type_name: '전기자전거',
+        mbt_type_cnt: '0',
+        percent: 0,
+      },
+      5: {
+        mbt_type_name: '하이브리드',
+        mbt_type_cnt: '0',
+        percent: 0,
+      },
+      6: {
+        mbt_type_name: '팻바이크',
+        mbt_type_cnt: '0',
+        percent: 0,
+      },
+      7: {
+        mbt_type_name: '픽시',
+        mbt_type_cnt: '0',
+        percent: 0,
+      },
+    },
+    tot_cnt: '6',
+  },
+  brand: {
+    data: null,
+    tot_cnt: '0',
+  },
+};

@@ -16,6 +16,7 @@ import {useEffect} from 'react';
 import moment from 'moment';
 import 'moment/locale/ko';
 import {setReservationDate} from '@/Store/reservationState';
+import {AlertButton} from '@/Util/Alert';
 
 export default function ReservationDate({navigation, route: {params}}) {
   const isFocused = useIsFocused();
@@ -63,9 +64,7 @@ export default function ReservationDate({navigation, route: {params}}) {
       setSelectItem(reservationInfo?.selectDate?.time ?? '');
       onChangeMonth(
         selectDate?.substr(0, 7) ??
-          `${now.getFullYear()}-${
-            now.getMonth() + 1 < 10 ? '0' + (now.getMonth() + 1) : now.getMonth() + 1
-          }`,
+          `${now.getFullYear()}-${now.getMonth() + 1 < 10 ? '0' + (now.getMonth() + 1) : now.getMonth() + 1}`,
       );
     }
   }, [isFocused]);
@@ -80,13 +79,17 @@ export default function ReservationDate({navigation, route: {params}}) {
   };
 
   const onPressNext = () => {
-    dispatch(
-      setReservationDate({
-        date: selectDate,
-        time: selectItem,
-      }),
-    );
-    navigation.navigate('ReservationRequest');
+    if (selectDate && selectItem) {
+      dispatch(
+        setReservationDate({
+          date: selectDate,
+          time: selectItem,
+        }),
+      );
+      navigation.navigate('ReservationRequest');
+    } else {
+      AlertButton('예약 시간을 선택해주세요.');
+    }
   };
 
   return (

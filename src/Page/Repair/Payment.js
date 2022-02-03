@@ -8,6 +8,7 @@ import {ButtonTouch} from '@/assets/global/Button';
 import {useSelector} from 'react-redux';
 import {useState} from 'react';
 import {sendOrder} from '@/API/Shop/Shop';
+import {AlertButton} from '@/Util/Alert';
 
 export function Payment({navigation}) {
   const [isLoading, setIsLoading] = useState(true);
@@ -21,11 +22,31 @@ export function Payment({navigation}) {
     if (response.imp_success === 'true') {
       navigation.replace('ReservationPayment', response);
     } else {
+      if (response.error_msg?.includes('F0005')) {
+        AlertButton('결제를 취소 했습니다.');
+      } else {
+        AlertButton('결제 실패했습니다. 다시 시도해주세요.');
+      }
+
       navigation.goBack();
     }
     // 결제완료
   }
-  console.log(selectBike);
+
+  const changePayment = (payment, type = 'api') => {
+    // card:신용카드/trans:계좌이체/kakaopay:카카오페이/vbank:무통장
+
+    switch (payment) {
+      case '신용카드':
+        return 'card';
+      case '실시간 계좌이체':
+        return 'trans';
+      case '카카오페이':
+        return type === 'api' ? 'kakaopay' : 'card';
+      case '무통장 입금':
+        return 'vbank';
+    }
+  };
   useLayoutEffect(() => {
     if (!responseData) {
       const pt_idx = [];
@@ -69,22 +90,7 @@ export function Payment({navigation}) {
           }
         });
     }
-  }, []);
-
-  const changePayment = (payment, type = 'api') => {
-    // card:신용카드/trans:계좌이체/kakaopay:카카오페이/vbank:무통장
-
-    switch (payment) {
-      case '신용카드':
-        return 'card';
-      case '실시간 계좌이체':
-        return 'trans';
-      case '카카오페이':
-        return type === 'api' ? 'kakaopay' : 'card';
-      case '무통장 입금':
-        return 'vbank';
-    }
-  };
+  });
 
   if (responseData?.ot_code && isLoading) {
     //  useLayoutEffect 내에 api 치고 나서 데이터가 있고 로딩인 경우 로딩 제거

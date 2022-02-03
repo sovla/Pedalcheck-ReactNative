@@ -69,11 +69,14 @@ export default function ReservationBikeSelect({
                   dispatch(
                     modalOpenAndProp({
                       modalComponent: 'bikeModel',
-                      setBrand: text =>
+                      setBikeInfo: text => {
+                        const bikeInfo = text.split('\t\t');
                         setBikeName(prev => ({
                           ...prev,
-                          bikeBrand: text,
-                        })),
+                          bikeBrand: bikeInfo[0],
+                          bikeModel: bikeInfo[1],
+                        }));
+                      },
                     }),
                   );
                 }}

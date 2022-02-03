@@ -1,7 +1,7 @@
 import {editProductInfo, getProductCategoryList, sendProductInfo} from '@/API/More/Product';
 import {LinkButton} from '@/assets/global/Button';
 import {BetweenBox, Box, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
-import {minuteList, openTimeList, repairHistoryDropdownList} from '@/assets/global/dummy';
+import {minuteList, openTimeList} from '@/assets/global/dummy';
 import {DefaultInput} from '@/assets/global/Input';
 import {DarkBoldText, DarkMediumText, DarkText, ErrorText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
@@ -12,21 +12,17 @@ import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
 import Photo from '@/Component/Repair/Photo';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {RequireFieldText} from '@/Page/Home/RegisterInformation';
-import {setUserInfo} from '@/Store/loginState';
 import {AlertButton} from '@/Util/Alert';
 import numberFormat, {numberChangeFormat} from '@/Util/numberFormat';
 import {getPixel} from '@/Util/pixelChange';
 import {showToastMessage} from '@/Util/Toast';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {useLayoutEffect} from 'react';
 import {useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import {imageAddress} from '@assets/global/config';
 import {deleteImage} from '@/API/More/More';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {filter} from 'domutils';
 import {useEffect} from 'react';
 
 export default function ProductRegister({route: {params}}) {
@@ -105,7 +101,7 @@ export default function ProductRegister({route: {params}}) {
       _mt_idx: login.idx,
       pt_idx: isItem ? product.pt_idx : undefined,
       pt_title: product.pt_title,
-      pt_price: product.pt_price.replaceAll(',', ''),
+      pt_price: product.pt_price.split(',').reduce((prev, curr) => prev + curr),
       pt_discount_per: product.pt_discount_per,
       pt_stime: product.pt_stime,
       pt_etime: product.pt_etime,
@@ -414,22 +410,22 @@ const DropdownTimeBox = ({title = '시작시간', value, setValue, disabled}) =>
   );
 };
 const initProductInfo = {
-  ct_id: '1529',
+  ct_id: '',
   ct_name: '',
-  ct_pid: '1521',
+  ct_pid: '',
   ct_pname: '',
-  pt_content: '내용',
-  pt_discount_per: '10',
+  pt_content: '',
+  pt_discount_per: '0',
   pt_etc: '',
-  pt_etime: '10',
+  pt_etime: '',
   pt_idx: '',
-  pt_price: '15000',
+  pt_price: '',
   pt_proc_day: '0',
   pt_proc_min: '0',
   pt_proc_time: '0',
   pt_stime: '00:00:00',
   pt_etime: '00:00:00',
-  pt_title: '상품명',
+  pt_title: '',
   pt_type: '1',
   pt_wdate: '',
   pt_weekend: 'N',

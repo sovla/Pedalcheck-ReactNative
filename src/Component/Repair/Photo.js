@@ -29,8 +29,8 @@ const PhotoComponent = ({
       return;
     }
     ImageCropPicker.openPicker({
-      width: 300,
-      height: 400,
+      width: 375,
+      height: 275,
       cropping: true, // 자르기 활성화
       multiple: true,
       compressImageQuality: 0.8,
