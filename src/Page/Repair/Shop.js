@@ -19,7 +19,12 @@ import Loading from '@/Component/Layout/Loading';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 
 export default function Shop({route, navigation}) {
-  const {mt_idx} = route.params;
+  let mt_idx;
+  if (route?.params?.mt_idx) {
+    mt_idx = route?.params?.mt_idx;
+  } else {
+    mt_idx = shopInfo?.store_info?.mt_idx;
+  }
   const [selectMenu, setSelectMenu] = useState('매장소개');
   const [isDone, setIsDone] = useState(true);
   const [isLike, setIsLike] = useState(false);

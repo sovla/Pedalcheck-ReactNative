@@ -59,6 +59,14 @@ export default function RepairHistoryDetail({route: {params}}) {
   const onPressReview = () => {
     navigation.navigate('ReviewWrite', {
       navigate: 'RepairHistory',
+      item: {
+        title: params?.item?.mst_name,
+        date: repair?.ot_pt_date,
+        product: repair?.pt_title,
+        price: repair?.ot_price,
+        od_idx: params?.item?.od_idx,
+        mst_idx: params?.item?.mst_idx,
+      },
     });
   };
   const cancelOrderApi = async () => {
@@ -116,7 +124,7 @@ export default function RepairHistoryDetail({route: {params}}) {
               <RepairHistoryDetailHeader
                 status={repair?.ot_status}
                 productName={[repair?.pt_title]}
-                shopName={repair?.pt_title}
+                shopName={params?.item?.mst_name}
                 rejectionReason={repair?.ot_cmemo ? repair?.ot_cmemo : ''}
                 completeDate="2021-10-14 10:58"
               />

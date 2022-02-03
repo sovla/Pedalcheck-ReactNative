@@ -52,7 +52,7 @@ export const sendReview = async args => {
   // 리뷰 작성시 이미지와 함께 전달
   try {
     const data = args;
-    const response = await ImageAPI(data, 'srt_img', 'store_review_add.php');
+    const response = await ImageAPI(data, 'srt_img', 'store_review_add.php', true);
     return response;
   } catch (error) {
     console.log(error);

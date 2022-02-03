@@ -32,6 +32,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
     bikeName: '',
     bikeModel: '',
     bikeImage: '',
+    bikeType: '',
   });
 
   const onPressAddImage = () => {
@@ -135,28 +136,13 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
     },
     {
       title: '연식',
-      placeHolder: '연도 2자리를 입력해주세요',
+      placeHolder: '연도 4자리를 입력해주세요',
       question: undefined,
       value: 'vehicleYear',
       isDropdown: false,
-      maxLength: 2,
+      maxLength: 4,
     },
-    {
-      title: '타입',
-      placeHolder: '자전거 타입을 입력해주세요',
-      question: undefined,
-      value: 'type',
-      isDropdown: true,
-      dropdownItems: [
-        {label: '로드바이크', value: '1'},
-        {label: '미니벨로', value: '2'},
-        {label: 'MTB', value: '3'},
-        {label: '전기자전거', value: '4'},
-        {label: '하이브리드', value: '5'},
-        {label: '펫바이크', value: '6'},
-        {label: '픽시', value: '7'},
-      ],
-    },
+
     {
       title: '모델 상세',
       placeHolder: '모델 상세를 입력해주세요',
@@ -246,6 +232,13 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
       }));
       result = true;
     }
+    if (bike.type === '') {
+      setErrorMessage(prev => ({
+        ...prev,
+        bikeType: '타입을 선택해주세요.',
+      }));
+      result = true;
+    }
     if (!image) {
       AlertButton('자전거 이미지를 등록해주세요.');
       result = true;
@@ -305,9 +298,30 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
             }}
             fontSize={Theme.fontSize.fs16}
             isText
-            mg="0px 0px 0px"
+            mg="0px 0px 20px"
             pd="0px 0px 5px"
             errorMessage={errorMessage.bikeModel !== '' && errorMessage.bikeModel}
+          />
+          <DefaultInput
+            title="타입"
+            width={size.minusPadding}
+            placeHolder={'자전거 타입을 입력해주세요'}
+            question={undefined}
+            value={bike?.type}
+            isDropdown={true}
+            fontSize={Theme.fontSize.fs16}
+            dropdownItem={[
+              {label: '로드바이크', value: '1'},
+              {label: '미니벨로', value: '2'},
+              {label: 'MTB', value: '3'},
+              {label: '전기자전거', value: '4'},
+              {label: '하이브리드', value: '5'},
+              {label: '펫바이크', value: '6'},
+              {label: '픽시', value: '7'},
+            ]}
+            pd="0px 0px 5px"
+            changeFn={text => setChangeBike('type', text)}
+            errorMessage={errorMessage.bikeType !== '' && errorMessage.bikeType}
           />
         </Box>
         <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />

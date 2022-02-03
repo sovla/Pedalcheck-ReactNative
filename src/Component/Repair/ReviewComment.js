@@ -22,26 +22,19 @@ export default function ReviewComment({
   deletePress,
 }) {
   return (
-    <Container
-      pd="10px 10px 10px 44px"
-      backgroundColor={Theme.color.backgroundBlue}
-      borderRadius="10px">
+    <Container pd="10px 10px 10px 44px" backgroundColor={Theme.color.backgroundBlue} borderRadius="10px">
       <BetweenBox backgroundColor="#0000" alignItems="center" width="326px">
         <RowBox backgroundColor={Theme.color.backgroundBlue} alignItems="center">
           <DarkBoldText mg="0px 5px 0px 0px" fontSize={Theme.fontSize.fs15}>
             {name}
           </DarkBoldText>
           <DefaultText color={Theme.color.gray} fontSize={Theme.fontSize.fs12}>
-            {reviewDate.slice(0, 10)}
+            {reviewDate?.slice(0, 10)}
           </DefaultText>
         </RowBox>
         <TouchableOpacity onPress={deletePress}>
           <Box mg="0px 5px">
-            <BorderButton
-              width="38px"
-              height="25px"
-              borderColor={Theme.borderColor.gray}
-              color={Theme.color.black}>
+            <BorderButton width="38px" height="25px" borderColor={Theme.borderColor.gray} color={Theme.color.black}>
               <DarkMediumText fontSize={Theme.fontSize.fs13}>삭제</DarkMediumText>
             </BorderButton>
           </Box>
