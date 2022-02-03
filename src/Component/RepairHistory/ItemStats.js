@@ -32,13 +32,15 @@ const ItemStats = ({
       }
     }),
     rate:
-      itemList.reduce((prev, curr) => {
-        if (prev.rate) {
-          return parseFloat(prev.rate.split('%')) + parseFloat(curr.rate.split('%'));
-        } else {
-          return prev + parseFloat(curr.rate.split('%'));
-        }
-      }) + '%',
+      Math.round(
+        itemList.reduce((prev, curr) => {
+          if (prev.rate) {
+            return parseFloat(prev.rate.split('%')) + parseFloat(curr.rate.split('%'));
+          } else {
+            return prev + parseFloat(curr.rate.split('%'));
+          }
+        }),
+      ) + '%',
   };
   return (
     <Box width={`${width}px`} pd="20px 16px 20px" borderRadius="10px" mg={!isFull && '20px 0px 0px'}>

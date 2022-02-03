@@ -30,13 +30,18 @@ export default function RepairHistorySelectHome() {
   const [homeInfo, setHomeInfo] = useState(initData);
 
   useLayoutEffect(() => {
+    setIsLoading(true);
     getRepairHomeInformation({
       _mt_idx: login?.idx,
     })
       .then(res => res.data?.result === 'true' && res.data.data.data)
       .then(data => setHomeInfo(data));
+    setIsLoading(false);
   }, []);
 
+  if (isLoading) {
+    return null;
+  }
   return (
     <Box pd="0px 16px" backgroundColor="#F8F8F8">
       <BetweenBox backgroundColor="#0000" mg="20px 0px" width="380px" alignItems="center">
@@ -90,7 +95,7 @@ export default function RepairHistorySelectHome() {
       <ItemStats
         itemList={dataToItemList(homeInfo.product.data, 'repair')}
         onPressMore={
-          homeInfo.product.data.length >= 3 &&
+          homeInfo.product?.data?.length >= 3 &&
           (() =>
             navigation.navigate('BikeStats', {
               itemList: dataToItemList(homeInfo.product.data, 'repair'),
@@ -110,20 +115,27 @@ export default function RepairHistorySelectHome() {
         }
         showCount={3}
       />
-      {!homeInfo.brand.data?.length && (
-        <ItemStats
-          title="브랜드별 통계"
-          itemList={dataToItemList(homeInfo.brand.data)}
-          onPressMore={() => navigation.navigate('BikeStats')}
-          showCount={3}
-        />
-      )}
+      <ItemStats
+        title="브랜드별 통계"
+        itemList={dataToItemList(homeInfo.brand.data, 'brand')}
+        onPressMore={
+          Object.values(homeInfo.bike_type.data).length >= 3 &&
+          (() =>
+            navigation.navigate('BikeStats', {
+              itemList: dataToItemList(homeInfo.brand.data, 'brand'),
+            }))
+        }
+        showCount={3}
+      />
     </Box>
   );
 }
 
 const dataToItemList = (data, type) => {
   let result;
+  if (!Array.isArray(data)) {
+    return [];
+  }
   if (type === 'repair') {
     result = data.map(item => ({
       title: item.pt_title,
@@ -134,6 +146,12 @@ const dataToItemList = (data, type) => {
     result = data.map(item => ({
       title: item.mbt_type_name,
       count: item.mbt_type_cnt,
+      rate: item.percent + '%',
+    }));
+  } else if (type === 'brand') {
+    result = data.map(item => ({
+      title: item.ot_bike_brand,
+      count: item.ot_bike_cnt,
       rate: item.percent + '%',
     }));
   }
@@ -155,13 +173,13 @@ const initData = {
   },
   calculator: {
     tot: null,
-    complete: '40980',
-    incomplete: -40980,
+    complete: '',
+    incomplete: '',
   },
   static: {
     data: {
       '2022-02': '0',
-      '2022-01': '4',
+      '2022-01': '0',
       '2021-12': '0',
       '2021-11': '0',
       '2021-10': '0',
@@ -173,87 +191,44 @@ const initData = {
       '2021-04': '0',
       '2021-03': '0',
     },
-    max_cnt: '4',
+    max_cnt: '0',
   },
   quick: {
-    likes: '7',
-    customers: '4',
-    orders: '4',
+    likes: '0',
+    customers: '0',
+    orders: '0',
   },
   product: {
     data: [
       {
-        pt_idx: '2',
-        pt_title: '종합정비',
-        cnt: '51',
-        percent: 35.42,
+        pt_idx: '0',
+        pt_title: '',
+        cnt: '0',
+        percent: 0,
       },
       {
-        pt_idx: '4',
-        pt_title: '타이어교환',
-        cnt: '36',
-        percent: 25,
-      },
-      {
-        pt_idx: '12',
-        pt_title: '상품명',
-        cnt: '26',
-        percent: 18.06,
-      },
-      {
-        pt_idx: '30',
-        pt_title: '상품명1',
-        cnt: '17',
-        percent: 11.81,
-      },
-      {
-        pt_idx: '31',
-        pt_title: '체달바퀴',
-        cnt: '14',
-        percent: 9.72,
+        pt_idx: '0',
+        pt_title: '',
+        cnt: '0',
+        percent: 0,
       },
     ],
-    tot_cnt: '144',
+    tot_cnt: '0',
   },
   bike_type: {
     data: {
       1: {
-        mbt_type_name: '로드바이크',
-        mbt_type_cnt: '5',
-        percent: 83.33,
+        mbt_type_name: '',
+        mbt_type_cnt: '0',
+        percent: 0,
       },
       2: {
-        mbt_type_name: '미니벨로',
-        mbt_type_cnt: '0',
-        percent: 0,
-      },
-      3: {
-        mbt_type_name: 'MTB',
-        mbt_type_cnt: '1',
-        percent: 16.67,
-      },
-      4: {
-        mbt_type_name: '전기자전거',
-        mbt_type_cnt: '0',
-        percent: 0,
-      },
-      5: {
-        mbt_type_name: '하이브리드',
-        mbt_type_cnt: '0',
-        percent: 0,
-      },
-      6: {
-        mbt_type_name: '팻바이크',
-        mbt_type_cnt: '0',
-        percent: 0,
-      },
-      7: {
-        mbt_type_name: '픽시',
+        mbt_type_name: '',
         mbt_type_cnt: '0',
         percent: 0,
       },
     },
-    tot_cnt: '6',
+    tot_cnt: '0',
   },
   brand: {
     data: null,
