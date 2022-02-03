@@ -10,7 +10,7 @@ export default function numberFormat(inputNumber) {
         return parseInt(inputNumber);
       }
       case 'number':
-        return inputNumber;
+        return parseInt(inputNumber);
       case 'object':
         return 0;
       case 'undefined':

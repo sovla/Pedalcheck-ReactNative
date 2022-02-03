@@ -53,16 +53,11 @@ export const Product = ({item}) => {
         )}
       </Box>
       <RowBox alignItems="center">
-        {item.pt_dc_price ? (
-          <>
-            {item.pt_discount_per !== '0' && <MoneyText money={item?.pt_price} disabled mg="0px 8px 0px 0px" />}
-            <MoneyText color={Theme.color.black} money={item?.pt_dc_price} />
-          </>
-        ) : (
-          <>
-            <MoneyText color={Theme.color.black} money={item?.pt_price} />
-          </>
+        {item.pt_dc_price !== '' && item.pt_discount_per !== '0' && (
+          <MoneyText money={parseInt(item?.pt_price)} disabled mg="0px 8px 0px 0px" />
         )}
+
+        <MoneyText color={Theme.color.black} money={parseInt(item?.pt_dc_price)} />
       </RowBox>
     </BetweenBox>
   );

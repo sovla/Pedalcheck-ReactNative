@@ -78,20 +78,19 @@ export default function ProductDetail({route: {params}}) {
   function setWorkTime() {
     let workTime = '';
 
-    if (item?.pt_proc_day) {
+    if (item?.pt_proc_day * 1 > 0) {
       workTime += `${item?.pt_proc_day}일`;
     }
-    if (item?.pt_proc_time) {
+    if (item?.pt_proc_time * 1 > 0) {
       workTime += `${item?.pt_proc_time}시간`;
     }
-    if (item?.pt_proc_min) {
+    if (item?.pt_proc_min * 1 > 0) {
       workTime += `${item?.pt_proc_min}분`;
     }
 
     return workTime;
   }
 
-  console.log(item?.pt_image);
   return (
     <>
       <Header title="상품 상세" />
@@ -99,7 +98,7 @@ export default function ProductDetail({route: {params}}) {
         <Container alignItems="center" pd="20px 0px">
           {item?.pt_image?.length > 0 && (
             <Box width={size.minusPadding} height="200px" mg="0px 0px 20px">
-              <Swiper imageArray={imageArray} width={size.designWidth - 32} height={200} borderRadius="All" />
+              <Swiper imageArray={imageArray} width={412 - 32} height={200} borderRadius="All" />
             </Box>
           )}
           <Box width={size.minusPadding} alignItems="center">
@@ -115,7 +114,7 @@ export default function ProductDetail({route: {params}}) {
           </Box>
           <Box pd="0px 16px" width="100%">
             {contentArray.map((item, index) => {
-              if (item.isShow) {
+              if (item.isShow && item.content) {
                 return (
                   <Box mg="20px 0px 0px" key={item.title + index}>
                     <DarkBoldText>{item.title}</DarkBoldText>
