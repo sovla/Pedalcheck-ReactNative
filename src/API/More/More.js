@@ -156,7 +156,7 @@ export const updateStore = async args => {
 export const updateStoreImage = async args => {
   try {
     const data = args;
-    const response = await ImageAPI(data, 'mst_image', 'mng/store_edit.php', true);
+    const response = await ImageAPI(data, 'mst_image', 'mng/store_edit.php', false);
     return response;
   } catch (error) {
     console.log(error);
@@ -192,7 +192,6 @@ export const deleteImage = async args => {
   }
 };
 
-
 export const cancelOrder = async args => {
   try {
     const response = await API.post('order_cancel.php', args);
@@ -201,4 +200,3 @@ export const cancelOrder = async args => {
     console.log(error);
   }
 };
-
