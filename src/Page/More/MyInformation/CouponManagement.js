@@ -60,21 +60,23 @@ export default function CouponManagement({navigation, route: {params}}) {
   }, [dropMenu]);
 
   useLayoutEffect(() => {
-    setSelectMenu(params?.menu ?? '쿠폰함');
-  }, []);
+    if (isFocused) setSelectMenu(params?.menu ?? '쿠폰함');
+  }, [isFocused]);
 
-  const getCouponListHandle = async () => {
+  const getCouponListHandle = async initPage => {
     //  쿠폰리스트 얻어오는곳 쿠폰함()
     setIsDone(true);
     const isHold = selectSubMenu === '보유';
     if ((isHold && isLastPage.available) || (!isHold && isLastPage.used)) {
-      setIsDone(false);
-      return null;
+      if (!initPage) {
+        setIsDone(false);
+        return null;
+      }
     }
     await getCouponList({
       _mt_idx: login.idx,
       cst_status: isHold ? 1 : 2,
-      page: isHold ? availablePage : usedPage,
+      page: isHold ? initPage ?? availablePage : initPage ?? usedPage,
     })
       .then(res => {
         if (res.data.result === 'true') {
@@ -82,13 +84,30 @@ export default function CouponManagement({navigation, route: {params}}) {
           if (res.data.data.data) {
             // 데이터가 들어있다면
             if (isHold) {
-              setAvailableCouponList(prev => [...prev, ...res.data.data.data]);
-              setAvailablePage(prev => prev + 1);
+              if (initPage) {
+                setAvailableCouponList([...res.data.data.data]);
+                setAvailablePage(2);
+              } else {
+                setAvailableCouponList(prev => [...prev, ...res.data.data.data]);
+                setAvailablePage(prev => prev + 1);
+              }
             } else {
-              setUsedCouponList(prev => [...prev, ...res.data.data.data]);
-              setUsedPage(prev => prev + 1);
+              if (initPage) {
+                setUsedCouponList([...res.data.data.data]);
+                setUsedPage(2);
+              } else {
+                setUsedCouponList(prev => [...prev, ...res.data.data.data]);
+                setUsedPage(prev => prev + 1);
+              }
             }
           } else {
+            if (initPage) {
+              if (isHold) {
+                setAvailableCouponList([]);
+              } else {
+                setUsedCouponList([]);
+              }
+            }
             setIsLastPage(prev => ({...prev, [isHold ? 'available' : 'used']: true}));
             // 보유 혹은 완료 리스트 마지막 페이지 여부
           }
