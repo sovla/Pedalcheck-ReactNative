@@ -10,10 +10,30 @@ import {useSelector} from 'react-redux';
 import {FlatList, ScrollView} from 'react-native';
 import {numberCheck} from '@/Page/Repair/RepairHome';
 import scrollSlideNumber from '@/Util/scrollSlideNumber';
-function SwiperComponent({imageArray, width, height, borderRadius = 'Bottom'}) {
+import {useRef} from 'react';
+import {useEffect} from 'react';
+import useUpdateEffect from '@/Hooks/useUpdateEffect';
+function SwiperComponent({imageArray, width, height, borderRadius = 'Bottom', isRolling}) {
+  const ref = useRef(null);
+  const savedCallback = useRef();
   const transformWidth = typeof width === 'string' ? parseInt(width.split('px')[0]) : width;
   const transformHeight = typeof height === 'string' ? parseInt(height.split('px')[0]) : height;
   const [imageNumber, setImageNumber] = useState(0);
+
+  const [isEnd, setIsEnd] = useState(false);
+  const imageLength = imageArray?.length;
+  const callback = () => {
+    if (imageLength - 1 > imageNumber) {
+      if (isRolling)
+        ref.current.scrollToIndex({
+          index: imageNumber + 1,
+        });
+      setImageNumber(prev => prev + 1);
+    } else {
+      setIsEnd(true);
+    }
+  };
+
   const onScrollSlide = e => {
     setImageNumber(scrollSlideNumber(e, size.designWidth));
   };
@@ -28,6 +48,23 @@ function SwiperComponent({imageArray, width, height, borderRadius = 'Bottom'}) {
       : {
           borderRadius: 10,
         };
+
+  useEffect(() => {
+    savedCallback.current = callback;
+    //  리액트 내에서 setInterval 할경우 setInterval 클로져가 imageNumber을 초기값 0 으로 기억하고 있는 문제가 발생해서
+    //  Ref 를 통해 callback을 불러 값을 올려주고 그 값을 이용하도록 지정
+  });
+  useEffect(() => {
+    const tick = () => {
+      savedCallback.current();
+    };
+    const timer = setInterval(tick, 2000);
+    if (isEnd) {
+      clearInterval(timer);
+    }
+    return () => clearInterval(timer);
+  }, [isEnd]);
+
   return (
     <Box
       width={`${transformWidth}px`}
@@ -41,6 +78,7 @@ function SwiperComponent({imageArray, width, height, borderRadius = 'Bottom'}) {
         initialNumToRender={15}
         showsHorizontalScrollIndicator={false}
         data={imageArray}
+        ref={ref}
         renderItem={({item, index}) => (
           <DefaultImage
             style={[borderRadiusStyle]}
@@ -48,7 +86,7 @@ function SwiperComponent({imageArray, width, height, borderRadius = 'Bottom'}) {
             source={item}
             width={`${transformWidth}px`}
             height={`${transformHeight}px`}
-            resizeMode="cover"
+            resizeMode="stretch"
           />
         )}
         style={[

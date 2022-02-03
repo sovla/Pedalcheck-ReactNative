@@ -20,17 +20,23 @@ import {useNavigation} from '@react-navigation/native';
 import {RequireLoginAlert} from '@/Util/Alert';
 import BackIcon from '@assets/image/ic_detail_back.png';
 
+import {imageAddress} from '@assets/global/config';
+
 // 2022-01-04 10:07:06
 // Junhan
 // 정비소 헤더
 
 const ShopHeader = ({size}) => {
   const navigation = useNavigation();
-  const dummyImageArray = store_info?.mst_img ?? [ShopDummyImage];
   const {
     shopInfo: {store_info},
     login,
   } = useSelector(state => state);
+  const dummyImageArray = store_info?.mst_img
+    ? store_info.mst_img.map(item => ({
+        uri: imageAddress + item,
+      }))
+    : [ShopDummyImage];
 
   const isPartner = store_info?.mst_type === '1';
 
@@ -50,7 +56,7 @@ const ShopHeader = ({size}) => {
             <DefaultImage source={BackIcon} width="45px" height="45px" />
           </TouchableOpacity>
         </PositionBox>
-        <Swiper imageArray={dummyImageArray} width={size.designWidth} height={250} />
+        <Swiper imageArray={dummyImageArray} width={size.designWidth} height={250} isRolling />
         {isPartner ? (
           <>
             <PositionBox backgroundColor="#0000" bottom="-35px" right="87px" zIndex={100} alignItems="center">
