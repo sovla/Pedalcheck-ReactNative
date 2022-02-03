@@ -14,12 +14,13 @@ import QuestionAddition from '@/Component/More/Question/QuestionAddition';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {useSelector} from 'react-redux';
 import {showToastMessage} from '@/Util/Toast';
+import {useLayoutEffect} from 'react';
 
 // 2022-01-03 10:51:16
 // Junhan
 // 1:1 문의 페이지
 
-export default function Question() {
+export default function Question({route: {params}}) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const isFocus = navigation.isFocused();
@@ -141,6 +142,12 @@ export default function Question() {
       apiGetQnaList();
     }
   }, [select]);
+
+  useLayoutEffect(() => {
+    if (isFocus && params?.menu) {
+      setSelect(params.menu);
+    }
+  }, [isFocus]);
 
   return (
     <>
