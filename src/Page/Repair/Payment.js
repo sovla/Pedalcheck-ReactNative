@@ -8,6 +8,7 @@ import {ButtonTouch} from '@/assets/global/Button';
 import {useSelector} from 'react-redux';
 import {useState} from 'react';
 import {sendOrder} from '@/API/Shop/Shop';
+import {AlertButton} from '@/Util/Alert';
 
 export function Payment({navigation}) {
   const [isLoading, setIsLoading] = useState(true);
@@ -17,16 +18,6 @@ export function Payment({navigation}) {
   const {selectBike, selectDate, selectPayment, selectProduct} = reservationInfo;
   /* [필수입력] 결제 종료 후, 라우터를 변경하고 결과를 전달합니다. */
   function callback(response) {
-    console.log(response);
-    if (response.imp_success === 'true') {
-      navigation.replace('ReservationPayment', response);
-    } else {
-      navigation.goBack();
-    }
-    // 결제완료
-  }
-  console.log(selectBike);
-  useLayoutEffect(() => {
     if (!responseData) {
       const pt_idx = [];
       const pt_title = [];
@@ -69,7 +60,20 @@ export function Payment({navigation}) {
           }
         });
     }
-  }, []);
+    console.log(response);
+    if (response.imp_success === 'true') {
+      navigation.replace('ReservationPayment', response);
+    } else {
+      if (response.error_msg?.includes('F0005')) {
+        AlertButton('결제를 취소 했습니다.');
+      } else {
+        AlertButton('결제 실패했습니다. 다시 시도해주세요.');
+      }
+
+      navigation.goBack();
+    }
+    // 결제완료
+  }
 
   const changePayment = (payment, type = 'api') => {
     // card:신용카드/trans:계좌이체/kakaopay:카카오페이/vbank:무통장

@@ -11,17 +11,14 @@ export default function numberFormat(inputNumber) {
       }
       case 'number':
         return parseInt(inputNumber);
-      case 'object':
-        return 0;
-      case 'undefined':
-        return 0;
-      case 'null':
-        return 0;
       default:
         return 0;
     }
   };
-  const result = typeStringInputNumber().toLocaleString('ko-KR');
+  const result = typeStringInputNumber()
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
   if (result.includes('N') || result === '') {
     return '';
   }
