@@ -18,6 +18,36 @@ export function Payment({navigation}) {
   const {selectBike, selectDate, selectPayment, selectProduct} = reservationInfo;
   /* [필수입력] 결제 종료 후, 라우터를 변경하고 결과를 전달합니다. */
   function callback(response) {
+    console.log(response);
+    if (response.imp_success === 'true') {
+      navigation.replace('ReservationPayment', response);
+    } else {
+      if (response.error_msg?.includes('F0005')) {
+        AlertButton('결제를 취소 했습니다.');
+      } else {
+        AlertButton('결제 실패했습니다. 다시 시도해주세요.');
+      }
+
+      navigation.goBack();
+    }
+    // 결제완료
+  }
+
+  const changePayment = (payment, type = 'api') => {
+    // card:신용카드/trans:계좌이체/kakaopay:카카오페이/vbank:무통장
+
+    switch (payment) {
+      case '신용카드':
+        return 'card';
+      case '실시간 계좌이체':
+        return 'trans';
+      case '카카오페이':
+        return type === 'api' ? 'kakaopay' : 'card';
+      case '무통장 입금':
+        return 'vbank';
+    }
+  };
+  useLayoutEffect(() => {
     if (!responseData) {
       const pt_idx = [];
       const pt_title = [];
@@ -60,35 +90,7 @@ export function Payment({navigation}) {
           }
         });
     }
-    console.log(response);
-    if (response.imp_success === 'true') {
-      navigation.replace('ReservationPayment', response);
-    } else {
-      if (response.error_msg?.includes('F0005')) {
-        AlertButton('결제를 취소 했습니다.');
-      } else {
-        AlertButton('결제 실패했습니다. 다시 시도해주세요.');
-      }
-
-      navigation.goBack();
-    }
-    // 결제완료
-  }
-
-  const changePayment = (payment, type = 'api') => {
-    // card:신용카드/trans:계좌이체/kakaopay:카카오페이/vbank:무통장
-
-    switch (payment) {
-      case '신용카드':
-        return 'card';
-      case '실시간 계좌이체':
-        return 'trans';
-      case '카카오페이':
-        return type === 'api' ? 'kakaopay' : 'card';
-      case '무통장 입금':
-        return 'vbank';
-    }
-  };
+  });
 
   if (responseData?.ot_code && isLoading) {
     //  useLayoutEffect 내에 api 치고 나서 데이터가 있고 로딩인 경우 로딩 제거

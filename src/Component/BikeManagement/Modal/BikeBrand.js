@@ -42,7 +42,7 @@ export default function BikeBrand() {
     setIsLoading(true);
     getBikeModel({
       bt_step: 1,
-      bt_brand: modal?.modalProp ?? '',
+      bt_brand: '',
       search_txt: searchText,
     }).then(res => setBikeModel(res?.data?.data?.data));
     setSearchText('');
