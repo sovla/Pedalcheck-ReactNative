@@ -179,6 +179,7 @@ export default function Coupon() {
                 endOfAvailability={item?.cst_edate.substring(0, 10)}
                 issueDate={item?.cst_wdate.substring(0, 10)}
                 shopName={item?.mt_name}
+                rejectionContent=""
                 isAdmin
               />
             </TouchableOpacity>

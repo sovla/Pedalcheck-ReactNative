@@ -35,7 +35,7 @@ const initialState1 = {
   mt_zip: null,
   naver_id: null,
 };
-const initialState2 = {
+const initialState = {
   idx: '10',
   mt_login_type: '1',
   mt_level: '5',
@@ -76,7 +76,7 @@ const initialState2 = {
   mt_idx: '10',
 };
 
-const initialState = {
+const initialState123 = {
   idx: '2',
   mt_login_type: '1',
   mt_level: '5',

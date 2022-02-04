@@ -8,15 +8,8 @@ import {useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {dateFormat} from '@/Util/DateFormat';
 
-export default function DatePickerComponent({
-  onPressStart,
-  onPressEnd,
-  selectDate,
-  onPressSearch,
-  setSelectDate,
-}) {
+export default function DatePickerComponent({onPressStart, onPressEnd, selectDate, onPressSearch, setSelectDate}) {
   const storeInfo = useSelector(state => state.storeInfo);
-  console.log();
   useEffect(() => {
     setSelectDate({
       start: storeInfo.mst_wdate.substring(0, 10),
@@ -27,21 +20,13 @@ export default function DatePickerComponent({
   return (
     <RowBox alignItems="center">
       <TouchableOpacity onPress={onPressStart}>
-        <BorderButton
-          width="135px"
-          height="36px"
-          borderColor={Theme.borderColor.gray}
-          color={Theme.color.black}>
+        <BorderButton width="135px" height="36px" borderColor={Theme.borderColor.gray} color={Theme.color.black}>
           {selectDate?.start}
         </BorderButton>
       </TouchableOpacity>
       <DarkText mg="0px 6.5px">~</DarkText>
       <TouchableOpacity onPress={onPressEnd}>
-        <BorderButton
-          width="135px"
-          height="36px"
-          borderColor={Theme.borderColor.gray}
-          color={Theme.color.black}>
+        <BorderButton width="135px" height="36px" borderColor={Theme.borderColor.gray} color={Theme.color.black}>
           {selectDate.end}
         </BorderButton>
       </TouchableOpacity>

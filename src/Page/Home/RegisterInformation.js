@@ -41,14 +41,12 @@ export default function RegisterInformation({navigation}) {
       mt_addr: information.location,
       mt_idx: snsLogin.mt_idx,
       mt_app_token: token.token,
-    })
-      .then(res => {
-        if (res?.data?.data?.result !== 'false') {
-          dispatch(setUserInfo(res?.data?.data?.data));
-          navigation.navigate('RepairHome');
-        }
-      })
-      .catch(err => console.log(err));
+    }).then(res => {
+      if (res?.data?.data?.result !== 'false') {
+        dispatch(setUserInfo(res?.data?.data?.data));
+        navigation.navigate('RepairHome');
+      }
+    });
   };
 
   const onPressAddInformation = () => {
@@ -172,7 +170,6 @@ export const RequireFieldText = () => {
 const RegJoin = (object, setFunction) => {
   let result = false;
   setFunction(informationInit);
-  console.log(object.tel.length < 12);
   if (object.name === '') {
     setFunction(prev => ({
       ...prev,

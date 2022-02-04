@@ -62,8 +62,8 @@ export default function CouponDetail({route: {params}}) {
             </Box>
           </RowBox>
           {couponInfo?.cst_pt_date?.length > 0 && (
-            <RowBox>
-              <DarkMediumText>예약시간</DarkMediumText>
+            <RowBox mg="0px 0px 10px">
+              <DarkMediumText width="75px">예약시간</DarkMediumText>
               <DarkText>
                 {couponInfo.cst_pt_date} {couponInfo.cst_pt_time}
               </DarkText>
@@ -80,11 +80,7 @@ export default function CouponDetail({route: {params}}) {
           <Box style={borderBottomWhiteGray} width="380px">
             <DarkBoldText mg="20px 0px 0px">정비 자전거 정보</DarkBoldText>
             <RowBox alignItems="center" mg="10px 0px 20px">
-              <DefaultImage
-                source={{uri: imageAddress + couponInfo?.mbt_image}}
-                width="74px"
-                height="74px"
-              />
+              <DefaultImage source={{uri: imageAddress + couponInfo?.mbt_image}} width="74px" height="74px" />
               <Box mg="0px 0px 0px 20px">
                 <RowBox>
                   <DarkMediumText fontSize={Theme.fontSize.fs15}>APPALANCHIA</DarkMediumText>

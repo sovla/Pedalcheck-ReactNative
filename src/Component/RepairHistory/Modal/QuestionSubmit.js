@@ -5,14 +5,7 @@ import React from 'react';
 import ArrowUpIcon from '@assets/image/list_arr_top.png';
 import {TouchableOpacity} from 'react-native';
 import ReplyIcon from '@assets/image/ic_reply.png';
-import {
-  DarkBoldText,
-  DarkMediumText,
-  DarkText,
-  ErrorText,
-  GrayText,
-  IndigoText,
-} from '@/assets/global/Text';
+import {DarkBoldText, DarkMediumText, DarkText, ErrorText, GrayText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {useDispatch, useSelector} from 'react-redux';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
@@ -60,8 +53,6 @@ export default function QuestionSubmit({item, setRecomment}) {
     await setRecomment(item.qt_idx, answer);
     dispatch(modalClose());
   };
-
-  console.log(item);
 
   return (
     <>

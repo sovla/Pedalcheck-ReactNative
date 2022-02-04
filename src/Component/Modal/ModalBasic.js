@@ -45,7 +45,6 @@ export default function ModalBasic() {
   let RenderItem = <></>;
 
   const childrenProps = modal?.modalProp ? modal.modalProp : {}; // 모달 프롭 넣는 부분
-  console.log(modal);
   const selectRenderItem = () => {
     switch (modal?.modalComponent) {
       case 'service':
@@ -112,7 +111,6 @@ export default function ModalBasic() {
   const isSlide = modal?.modalComponent?.split('/')[0] === 'slide';
   const isFullSize = modal?.modalComponent?.split('/')[0] === 'fullSize';
   RenderItem = selectRenderItem();
-  console.log(childrenProps);
   if (RenderItem !== <></>) {
     return (
       <Modal

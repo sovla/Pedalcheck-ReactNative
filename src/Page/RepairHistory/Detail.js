@@ -82,7 +82,6 @@ export default function Detail({navigation, route}) {
     ],
   };
 
-  console.log('item ::::: ', changeItem);
 
   return (
     <>

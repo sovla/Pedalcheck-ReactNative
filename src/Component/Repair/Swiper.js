@@ -118,6 +118,13 @@ function SwiperComponent({imageArray, width, height, borderRadius = 'Bottom', is
           },
         ]}
         onMomentumScrollEnd={onScrollSlide}
+        onScrollToIndexFailed={info => {
+          console.log(info);
+          const wait = new Promise(resolve => setTimeout(resolve, 500));
+          wait.then(() => {
+            ref.current?.scrollToIndex({index: info.index, animated: true});
+          });
+        }}
       />
       <PositionBox
         left="16px"

@@ -1,7 +1,7 @@
 import {GoogleLogin, KakaoLogin, NaverLogin} from '@/API/User/Login';
 import {setUserInfo} from '@/Store/loginState';
 import {setSnsInfo} from '@/Store/snsLoginState';
-import { Alert } from 'react-native';
+import {Alert} from 'react-native';
 
 export const SnsLogin = async (id, name, email, type, dispatch, navigation, token) => {
   // 2:카카오/3:네이버/4:구글/5:애플
@@ -21,7 +21,6 @@ export const SnsLogin = async (id, name, email, type, dispatch, navigation, toke
     mt_login_type: type,
     mt_app_token: token,
   });
-  console.log(result);
   if (result?.data?.result === 'true') {
     // 한번이라도 SNS 로그인 한상태
     dispatch(
@@ -41,7 +40,7 @@ export const SnsLogin = async (id, name, email, type, dispatch, navigation, toke
       return navigation.navigate('Register');
     }
   } else {
-    if(result?.data?.msg === "탈퇴처리된 회원입니다."){
+    if (result?.data?.msg === '탈퇴처리된 회원입니다.') {
       Alert.alert('탈퇴처리된 회원입니다.');
       return;
     }

@@ -135,7 +135,7 @@ export default function QuestionWrite({route: {params}}) {
             fontSize={Theme.fontSize.fs15}
             pd="20px 0px 5px"
             title="내용"
-            placeHolder="내용을 입력하세요 (10자 이상 2000자 이내) \n이모티콘을 삽입할시 글 내용이 깨질수 있습니다."
+            placeHolder={`내용을 입력하세요 (10자 이상 2000자 이내)\n이모티콘을 삽입할시 글 내용이 깨질수 있습니다.`}
             width="380px"
             height="300px"
             isAlignTop

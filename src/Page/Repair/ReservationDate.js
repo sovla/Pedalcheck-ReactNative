@@ -17,6 +17,7 @@ import moment from 'moment';
 import 'moment/locale/ko';
 import {setReservationDate} from '@/Store/reservationState';
 import {AlertButton} from '@/Util/Alert';
+import Loading from '@/Component/Layout/Loading';
 
 export default function ReservationDate({navigation, route: {params}}) {
   const isFocused = useIsFocused();
@@ -31,10 +32,13 @@ export default function ReservationDate({navigation, route: {params}}) {
   const [disabledTimeList, setDisabledTimeList] = useState([]); // 선택불가 시간
   const [timeList, setTimeList] = useState([]); // 선택가능한 시간
 
+  const [isLoading, setIsLoading] = useState(true);
+
   useUpdateEffect(() => {
     setDisabledTimeList([]);
     setTimeList([]);
     setSelectItem('');
+    setIsLoading(true);
     getReservationTimeList({
       ot_pt_date: selectDate,
       mt_idx: shopInfo?.store_info?.mt_idx,
@@ -56,6 +60,7 @@ export default function ReservationDate({navigation, route: {params}}) {
           setTimeList(result);
         }
       });
+    setIsLoading(false);
   }, [selectDate]);
 
   useEffect(() => {
@@ -70,12 +75,14 @@ export default function ReservationDate({navigation, route: {params}}) {
   }, [isFocused]);
 
   const onChangeMonth = day => {
+    setIsLoading(true);
     getdisabledReservationDayList({
       ot_pt_month: day,
       mt_idx: shopInfo?.store_info?.mt_idx,
     })
       .then(res => res.data.result === 'true' && res.data.data.data)
       .then(data => setDisabledDayList(data.disabled_date));
+    setIsLoading(false);
   };
 
   const onPressNext = () => {
@@ -94,6 +101,7 @@ export default function ReservationDate({navigation, route: {params}}) {
 
   return (
     <>
+      {isLoading && <Loading isAbsolute />}
       <Header title="정비예약" />
       <Box flex={1}>
         <ScrollBox flex={1}>

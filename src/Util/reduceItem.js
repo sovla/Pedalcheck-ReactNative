@@ -21,7 +21,6 @@ export const reduceItem = (list, type) => {
       }
     }
   } catch (error) {
-    console.log(error, 'error');
     return 0;
   }
 };

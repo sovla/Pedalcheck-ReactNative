@@ -76,7 +76,6 @@ export default function ShopReservationProduct({navigation}) {
       dispatch(clearReservation());
     };
   }, []);
-  console.log(saleMoney);
 
   return (
     <>

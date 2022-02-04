@@ -44,7 +44,6 @@ export default function ProductRegister({route: {params}}) {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const isItem = params?.item !== undefined; // item 있는경우 true 수정페이지
-  console.log(lastSortNumber);
   const regJoin = () => {
     let result = false;
     if (product.pt_title === '') {
@@ -129,7 +128,6 @@ export default function ProductRegister({route: {params}}) {
       //  pt_image_num [마지막번호 +1,+2,+3,+4 ]
     }).then(res => {
       if (res.data?.result === 'true') {
-        console.log(res);
         showToastMessage('저장되었습니다.');
         navigation.navigate('ProductManagement');
       }
@@ -173,7 +171,6 @@ export default function ProductRegister({route: {params}}) {
       .then(res => res.data?.result === 'true' && res.data.data.data)
       .then(data => setSubCategory(data));
   }, [product.ct_pid]);
-  console.log(imageArray);
   return (
     <>
       <Header title={`정비상품 ${isItem ? '수정' : '등록'}`} />

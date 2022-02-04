@@ -77,7 +77,6 @@ export default function Question({route: {params}}) {
       _mt_idx: login?.idx,
       qt_idx: idx,
     }).then(async res => {
-      console.log(res, '삭제완료');
       if (res.data.result === 'true') {
         if (select === '페달체크') {
           await setPedalCheckList(prev => prev.filter(item => item.qt_idx !== idx));

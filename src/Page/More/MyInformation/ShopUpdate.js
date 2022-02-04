@@ -149,7 +149,6 @@ export default function ShopUpdate() {
       check = false;
     }
   };
-  console.log('imageArray', imageArray, lastSortCount);
   return (
     <>
       <Header title="정보 수정" />

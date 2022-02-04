@@ -42,7 +42,7 @@ const CouponItem = ({
 
             <GrayText fontSize={Theme.fontSize.fs13}>{endOfAvailability}</GrayText>
           </RowBox>
-          {badgeContent === '승인거부' && (
+          {badgeContent === '승인거부' && rejectionContent !== '' && (
             <DefaultText color={Theme.color.red} fontSize={Theme.fontSize.fs13}>
               {rejectionContent}
             </DefaultText>
@@ -51,12 +51,7 @@ const CouponItem = ({
         {!badgeContent ? (
           <Box height="100%" justifyContent="center">
             <TouchableOpacity onPress={onPressCouponUse}>
-              <Button
-                width="auto"
-                height="auto"
-                borderRadius="3px"
-                pd="3px 7px"
-                style={{flexDirection: 'row'}}>
+              <Button width="auto" height="auto" borderRadius="3px" pd="3px 7px" style={{flexDirection: 'row'}}>
                 <DefaultImage source={CheckIcon} width="20px" height="20px" />
                 <DefaultText>{status}</DefaultText>
               </Button>
