@@ -67,13 +67,19 @@ export const DefaultInput = ({
       {RenderCondition === 'Disabled' && ( // 선택 불가 영역
         <DisabledInputStyle
           width={width}
-          height={height}
+          height="auto"
           placeholder={placeHolder}
           placeholdercolor={Theme.color.gray}
           value={value}
           onChangeText={changeFn}
           editable={disabled && false}
           selectTextOnFocus={disabled && false}
+          style={
+            isAlignTop && {
+              textAlignVertical: 'top',
+            }
+          }
+          multiline={multiline}
         />
       )}
       {RenderCondition === 'Default' && ( // 기본 인풋

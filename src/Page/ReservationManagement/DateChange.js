@@ -75,17 +75,16 @@ export default function DateChange({route: {params}}) {
       ot_pt_date: selectDate,
       mt_idx: login.idx,
     }).then(res => res.data?.result === 'true' && res.data.data.data);
-
     if (data) {
       setDisabledTimeList(data?.order_time);
       if (Array.isArray(data?.store_time)) {
         const result = data.store_time
           .filter(item => item.flag === 'Y')
           .reduce((prev, curr) => {
-            if (!prev?.st_time) {
-              return [...prev, curr.st_time];
+            if (!prev?.ot_time) {
+              return [...prev, curr.ot_time];
             } else {
-              return [prev.st_time, curr.st_time];
+              return [prev.ot_time, curr.ot_time];
             }
           });
 

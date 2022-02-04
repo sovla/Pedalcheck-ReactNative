@@ -112,7 +112,7 @@ export const TextLinkButton = ({to, content, pd, mg}) => {
 export const BorderButton = styled.Text`
   border: 1px solid ${p => p.borderColor ?? Theme.color.skyBlue};
   letter-spacing: -0.45px;
-  width: ${p => pixelChange(p.width) ?? '41px'};
+  width: ${p => pixelChange(p.width) ?? 'auto'};
   height: ${p => p.height ?? '28px'};
   font-size: ${p => pixelChange(p.fontSize) ?? pixelChange(Theme.fontSize.fs15)};
   font-weight: ${p => p.fontWeight ?? 'normal'};

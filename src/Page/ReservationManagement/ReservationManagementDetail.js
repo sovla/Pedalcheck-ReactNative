@@ -37,6 +37,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
     ot_pt_time: '',
     ot_price: '',
     ot_memo: '',
+    ot_cmemo: '',
     ot_adm_memo: null,
     mbt_serial: '',
     mbt_year: '',
@@ -80,19 +81,14 @@ export default function ReservationManagementDetail({navigation, route: {params}
     dispatch(
       modalOpenAndProp({
         modalComponent: 'repairRejection',
-        onPressReject: content => {
-          onPressReject(content);
+        onPressReject: async content => {
+          const result = await editApiHandle(4, content);
+          if (result) {
+            showToastMessage('승인거부되었습니다.');
+          }
         },
       }),
     );
-
-    const onPressReject = async content => {
-      // Modal 안에서 Reject 누를시
-      const result = await editApiHandle(4, content);
-      if (result) {
-        showToastMessage('승인거부되었습니다.');
-      }
-    };
   };
   const onPressChangeDate = () => {
     // 예약 시간 옆 변경 누를시
@@ -120,6 +116,8 @@ export default function ReservationManagementDetail({navigation, route: {params}
     const response = await approveFunction({
       _mt_idx: login?.idx,
       od_idx: params?.od_idx,
+      ot_cmemo: ot_status === 4 && content,
+      ot_adm_memo: memo,
       ot_status,
     });
     if (response.data?.result === 'true') {
@@ -156,7 +154,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
     bikeName: reservationInfo?.ot_bike_nick,
     brand: reservationInfo?.ot_bike_brand,
     modelName: reservationInfo?.ot_bike_model,
-    bikeImage: imageAddress + reservationInfo?.ot_bike_image,
+    bikeImage: reservationInfo?.ot_bike_image,
   };
 
   const bikeInfoDetail = [
@@ -194,7 +192,6 @@ export default function ReservationManagementDetail({navigation, route: {params}
   const now = new Date();
   // 예약시간 <= 현재시간 인경우 true
   const isPrevTime = reservationTime <= now;
-
   return (
     <>
       <Header title="상세보기" />
@@ -211,21 +208,24 @@ export default function ReservationManagementDetail({navigation, route: {params}
                 <DarkText mg="0px 10px 0px 0px">
                   {`${reservationInfo?.ot_pt_date} ${reservationInfo?.ot_pt_time?.substring(0, 5)}`}{' '}
                 </DarkText>
-                {(reservationInfo?.ot_status === '예약' || reservationInfo?.ot_status === '승인') && (
+                {(reservationInfo?.ot_status === '예약' || reservationInfo?.ot_status === '승인') && !isPrevTime && (
                   <TouchableOpacity onPress={onPressChangeDate}>
                     <BorderButton width="auto">변경</BorderButton>
                   </TouchableOpacity>
                 )}
               </RowBox>
             </RowBox>
-            <RowBox mg="0px 0px 10px">
-              <DarkMediumText width="110px">요청사항</DarkMediumText>
-              <DarkText width="270px">{reservationInfo?.ot_memo}</DarkText>
-            </RowBox>
-            {reservationInfo?.rejection && (
+            {reservationInfo?.ot_memo?.length > 0 && (
+              <RowBox mg="0px 0px 10px">
+                <DarkMediumText width="110px">요청사항</DarkMediumText>
+                <DarkText width="270px">{reservationInfo.ot_memo}</DarkText>
+              </RowBox>
+            )}
+
+            {reservationInfo?.ot_cmemo?.length > 0 && (
               <RowBox mg="0px 0px 20px">
                 <DarkMediumText width="110px">승인거절 사유</DarkMediumText>
-                <DarkText width="270px">{reservationInfo?.rejection}</DarkText>
+                <DarkText width="270px">{reservationInfo.ot_cmemo}</DarkText>
               </RowBox>
             )}
           </Box>
@@ -256,12 +256,12 @@ export default function ReservationManagementDetail({navigation, route: {params}
           <Box style={borderBottomWhiteGray}>
             <DarkBoldText>고객정보</DarkBoldText>
             <Box width={size.minusPadding}>
-              <RowBox mg="10px 0px 0px">
+              <RowBox mg="10px 0px 0px" alignItems="center">
                 <DarkMediumText width="65px">이름</DarkMediumText>
 
                 <DarkText mg="0px 10px 0px 0px">{reservationInfo?.mt_name}</DarkText>
                 <BorderButton borderColor={Theme.borderColor.whiteGray} color={Theme.color.black} borderRadius="3px">
-                  {reservationInfo?.customerLevel}
+                  {reservationInfo?.mt_badge}
                 </BorderButton>
               </RowBox>
               <RowBox mg="10px 0px 0px">
@@ -276,7 +276,8 @@ export default function ReservationManagementDetail({navigation, route: {params}
               </RowBox>
             </Box>
           </Box>
-          {type !== 'coupon' && (
+
+          {type !== 'coupon' && ( // 쿠폰 아닌경우엔 줄이 길어 스크롤 뷰 안에서
             <>
               <Box mg="0px 0px 20px">
                 <DarkBoldText mg="20px 0px 10px">정비소 관리자 메모</DarkBoldText>
@@ -288,6 +289,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
                   multiline
                   value={memo}
                   changeFn={setMemo}
+                  disabled={reservationInfo.ot_status === '승인거부' || reservationInfo.ot_status === '처리완료'}
                 />
               </Box>
               <Box mg="0px 0px 20px">
@@ -315,7 +317,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
             </>
           )}
         </ScrollBox>
-        {type === 'coupon' && (
+        {type === 'coupon' && ( // 쿠폰인 경우 줄이 짧아서 스크롤 뷰 밖에서
           <Box mg="0px 0px 20px">
             {reservationInfo.ot_status === '예약' && !isPrevTime && (
               <FooterButton

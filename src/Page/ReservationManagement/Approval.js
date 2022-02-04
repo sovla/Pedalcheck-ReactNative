@@ -17,6 +17,7 @@ import {reservationComplete} from '@/API/ReservationManagement/ReservationManage
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {showToastMessage} from '@/Util/Toast';
 import {AlertButton} from '@/Util/Alert';
+import numberFormat from '@/Util/numberFormat';
 
 export default function Approval({navigation, route: {params}}) {
   const {size, login} = useSelector(state => state);
@@ -39,7 +40,7 @@ export default function Approval({navigation, route: {params}}) {
       for (let j = 0; j < item.length; j++) {
         const select = item[j]?.select;
         Object.assign(data, {
-          [`${apiDataString}${i + 1}_${j + 1}`]: select === '' ? 0 : select === '양호' ? 1 : 2,
+          [`${apiDataString}${i + 1}_${j + 1}`]: select === '양호' ? 1 : select === '정비 요망' ? 2 : 0,
         });
       }
     }
@@ -47,7 +48,7 @@ export default function Approval({navigation, route: {params}}) {
   };
 
   const onPressComfirm = () => {
-    if (selectWages !== '') {
+    if (selectWages !== '없음') {
       if (wages === '') {
         AlertButton(`${selectWages}를 입력해주세요.`);
         return null;
@@ -107,12 +108,7 @@ export default function Approval({navigation, route: {params}}) {
             <DarkBoldText mg="20px 0px 12px">추가/반환 공임비</DarkBoldText>
             <RowBox mg="0px 0px 10px" width={size.minusPadding}>
               {menuItem.map(item => (
-                <SelectItem
-                  content={item}
-                  onPress={setSelectWages}
-                  select={selectWages}
-                  key={item}
-                />
+                <SelectItem content={item} onPress={setSelectWages} select={selectWages} key={item} />
               ))}
             </RowBox>
             {selectWages !== '없음' && (
@@ -120,8 +116,10 @@ export default function Approval({navigation, route: {params}}) {
                 <DefaultInput
                   placeHolder={`${selectWages}를 입력해주세요.`}
                   width="340px"
-                  value={wages}
-                  changeFn={setWages}
+                  value={numberFormat(wages)}
+                  changeFn={text => {
+                    setWages(text.split(',').reduce((prev, curr) => prev + curr));
+                  }}
                   keyboardType={'numeric'}
                 />
                 <DarkMediumText mg="0px 0px 0px 10px" fontSize={Theme.fontSize.fs15}>
@@ -134,11 +132,7 @@ export default function Approval({navigation, route: {params}}) {
             <DarkBoldText mg="0px 0px 20px">선택 입력 항목</DarkBoldText>
           </Box>
           <Box>
-            <RowBox
-              mg="20px 0px 10px"
-              width={size.minusPadding}
-              justifyContent="space-between"
-              alignItems="center">
+            <RowBox mg="20px 0px 10px" width={size.minusPadding} justifyContent="space-between" alignItems="center">
               <DarkMediumText>정비사진 업로드</DarkMediumText>
               <IndigoText fontSize={Theme.fontSize.fs14}>최대 15장까지 등록가능</IndigoText>
             </RowBox>
@@ -155,12 +149,7 @@ export default function Approval({navigation, route: {params}}) {
               changeFn={setMemo}
             />
           </Box>
-          <CheckList
-            isShow={isShow}
-            setIsShow={setIsShow}
-            checkList={checkList}
-            setCheckList={setCheckList}
-          />
+          <CheckList isShow={isShow} setIsShow={setIsShow} checkList={checkList} setCheckList={setCheckList} />
           <Box mg="10px 0px 20px">
             <FooterButton
               isRelative
@@ -199,11 +188,11 @@ const initCheckList = [
     item: [
       {
         itemTitle: '휠 정렬',
-        select: '',
+        select: '1',
       },
       {
         itemTitle: '구름성',
-        select: '',
+        select: '1',
       },
     ],
   },
@@ -212,15 +201,15 @@ const initCheckList = [
     item: [
       {
         itemTitle: '헤드셋 유격',
-        select: '',
+        select: '1',
       },
       {
         itemTitle: '핸들바 위치',
-        select: '',
+        select: '1',
       },
       {
         itemTitle: '바테입',
-        select: '',
+        select: '1',
       },
     ],
   },
@@ -229,15 +218,15 @@ const initCheckList = [
     item: [
       {
         itemTitle: '세척상태',
-        select: '',
+        select: '1',
       },
       {
         itemTitle: '녹 발생',
-        select: '',
+        select: '1',
       },
       {
         itemTitle: '프레임 외관',
-        select: '',
+        select: '1',
       },
     ],
   },
@@ -246,15 +235,15 @@ const initCheckList = [
     item: [
       {
         itemTitle: '비비 유격',
-        select: '',
+        select: '1',
       },
       {
         itemTitle: '페달 조립',
-        select: '',
+        select: '1',
       },
       {
         itemTitle: '구름성',
-        select: '',
+        select: '1',
       },
     ],
   },
@@ -263,15 +252,15 @@ const initCheckList = [
     item: [
       {
         itemTitle: '공기압',
-        select: '',
+        select: '1',
       },
       {
         itemTitle: '마모상태(프론트)',
-        select: '',
+        select: '1',
       },
       {
         itemTitle: '마모상태(리어)',
-        select: '',
+        select: '1',
       },
     ],
   },
@@ -280,11 +269,11 @@ const initCheckList = [
     item: [
       {
         itemTitle: '안장 위치',
-        select: '',
+        select: '1',
       },
       {
         itemTitle: '싯클램프 체결',
-        select: '',
+        select: '1',
       },
     ],
   },
@@ -293,23 +282,23 @@ const initCheckList = [
     item: [
       {
         itemTitle: '체인 윤활',
-        select: '',
+        select: '1',
       },
       {
         itemTitle: '체인 수명',
-        select: '',
+        select: '1',
       },
       {
         itemTitle: '체인 청소상태',
-        select: '',
+        select: '1',
       },
       {
         itemTitle: '스프라켓 청소상태',
-        select: '',
+        select: '1',
       },
       {
         itemTitle: '기어 변속',
-        select: '',
+        select: '1',
       },
     ],
   },
