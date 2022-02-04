@@ -11,7 +11,7 @@ export default function BikeInformaitonBody({bikeInfoDetail}) {
   if (!bikeInfoDetail?.filter(item => item.value)?.length) {
     return null;
   }
-
+  const filterBikeInfo = bikeInfoDetail.filter(item => item.value); //
   return (
     <Box
       width={size.designWidth - 32}
@@ -20,17 +20,14 @@ export default function BikeInformaitonBody({bikeInfoDetail}) {
       borderRadius="10px"
       mg="10px 0px">
       <RowBox width="100%" flexWrap="wrap" backgroundColor="#0000">
-        {bikeInfoDetail.map(item => {
-          if (!item?.value) {
-            return null;
-          }
-
+        {filterBikeInfo.map((item, index) => {
           const innerMargin = item.title !== '모델상세' ? '0px 0px 10px' : '0px';
+          const isLast = filterBikeInfo.length === index + 1;
           return (
             <RowBox
               key={item.title}
               backgroundColor="#0000"
-              mg={innerMargin}
+              mg={isLast ? '0px' : innerMargin}
               width={item.title !== '모델상세' ? '50%' : '100%'}>
               <DarkBoldText width="67px" fontSize={Theme.fontSize.fs15}>
                 {item.title}

@@ -100,7 +100,7 @@ export const RegisterAdditionalBody = ({sex, setSex, setSelectImage, selectImage
     ImageCropPicker.openPicker({
       width: 300,
       height: 400,
-      cropping: true, // 자르기 활성화
+      cropping: false, // 자르기 활성화
     }).then(images => {
       setSelectImage(images);
       setImageType(2);
