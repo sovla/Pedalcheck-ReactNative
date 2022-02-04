@@ -39,6 +39,7 @@ export default function Detail({navigation, route}) {
     request: item.ot_meme,
     rejection: item.ot_cmemo, // 수정 필요 API 값없음
     totalPrice: item.ot_price,
+    salePrice: item.ot_sprice,
     customerName: item.mt_name,
     customerEmail: item.mt_email,
     customerTel: item.mt_hp,
@@ -81,6 +82,7 @@ export default function Detail({navigation, route}) {
     ],
   };
 
+
   return (
     <>
       <Header title="상세보기" />
@@ -97,10 +99,13 @@ export default function Detail({navigation, route}) {
                 <DarkText mg="0px 10px 0px 0px">{changeItem.reservationDate} </DarkText>
               </RowBox>
             </RowBox>
-            <RowBox mg="0px 0px 10px">
-              <DarkMediumText width="110px">요청사항</DarkMediumText>
-              <DarkText width="270px">{changeItem.request}</DarkText>
-            </RowBox>
+            {changeItem.request && (
+              <RowBox mg="0px 0px 10px">
+                <DarkMediumText width="110px">요청사항</DarkMediumText>
+                <DarkText width="270px">{changeItem.request}</DarkText>
+              </RowBox>
+            )}
+
             <RowBox mg="0px 0px 20px">
               <DarkMediumText width="110px">완료시간</DarkMediumText>
               <DarkText width="270px">{'2021-10-14 10:58'}</DarkText>
@@ -116,7 +121,9 @@ export default function Detail({navigation, route}) {
             <BetweenBox mg="10px 0px 0px" width={size.minusPadding}>
               <DarkMediumText fontSize={Theme.fontSize.fs15}>가격</DarkMediumText>
               <RowBox alignItems="center">
-                {true && <MoneyText disabled money={50000} />}
+                {changeItem.salePrice * 1 - changeItem.totalPrice * 1 > 0 && (
+                  <MoneyText disabled money={changeItem?.salePrice} />
+                )}
                 <MoneyText
                   mg="0px 0px 0px 10px"
                   fontSize={Theme.fontSize.fs15}
@@ -144,15 +151,15 @@ export default function Detail({navigation, route}) {
                   mg="0px 0px 0px 10px"
                   fontSize={Theme.fontSize.fs15}
                   color={Theme.color.black}
-                  money={12000}
+                  money={
+                    changeItem.salePrice * 1 - changeItem.totalPrice * 1 > 0
+                      ? changeItem.salePrice * 1 - changeItem.totalPrice * 1
+                      : 0
+                  }
                 />
               </RowBox>
             </BetweenBox>
-            <RowBox mg="10px 0px" width="380px" justifyContent="flex-end">
-              <TouchableOpacity>
-                <BorderButton>수정</BorderButton>
-              </TouchableOpacity>
-            </RowBox>
+            <RowBox mg="10px 0px" width="380px" justifyContent="flex-end"></RowBox>
           </Box>
           <BetweenBox style={borderBottomWhiteGray} width="380px" height="55px" alignItems="center">
             <DarkBoldText fontSize={Theme.fontSize.fs15}>합계</DarkBoldText>

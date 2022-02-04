@@ -45,6 +45,7 @@ const ShopHeader = ({size}) => {
       navigation.navigate('RepairQuestion');
     }
   };
+
   return (
     <>
       <Box flex={1} zIndex={100}>

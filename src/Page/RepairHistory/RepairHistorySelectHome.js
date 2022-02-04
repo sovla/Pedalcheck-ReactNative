@@ -137,13 +137,13 @@ const dataToItemList = (data, type) => {
     return [];
   }
   if (type === 'repair') {
-    result = data.map(item => ({
+    result = data?.map(item => ({
       title: item.pt_title,
       count: item.cnt,
       rate: item.percent + '%',
     }));
   } else if (type === 'bike') {
-    result = data.map(item => ({
+    result = data?.map(item => ({
       title: item.mbt_type_name,
       count: item.mbt_type_cnt,
       rate: item.percent + '%',

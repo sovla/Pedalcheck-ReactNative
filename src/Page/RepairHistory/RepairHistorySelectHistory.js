@@ -80,6 +80,7 @@ export default function RepairHistorySelectHistory() {
       pt_idx: selectItem ?? '',
       page: insertPage ? insertPage : page,
     });
+
     if (response?.data?.result === 'true') {
       if (response?.data?.data?.data) {
         const {product, order, tot_cnt} = response?.data?.data?.data;
@@ -93,15 +94,18 @@ export default function RepairHistorySelectHistory() {
           setPage(prev => prev + 1);
         } else {
         }
-        setProductList([
-          {
-            label: '전체',
-            value: '',
-          },
-          ...product?.map(v => {
-            return {label: v.pt_title, value: v.pt_idx};
-          }),
-        ]);
+        if (product?.length > 0) {
+          setProductList([
+            {
+              label: '전체',
+              value: '',
+            },
+            ...product?.map(v => {
+              return {label: v.pt_title, value: v.pt_idx};
+            }),
+          ]);
+        }
+
         setTotalCount(tot_cnt);
       } else {
         setIsLast(true);
@@ -112,6 +116,7 @@ export default function RepairHistorySelectHistory() {
     }
     setIsLoading(false);
   };
+  console.log(orderList);
 
   const onPressProduct = item => {
     navigation.navigate('Detail', {item: item});
