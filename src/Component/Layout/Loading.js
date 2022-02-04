@@ -11,6 +11,7 @@ export default function Loading({
   right = '0px',
   left = '0px',
   bottom = '0px',
+  backgroundColor = '#0004',
 }) {
   return (
     <>
@@ -21,7 +22,7 @@ export default function Loading({
           width="412px"
           height={`${getHeightPixel(712)}px`}
           zIndex={1000}
-          backgroundColor="#0004"
+          backgroundColor={backgroundColor}
           alignItems="center"
           justifyContent="center">
           <ActivityIndicator size="large" color={Theme.color.gray} />

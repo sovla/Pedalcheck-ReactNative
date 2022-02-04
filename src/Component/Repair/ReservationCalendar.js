@@ -1,6 +1,6 @@
 import Theme from '@/assets/global/Theme';
 import {getPixel} from '@/Util/pixelChange';
-import React from 'react';
+import React, {useState} from 'react';
 import {Alert, Text, TouchableOpacity, View} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import CheckIcon from '@assets/image/ic_check_cal.png';
@@ -11,12 +11,7 @@ import moment from 'moment';
 import 'moment/locale/ko';
 CalendarLocalConfig;
 
-export default function ReservationCalendar({
-  selectDate,
-  setSelectDate,
-  onChangeMonth = () => {},
-  disabledDayList,
-}) {
+export default function ReservationCalendar({selectDate, setSelectDate, onChangeMonth = () => {}, disabledDayList}) {
   const {size} = useSelector(state => state);
 
   const onPressDate = day => {
@@ -33,10 +28,21 @@ export default function ReservationCalendar({
 
     setSelectDate(dateString);
   };
+  let markedDates = {};
+  if (Array.isArray(disabledDayList)) {
+    disabledDayList.map((v, i) => {
+      Object.assign(markedDates, {
+        [v]: {
+          disabled: true,
+        },
+      });
+    });
+  }
   return (
     <Calendar
       markingType={'custom'}
       markedDates={{
+        ...markedDates,
         [selectDate]: {
           selected: true,
         },
@@ -97,7 +103,7 @@ export default function ReservationCalendar({
       }}
       dayComponent={({date, state, marking}) => {
         const isSelect = marking?.selected;
-        const isDisabled = state === 'disabled';
+        const isDisabled = state === 'disabled' || marking?.disabled;
         const isToday = state === 'today';
         return (
           <TouchableOpacity key={date} disabled={isDisabled} onPress={() => onPressDate(date)}>
@@ -113,11 +119,7 @@ export default function ReservationCalendar({
               }}>
               <Text
                 style={{
-                  color: isDisabled
-                    ? Theme.color.gray
-                    : isToday
-                    ? Theme.color.skyBlue
-                    : Theme.color.black,
+                  color: isToday ? Theme.color.skyBlue : isDisabled ? Theme.color.darkGray : Theme.color.black,
                   fontSize: 13,
                 }}>
                 {date.day}

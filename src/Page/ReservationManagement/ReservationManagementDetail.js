@@ -24,6 +24,8 @@ import {TouchableOpacity} from 'react-native';
 import 'moment/locale/ko';
 import {useDispatch, useSelector} from 'react-redux';
 import {showToastMessage} from '@/Util/Toast';
+import {imageAddress} from '@assets/global/config';
+import {useIsFocused} from '@react-navigation/native';
 
 export default function ReservationManagementDetail({navigation, route: {params}}) {
   const type = params?.type;
@@ -60,6 +62,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
 
   const {size, login} = useSelector(state => state);
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
 
   const onPressApprove = async () => {
     // 승인 누를시
@@ -141,8 +144,8 @@ export default function ReservationManagementDetail({navigation, route: {params}
 
   useEffect(() => {
     // 초기, 값 변경시 예약정보 API
-    getReservationInfoHandle();
-  }, [isChange]);
+    if (isFocused) getReservationInfoHandle();
+  }, [isChange, isFocused]);
 
   useUpdateEffect(() => {
     // 예약정보 바뀔 경우 메모 데이터 불러오기
@@ -153,7 +156,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
     bikeName: reservationInfo?.ot_bike_nick,
     brand: reservationInfo?.ot_bike_brand,
     modelName: reservationInfo?.ot_bike_model,
-    bikeImage: reservationInfo?.ot_bike_image,
+    bikeImage: imageAddress + reservationInfo?.ot_bike_image,
   };
 
   const bikeInfoDetail = [
@@ -208,7 +211,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
                 <DarkText mg="0px 10px 0px 0px">
                   {`${reservationInfo?.ot_pt_date} ${reservationInfo?.ot_pt_time?.substring(0, 5)}`}{' '}
                 </DarkText>
-                {(reservationInfo?.ot_status === '변경' || reservationInfo?.ot_status === '승인') && (
+                {(reservationInfo?.ot_status === '예약' || reservationInfo?.ot_status === '승인') && (
                   <TouchableOpacity onPress={onPressChangeDate}>
                     <BorderButton width="auto">변경</BorderButton>
                   </TouchableOpacity>
