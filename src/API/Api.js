@@ -39,9 +39,8 @@ export const API = axios.create({
   },
 
   transformResponse: data => {
-    const jsonParseData = JSON.parse(data);
-
     try {
+      const jsonParseData = JSON.parse(data);
       if (jsonParseData.result === 'true') {
         const jwtDecodeData = jsonParseData.data !== '' ? jwtDecode(jsonParseData.data, SECRETKEY) : jsonParseData;
         console.log('API Result Success :::', jwtDecodeData);
@@ -54,7 +53,8 @@ export const API = axios.create({
         return jsonParseData;
       }
     } catch (error) {
-      console.log('API Error :::', error, data, jsonParseData);
+      console.log('API Error :::', error);
+      console.log('API ErrorData :::', data);
       return jsonParseData;
     }
   },
