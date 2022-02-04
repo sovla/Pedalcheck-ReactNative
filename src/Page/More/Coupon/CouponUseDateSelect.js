@@ -41,7 +41,6 @@ export default function ReservationDate({navigation, route: {params}}) {
       .then(data => {
         setDisabledTimeList(data?.order_time ?? []);
 
-        console.log('here');
         if (Array.isArray(data?.store_time)) {
           const {store_time} = data;
           const result = store_time
@@ -51,8 +50,7 @@ export default function ReservationDate({navigation, route: {params}}) {
             });
           setTimeList(result);
         }
-      })
-      .catch(error => console.log(error));
+      });
   }, [selectDate]);
 
   useEffect(() => {

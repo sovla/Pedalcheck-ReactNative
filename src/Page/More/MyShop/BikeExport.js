@@ -117,8 +117,6 @@ export default function BikeExport({route}) {
     }
   }, [modal?.isDone]);
 
-  console.log(bikeData, 'bikeData ::::');
-
   return (
     <>
       <Header title="출고 등록" />

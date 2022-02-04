@@ -14,7 +14,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import RepairReservationHeader from './RepairReservationHeader';
 
 export default function ShopReservationBike({navigation, route: {params}}) {
-  const {size, login, reservationInfo} = useSelector(state => state);
+  const {size, login, reservationInfo, shopInfo} = useSelector(state => state);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
@@ -47,12 +47,7 @@ export default function ShopReservationBike({navigation, route: {params}}) {
           bikeModel: '',
         },
       );
-
-      getMyBikeList({
-        _mt_idx: login?.idx,
-      })
-        .then(res => res.data?.result === 'true' && res.data.data.data)
-        .then(data => setBikeList(data));
+      setBikeList(shopInfo?.my_bike?.length ? shopInfo.my_bike : []);
     } else {
       setBikeName({
         bikeBrand: '',

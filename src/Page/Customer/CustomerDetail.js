@@ -7,7 +7,6 @@ import React from 'react';
 
 export default function CustomerDetail({route}) {
   const item = route?.params?.item;
-  console.log(item);
   return (
     <>
       <Header title="상세보기" />

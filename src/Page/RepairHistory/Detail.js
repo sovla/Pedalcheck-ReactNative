@@ -81,8 +81,6 @@ export default function Detail({navigation, route}) {
     ],
   };
 
-  console.log(item);
-
   return (
     <>
       <Header title="상세보기" />

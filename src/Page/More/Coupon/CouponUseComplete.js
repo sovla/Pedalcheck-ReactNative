@@ -33,7 +33,6 @@ export default function CouponUseComplete({route: {params}}) {
 
   const [isDone, setIsDone] = useState(true);
   const [reservationInfo, setReservationInfo] = useState(dummy);
-  console.log(reservationInfo);
   useLayoutEffect(() => {
     couponReservation({
       _mt_idx: login.idx,
@@ -59,11 +58,7 @@ export default function CouponUseComplete({route: {params}}) {
             <RepairReservationHeader step={3} array={[1, 2, 3]} content="예약완료" />
             <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
             <Box>
-              <RowBox
-                mg="30px 0px"
-                justifyContent="center"
-                alignItems="center"
-                width={size.designWidth}>
+              <RowBox mg="30px 0px" justifyContent="center" alignItems="center" width={size.designWidth}>
                 <DefaultImage source={BorderCheckIcon} width="20px" height="20px" />
                 <DarkBoldText fontSize={Theme.fontSize.fs18}>예약이 접수 되었습니다.</DarkBoldText>
               </RowBox>
@@ -83,11 +78,7 @@ export default function CouponUseComplete({route: {params}}) {
               content="쿠폰 신청 확인하기"
               mg="0px 0px 10px"
             />
-            <LinkButton
-              to={() => navigation.navigate('RepairHome')}
-              content="홈으로 돌아가기"
-              mg="0px 0px 10px"
-            />
+            <LinkButton to={() => navigation.navigate('RepairHome')} content="홈으로 돌아가기" mg="0px 0px 10px" />
           </Box>
         </>
       ) : (

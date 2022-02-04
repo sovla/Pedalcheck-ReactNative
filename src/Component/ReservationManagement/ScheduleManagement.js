@@ -75,7 +75,6 @@ export default function ScheduleManagement() {
         flag.push(item.flag);
       }
     });
-    console.log(selectTime, flag);
 
     reservationDayListSave({
       _mt_idx: login.idx,

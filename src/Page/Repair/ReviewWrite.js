@@ -41,8 +41,6 @@ export default function ReviewWrite({navigation, route}) {
     });
   };
 
-  console.log(shopItem);
-
   return (
     <>
       <Header title="리뷰 작성" />

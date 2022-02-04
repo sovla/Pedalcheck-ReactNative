@@ -173,7 +173,6 @@ export default function RepairHome() {
             paddingBottom: 70,
           }}
           onEndReached={() => {
-            console.log('onEndReached', isScroll);
             if (isScroll) {
               getShopListHandle();
               setIsScroll(false);
