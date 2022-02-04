@@ -60,7 +60,7 @@ export default function LocationPicker({setLocation}) {
     if (!isDetail) {
       await dispatch(modalOpen('locationPickerDetail'));
     } else {
-      if (setLocation) setLocation(location.name + ' ' + locationObject.name);
+      if (setLocation) await setLocation(location.name + ' ' + locationObject.name);
       await dispatch(DeleteLocation());
       await dispatch(modalClose());
     }

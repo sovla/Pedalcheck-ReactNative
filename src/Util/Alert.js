@@ -31,7 +31,7 @@ export const AlertButtons = (
 export const RequireLoginAlert = (login, navigation) => {
   //  로그인이 필요한 곳에 씌우면 됩니다.
   //  로그인 성공시 리턴 true
-  if (login.mt_idx === '') {
+  if (login.idx === '') {
     AlertButtons('로그인이 필요한 기능입니다.', '확인', '취소', () => navigation.navigate('Home'));
     return false;
   } else {

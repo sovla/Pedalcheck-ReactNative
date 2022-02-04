@@ -8,7 +8,7 @@ import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import {DeleteLocation} from '@/Store/locationState';
 import {setUserInfo} from '@/Store/loginState';
-import {modalOpen} from '@/Store/modalState';
+import {modalOpen, modalOpenAndProp} from '@/Store/modalState';
 import {getHeightPixel} from '@/Util/pixelChange';
 import React, {useLayoutEffect, useState} from 'react';
 import {Dimensions, KeyboardAvoidingView, StatusBar} from 'react-native';
@@ -42,8 +42,9 @@ export default function RegisterInformation({navigation}) {
       mt_idx: snsLogin.mt_idx,
       mt_app_token: token.token,
     }).then(res => {
-      if (res?.data?.data?.result !== 'false') {
-        dispatch(setUserInfo(res?.data?.data?.data));
+      console.log('MEMBERJOIN', res);
+      if (res.data?.result !== 'false') {
+        dispatch(setUserInfo(res.data.data.data));
         navigation.navigate('RepairHome');
       }
     });
@@ -56,10 +57,6 @@ export default function RegisterInformation({navigation}) {
     navigation.navigate('RegisterAdditional', {information: information});
   };
 
-  useLayoutEffect(() => {
-    // 지역 모달 데이터 클릭시 사용
-    if (location?.name) onChangeInformation(location.name, 'location');
-  }, [location]);
   useLayoutEffect(() => {
     // snsLogin 상태에 이메일 값 얻어오기
     if (snsLogin?.email) {
@@ -127,6 +124,7 @@ export default function RegisterInformation({navigation}) {
             pd="0px 0px 5px"
             mg={errorMessage.tel === '' && '0px 0px 20px'}
             maxLength={13}
+            keyboardType="numeric"
           />
           <DefaultInput
             title="지역"
@@ -139,7 +137,12 @@ export default function RegisterInformation({navigation}) {
             mg={errorMessage.location === '' && '0px 0px 20px'}
             PressText={() => {
               dispatch(DeleteLocation());
-              dispatch(modalOpen('locationPicker'));
+              dispatch(
+                modalOpenAndProp({
+                  modalComponent: 'locationPicker',
+                  setLocation: text => onChangeInformation(text, 'location'),
+                }),
+              );
             }}
             pd="0px 0px 5px"
           />

@@ -99,7 +99,8 @@ export default function Update({navigation}) {
       mt_birth: birthDateValue,
       mt_hp: user.mt_hp,
     };
-    if (selectImage.path) {
+    if (selectImage?.path) {
+      // 로컬에서 갤러리
       await AddInformationImage({
         ...sendData,
         mt_image: selectImage,
@@ -111,6 +112,7 @@ export default function Update({navigation}) {
         });
       } else {
         await AddInformation({
+          //  로컬에서 기본이미지 선택
           ...sendData,
           mt_image_num: selectImage,
         });

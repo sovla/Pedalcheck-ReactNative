@@ -14,7 +14,12 @@ import {useNavigation} from '@react-navigation/core';
 import ScrollDays from './ScrollDays';
 import MenuNav from '../Layout/MenuNav';
 import {useEffect} from 'react';
-import {getCouponReservationList, getReservationList} from '@/API/ReservationManagement/ReservationManagement';
+import {
+  getCouponReservationList,
+  getOrderCount,
+  getReservationDayList,
+  getReservationList,
+} from '@/API/ReservationManagement/ReservationManagement';
 import {getPixel} from '@/Util/pixelChange';
 import DefaultDropdown from '../MyShop/DefaultDropdown';
 import {repairHistoryDropdownList} from '@/assets/global/dummy';
@@ -54,6 +59,17 @@ export default function RepairReservation({type}) {
   useEffect(() => {
     if (isFocused) {
       getReservationListHandle(1);
+      getOrderCount({
+        _mt_idx: login.idx,
+        date: getDay(new Date()),
+        type,
+      })
+        .then(res => res.data.result === 'true' && res.data.data.data)
+        .then(data => {
+          if (data) {
+            setOrderList(data.order_date);
+          }
+        });
     }
   }, [isFocused]);
   useUpdateEffect(() => {
@@ -111,7 +127,7 @@ export default function RepairReservation({type}) {
         }}
         ListHeaderComponent={
           <Box>
-            <ScrollDays daySelect={daySelect} setDaySelect={setDaySelect} />
+            <ScrollDays daySelect={daySelect} setDaySelect={setDaySelect} orderList={orderList} />
             <Box width={size.minusPadding} mg="0px 16px 32px">
               <GrayText fontSize={Theme.fontSize.fs13}>
                 좌/우로 슬라이드하여 지난 주/다음 주 예약내역을 볼 수 있습니다.
