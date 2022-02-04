@@ -13,9 +13,14 @@ export default function BikeInformationHeader({item, mg = '20px 0px'}) {
   //   modelName:"",
   //   bikeName:""
   // }
+  console.log(item);
   return (
     <RowBox mg={mg} alignItems="center">
-      <DefaultImage source={{uri: imageAddress + item?.bikeImage}} width="74px" height="74px" />
+      <DefaultImage
+        source={item?.bikeImage ? {uri: imageAddress + item?.bikeImage} : DummyIcon}
+        width="74px"
+        height="74px"
+      />
       <Box mg="0px 0px 0px 20px">
         <RowBox flexWrap="wrap" width="270px">
           <DarkText mg="0px 10px 0px 0px" fontSize={Theme.fontSize.fs15} fontWeight={Theme.fontWeight.medium}>

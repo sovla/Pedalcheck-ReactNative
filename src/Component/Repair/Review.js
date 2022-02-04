@@ -21,18 +21,25 @@ export default function Review({
 }) {
   const {size} = useSelector(state => state);
   const navigation = useNavigation();
-  const imageArray = item?.srt_img;
-
+  const imageArray =
+    item?.srt_image?.length > 0
+      ? item?.srt_image?.map((v, i) => {
+          return {uri: imageAddress + v};
+        })
+      : [ShopDummyImage];
+  console.log(item);
   return (
     <Box
       pd="20px 0px"
       width={width}
       mg={mg}
-      style={{
-        flex: 1,
-        borderBottomWidth: isRecomment ? 0 : 1,
-        borderBottomColor: Theme.color.backgroundWhiteGray,
-      }}>
+      style={
+        !isDetailPage && {
+          flex: 1,
+          borderBottomWidth: isRecomment ? 0 : 1,
+          borderBottomColor: Theme.color.backgroundWhiteGray,
+        }
+      }>
       <RowBox>
         <DefaultImage source={{uri: imageAddress + item?.mt_image}} width="50px" height="50px" />
         <Box mg="0px 0px 0px 5px" justifyContent="center" height="50px">
@@ -44,7 +51,7 @@ export default function Review({
             <DefaultText color={Theme.color.gray} fontSize={Theme.fontSize.fs12}>
               |
             </DefaultText>
-            <DarkText fontSize={Theme.fontSize.fs13}> {item?.srt_pt_model}</DarkText>
+            <DarkText fontSize={Theme.fontSize.fs13}> {item?.srt_model}</DarkText>
           </RowBox>
           <RowBox>
             <DefaultText fontSize={Theme.fontSize.fs12} color={Theme.color.gray}>
@@ -59,7 +66,7 @@ export default function Review({
           color={Theme.color.indigo}
           fontSize={Theme.fontSize.fs15}
           fontWeight={Theme.fontWeight.bold}>
-          세차
+          {item?.pt_title}
         </DefaultText>
         <MoneyText
           money={item?.ot_price}
@@ -70,21 +77,11 @@ export default function Review({
       </RowBox>
       <Box mg="15px 0px 0px" borderRadius="10px">
         {isDetailPage ? (
-          <Swiper
-            width={size.minusPadding}
-            height={200}
-            imageArray={imageArray}
-            borderRadius="All"
-          />
+          <Swiper width={size.minusPadding} height={200} imageArray={imageArray} borderRadius="All" isRolling />
         ) : (
           imageArray?.length > 0 && (
             <Box>
-              <DefaultImage
-                source={ShopDummyImage}
-                borderRadius="10px"
-                width={size.minusPadding}
-                height="150px"
-              />
+              <DefaultImage source={ShopDummyImage} borderRadius="10px" width={size.minusPadding} height="150px" />
               {imageArray?.length > 1 && (
                 <PositionBox
                   right="10px"
@@ -102,14 +99,10 @@ export default function Review({
         )}
       </Box>
       <Box width={size.minusPadding} mg="15px 0px 20px">
-        <DarkText
-          numberOfLines={isDetailPage ? 50 : 3}
-          fontSize={Theme.fontSize.fs15}
-          lineHeight="22px">
+        <DarkText numberOfLines={isDetailPage ? 50 : 3} fontSize={Theme.fontSize.fs15} lineHeight="22px">
           {item?.srt_content}
         </DarkText>
       </Box>
-      {!isRecomment && <ReviewComment size={size} isDetailPage={isDetailPage} />}
 
       {isDetail && (
         <LinkWhiteButton

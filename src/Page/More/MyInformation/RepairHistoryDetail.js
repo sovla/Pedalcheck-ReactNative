@@ -57,17 +57,21 @@ export default function RepairHistoryDetail({route: {params}}) {
   };
 
   const onPressReview = () => {
-    navigation.navigate('ReviewWrite', {
-      navigate: 'RepairHistory',
-      item: {
-        title: params?.item?.mst_name,
-        date: repair?.ot_pt_date,
-        product: repair?.pt_title,
-        price: repair?.ot_price,
-        od_idx: params?.item?.od_idx,
-        mst_idx: params?.item?.mst_idx,
-      },
-    });
+    if (params?.item?.ot_review === 'N') {
+      navigation.navigate('ReviewWrite', {
+        navigate: 'RepairHistory',
+        item: {
+          title: params?.item?.mst_name,
+          date: repair?.ot_pt_date,
+          product: repair?.pt_title,
+          price: repair?.ot_price,
+          od_idx: params?.item?.od_idx,
+          mst_idx: params?.item?.mst_idx,
+        },
+      });
+    } else {
+      showToastMessage('이미 작성된 주문건입니다.');
+    }
   };
   const cancelOrderApi = async () => {
     const response = await cancelOrder({

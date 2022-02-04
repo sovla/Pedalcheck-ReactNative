@@ -73,6 +73,8 @@ export default function RepairHistorySelectReview() {
   };
 
   const commentSubmit = async (srt_idx, srt_res_content, srt_adate) => {
+    console.log(srt_idx);
+
     const response = await addReview({
       _mt_idx: login.idx,
       srt_idx: srt_idx,
@@ -90,6 +92,7 @@ export default function RepairHistorySelectReview() {
         }),
       );
     }
+    showToastMessage('등록되었습니다.');
   };
 
   const deleteHandle = async srt_idx => {
@@ -192,7 +195,7 @@ const ReviewRecomment = ({item, size, commentSubmit, deleteHandle}) => {
     <Box mg="20px 0px 0px">
       <RowBox>
         <DefaultImage
-          source={item?.mt_image ? imageAddress + item?.mt_image : profileDefault}
+          source={item?.mt_image ? {uri: imageAddress + item?.mt_image} : profileDefault}
           width="50px"
           height="50px"
         />
@@ -201,21 +204,21 @@ const ReviewRecomment = ({item, size, commentSubmit, deleteHandle}) => {
             <DarkBoldText mg="0px 10px 0px 0px" fontSize={Theme.fontSize.fs15}>
               {item?.mt_nickname}
             </DarkBoldText>
-            <DarkText fontSize={Theme.fontSize.fs13}>{item?.mbt_brand}</DarkText>
+            <DarkText fontSize={Theme.fontSize.fs13}>{item?.ot_bike_brand + ' '}</DarkText>
             <GrayText fontSize={Theme.fontSize.fs12}> | </GrayText>
-            <DarkText fontSize={Theme.fontSize.fs13}>{item?.mbt_model}</DarkText>
+            <DarkText fontSize={Theme.fontSize.fs13}>{' ' + item?.ot_bike_model}</DarkText>
           </RowBox>
           <GrayText fontSize={Theme.fontSize.fs12}>{item?.srt_wdate?.slice(0, 10)}</GrayText>
         </Box>
       </RowBox>
       <RowBox mg="10px 0px 0px">
         <IndigoText mg="0px 10px 0px 0px" fontSize={Theme.fontSize.fs15}>
-          정비 카테고리
+          {item?.pt_info?.split('|')[0]}
         </IndigoText>
         <MoneyText
           fontWeight={Theme.fontWeight.medium}
           fontSize={Theme.fontSize.fs15}
-          money={20000}
+          money={item?.pt_info?.split('|')[1]}
           color={Theme.color.black}
         />
       </RowBox>
@@ -261,8 +264,9 @@ const ReviewRecomment = ({item, size, commentSubmit, deleteHandle}) => {
       <LinkWhiteButton
         to={() =>
           navigation.navigate('ReviewDetail', {
-            isRecomment: true,
+            isRecomment: item?.srt_res_content ? true : false,
             item: item,
+            commentSubmit: commentSubmit,
           })
         }
         mg="20px 0px 20px"
