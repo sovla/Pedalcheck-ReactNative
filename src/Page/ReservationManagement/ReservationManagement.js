@@ -12,6 +12,7 @@ import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import ReservationManagementHome from '@/Component/ReservationManagement/ReservationManagementHome';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {useRef} from 'react';
+import {ScrollBox} from '@/assets/global/Container';
 
 const Stack = createNativeStackNavigator();
 
@@ -58,6 +59,7 @@ export default function ReservationManagement() {
         <Stack.Screen name="ScheduleManagement" component={ScheduleManagement} />
         <Stack.Screen name="ReservationTimeManagement" component={ReservationTimeManagement} />
       </Stack.Navigator>
+
       <FooterButtons selectMenu={2} isAdmin />
     </>
   );

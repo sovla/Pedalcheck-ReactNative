@@ -21,6 +21,7 @@ import {TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {imageAddress} from '@assets/global/config';
 import {setStoreInfo} from '@/Store/storeInfoState';
+import Loading from '@/Component/Layout/Loading';
 
 export default function ShopUpdate() {
   const navigation = useNavigation();
@@ -42,10 +43,13 @@ export default function ShopUpdate() {
   const [postData, setPostData] = useState([]); // ??
   const [lastSortCount, setLastSortCount] = useState(0);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     if (isFocused) {
       setShopInformation(storeInfo);
-      const changeValue = storeInfo?.mst_holiday?.split(',');
+
+      const changeValue = storeInfo?.mst_holiday?.includes(',') ? storeInfo?.mst_holiday?.split(',') : [];
       setSelectDay(
         changeValue.map(value => {
           return value * 1;
@@ -78,10 +82,43 @@ export default function ShopUpdate() {
     setIsDaumOpen(true);
   };
 
+  const RegJoin = async () => {
+    let check = true;
+
+    if (!shopInformation?.mst_name) {
+      setErrorMessage(prev => ({...prev, mst_name: '업체명을 입력해주세요.'}));
+      check = false;
+    }
+    if (shopInformation?.mst_company_num?.length !== 10) {
+      setErrorMessage(prev => ({...prev, mst_company_num: '사업자 번호는 10자입니다.'}));
+      check = false;
+    }
+    if (!shopInformation?.mst_company_num) {
+      setErrorMessage(prev => ({...prev, mst_company_num: '사업자 번호를 입력해주세요.'}));
+      check = false;
+    }
+
+    if (shopInformation?.mst_zip === '') {
+      setErrorMessage(prev => ({...prev, mst_zip: '우편번호를 입력해주세요.'}));
+      check = false;
+    }
+    if (shopInformation?.mst_addr2 === '') {
+      setErrorMessage(prev => ({...prev, mst_addr2: '상세주소를 입력해주세요.'}));
+      check = false;
+    }
+
+    if (shopInformation?.mst_email && !isEmail(shopInformation?.mst_email)) {
+      setErrorMessage(prev => ({...prev, mst_email: '이메일 형식에 맞지 않습니다.'}));
+      check = false;
+    }
+    return check;
+  };
   const updateStoreHandle = async () => {
-    if (RegJoin()) {
+    const result = await RegJoin();
+    if (!result) {
       return;
     }
+    setIsLoading(true);
     let response;
     if (imageArray.length > 0) {
       const localImageArray = imageArray.filter(item => !item?.sort);
@@ -108,6 +145,7 @@ export default function ShopUpdate() {
         navigation.goBack();
       }
     }
+    setIsLoading(false);
   };
 
   const deleteImageHandle = async item => {
@@ -119,38 +157,9 @@ export default function ShopUpdate() {
 
     return response.data?.result === 'true';
   };
-
-  const RegJoin = () => {
-    let check = true;
-
-    if (shopInformation?.mst_name === '') {
-      setErrorMessage(prev => ({...prev, mst_name: '업체명을 입력해주세요.'}));
-      check = false;
-    }
-    if (shopInformation.mst_company_num.length !== 10) {
-      setErrorMessage(prev => ({...prev, mst_company_num: '사업자 번호는 10자입니다.'}));
-      check = false;
-    }
-    if (shopInformation.mst_company_num === '') {
-      setErrorMessage(prev => ({...prev, mst_company_num: '사업자 번호를 입력해주세요.'}));
-      check = false;
-    }
-
-    if (shopInformation.mst_zip === '') {
-      setErrorMessage(prev => ({...prev, mst_zip: '우편번호를 입력해주세요.'}));
-      check = false;
-    }
-    if (shopInformation.mst_addr2 === '') {
-      setErrorMessage(prev => ({...prev, mst_addr2: '상세주소를 입력해주세요.'}));
-      check = false;
-    }
-    if (!isEmail(shopInformation.mst_email) && shopInformation.mst_email !== '') {
-      setErrorMessage(prev => ({...prev, mst_email: '이메일 형식에 맞지 않습니다.'}));
-      check = false;
-    }
-  };
   return (
     <>
+      {isLoading && <Loading isAbsolute />}
       <Header title="정보 수정" />
       <ScrollBox>
         <Box alignItems="center">
@@ -250,10 +259,12 @@ export default function ShopUpdate() {
             title="브랜드"
             width={size.minusPadding}
             fontSize={Theme.fontSize.fs15}
+            height="auto"
+            minHeight="44px"
             placeHolder="브랜드를 선택해주세요"
             pd="0px 0px 5px"
             mg="20px 0px 20px"
-            value={shopInformation?.mst_brand}
+            value={shopInformation?.mst_brand ?? ''}
             PressText={() => {
               dispatch(
                 modalOpenAndProp({
@@ -362,8 +373,10 @@ export default function ShopUpdate() {
             fontSize={Theme.fontSize.fs15}
             placeHolder="태그를 선택해주세요"
             pd="0px 0px 5px"
+            height="auto"
+            minHeight="44px"
             isText
-            value={shopInformation?.mst_tag}
+            value={shopInformation?.mst_tag ?? ''}
             PressText={() => {
               dispatch(
                 modalOpenAndProp({

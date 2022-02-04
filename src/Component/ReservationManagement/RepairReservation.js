@@ -172,16 +172,18 @@ export default function RepairReservation({type}) {
           </Box>
         }
         ListFooterComponent={
-          <Box mg="20px 16px">
-            <TouchableOpacity onPress={onPressAllApprove}>
-              <Button backgroundColor={Theme.color.white} borderColor={Theme.borderColor.whiteGray}>
-                <RowBox backgroundColor="#0000" alignItems="center">
-                  <DefaultImage source={CheckIcon} width="24px" height="24px" />
-                  <DarkText mg="0px 0px 0px 10px">예약건 전체 승인</DarkText>
-                </RowBox>
-              </Button>
-            </TouchableOpacity>
-          </Box>
+          list.length > 0 && (
+            <Box mg="20px 16px">
+              <TouchableOpacity onPress={onPressAllApprove}>
+                <Button backgroundColor={Theme.color.white} borderColor={Theme.borderColor.whiteGray}>
+                  <RowBox backgroundColor="#0000" alignItems="center">
+                    <DefaultImage source={CheckIcon} width="24px" height="24px" />
+                    <DarkText mg="0px 0px 0px 10px">예약건 전체 승인</DarkText>
+                  </RowBox>
+                </Button>
+              </TouchableOpacity>
+            </Box>
+          )
         }
       />
     </>

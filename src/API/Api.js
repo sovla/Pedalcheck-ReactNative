@@ -60,7 +60,7 @@ export const API = axios.create({
   },
 });
 
-export const ImageAPI = async (data, field, url, isIndex = false, isArray = false) => {
+export const ImageAPI = async (data, field, url, isIndex = false, isArray = true) => {
   // 이미지 API 2022-01-05 16:40:31 Junhan
   //  data = args , field 이미지가 들어갈 이름
   try {
@@ -116,11 +116,14 @@ export const ImageAPI = async (data, field, url, isIndex = false, isArray = fals
       }
     }
     const formData = !isIndex
-      ? formFormatter({
-          jwt_data,
-          secretKey: SECRETKEY,
-          [`${field}`]: imageResult,
-        })
+      ? formFormatter(
+          {
+            jwt_data,
+            secretKey: SECRETKEY,
+            [`${field}`]: imageResult,
+          },
+          isArray,
+        )
       : formFormatter({
           jwt_data,
           secretKey: SECRETKEY,

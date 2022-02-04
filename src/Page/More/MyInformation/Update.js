@@ -197,7 +197,7 @@ export default function Update({navigation}) {
         }));
         result = true;
       }
-      if (emptyData(selectImage)) {
+      if (emptyData(image)) {
         setErrorMessage(prev => ({
           ...prev,
           mt_bank_image: '통장 사본을 등록해주세요.',

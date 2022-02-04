@@ -17,6 +17,7 @@ export const DefaultInput = ({
   changeFn, //        위 값 변경할 함수
   width,
   height = '44px',
+  minHeight,
   backgroundColor,
   fontSize = '13px', //   상단 제목, placeHolder, 내부 내용 폰트사이트
   disabled,
@@ -107,12 +108,13 @@ export const DefaultInput = ({
             },
           ]}
           maxHeight={maxHeight}
+          minHeight={minHeight}
           onContentSizeChange={onContentSizeChange}
         />
       )}
       {RenderCondition === 'isText' && ( // 텍스트 형태
         <TouchableOpacity onPress={PressText}>
-          <DefaultInputTextStyle pd="0px 0px 0px 10px" width={width} height={height}>
+          <DefaultInputTextStyle minHeight={minHeight} pd="0px 0px 0px 10px" width={width} height={height}>
             <DefaultText fontSize={fontSize} color={value !== '' ? Theme.color.black : Theme.color.gray}>
               {value !== '' ? value : placeHolder}
             </DefaultText>
@@ -205,19 +207,24 @@ const DefaultInputStyle = styled.TextInput`
     p.width &&
     css`
       width: ${pixelChange(p.width)};
-    `}
+    `};
   ${p =>
     p.height &&
     css`
       height: ${pixelChange(p.height)};
-    `}
-      ${p =>
+    `};
+  ${p =>
     p.maxHeight &&
     css`
       max-height: ${pixelChange(p.maxHeight)};
-    `}
+    `};
+  ${p =>
+    p.minHeight &&
+    css`
+      min-height: ${pixelChange(p.minHeight)};
+    `};
 
-    ${p =>
+  ${p =>
     p.borderColor &&
     css`
       border: 1px solid ${p.borderColor};
@@ -231,17 +238,22 @@ const DefaultInputTextStyle = styled.View`
   background-color: ${Theme.color.backgroundBlue};
   border-radius: 10px;
   justify-content: center;
-  padding: ${p => p.pd ?? pixelChange('0px 16px')}
-    ${p =>
-      p.width &&
-      css`
-        width: ${pixelChange(p.width)};
-      `}
-    ${p =>
-      p.height &&
-      css`
-        height: ${pixelChange(p.height)};
-      `};
+  padding: ${p => p.pd ?? pixelChange('0px 16px')};
+  ${p =>
+    p.width &&
+    css`
+      width: ${pixelChange(p.width)};
+    `};
+  ${p =>
+    p.height &&
+    css`
+      height: ${pixelChange(p.height)};
+    `};
+  ${p =>
+    p.minHeight &&
+    css`
+      min-height: ${pixelChange(p.minHeight)};
+    `};
 `;
 
 export const WhiteInput = styled(DefaultInputStyle)`

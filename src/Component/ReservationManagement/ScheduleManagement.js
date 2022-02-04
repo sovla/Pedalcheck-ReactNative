@@ -1,5 +1,5 @@
 import {getReservationDayList, reservationDayListSave} from '@/API/ReservationManagement/ReservationManagement';
-import {Box, Container} from '@/assets/global/Container';
+import {Box, Container, ScrollBox} from '@/assets/global/Container';
 import {GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import React from 'react';
@@ -45,7 +45,7 @@ export default function ScheduleManagement() {
         setSelectTime(
           data.store_time.map(item => {
             if (item.flag === 'N') {
-              return item.st_time;
+              return item.ot_time;
             } else {
               return;
             }
@@ -66,12 +66,12 @@ export default function ScheduleManagement() {
 
     timeList.map((item, index) => {
       // {st_time1:시간,flag1:Y||N} 처럼 객체로 데이터 가공
-      const findItem = selectTime.find(findItem => findItem === item.st_time);
+      const findItem = selectTime.find(findItem => findItem === item.ot_time);
       if (findItem) {
-        st_time.push(item.st_time);
+        st_time.push(item.ot_time);
         flag.push('N');
       } else {
-        st_time.push(item.st_time);
+        st_time.push(item.ot_time);
         flag.push(item.flag);
       }
     });
@@ -93,32 +93,31 @@ export default function ScheduleManagement() {
     });
     setIsLoading(false);
   };
+
   if (isLoading) {
     return <Loading />;
   }
   return (
-    <>
-      <Container>
-        <ScrollDays daySelect={daySelect} setDaySelect={setDaySelect} isNotPrev orderList={orderList} />
-        <Box mg="0px 16px 40px">
-          <GrayText fontSize={Theme.fontSize.fs13}>
-            좌/우로 슬라이드하여 지난 주/다음 주 예약내역을 볼 수 있습니다.
-          </GrayText>
-        </Box>
-        <DayScheduleManagement
-          daySelect={daySelect}
-          timeList={timeList}
-          allOff={allOff}
-          setAllOff={setAllOff}
-          repeat={repeat}
-          setRepeat={setRepeat}
-          memo={memo}
-          setMemo={setMemo}
-          selectTime={selectTime}
-          setSelectTime={setSelectTime}
-          onPressSave={onPressSave}
-        />
-      </Container>
-    </>
+    <ScrollBox>
+      <ScrollDays daySelect={daySelect} setDaySelect={setDaySelect} isNotPrev orderList={orderList} />
+      <Box mg="0px 16px 40px">
+        <GrayText fontSize={Theme.fontSize.fs13}>
+          좌/우로 슬라이드하여 지난 주/다음 주 예약내역을 볼 수 있습니다.
+        </GrayText>
+      </Box>
+      <DayScheduleManagement
+        daySelect={daySelect}
+        timeList={timeList}
+        allOff={allOff}
+        setAllOff={setAllOff}
+        repeat={repeat}
+        setRepeat={setRepeat}
+        memo={memo}
+        setMemo={setMemo}
+        selectTime={selectTime}
+        setSelectTime={setSelectTime}
+        onPressSave={onPressSave}
+      />
+    </ScrollBox>
   );
 }

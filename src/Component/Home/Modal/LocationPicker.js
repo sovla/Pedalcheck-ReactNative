@@ -70,13 +70,13 @@ export default function LocationPicker({setLocation}) {
       <ModalTitleBox size={size} title="지역 선택"></ModalTitleBox>
       <Box height="300px">
         <ScrollView style={{flex: 1}}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
               setLocation('전체');
               dispatch(modalClose());
             }}>
             <Text>전체 - 테스트용</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <RowBox style={{flexWrap: 'wrap'}} width={`${BoxWidth}px`}>
             {!isLoading &&
               locationArray.map((item, index) => (

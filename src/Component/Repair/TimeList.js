@@ -22,11 +22,15 @@ export default function TimeList({timeList = [], disabled = [], selectItem, setS
   if (!Array.isArray(timeList) || timeList.length === 0) {
     return null;
   }
+
   return (
     <Box mg="0px 16px">
       <RowBox width={size.minusPadding} flexWrap="wrap">
         {timeList.map((item, index) => {
-          const time = item.split(':');
+          if (!item) {
+            return null;
+          }
+          const time = item ? item.split(':') : '';
           return (
             <TimeBoxWithNthChild
               key={index}

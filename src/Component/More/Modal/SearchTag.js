@@ -14,12 +14,20 @@ import {useEffect} from 'react';
 import Theme from '@/assets/global/Theme';
 import {BorderButton} from '@/assets/global/Button';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
+import {useLayoutEffect} from 'react';
 
 export default function SearchTag({setShopInformation, shopInformation}) {
   const dispatch = useDispatch();
   const [tag, setTag] = useState('');
   const [tagList, setTagList] = useState([]);
-  const [selectList, setSelectList] = useState([]);
+  const [selectList, setSelectList] = useState(
+    shopInformation?.mst_tag?.length
+      ? shopInformation?.mst_tag?.split(', ')?.map(item => ({
+          st_title: item,
+        }))
+      : [],
+  );
+  console.log(selectList, 'selectList');
 
   useEffect(() => {
     getTagList()
@@ -27,7 +35,7 @@ export default function SearchTag({setShopInformation, shopInformation}) {
       .then(data => {
         setTagList(data);
       });
-    if (shopInformation?.mst_tag !== '') {
+    if (shopInformation?.mst_tag) {
       setSelectList(shopInformation?.mst_tag?.split(', '));
     }
   }, []);
@@ -37,9 +45,13 @@ export default function SearchTag({setShopInformation, shopInformation}) {
   }, [selectList]);
 
   const onPressSearch = () => {
-    // getBikeModel({search_txt: brand, bt_step: 1})
-    //   .then(res => res.data.result === 'true' && res.data.data.data)
-    //   .then(data => setBrandList(data));
+    getTagList({
+      search_txt: tag,
+    })
+      .then(res => res.data.result === 'true' && res.data.data.data)
+      .then(data => {
+        setTagList(data);
+      });
   };
   return (
     <>
@@ -53,7 +65,7 @@ export default function SearchTag({setShopInformation, shopInformation}) {
         <DefaultInput
           placeHolder="태그를 입력해주세요."
           width={`${412 - 32 - 40}px`}
-          changeFn={item => setBrand(item)}
+          changeFn={item => setTag(item)}
           value={tag}
         />
         <PositionBox right="15px" bottom="11px" backgroundColor="#0000">
@@ -85,9 +97,7 @@ export default function SearchTag({setShopInformation, shopInformation}) {
                   style={borderBottomWhiteGray}>
                   <DarkText>{item.st_title}</DarkText>
 
-                  <BorderButton
-                    backgroundColor={isSelect && Theme.color.skyBlue}
-                    color={isSelect && Theme.color.white}>
+                  <BorderButton backgroundColor={isSelect && Theme.color.skyBlue} color={isSelect && Theme.color.white}>
                     선택
                   </BorderButton>
                 </BetweenBox>

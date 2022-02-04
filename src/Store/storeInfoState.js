@@ -68,12 +68,16 @@ export const storeInfoSlice = createSlice({
     setStoreInfo: (state, action) => {
       return {
         ...action.payload,
-        mst_image: action.payload.mst_image.map(item => {
-          return {
-            ...item,
-            path: imageAddress + item.fname,
-          };
-        }),
+
+        mst_image:
+          action?.payload?.mst_image?.length > 0
+            ? action?.payload?.mst_image?.map(item => {
+                return {
+                  ...item,
+                  path: imageAddress + item.fname,
+                };
+              })
+            : [],
       };
     },
     ResetStoreInfo: state => {

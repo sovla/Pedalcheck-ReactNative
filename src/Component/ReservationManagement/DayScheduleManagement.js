@@ -26,12 +26,12 @@ export default function DayScheduleManagement({
 }) {
   const {size} = useSelector(state => state);
   const isTimeListArray = Array.isArray(timeList);
-  const storeTimeList = isTimeListArray && timeList?.map(item => item.st_time);
+  const storeTimeList = isTimeListArray && timeList?.map(item => item.ot_time);
   const storeTimeDisabledList =
     isTimeListArray &&
     timeList?.map(item => {
       if (item?.flag === 'N') {
-        return item.st_time;
+        return item.ot_time;
       }
     });
 
