@@ -81,7 +81,7 @@ export default function Post({route: {params}}) {
       });
     setIsLoading(false);
   };
-
+  console.log(noticeData);
   return (
     <>
       <Header title="공지 및 이벤트" />
@@ -95,7 +95,7 @@ export default function Post({route: {params}}) {
           }
           data={select === '공지' ? noticeData : eventData}
           renderItem={({item, index}) => {
-            const type = select === '공지' ? 'ft_' : 'bt_';
+            const type = select === '공지' ? 'bt_' : 'bt_'; // 공지 원래  ft_ 엿는데 변경
             const changeItem = {
               title: item[type + 'title'],
               date: item[type + 'wdate'],
