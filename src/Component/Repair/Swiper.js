@@ -9,7 +9,7 @@ import ArrowRight from '@assets/image/slide_r.png';
 import ArrowLeftDisabled from '@assets/image/slide_l_d.png';
 import ArrowRightDisable from '@assets/image/slide_r_d.png';
 import {useSelector} from 'react-redux';
-import {FlatList, ScrollView, TouchableOpacity} from 'react-native';
+import {Dimensions, FlatList, ScrollView, TouchableOpacity} from 'react-native';
 import {numberCheck} from '@/Page/Repair/RepairHome';
 import scrollSlideNumber from '@/Util/scrollSlideNumber';
 import {useRef} from 'react';
@@ -24,7 +24,11 @@ function SwiperComponent({imageArray, width, height, borderRadius = 'Bottom', is
   const [isEnd, setIsEnd] = useState(false);
 
   const onScrollSlide = e => {
-    setImageNumber(scrollSlideNumber(e, width));
+    if (typeof width === 'string') {
+      setImageNumber(scrollSlideNumber(e, width.split('px')[0]));
+    } else {
+      setImageNumber(scrollSlideNumber(e, width));
+    }
   };
 
   const onPressArrow = type => {
@@ -60,12 +64,12 @@ function SwiperComponent({imageArray, width, height, borderRadius = 'Bottom', is
           index: imageNumber + 1,
         });
       }
+
       setImageNumber(prev => prev + 1);
     } else {
       setIsEnd(true);
     }
   };
-
   useEffect(() => {
     savedCallback.current = callback;
     //  리액트 내에서 setInterval 할경우 setInterval 클로져가 imageNumber을 초기값 0 으로 기억하고 있는 문제가 발생해서

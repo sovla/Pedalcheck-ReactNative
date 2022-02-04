@@ -90,7 +90,7 @@ export default function RepairHistorySelectHome() {
       <ItemStats
         itemList={dataToItemList(homeInfo.product.data, 'repair')}
         onPressMore={
-          homeInfo.product.data.length >= 3 &&
+          homeInfo.product?.data?.length >= 3 &&
           (() =>
             navigation.navigate('BikeStats', {
               itemList: dataToItemList(homeInfo.product.data, 'repair'),
@@ -125,13 +125,13 @@ export default function RepairHistorySelectHome() {
 const dataToItemList = (data, type) => {
   let result;
   if (type === 'repair') {
-    result = data.map(item => ({
+    result = data?.map(item => ({
       title: item.pt_title,
       count: item.cnt,
       rate: item.percent + '%',
     }));
   } else if (type === 'bike') {
-    result = data.map(item => ({
+    result = data?.map(item => ({
       title: item.mbt_type_name,
       count: item.mbt_type_cnt,
       rate: item.percent + '%',

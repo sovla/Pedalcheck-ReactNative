@@ -8,6 +8,7 @@ import Header from '@/Component/Layout/Header';
 import RepairHistoryItem from '@/Component/More/RepairHistoryItem';
 import RepairProduct from '@/Component/ReservationManagement/RepairProduct';
 import {getPixel} from '@/Util/pixelChange';
+import {showToastMessage} from '@/Util/Toast';
 import {useNavigation} from '@react-navigation/core';
 import React from 'react';
 import {useEffect} from 'react';
@@ -63,17 +64,21 @@ export default function RepairHistory() {
               status: item?.ot_status,
               isReview: item?.ot_review === 'Y' && item?.ot_status === '처리완료',
               onPressReview: () => {
-                navigation.navigate('ReviewWrite', {
-                  navigate: 'RepairHistory',
-                  item: {
-                    title: changeItem?.shopName,
-                    date: changeItem?.date?.slice(0, 10),
-                    product: changeItem?.productNames,
-                    price: changeItem?.ot_price,
-                    od_idx: item?.od_idx,
-                    mst_idx: item?.mst_idx,
-                  },
-                });
+                if (item?.ot_review === 'N') {
+                  navigation.navigate('ReviewWrite', {
+                    navigate: 'RepairHistory',
+                    item: {
+                      title: changeItem?.shopName,
+                      date: changeItem?.date?.slice(0, 10),
+                      product: changeItem?.productNames,
+                      price: item?.ot_price,
+                      od_idx: item?.od_idx,
+                      mst_idx: item?.mst_idx,
+                    },
+                  });
+                } else {
+                  showToastMessage('이미 작성된 주문건입니다.');
+                }
               },
             };
 

@@ -7,7 +7,6 @@ import numberFormat from '@/Util/numberFormat';
 import React from 'react';
 import PencelIcon from '@assets/image/ic_modify.png';
 import {useSelector} from 'react-redux';
-import Review from './Review';
 import {Alert, FlatList, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import {RequireLoginAlert} from '@/Util/Alert';
