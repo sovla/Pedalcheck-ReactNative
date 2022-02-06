@@ -29,16 +29,19 @@ import BoxIcon from '@assets/image/box_Indigo.png';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import {isLastChild} from '@/Util/nthMap';
 import {BorderButton} from '@/assets/global/Button';
-import {useNavigation} from '@react-navigation/core';
+import {useNavigation, useIsFocused} from '@react-navigation/core';
 import {imageAddress} from '@assets/global/config';
 import {loginType} from '@/assets/global/dummy';
 import {useEffect} from 'react';
 import {getStoreInfo} from '@/API/More/More';
 import {setStoreInfo} from '@/Store/storeInfoState';
+import {getUserInformation} from '@/API/User/Login';
+import {setUserInfo} from '@/Store/loginState';
 
 export default function More() {
   const {size, login, storeInfo} = useSelector(state => state);
   const [isAdmin, setIsAdmin] = useState(false);
+  const isFocused = useIsFocused();
   const navigation = useNavigation();
   const onPressMenu = item => {
     switch (item) {
@@ -109,8 +112,12 @@ export default function More() {
         },
       ];
   useEffect(() => {
-    getStoreInfoHandle();
-  }, []);
+    if (isFocused) {
+      getStoreInfoHandle();
+      setUserInformation();
+    }
+  }, [isFocused]);
+
   const getStoreInfoHandle = async () => {
     const response = await getStoreInfo({
       _mt_idx: login.idx,
@@ -118,6 +125,16 @@ export default function More() {
 
     if (response?.data?.result === 'true') {
       dispatch(setStoreInfo(response?.data?.data?.data));
+    }
+  };
+  const setUserInformation = async () => {
+    const response = await getUserInformation({
+      _mt_idx: login.idx,
+    });
+
+    if (response?.data?.result === 'true') {
+      const data = response?.data?.data?.data;
+      dispatch(setUserInfo(data));
     }
   };
 

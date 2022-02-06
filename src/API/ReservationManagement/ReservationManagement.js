@@ -106,3 +106,12 @@ export const reservationTimeList = async args => {
     console.log(error);
   }
 };
+
+export const getOrderCount = async args => {
+  try {
+    const response = await API.post('mng/order_day_cnt.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

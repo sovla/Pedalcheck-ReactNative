@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-const initialState1 = {
+const initialState = {
   idx: '',
   mt_account: null,
   mt_ad: '',
@@ -35,7 +35,7 @@ const initialState1 = {
   mt_zip: null,
   naver_id: null,
 };
-const initialState = {
+const initialState456 = {
   idx: '10',
   mt_login_type: '1',
   mt_level: '5',
@@ -76,9 +76,9 @@ const initialState = {
   mt_idx: '10',
 };
 
-const initialState123 = {
-  idx: '2',
-  mt_login_type: '1',
+const initialState213123213 = {
+  idx: '11',
+  mt_login_type: '4',
   mt_level: '5',
   mt_seller: '2',
   mt_id: 'lotion3_@naver.com',
@@ -123,6 +123,7 @@ export const loginSlice = createSlice({
   reducers: {
     setUserInfo: (state, action) => {
       return (state = {
+        mt_idx: action.payload?.idx,
         ...state,
         ...action.payload,
       });

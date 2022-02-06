@@ -53,7 +53,7 @@ export default function BikeBrand() {
   }
   return (
     <>
-      <ModalTitleBox title="모델 검색"></ModalTitleBox>
+      <ModalTitleBox title="브랜드 검색"></ModalTitleBox>
       <Box>
         <Box width={`${size.designWidth - 32 - 40}px`}>
           <DefaultInput

@@ -216,6 +216,8 @@ export default function ProductRegister({route: {params}}) {
                 AlertButton('100% 아래로 입력해주세요.');
                 return null;
               }
+              // const textInt = parseInt(text);
+
               setProduct(prev => ({...prev, pt_discount_per: text}));
             }}
           />

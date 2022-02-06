@@ -6,6 +6,7 @@ import {DefaultInput} from '@/assets/global/Input';
 import {DarkMediumText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
+import Loading from '@/Component/Layout/Loading';
 import {modalOpenAndProp} from '@/Store/modalState';
 import {AlertButton} from '@/Util/Alert';
 import {showToastMessage} from '@/Util/Toast';
@@ -21,6 +22,7 @@ export default function CouponIssue() {
   const [id, setId] = useState('');
   const [issueCouponList, setIssueCouponList] = useState([]);
   const [issueCount, setIssueCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const login = useSelector(state => state.login);
   const navigation = useNavigation();
@@ -47,6 +49,7 @@ export default function CouponIssue() {
       AlertButton('쿠폰을 선택해주세요.');
       return null;
     }
+    setIsLoading(true);
     const response = await couponIssue({
       _mt_idx: login.idx,
       ct_idx: selectCoupon.ct_idx,
@@ -63,9 +66,11 @@ export default function CouponIssue() {
     } else {
       showToastMessage(response.data.msg);
     }
+    setIsLoading(false);
   };
   return (
     <>
+      {isLoading && <Loading isAbsolute />}
       <Header title="쿠폰 발급" />
 
       <Container pd="0px 16px">
@@ -89,7 +94,13 @@ export default function CouponIssue() {
               width="355px"
               placeHolder={'쿠폰 갯수를 입력해주세요'}
               value={issueCount}
-              changeFn={setIssueCount}
+              changeFn={text => {
+                if (text * 1 > 10) {
+                  AlertButton('쿠폰은 최대 10개까지 발급이 가능합니다.');
+                } else {
+                  setIssueCount(text);
+                }
+              }}
               keyboardType={'numeric'}
             />
             <DarkMediumText mg="0px 0px 0px 10px">개</DarkMediumText>

@@ -2,7 +2,7 @@ import {Box, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import {DarkText} from '@/assets/global/Text';
 import React, {Fragment} from 'react';
-import {View, ScrollView, TouchableOpacity} from 'react-native';
+import {View, ScrollView, TouchableOpacity, Text} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import ArrowRightIcon from '@assets/image/arr_right.png';
 import Theme from '@/assets/global/Theme';
@@ -60,7 +60,7 @@ export default function LocationPicker({setLocation}) {
     if (!isDetail) {
       await dispatch(modalOpen('locationPickerDetail'));
     } else {
-      if (setLocation) setLocation(location.name + ' ' + locationObject.name);
+      if (setLocation) await setLocation(location.name + ' ' + locationObject.name);
       await dispatch(DeleteLocation());
       await dispatch(modalClose());
     }
@@ -70,6 +70,13 @@ export default function LocationPicker({setLocation}) {
       <ModalTitleBox size={size} title="지역 선택"></ModalTitleBox>
       <Box height="300px">
         <ScrollView style={{flex: 1}}>
+          {/* <TouchableOpacity
+            onPress={() => {
+              setLocation('전체');
+              dispatch(modalClose());
+            }}>
+            <Text>전체 - 테스트용</Text>
+          </TouchableOpacity> */}
           <RowBox style={{flexWrap: 'wrap'}} width={`${BoxWidth}px`}>
             {!isLoading &&
               locationArray.map((item, index) => (

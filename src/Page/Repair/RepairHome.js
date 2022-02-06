@@ -34,7 +34,6 @@ export default function RepairHome() {
   const {size, login} = useSelector(state => state);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
-
   const [selectItem, setSelectItem] = useState('전체보기');
   const [sortSelectItem, setSortSelectItem] = useState('인기순');
 
@@ -157,7 +156,7 @@ export default function RepairHome() {
                 likeCount={item?.mst_likes ?? 0}
                 reviewCount={item?.mst_reviews ?? 0}
                 repairCount={item?.mst_orders ?? 0}
-                tagList={item.mst_tag.split(',')}
+                tagList={item?.mst_tag?.split(',')}
                 isImage
               />
             </Box>
@@ -342,15 +341,16 @@ const Event = () => {
     <>
       <BorderBottomBox title="EVENT" height="28px" titleColor={Theme.color.skyBlue} borderColor={Theme.color.skyBlue}>
         <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false}>
-          {eventList.map((item, index) => (
-            <TouchableOpacity
-              key={index + 'Event'}
-              onPress={() => navigation.navigate('Post', {...item, select: '이벤트'})}>
-              <DarkText numberOfLines={1} style={{width: getPixel(272)}}>
-                {item?.bt_title}
-              </DarkText>
-            </TouchableOpacity>
-          ))}
+          {eventList?.length > 0 &&
+            eventList.map((item, index) => (
+              <TouchableOpacity
+                key={index + 'Event'}
+                onPress={() => navigation.navigate('Post', {...item, select: '이벤트'})}>
+                <DarkText numberOfLines={1} style={{width: getPixel(272)}}>
+                  {item?.bt_title}
+                </DarkText>
+              </TouchableOpacity>
+            ))}
         </ScrollView>
         <TouchableOpacity onPress={() => navigation.navigate('Post', {select: '이벤트'})}>
           <DefaultImage source={PlusIcon} width="12px" height="12px" style={{marginRight: getPixel(10)}} />

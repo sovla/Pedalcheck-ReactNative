@@ -20,6 +20,7 @@ import {useState} from 'react';
 import {Alert} from 'react-native';
 import {AlertButton} from '@/Util/Alert';
 import {imageAddress} from '@assets/global/config';
+import Loading from '../Layout/Loading';
 
 export default function BikeRegisterContainer({isUpdate, bike, setBike, image, setImage}) {
   const {size, login} = useSelector(state => state);
@@ -34,12 +35,13 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
     bikeImage: '',
     bikeType: '',
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const onPressAddImage = () => {
     ImageCropPicker.openPicker({
       width: 300,
       height: 400,
-      cropping: true, // 자르기 활성화
+      cropping: false, // 자르기 활성화
     }).then(images => {
       setImage(images);
     });
@@ -49,6 +51,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
     if (RegJoin()) {
       return;
     }
+    setIsLoading(true);
     const bikeInfo = bike.bikeModel.split('\t\t');
     const sendData = {
       _mt_idx: login?.idx,
@@ -72,12 +75,15 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
     if (isUpdate) {
       const response = await bikeEdit(sendData);
       if (response.data.result === 'true') {
+        setIsLoading(false);
         Alert.alert('수정 되었습니다.');
         navigation.navigate('BikeManagement');
       }
     } else {
       const response = await addBike(sendData);
       if (response.data.result === 'true') {
+        setIsLoading(false);
+
         Alert.alert('등록 되었습니다.');
         navigation.goBack();
       }
@@ -249,6 +255,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
 
   return (
     <>
+      {isLoading && <Loading isAbsolute />}
       <Header title="자전거 추가" />
       <ScrollBox>
         <Box width={size.designWidth} pd="20px 16px">

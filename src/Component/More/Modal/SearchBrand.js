@@ -18,21 +18,22 @@ import useUpdateEffect from '@/Hooks/useUpdateEffect';
 export default function SearchBrand({setShopInformation, shopInformation}) {
   const [brand, setBrand] = useState('');
   const [brandList, setBrandList] = useState([]);
-  const [selectList, setSelectList] = useState([]);
-
+  const [selectList, setSelectList] = useState(
+    shopInformation?.mst_brand?.length ? shopInformation?.mst_brand?.split(',') : [],
+  );
   useEffect(() => {
     getBikeModel({bt_step: 1})
       .then(res => res.data.result === 'true' && res.data.data.data)
       .then(data => {
         setBrandList(data);
       });
-    if (shopInformation?.mst_brand !== '') {
-      setSelectList(shopInformation?.mst_brand?.split(', '));
+    if (shopInformation?.mst_brand) {
+      setSelectList(shopInformation?.mst_brand?.split(','));
     }
   }, []);
 
   useUpdateEffect(() => {
-    setShopInformation(prev => ({...prev, mst_brand: selectList?.join(', ')}));
+    setShopInformation(prev => ({...prev, mst_brand: selectList?.join(',')}));
   }, [selectList]);
 
   const onPressSearch = () => {
@@ -42,12 +43,7 @@ export default function SearchBrand({setShopInformation, shopInformation}) {
   };
   return (
     <>
-      <ModalTitleBox
-        title="브랜드 검색"
-        onclose={() => {
-          setShopInformation(prev => ({...prev, mst_brand: selectList?.join(', ')}));
-        }}
-      />
+      <ModalTitleBox title="브랜드 검색" />
       <Box width={`${412 - 32 - 40}px`}>
         <DefaultInput
           placeHolder="브랜드을 입력해주세요."

@@ -63,7 +63,7 @@ import ReservationManagementDetail from './ReservationManagement/ReservationMana
 import RepairHome from './Repair/RepairHome';
 import {BackHandler, SafeAreaView, ToastAndroid, useWindowDimensions, View} from 'react-native';
 import Theme from '@/assets/global/Theme';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import ModalBasic from '@/Component/Modal/ModalBasic';
 import {initSetting} from '@/Store/sizeState';
 import ProductDetail from './Repair/ProductDetail';
@@ -116,7 +116,7 @@ export default function Router() {
   useEffect(() => {
     getToken();
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      console.log(remoteMessage);
+      console.log('remoteMessage::', remoteMessage);
       showPushToastMessage({
         remoteMessage: remoteMessage,
         onPress: () => {

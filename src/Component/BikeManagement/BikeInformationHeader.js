@@ -7,13 +7,6 @@ import {DarkText, GrayText} from '@/assets/global/Text';
 import {imageAddress} from '@assets/global/config';
 
 export default function BikeInformationHeader({item, mg = '20px 0px'}) {
-  // {
-  //   bikeName:"",
-  //   brand:"",
-  //   modelName:"",
-  //   bikeName:""
-  // }
-  console.log(item);
   return (
     <RowBox mg={mg} alignItems="center">
       <DefaultImage

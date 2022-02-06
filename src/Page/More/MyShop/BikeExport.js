@@ -5,7 +5,7 @@ import {DefaultInput} from '@/assets/global/Input';
 import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
-import {modalOpen, setModalProp} from '@/Store/modalState';
+import {modalOpen, modalOpenAndProp, modalSlice, setModalProp} from '@/Store/modalState';
 import {phoneNumber} from '@/Util/phoneFormatter';
 import {showToastMessage} from '@/Util/Toast';
 import {useNavigation} from '@react-navigation/native';
@@ -53,7 +53,7 @@ export default function BikeExport({route}) {
         sbt_memo: data.sbt_memo,
         sbt_idx: data.sbt_idx,
       }));
-      setBikeModel(data.sbt_brand + '  ' + data.sbt_model);
+      setBikeModel(data.sbt_brand + '\t\t' + data.sbt_model);
     }
   }, []);
 
@@ -69,9 +69,11 @@ export default function BikeExport({route}) {
     } else {
       api = addBikeExport;
     }
-
+    const modelSplit = bikeModel.split('\t\t');
     const response = await api({
       ...bikeData,
+      sbt_brand: modelSplit[0],
+      sbt_model: modelSplit[1],
     });
 
     if (response?.data?.result === 'true') {
@@ -83,14 +85,16 @@ export default function BikeExport({route}) {
   const RegJoin = () => {
     let RegCheck = true;
 
-    if (bikeData?.sbt_model === '') {
-      setErrorMessage(prev => ({...prev, sbt_brand: '모델을 선택해 주세요'}));
-      RegCheck = false;
-    }
-
-    if (bikeData?.sbt_brand === '') {
-      setErrorMessage(prev => ({...prev, sbt_brand: '브랜드를 선택해 주세요'}));
-      RegCheck = false;
+    if (bikeModel.includes('\t\t')) {
+      const modelSplit = bikeModel.split('\t\t');
+      if (modelSplit[0] === '') {
+        setErrorMessage(prev => ({...prev, sbt_brand: '모델을 선택해 주세요'}));
+        RegCheck = false;
+      }
+      if (modelSplit[1] === '') {
+        setErrorMessage(prev => ({...prev, sbt_brand: '브랜드를 선택해 주세요'}));
+        RegCheck = false;
+      }
     }
 
     if (bikeData?.sbt_serial === '') {
@@ -106,17 +110,6 @@ export default function BikeExport({route}) {
     return RegCheck;
   };
 
-  useUpdateEffect(() => {
-    if (modal?.modalProp && modal?.isDone) {
-      setBikeModel(modal?.modalProp);
-      setBikeData(prev => ({
-        ...prev,
-        sbt_brand: modal?.modalProp.split('  ')[0],
-        sbt_model: modal?.modalProp.split('  ')[1],
-      }));
-    }
-  }, [modal?.isDone]);
-
   return (
     <>
       <Header title="출고 등록" />
@@ -130,12 +123,11 @@ export default function BikeExport({route}) {
           value={bikeModel}
           PressText={() => {
             dispatch(
-              setModalProp({
-                modalProp: undefined,
-                isDone: false,
+              modalOpenAndProp({
+                modalComponent: 'bikeModel',
+                setBikeInfo: setBikeModel,
               }),
             );
-            dispatch(modalOpen('bikeModel'));
           }}
           mg="0px 0px 20px"
           errorMessage={errorMessage.sbt_brand !== '' && errorMessage.sbt_brand}

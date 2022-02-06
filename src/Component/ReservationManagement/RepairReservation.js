@@ -14,7 +14,12 @@ import {useNavigation} from '@react-navigation/core';
 import ScrollDays from './ScrollDays';
 import MenuNav from '../Layout/MenuNav';
 import {useEffect} from 'react';
-import {getCouponReservationList, getReservationList} from '@/API/ReservationManagement/ReservationManagement';
+import {
+  getCouponReservationList,
+  getOrderCount,
+  getReservationDayList,
+  getReservationList,
+} from '@/API/ReservationManagement/ReservationManagement';
 import {getPixel} from '@/Util/pixelChange';
 import DefaultDropdown from '../MyShop/DefaultDropdown';
 import {repairHistoryDropdownList} from '@/assets/global/dummy';
@@ -54,6 +59,17 @@ export default function RepairReservation({type}) {
   useEffect(() => {
     if (isFocused) {
       getReservationListHandle(1);
+      getOrderCount({
+        _mt_idx: login.idx,
+        date: getDay(new Date()),
+        type,
+      })
+        .then(res => res.data.result === 'true' && res.data.data.data)
+        .then(data => {
+          if (data) {
+            setOrderList(data.order_date);
+          }
+        });
     }
   }, [isFocused]);
   useUpdateEffect(() => {
@@ -111,7 +127,7 @@ export default function RepairReservation({type}) {
         }}
         ListHeaderComponent={
           <Box>
-            <ScrollDays daySelect={daySelect} setDaySelect={setDaySelect} />
+            <ScrollDays daySelect={daySelect} setDaySelect={setDaySelect} orderList={orderList} />
             <Box width={size.minusPadding} mg="0px 16px 32px">
               <GrayText fontSize={Theme.fontSize.fs13}>
                 좌/우로 슬라이드하여 지난 주/다음 주 예약내역을 볼 수 있습니다.
@@ -156,16 +172,18 @@ export default function RepairReservation({type}) {
           </Box>
         }
         ListFooterComponent={
-          <Box mg="20px 16px">
-            <TouchableOpacity onPress={onPressAllApprove}>
-              <Button backgroundColor={Theme.color.white} borderColor={Theme.borderColor.whiteGray}>
-                <RowBox backgroundColor="#0000" alignItems="center">
-                  <DefaultImage source={CheckIcon} width="24px" height="24px" />
-                  <DarkText mg="0px 0px 0px 10px">예약건 전체 승인</DarkText>
-                </RowBox>
-              </Button>
-            </TouchableOpacity>
-          </Box>
+          list.length > 0 && (
+            <Box mg="20px 16px">
+              <TouchableOpacity onPress={onPressAllApprove}>
+                <Button backgroundColor={Theme.color.white} borderColor={Theme.borderColor.whiteGray}>
+                  <RowBox backgroundColor="#0000" alignItems="center">
+                    <DefaultImage source={CheckIcon} width="24px" height="24px" />
+                    <DarkText mg="0px 0px 0px 10px">예약건 전체 승인</DarkText>
+                  </RowBox>
+                </Button>
+              </TouchableOpacity>
+            </Box>
+          )
         }
       />
     </>

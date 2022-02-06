@@ -11,7 +11,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import Theme from '@/assets/global/Theme';
 import {TouchableOpacity} from 'react-native';
 import {modalOpen, modalOpenAndProp} from '@/Store/modalState';
-import {AddInformation, MemberJoin} from '@/API/User/Login';
+import {AddInformation, AddInformationImage, MemberJoin} from '@/API/User/Login';
 import {charImage} from '@/assets/global/dummy';
 import SnsLogin from '@/Hooks/SnsLogin';
 import {setUserInfo} from '@/Store/loginState';
@@ -22,12 +22,12 @@ import {login} from '@react-native-seoul/kakao-login';
 export default function RegisterAdditional({navigation, route}) {
   const {snsLogin, token, birthDate} = useSelector(state => state);
   const [selectImage, setSelectImage] = useState();
-  const [sex, setSex] = useState('man');
   const [imageType, setImageType] = useState(1);
+  const [sex, setSex] = useState('man');
+
   const dispatch = useDispatch();
   const information = route.params.information;
-  const birthDateValue =
-    birthDate?.year !== '' ? `${birthDate.year}-${birthDate.month}-${birthDate.day}` : '';
+  const birthDateValue = birthDate?.year !== '' ? `${birthDate.year}-${birthDate.month}-${birthDate.day}` : '';
 
   const onPressSave = async () => {
     await MemberJoin({
@@ -40,18 +40,19 @@ export default function RegisterAdditional({navigation, route}) {
       mt_app_token: token.token,
     }).then(res => {
       if (res?.data?.result !== 'false') {
-        dispatch(setUserInfo(res?.data?.data?.data?.data));
+        dispatch(setUserInfo(res?.data?.data?.data));
       }
     });
 
-    const response = await AddInformation({
+    const response = await AddInformationImage({
       mt_idx: snsLogin.mt_idx,
-      mt_image_type: 1, // 수정 필요
-      mt_image_num: selectImage,
+      mt_image_type: !isNaN(selectImage) ? 1 : 2,
+      mt_image_num: !isNaN(selectImage) && selectImage,
+      mt_image: isNaN(selectImage) && selectImage,
       mt_gender: sex === 'man' ? 'M' : 'F',
       mt_birth: birthDateValue,
     });
-    if (response.data.result === 'true') {
+    if (response.data?.result === 'true') {
       navigation.reset({routes: [{name: 'RepairHome'}]});
     }
   };
@@ -79,23 +80,14 @@ export default function RegisterAdditional({navigation, route}) {
   );
 }
 
-export const RegisterAdditionalBody = ({
-  sex,
-  setSex,
-  setSelectImage,
-  selectImage,
-  imageType,
-  setImageType,
-  login,
-}) => {
+export const RegisterAdditionalBody = ({sex, setSex, setSelectImage, selectImage, imageType, setImageType, login}) => {
   const {size} = useSelector(state => state);
 
   const dispatch = useDispatch();
 
   const {birthDate} = useSelector(state => state);
 
-  const birthDateValue =
-    birthDate?.year !== '' ? `${birthDate.year}년 ${birthDate.month}월 ${birthDate.day}일` : '';
+  const birthDateValue = birthDate?.year !== '' ? `${birthDate.year}년 ${birthDate.month}월 ${birthDate.day}일` : '';
 
   let image = selectImage ? charImage[selectImage] : ProfileImage;
   if (!image) {
@@ -108,7 +100,7 @@ export const RegisterAdditionalBody = ({
     ImageCropPicker.openPicker({
       width: 300,
       height: 400,
-      cropping: true, // 자르기 활성화
+      cropping: false, // 자르기 활성화
     }).then(images => {
       setSelectImage(images);
       setImageType(2);
@@ -125,8 +117,7 @@ export const RegisterAdditionalBody = ({
           source={
             imageType === 2
               ? {
-                  uri:
-                    selectImage.path !== undefined ? selectImage.path : imageAddress + selectImage,
+                  uri: selectImage.path !== undefined ? selectImage.path : imageAddress + selectImage,
                 }
               : image
           }
@@ -158,12 +149,7 @@ export const RegisterAdditionalBody = ({
       <Box>
         <DarkText>성별</DarkText>
         <RowBox mg="10px 0px 0px" width="100%">
-          <CheckBox
-            width="auto"
-            isCheck={sex === 'man'}
-            setIsCheck={() => setSex('man')}
-            pd="0px 40px 0px 0px"
-            isRadio>
+          <CheckBox width="auto" isCheck={sex === 'man'} setIsCheck={() => setSex('man')} pd="0px 40px 0px 0px" isRadio>
             <DarkText pd="0px 0px 0px 10px">남성</DarkText>
           </CheckBox>
           <CheckBox
