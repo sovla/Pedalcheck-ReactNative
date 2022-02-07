@@ -19,6 +19,7 @@ import {
   getOrderCount,
   getReservationDayList,
   getReservationList,
+  sendAllApprove,
 } from '@/API/ReservationManagement/ReservationManagement';
 import {getPixel} from '@/Util/pixelChange';
 import DefaultDropdown from '../MyShop/DefaultDropdown';
@@ -50,9 +51,24 @@ export default function RepairReservation({type}) {
     isReservation: true,
   }); // 로딩여부
 
-  const onPressAllApprove = () => {
+  const onPressAllApprove = async () => {
     AlertButtons('예약 건 전체를 승인 처리하시겠습니까?', '확인', '취소', () => {
-      showToastMessage('변경되었습니다.');
+      sendAllApprove({
+        _mt_idx: login.idx,
+        od_idx: list
+          .filter((value, index) => {
+            value.ot_status === '예약';
+          })
+          .map((value, index) => {
+            return value.od_idx;
+          })
+          .join(','),
+      }).then(res => {
+        if (res.data?.result === 'true') {
+          showToastMessage('변경되었습니다.');
+          getReservationListHandle(1);
+        }
+      });
     });
   };
   const onPressProduct = item => {
@@ -185,7 +201,10 @@ export default function RepairReservation({type}) {
           </Box>
         }
         ListFooterComponent={
-          list.length > 0 && (
+          list.length > 0 &&
+          list.filter((value, index) => {
+            return value.ot_status === '예약';
+          }).length > 0 && (
             <Box mg="20px 16px">
               <TouchableOpacity onPress={onPressAllApprove}>
                 <Button backgroundColor={Theme.color.white} borderColor={Theme.borderColor.whiteGray}>

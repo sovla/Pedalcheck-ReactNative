@@ -74,8 +74,6 @@ export default function RepairHistorySelectReview() {
   };
 
   const commentSubmit = async (srt_idx, srt_res_content, srt_adate) => {
-    console.log(srt_idx);
-
     const response = await addReview({
       _mt_idx: login.idx,
       srt_idx: srt_idx,
@@ -174,11 +172,11 @@ export default function RepairHistorySelectReview() {
         ListEmptyComponent={
           <>
             {isLoading ? (
-              <Box alignItems="center" justifyContent="center" width="380px" height={`${getHeightPixel(300)}`}>
+              <Box alignItems="center" justifyContent="center" width="380px" height={`${getHeightPixel(300)}px`}>
                 <Loading />
               </Box>
             ) : (
-              <Box alignItems="center" justifyContent="center" width="380px" height={`${getHeightPixel(300)}`}>
+              <Box alignItems="center" justifyContent="center" width="380px" height={`${getHeightPixel(300)}px`}>
                 <DarkMediumText>리뷰 내역이 없습니다.</DarkMediumText>
               </Box>
             )}

@@ -11,26 +11,25 @@ import UnLikeIcon from '@assets/image/good_b.png';
 import {useNavigation} from '@react-navigation/core';
 import {AlertButton, AlertButtons, RequireLoginAlert} from '@/Util/Alert';
 
-export default function FooterButtons({
-  isRepair = false,
-  isLike = false,
-  onPressLike = () => {},
-  my_bike,
-}) {
+export default function FooterButtons({isRepair = false, isLike = false, onPressLike = () => {}, my_bike}) {
   const {login, shopInfo} = useSelector(state => state);
   const navigation = useNavigation();
   const onPressRepair = () => {
+    if (shopInfo?.store_info?.mt_idx === login.idx) {
+      AlertButton('본인 매장에는 예약할 수 없습니다.');
+      return;
+    }
     if (RequireLoginAlert(login, navigation)) {
+      //  로그인확인
       if (!my_bike) {
-        AlertButtons(
-          '등록된 자전거가 없습니다. 정비할 자전거를 등록해주세요.',
-          '확인',
-          '취소',
-          () => navigation.navigate('BikeManagement'),
+        //  api에서 받아온 내 자전거가 없는경우
+        AlertButtons('등록된 자전거가 없습니다. 정비할 자전거를 등록해주세요.', '확인', '취소', () =>
+          navigation.navigate('BikeManagement'),
         );
         return;
       } else {
         if (shopInfo.pt_list) {
+          // 상품이 없는 경우
           navigation.navigate('ReservationProduct');
         } else {
           AlertButton('예약 가능한 상품이 없습니다.');
@@ -41,10 +40,7 @@ export default function FooterButtons({
   return (
     <PositionBox bottom="0px">
       <RowBox width="412px" height="50px" style={[styles.borderRight, styles.borderLeft]}>
-        <TouchableOpacity
-          disabled={isRepair ? false : true}
-          style={styles.touchBox}
-          onPress={onPressRepair}>
+        <TouchableOpacity disabled={isRepair ? false : true} style={styles.touchBox} onPress={onPressRepair}>
           {isRepair ? ( // 정비예약 가능
             <RowBox
               width="100%"

@@ -25,7 +25,7 @@ import {getShopList} from '@/API/Shop/Shop';
 import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
 import {modalOpenAndProp} from '@/Store/modalState';
 import {getEventList} from '@/API/Repair/Repair';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation, useNavigationState} from '@react-navigation/native';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {reduceItemSplit} from '@/Util/reduceItem';
 import Loading from '@/Component/Layout/Loading';

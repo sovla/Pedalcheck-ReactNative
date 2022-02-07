@@ -42,7 +42,6 @@ export default function RegisterInformation({navigation}) {
       mt_idx: snsLogin.mt_idx,
       mt_app_token: token.token,
     }).then(res => {
-      console.log('MEMBERJOIN', res);
       if (res.data?.result !== 'false') {
         dispatch(setUserInfo(res.data.data.data));
         navigation.navigate('RepairHome');

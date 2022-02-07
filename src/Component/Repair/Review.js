@@ -21,13 +21,18 @@ export default function Review({
 }) {
   const {size} = useSelector(state => state);
   const navigation = useNavigation();
+
   const imageArray =
     item?.srt_image?.length > 0
       ? item?.srt_image?.map((v, i) => {
           return {uri: imageAddress + v};
         })
-      : [ShopDummyImage];
-  console.log(item);
+      : item?.srt_img?.length > 0
+      ? item?.srt_img.map((v, i) => {
+          return {uri: imageAddress + v};
+        })
+      : [];
+
   return (
     <Box
       pd="20px 0px"
@@ -77,11 +82,17 @@ export default function Review({
       </RowBox>
       <Box mg="15px 0px 0px" borderRadius="10px">
         {isDetailPage ? (
-          <Swiper width={size.minusPadding} height={200} imageArray={imageArray} borderRadius="All" isRolling />
+          <Swiper width={size.minusPadding} height={200} imageArray={imageArray} borderRadius="All" isRolling={false} />
         ) : (
           imageArray?.length > 0 && (
             <Box>
-              <DefaultImage source={ShopDummyImage} borderRadius="10px" width={size.minusPadding} height="150px" />
+              <DefaultImage
+                source={imageArray[0]}
+                borderRadius="10px"
+                width={size.minusPadding}
+                height="150px"
+                resizeMode="stretch"
+              />
               {imageArray?.length > 1 && (
                 <PositionBox
                   right="10px"
@@ -106,7 +117,7 @@ export default function Review({
 
       {isDetail && (
         <LinkWhiteButton
-          to={() => navigation.navigate('ReviewDetail')}
+          to={() => navigation.navigate('ReviewDetail', {item})}
           width={size.minusPadding}
           mg="15px 0px 0px 0px"
           content="자세히보기"

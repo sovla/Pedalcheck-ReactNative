@@ -86,7 +86,14 @@ export default function Shop({route, navigation}) {
           }
           data={selectMenu === '리뷰' ? shopInfo?.review_list : []}
           renderItem={({item, index}) => (
-            <Review item={item} index={index} width="380px" mg="0px 16px" isRecomment={!item?.srt_res_content} />
+            <Review
+              item={item}
+              index={index}
+              width="380px"
+              mg="0px 16px"
+              isRecomment={!item?.srt_res_content}
+              isDetail
+            />
           )}
           keyExtractor={(item, index) => index.toString()}
           ListFooterComponent={<View style={{marginBottom: 70}}></View>}

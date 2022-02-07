@@ -27,7 +27,6 @@ export default function SearchTag({setShopInformation, shopInformation}) {
         }))
       : [],
   );
-  console.log(selectList, 'selectList');
 
   useEffect(() => {
     getTagList()

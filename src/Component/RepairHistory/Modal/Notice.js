@@ -50,7 +50,6 @@ export default function Notice() {
             noticeIdx: item?.nt_data1, // 푸시 알림 보낸 사람 idx
             noticeData: item?.nt_data2, // 이동 후 메뉴 선택
           };
-          console.log(item.item);
           return <NoticeItem item={changeItem} isCheck={item?.nt_read === 'Y' ? true : false} />;
         }}
       />
@@ -92,7 +91,6 @@ const NoticeItem = ({
   },
   isCheck,
 }) => {
-  console.log('item :: ', item);
   return (
     <TouchableOpacity disabled={isCheck}>
       <Box width="380px" minHeight="95px" justifyContent="center" style={borderBottomWhiteGray}>

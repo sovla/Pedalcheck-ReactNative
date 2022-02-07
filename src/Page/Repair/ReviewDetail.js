@@ -11,12 +11,12 @@ import {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {useSelector} from 'react-redux';
 
-export default function ReviewDetail(props) {
+export default function ReviewDetail({route: {params}}) {
   const [comment, setComment] = useState('');
   const {size} = useSelector(state => state);
-  const isRecomment = props?.route?.params?.isRecomment;
-  const item = props?.route?.params?.item;
-  const commentSubmit = props?.route?.params?.commentSubmit;
+  const isRecomment = params?.isRecomment;
+  const item = params?.item;
+  const commentSubmit = params?.commentSubmit;
   const navigation = useNavigation();
   return (
     <>
