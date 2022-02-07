@@ -220,7 +220,7 @@ export default function RepairHistoryDetail({route: {params}}) {
                 <BetweenBox width={size.minusPadding}>
                   <DarkMediumText fontSize={Theme.fontSize.fs15}>가격</DarkMediumText>
                   <MoneyText
-                    money={repair?.ot_sprice}
+                    money={repair?.ot_price}
                     fontSize={Theme.fontSize.fs15}
                     color={Theme.color.black}
                     fontWeight={Theme.fontWeight.bold}
@@ -228,11 +228,7 @@ export default function RepairHistoryDetail({route: {params}}) {
                 </BetweenBox>
                 <BetweenBox width={size.minusPadding} mg="10px 0px 15px">
                   <DarkMediumText fontSize={Theme.fontSize.fs15}>할인</DarkMediumText>
-                  <MoneyText
-                    money={repair?.ot_sprice * 1 - repair?.ot_price * 1}
-                    fontSize={Theme.fontSize.fs15}
-                    color={Theme.color.black}
-                  />
+                  <MoneyText money={repair?.ot_sprice * -1} fontSize={Theme.fontSize.fs15} color={Theme.color.black} />
                 </BetweenBox>
               </Box>
               <Box mg="0px 16px" style={borderBottomWhiteGray}>
@@ -245,7 +241,7 @@ export default function RepairHistoryDetail({route: {params}}) {
                       fontSize={Theme.fontSize.fs18}
                       fontWeight={Theme.fontWeight.bold}
                       color={Theme.color.black}
-                      money={repair?.ot_price * 1}
+                      money={repair?.ot_price}
                     />
                   </RowBox>
                 </BetweenBox>

@@ -35,3 +35,12 @@ export const deleteBikeExport = async args => {
     console.log(error);
   }
 };
+
+export const getNoticeList = async args => {
+  try {
+    const response = await API.post('mng/notification.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

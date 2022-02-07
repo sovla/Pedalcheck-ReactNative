@@ -24,24 +24,32 @@ const ItemStats = ({
   }
   const total = {
     title: '합계',
-    count: itemList.reduce((prev, curr) => {
-      if (prev.count) {
-        return parseInt(prev.count) + parseInt(curr.count);
-      } else {
-        return prev + parseInt(curr.count);
-      }
-    }),
+    count:
+      itemList?.length > 1
+        ? itemList.reduce((prev, curr) => {
+            if (prev.count) {
+              return parseInt(prev.count) + parseInt(curr.count);
+            } else {
+              return prev + parseInt(curr.count);
+            }
+          })
+        : itemList[0].count,
     rate:
-      Math.round(
-        itemList.reduce((prev, curr) => {
-          if (prev.rate) {
-            return parseFloat(prev.rate.split('%')) + parseFloat(curr.rate.split('%'));
-          } else {
-            return prev + parseFloat(curr.rate.split('%'));
-          }
-        }),
-      ) + '%',
+      itemList.length > 1
+        ? Math.round(
+            itemList.reduce((prev, curr) => {
+              if (prev.rate) {
+                return parseFloat(prev.rate.split('%')) + parseFloat(curr.rate.split('%'));
+              } else {
+                return prev + parseFloat(curr.rate.split('%'));
+              }
+            }),
+          ) + '%'
+        : itemList[0].rate,
   };
+
+  console.log('total :::: ', total);
+  console.log('itemList :::: ', itemList);
   return (
     <Box width={`${width}px`} pd="20px 16px 20px" borderRadius="10px" mg={!isFull && '20px 0px 0px'}>
       <RowBox mg="0px 0px 20px">
@@ -57,7 +65,7 @@ const ItemStats = ({
         backgroundColor={Theme.color.backgroundWhiteBlue}
         itemList={Object.values(total)}
       />
-      {itemList.map((item, index) => {
+      {itemList?.map((item, index) => {
         if (index < showCount) return <TableRow width={`${width - 32}px`} key={index} itemList={Object.values(item)} />;
       })}
       {onPressMore && <LinkWhiteButton width="348px" mg="20px 0px 0px" content={'더보기'} to={onPressMore} />}
@@ -67,10 +75,10 @@ const ItemStats = ({
 
 export default ItemStats;
 
-const TableRow = ({backgroundColor, width, height = '40px', itemList}) => {
+const TableRow = ({backgroundColor, width, height = '40px', itemList, test}) => {
   return (
     <RowBox backgroundColor={backgroundColor} width={width} height={height} style={borderBottomWhiteGray}>
-      {itemList.map((item, index) => (
+      {itemList?.map((item, index) => (
         <DarkMediumText
           key={item + index}
           backgroundColor="#0000"
@@ -81,7 +89,7 @@ const TableRow = ({backgroundColor, width, height = '40px', itemList}) => {
             textAlignVertical: 'center',
           }}
           fontSize={Theme.fontSize.fs13}>
-          {item}
+          {item.title ? item.title : item}
         </DarkMediumText>
       ))}
     </RowBox>
