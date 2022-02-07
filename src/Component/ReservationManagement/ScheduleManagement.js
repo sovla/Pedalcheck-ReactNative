@@ -45,14 +45,16 @@ export default function ScheduleManagement() {
         setSelectTime(
           data.store_time.map(item => {
             if (item.flag === 'N') {
-              return item.ot_time;
+              return item?.ot_time ?? item?.st_time;
             } else {
               return;
             }
           }),
         );
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
-    setIsLoading(false);
   }, [daySelect]);
 
   const onPressSave = () => {
@@ -84,21 +86,22 @@ export default function ScheduleManagement() {
       st_memo: memo,
       st_time,
       flag,
-    }).then(res => {
-      if (res.data?.result === 'true') {
-        showToastMessage(res.data.msg);
-      } else {
-        showToastMessage(res.data.msg);
-      }
-    });
-    setIsLoading(false);
+    })
+      .then(res => {
+        if (res.data?.result === 'true') {
+          showToastMessage(res.data.msg);
+        } else {
+          showToastMessage(res.data.msg);
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
-  if (isLoading) {
-    return <Loading />;
-  }
   return (
     <ScrollBox>
+      {isLoading && <Loading isAbsolute top="-50px" />}
       <ScrollDays daySelect={daySelect} setDaySelect={setDaySelect} isNotPrev orderList={orderList} />
       <Box mg="0px 16px 40px">
         <GrayText fontSize={Theme.fontSize.fs13}>

@@ -30,6 +30,7 @@ import {AlertButtons} from '@/Util/Alert';
 import {showToastMessage} from '@/Util/Toast';
 import {useIsFocused} from '@react-navigation/native';
 import {useLayoutEffect} from 'react';
+import Loading from '../Layout/Loading';
 
 export default function RepairReservation({type}) {
   const navigation = useNavigation();
@@ -44,6 +45,10 @@ export default function RepairReservation({type}) {
   const [orderList, setOrderList] = useState([]); // 아래에
 
   const [isLast, setIsLast] = useState(false); // 리스트 마지막 여부
+  const [isLoading, setIsLoading] = useState({
+    isCount: true,
+    isReservation: true,
+  }); // 로딩여부
 
   const onPressAllApprove = () => {
     AlertButtons('예약 건 전체를 승인 처리하시겠습니까?', '확인', '취소', () => {
@@ -59,6 +64,7 @@ export default function RepairReservation({type}) {
   useEffect(() => {
     if (isFocused) {
       getReservationListHandle(1);
+
       getOrderCount({
         _mt_idx: login.idx,
         date: getDay(new Date()),
@@ -69,6 +75,9 @@ export default function RepairReservation({type}) {
           if (data) {
             setOrderList(data.order_date);
           }
+        })
+        .finally(() => {
+          setIsLoading(prev => ({...prev, isCount: false}));
         });
     }
   }, [isFocused]);
@@ -85,7 +94,7 @@ export default function RepairReservation({type}) {
       await setIsLast(false);
     }
     const getListFunction = type === 'coupon' ? getCouponReservationList : getReservationList;
-
+    setIsLoading(prev => ({...prev, isReservation: true}));
     await getListFunction({
       _mt_idx: login?.idx,
       ot_date: typeof daySelect === 'object' ? getDay(daySelect) : daySelect,
@@ -111,9 +120,11 @@ export default function RepairReservation({type}) {
           }
         }
       });
+    setIsLoading(prev => ({...prev, isReservation: false}));
   };
   return (
     <>
+      {(isLoading.isCount || isLoading.isReservation) && <Loading isAbsolute height="712px" top="-100px" />}
       <FlatList
         data={list}
         onEndReached={() => {
@@ -168,7 +179,9 @@ export default function RepairReservation({type}) {
         }}
         ListEmptyComponent={
           <Box justifyContent="center" alignItems="center" pd="60px 0px">
-            <DarkMediumText>예약내역이 존재하지 않습니다.</DarkMediumText>
+            {(!isLoading.isCount || !isLoading.isReservation) && (
+              <DarkMediumText>예약내역이 존재하지 않습니다.</DarkMediumText>
+            )}
           </Box>
         }
         ListFooterComponent={

@@ -2,7 +2,7 @@ import {BetweenBox, Box, Container, PositionBox, RowBox, ScrollBox} from '@/asse
 import React from 'react';
 import {useState} from 'react';
 import DefaultImage from '@/assets/global/Image';
-import {DarkBoldText, DarkText, GrayText, IndigoText, MoneyText} from '@/assets/global/Text';
+import {DarkBoldText, DarkMediumText, DarkText, GrayText, IndigoText, MoneyText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import numberFormat from '@/Util/numberFormat';
 import {useDispatch, useSelector} from 'react-redux';
@@ -24,6 +24,7 @@ import {showToastMessage} from '@/Util/Toast';
 import Loading from '@/Component/Layout/Loading';
 import {imageAddress} from '@assets/global/config';
 import profileDefault from '@assets/image/profile_default.png';
+import {getHeightPixel} from '@/Util/pixelChange';
 
 // 2022-01-17 17:17:25 현태 수정 필요
 
@@ -152,7 +153,6 @@ export default function RepairHistorySelectReview() {
                 </TouchableOpacity>
               </PositionBox>
             </RowBox>
-            {isLoading && <Loading isAbsolute isFullSize={false} />}
           </>
         }
         data={review}
@@ -172,9 +172,17 @@ export default function RepairHistorySelectReview() {
         }}
         onScrollBeginDrag={() => setIsScroll(true)}
         ListEmptyComponent={
-          <Box alignItems="center" mg="20px 0px">
-            {!isLoading && <DarkBoldText>검색결과가 없습니다.</DarkBoldText>}
-          </Box>
+          <>
+            {isLoading ? (
+              <Box alignItems="center" justifyContent="center" width="380px" height={`${getHeightPixel(300)}`}>
+                <Loading />
+              </Box>
+            ) : (
+              <Box alignItems="center" justifyContent="center" width="380px" height={`${getHeightPixel(300)}`}>
+                <DarkMediumText>리뷰 내역이 없습니다.</DarkMediumText>
+              </Box>
+            )}
+          </>
         }
       />
       {/* <Review isDetail /> */}

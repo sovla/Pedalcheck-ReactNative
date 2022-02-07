@@ -26,7 +26,7 @@ export default function DayScheduleManagement({
 }) {
   const {size} = useSelector(state => state);
   const isTimeListArray = Array.isArray(timeList);
-  const storeTimeList = isTimeListArray && timeList?.map(item => item.ot_time);
+  const storeTimeList = isTimeListArray && timeList?.map(item => item?.ot_time ?? item.st_time);
   const storeTimeDisabledList =
     isTimeListArray &&
     timeList?.map(item => {

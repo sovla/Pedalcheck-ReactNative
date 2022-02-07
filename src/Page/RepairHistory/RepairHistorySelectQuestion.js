@@ -10,6 +10,9 @@ import {getQnaList} from '@/API/Manager/RepairHistory';
 import {FlatList} from 'react-native-gesture-handler';
 import {isList} from 'immutable';
 import {login} from '@react-native-seoul/kakao-login';
+import {DarkMediumText} from '@/assets/global/Text';
+import Loading from '@/Component/Layout/Loading';
+import {getHeightPixel} from '@/Util/pixelChange';
 
 export default function RepairHistorySelectQuestion() {
   //const {login} = useSelector(state => state);
@@ -20,6 +23,8 @@ export default function RepairHistorySelectQuestion() {
   const [page, setPage] = useState(1);
   const [isModalClose, setIsModalClose] = useState(true);
   const [isLast, setIsLast] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -55,7 +60,7 @@ export default function RepairHistorySelectQuestion() {
     if (isLast) {
       return;
     }
-
+    setIsLoading(true);
     const response = await getQnaList({
       _mt_idx: login.idx,
       page: page,
@@ -68,12 +73,15 @@ export default function RepairHistorySelectQuestion() {
         setIsLast(true);
       }
     }
+
+    setIsLoading(false);
   };
 
   return (
     <Box pd="0px 16px 20px">
       <FlatList
         data={questionList}
+        ListHeaderComponent={<></>}
         renderItem={({item, index}) => {
           return (
             <>
@@ -122,6 +130,19 @@ export default function RepairHistorySelectQuestion() {
         onScrollBeginDrag={() => {
           setIsScroll(true);
         }}
+        ListEmptyComponent={
+          <>
+            {isLoading ? (
+              <Box alignItems="center" justifyContent="center" width="380px" height={`${getHeightPixel(450)}`}>
+                <Loading />
+              </Box>
+            ) : (
+              <Box alignItems="center" justifyContent="center" width="380px" height={`${getHeightPixel(450)}`}>
+                <DarkMediumText>1:1 문의 내역이 없습니다.</DarkMediumText>
+              </Box>
+            )}
+          </>
+        }
       />
       {isLast && <Box mg="10px 0"></Box>}
     </Box>

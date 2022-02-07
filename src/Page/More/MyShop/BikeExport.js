@@ -148,6 +148,7 @@ export default function BikeExport({route}) {
           placeHolder="연도 4자리를 입력해주세요"
           width="380px"
           mg="0px 0px 20px"
+          keyboardType="numeric"
           maxLength={4}
           changeFn={text => setBikeData(prev => ({...prev, sbt_year: text}))}
           errorMessage={errorMessage.sbt_year !== '' && errorMessage.sbt_year}
@@ -168,6 +169,7 @@ export default function BikeExport({route}) {
           placeHolder="고객 연락처를 입력해주세요 (선택)"
           width="380px"
           mg="0px 0px 20px"
+          keyboardType="numeric"
           changeFn={text => setBikeData(prev => ({...prev, sbt_hp: phoneNumber(text)}))}
           value={bikeData.sbt_hp}
           maxLength={13}

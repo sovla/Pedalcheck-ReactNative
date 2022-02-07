@@ -18,6 +18,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useLayoutEffect} from 'react';
 import {getRepairHomeInformation} from '@/API/Manager/RepairHistory';
+import {numberChangeFormat} from '@/Util/numberFormat';
 
 export default function RepairHistorySelectHome() {
   const navigation = useNavigation();
@@ -33,6 +34,7 @@ export default function RepairHistorySelectHome() {
     setIsLoading(true);
     getRepairHomeInformation({
       _mt_idx: login?.idx,
+      search_mon: date.getFullYear() + '-' + numberChangeFormat(date.getMonth() + 1),
     })
       .then(res => res.data?.result === 'true' && res.data.data.data)
       .then(data => setHomeInfo(data));

@@ -77,9 +77,10 @@ export function Payment({navigation}) {
         pt_title: pt_title,
         pt_price: pt_price,
         pt_sprice: pt_sprice,
-      })
-        .then(res => res.data?.result === 'true' && res.data.data.data)
-        .then(data => {
+      }).then(res => {
+        if (res.data?.result === 'true') {
+          const data = res.data.data.data;
+
           if (data) {
             if (data?.price_zero && data?.price_zero === 'true') {
               navigation.replace('ReservationPayment', {
@@ -88,7 +89,12 @@ export function Payment({navigation}) {
             }
             setresponseData(data);
           }
-        });
+        } else {
+          console.log(res.data?.msg);
+          AlertButton('오류가 발생했습니다.');
+          navigation.goBack();
+        }
+      });
     }
   });
 

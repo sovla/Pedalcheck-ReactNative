@@ -12,6 +12,8 @@ export default function Loading({
   left = '0px',
   bottom = '0px',
   backgroundColor = '#0004',
+  width = '412px',
+  height = '712px',
 }) {
   return (
     <>
@@ -19,8 +21,8 @@ export default function Loading({
         <PositionBox
           top={top}
           left={left}
-          width="412px"
-          height={`${getHeightPixel(712)}px`}
+          width={width}
+          height={`${getHeightPixel(height.split('px')[0])}px`}
           zIndex={1000}
           backgroundColor={backgroundColor}
           alignItems="center"

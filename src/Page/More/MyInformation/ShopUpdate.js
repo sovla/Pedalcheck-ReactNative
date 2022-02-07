@@ -169,10 +169,10 @@ export default function ShopUpdate() {
             </RowBox>
           </Box>
           <DefaultInput
-            title="이름"
+            title="업체명"
             width={size.minusPadding}
             fontSize={Theme.fontSize.fs15}
-            placeHolder="이름을 입력해주세요"
+            placeHolder="업체명을 입력해주세요"
             errorMessage={errorMessage.mst_name !== '' && errorMessage.mst_name}
             pd="0px 0px 5px"
             mg="0px 0px 20px"

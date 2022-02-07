@@ -26,6 +26,7 @@ export default function ShopReservationProduct({navigation}) {
     size,
     shopInfo: {pt_list},
   } = useSelector(state => state);
+  const {shopInfo} = useSelector(state => state);
   const [selectProduct, setSelectProduct] = useState([]);
 
   const onPressItem = (item, index) => {
