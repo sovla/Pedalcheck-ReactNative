@@ -17,7 +17,7 @@ export default function ShopComponent({
   likeCount = 1995,
   reviewCount = 8491,
   repairCount = 12765,
-  tagList = ['기본', '태그', '리스트'],
+  tagList = [],
   image = Dummy,
   isPress = true,
   isImage = true,
@@ -34,7 +34,7 @@ export default function ShopComponent({
   const ShopItem = () => {
     return (
       <RowBox justifyContent="space-between" alignItems="center" width={width} minHeight="100px" mg={mg} pd={pd}>
-        <Box height="74px">
+        <Box height="74px" justifyContent="center">
           <RowBox height="33.33%" alignItems="center">
             <DarkBoldText mg="0px 5px 0px 0px" fontSize={titleFontSize ?? Theme.fontSize.fs16}>
               {shopTitle}
@@ -68,11 +68,20 @@ export default function ShopComponent({
             </GrayText>
           </RowBox>
           <RowBox width="286px" alignItems="center" flexWrap="wrap">
-            {tagList.map((item, index) => (
-              <DefaultText key={index} fontSize={Theme.fontSize.fs13} color={Theme.color.skyBlue} mg="0px 5px 0px 0px">
-                #{item}
-              </DefaultText>
-            ))}
+            {tagList.map((item, index) => {
+              if (item === '') {
+                return null;
+              }
+              return (
+                <DefaultText
+                  key={index}
+                  fontSize={Theme.fontSize.fs13}
+                  color={Theme.color.skyBlue}
+                  mg="0px 5px 0px 0px">
+                  #{item}
+                </DefaultText>
+              );
+            })}
           </RowBox>
         </Box>
         <Box>{isImage && <DefaultImage source={image} width="74px" height="74px" />}</Box>

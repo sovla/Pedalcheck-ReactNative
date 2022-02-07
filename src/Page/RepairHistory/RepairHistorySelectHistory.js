@@ -24,6 +24,7 @@ import SearchIcon from '../Customer/SearchIcon';
 import DatePickerComponent from '@/Component/BikeManagement/DatePickerComponent';
 import {showToastMessage} from '@/Util/Toast';
 import Loading from '@/Component/Layout/Loading';
+import {getHeightPixel} from '@/Util/pixelChange';
 
 // 데이트 픽커
 
@@ -39,7 +40,12 @@ export default function RepairHistorySelectHistory() {
   });
   const [date, setDate] = useState(new Date());
 
-  const [productList, setProductList] = useState([]);
+  const [productList, setProductList] = useState([
+    {
+      label: '전체',
+      value: '',
+    },
+  ]);
   const [selectItem, setSelectItem] = useState('');
   const [orderList, setOrderList] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -71,7 +77,7 @@ export default function RepairHistorySelectHistory() {
       showToastMessage('종료일은 시작일 이후여야 합니다.');
       return;
     }
-
+    setIsLoading(true);
     const response = await getOrderList({
       _mt_idx: login.idx,
       ot_name: searchText,
@@ -116,7 +122,6 @@ export default function RepairHistorySelectHistory() {
     }
     setIsLoading(false);
   };
-  console.log(orderList);
 
   const onPressProduct = item => {
     navigation.navigate('Detail', {item: item});
@@ -153,14 +158,6 @@ export default function RepairHistorySelectHistory() {
     }
     return false;
   };
-
-  if (isLoading) {
-    return (
-      <Box mg="200px 0px" width="412px" alignItems="center">
-        <Loading />
-      </Box>
-    );
-  }
 
   return (
     <Box pd="0px 16px 30px">
@@ -241,6 +238,19 @@ export default function RepairHistorySelectHistory() {
         onScrollBeginDrag={() => {
           setIsScroll(true);
         }}
+        ListEmptyComponent={
+          <>
+            {isLoading ? (
+              <Box justifyContent="center" alignItems="center" width="380px" height={`${getHeightPixel(200)}`}>
+                <Loading />
+              </Box>
+            ) : (
+              <Box justifyContent="center" alignItems="center" width="380px" height={`${getHeightPixel(200)}`}>
+                <DarkMediumText>정비 이력이 없습니다.</DarkMediumText>
+              </Box>
+            )}
+          </>
+        }
       />
     </Box>
   );

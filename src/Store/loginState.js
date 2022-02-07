@@ -76,8 +76,8 @@ const initialState456 = {
   mt_idx: '10',
 };
 
-const initialState213123213 = {
-  idx: '11',
+const initialState123414 = {
+  idx: '19',
   mt_login_type: '4',
   mt_level: '5',
   mt_seller: '2',

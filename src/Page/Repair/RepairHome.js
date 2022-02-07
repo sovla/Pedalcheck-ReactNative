@@ -145,22 +145,24 @@ export default function RepairHome() {
             />
           }
           data={storeList}
-          renderItem={({item}) => (
-            <Box width="380px" mg="0px 16px">
-              <ShopComponent
-                mg="0px"
-                pd="14px 10px"
-                item={item}
-                shopTitle={item?.mst_name}
-                isPartner={item?.mst_type === '1'}
-                likeCount={item?.mst_likes ?? 0}
-                reviewCount={item?.mst_reviews ?? 0}
-                repairCount={item?.mst_orders ?? 0}
-                tagList={item?.mst_tag?.split(',')}
-                isImage
-              />
-            </Box>
-          )}
+          renderItem={({item}) => {
+            return (
+              <Box width="380px" mg="0px 16px">
+                <ShopComponent
+                  mg="0px"
+                  pd="14px 10px"
+                  item={item}
+                  shopTitle={item?.mst_name}
+                  isPartner={item?.mst_type === '1'}
+                  likeCount={item?.mst_likes ?? 0}
+                  reviewCount={item?.mst_reviews ?? 0}
+                  repairCount={item?.mst_orders ?? 0}
+                  tagList={item?.mst_tag?.split(',')}
+                  isImage
+                />
+              </Box>
+            );
+          }}
           ListEmptyComponent={() => {
             return (
               <Box justifyContent="center" alignItems="center" mg="20px 0px">

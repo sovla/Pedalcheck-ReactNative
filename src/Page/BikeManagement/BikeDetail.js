@@ -155,6 +155,14 @@ export default function BikeDetail({navigation, route}) {
             value: bike.mbt_color,
           },
           {
+            title: '모터',
+            value: bike?.mbt_motor,
+          },
+          {
+            title: '파워',
+            value: bike?.mbt_power,
+          },
+          {
             title: '모델상세',
             value: bike.mbt_model_detail,
           },

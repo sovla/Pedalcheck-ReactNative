@@ -17,29 +17,31 @@ import ShopHeader from '@/Component/Repair/ShopHeader';
 import {RequireLoginAlert} from '@/Util/Alert';
 import Loading from '@/Component/Layout/Loading';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
+import {useIsFocused} from '@react-navigation/native';
 
 export default function Shop({route, navigation}) {
-  let mt_idx;
-  if (route?.params?.mt_idx) {
-    mt_idx = route?.params?.mt_idx;
-  } else {
-    mt_idx = shopInfo?.store_info?.mt_idx;
-  }
+  const mt_idx = route.params?.mt_idx ?? shopInfo?.store_info?.mt_idx;
+
   const [selectMenu, setSelectMenu] = useState('매장소개');
   const [isDone, setIsDone] = useState(true);
   const [isLike, setIsLike] = useState(false);
   const {size, login, shopInfo} = useSelector(state => state);
+  const isFocused = useIsFocused();
 
   const menu = ['매장소개', '상품보기', '리뷰'];
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (shopInfo?.pt_list?.length === 0) getShopDetailApi();
-
     return () => {
+      console.log('Shop useEffect Return');
       dispatch(ResetShopInfo());
     };
   }, []);
+  useEffect(() => {
+    if (isFocused) {
+      getShopDetailApi();
+    }
+  }, [isFocused]);
   useUpdateEffect(() => {
     setIsLike(shopInfo?.store_info?.like_on === 'on');
   }, [shopInfo?.store_info]);
