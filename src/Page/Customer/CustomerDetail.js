@@ -38,11 +38,11 @@ export default function CustomerDetail({route}) {
             </RowBox>
             <RowBox mg="0px 0px 10px">
               <DarkMediumText width="110px">최초 방문일</DarkMediumText>
-              <DarkText width="270px">{item.first_visit}</DarkText>
+              <DarkText width="270px">{item.first_visit?.slice(0, 16)}</DarkText>
             </RowBox>
             <RowBox mg="0px 0px 10px">
               <DarkMediumText width="110px">최근 정비일</DarkMediumText>
-              <DarkText width="270px">{item.last_visit}</DarkText>
+              <DarkText width="270px">{item.last_visit?.slice(0, 16)}</DarkText>
             </RowBox>
             <RowBox mg="0px 0px 10px">
               <DarkMediumText width="110px">정비횟수</DarkMediumText>

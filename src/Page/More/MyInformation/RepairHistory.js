@@ -20,7 +20,6 @@ export default function RepairHistory() {
   const {login} = useSelector(state => state);
   const navigation = useNavigation();
   const isFocused = navigation.isFocused();
-
   const [historyList, setHistoryList] = useState([]);
   const [select, setSelect] = useState('전체');
   const [isScroll, setIsScroll] = useState(false);

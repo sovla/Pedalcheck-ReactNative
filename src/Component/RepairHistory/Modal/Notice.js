@@ -10,29 +10,21 @@ import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import {modalClose} from '@/Store/modalState';
 import {useEffect} from 'react';
-import {getNoticeList} from '@/API/Manager/More';
-import {useIsFocused} from '@react-navigation/native';
+import {getNoticeList, readNotice} from '@/API/Manager/More';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {FlatList} from 'react-native-gesture-handler';
 import {useState} from 'react';
 
-export default function Notice() {
+export default function Notice({noticeList, setNoticeList}) {
   const {storeInfo} = useSelector(state => state);
-  const [noticeList, setNoticeList] = useState([]);
   const isFocused = useIsFocused();
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (isFocused) {
-      getNoticeListHandle();
-    }
-  }, [isFocused]);
-  const getNoticeListHandle = async () => {
-    const response = await getNoticeList({
-      _mt_idx: 14, //storeInfo.idx, 수정 필요
+  const readNoticeHandle = async selectIdx => {
+    await readNotice({
+      _mt_idx: 6, // storeInfo.idx,수정 필요
+      nt_idx: selectIdx,
     });
-
-    if (response?.data?.result === 'true') {
-      setNoticeList(response?.data?.data?.data);
-    }
   };
 
   return (
@@ -49,9 +41,15 @@ export default function Notice() {
             intent: item?.nt_intent, // 화면 이름
             noticeIdx: item?.nt_data1, // 푸시 알림 보낸 사람 idx
             noticeData: item?.nt_data2, // 이동 후 메뉴 선택
+            nt_idx: item?.nt_idx,
           };
-          console.log(item.item);
-          return <NoticeItem item={changeItem} isCheck={item?.nt_read === 'Y' ? true : false} />;
+          return (
+            <NoticeItem
+              item={changeItem}
+              isCheck={item?.nt_read === 'Y' ? true : false}
+              readNoticeHandle={readNoticeHandle}
+            />
+          );
         }}
       />
       {/* <ScrollBox pd="0px 16px">
@@ -91,10 +89,20 @@ const NoticeItem = ({
     date: '2021-10-13 02-03',
   },
   isCheck,
+  readNoticeHandle,
 }) => {
-  console.log('item :: ', item);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
   return (
-    <TouchableOpacity disabled={isCheck}>
+    <TouchableOpacity
+      onPress={async () => {
+        await dispatch(modalClose());
+        await readNoticeHandle(item?.nt_idx);
+        if (item?.intent) {
+          await navigation.navigate(item?.intent, {menu: item?.noticeData, od_idx: item?.noticeIdx});
+        }
+      }}
+      disabled={isCheck}>
       <Box width="380px" minHeight="95px" justifyContent="center" style={borderBottomWhiteGray}>
         <BoldText fontSize={Theme.fontSize.fs15} color={isCheck ? Theme.color.darkGray : Theme.color.black}>
           {item.title}

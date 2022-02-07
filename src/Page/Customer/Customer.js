@@ -155,8 +155,8 @@ export default function Customer({navigation}) {
                 name={item.mt_name}
                 repairCount={item.order_cnt}
                 reservationCancleCount={item.order_cancel_cnt}
-                firstVisitDate={item.first_visit}
-                lastRepairDate={item.last_visit}
+                firstVisitDate={item.first_visit?.slice(0, 16)}
+                lastRepairDate={item.last_visit?.slice(0, 16)}
                 level={item.mt_status}
               />
             </TouchableOpacity>

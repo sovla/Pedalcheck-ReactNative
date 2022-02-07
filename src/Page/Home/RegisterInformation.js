@@ -8,7 +8,7 @@ import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import {DeleteLocation} from '@/Store/locationState';
 import {setUserInfo} from '@/Store/loginState';
-import {modalOpen, modalOpenAndProp} from '@/Store/modalState';
+import {modalOpen} from '@/Store/modalState';
 import {getHeightPixel} from '@/Util/pixelChange';
 import React, {useLayoutEffect, useState} from 'react';
 import {Dimensions, KeyboardAvoidingView, StatusBar} from 'react-native';
@@ -27,13 +27,13 @@ export default function RegisterInformation({navigation}) {
     //  인풋값 변경
     setInformaition(prev => ({...prev, [key]: value}));
   };
-  const onPressComplete = () => {
+  const onPressComplete = async () => {
     // 등록하기 버튼
     if (RegJoin(information, setErrorMessage)) {
       return null;
     }
 
-    MemberJoin({
+    await MemberJoin({
       mt_name: information.name,
       mt_nickname: information.nickName,
       mt_id: information.email,
@@ -41,13 +41,14 @@ export default function RegisterInformation({navigation}) {
       mt_addr: information.location,
       mt_idx: snsLogin.mt_idx,
       mt_app_token: token.token,
-    }).then(res => {
-      console.log('MEMBERJOIN', res);
-      if (res.data?.result !== 'false') {
-        dispatch(setUserInfo(res.data.data.data));
-        navigation.navigate('RepairHome');
-      }
-    });
+    })
+      .then(res => {
+        if (res?.data?.data?.result !== 'false') {
+          dispatch(setUserInfo(res?.data?.data?.data));
+          navigation.navigate('RepairHome');
+        }
+      })
+      .catch(err => console.log(err));
   };
 
   const onPressAddInformation = () => {
@@ -57,6 +58,10 @@ export default function RegisterInformation({navigation}) {
     navigation.navigate('RegisterAdditional', {information: information});
   };
 
+  useLayoutEffect(() => {
+    // 지역 모달 데이터 클릭시 사용
+    if (location?.name) onChangeInformation(location.name, 'location');
+  }, [location]);
   useLayoutEffect(() => {
     // snsLogin 상태에 이메일 값 얻어오기
     if (snsLogin?.email) {
@@ -124,7 +129,6 @@ export default function RegisterInformation({navigation}) {
             pd="0px 0px 5px"
             mg={errorMessage.tel === '' && '0px 0px 20px'}
             maxLength={13}
-            keyboardType="numeric"
           />
           <DefaultInput
             title="지역"
@@ -137,12 +141,7 @@ export default function RegisterInformation({navigation}) {
             mg={errorMessage.location === '' && '0px 0px 20px'}
             PressText={() => {
               dispatch(DeleteLocation());
-              dispatch(
-                modalOpenAndProp({
-                  modalComponent: 'locationPicker',
-                  setLocation: text => onChangeInformation(text, 'location'),
-                }),
-              );
+              dispatch(modalOpen('locationPicker'));
             }}
             pd="0px 0px 5px"
           />
@@ -173,6 +172,7 @@ export const RequireFieldText = () => {
 const RegJoin = (object, setFunction) => {
   let result = false;
   setFunction(informationInit);
+  console.log(object.tel.length < 12);
   if (object.name === '') {
     setFunction(prev => ({
       ...prev,

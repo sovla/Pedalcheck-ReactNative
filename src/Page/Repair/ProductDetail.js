@@ -55,8 +55,8 @@ export default function ProductDetail({route: {params}}) {
     },
     {
       title: '카테고리',
-      content: item?.ct_pname + ' / ' + item?.ct_name,
-      isShow: true,
+      content: item?.ct_pname + ' / ' + item?.ct_pname,
+      isShow: item?.ct_pname && item?.ct_pname ? true : false,
     },
     {
       title: '상품설명',
