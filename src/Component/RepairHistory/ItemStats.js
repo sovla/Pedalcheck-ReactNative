@@ -48,8 +48,6 @@ const ItemStats = ({
         : itemList[0].rate,
   };
 
-  console.log('total :::: ', total);
-  console.log('itemList :::: ', itemList);
   return (
     <Box width={`${width}px`} pd="20px 16px 20px" borderRadius="10px" mg={!isFull && '20px 0px 0px'}>
       <RowBox mg="0px 0px 20px">
