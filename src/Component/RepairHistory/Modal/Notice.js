@@ -43,6 +43,7 @@ export default function Notice({noticeList, setNoticeList}) {
             noticeData: item?.nt_data2, // 이동 후 메뉴 선택
             nt_idx: item?.nt_idx,
           };
+
           return (
             <NoticeItem
               item={changeItem}
@@ -50,20 +51,10 @@ export default function Notice({noticeList, setNoticeList}) {
               readNoticeHandle={readNoticeHandle}
             />
           );
+
         }}
       />
-      {/* <ScrollBox pd="0px 16px">
-        <NoticeItem />
-        <NoticeItem isCheck />
-        <NoticeItem />
-        <NoticeItem />
-        <NoticeItem />
-        <NoticeItem isCheck />
-        <NoticeItem />
-        <NoticeItem />
 
-        <NoticeItem />
-      </ScrollBox> */}
     </>
   );
 }
@@ -91,8 +82,10 @@ const NoticeItem = ({
   isCheck,
   readNoticeHandle,
 }) => {
+
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
   return (
     <TouchableOpacity
       onPress={async () => {

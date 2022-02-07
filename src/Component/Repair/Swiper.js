@@ -15,7 +15,7 @@ import scrollSlideNumber from '@/Util/scrollSlideNumber';
 import {useRef} from 'react';
 import {useEffect} from 'react';
 
-function SwiperComponent({imageArray, width, height, borderRadius = 'Bottom', isRolling}) {
+function SwiperComponent({imageArray, width, height, borderRadius = 'Bottom', isRolling = false}) {
   const ref = useRef(null);
   const savedCallback = useRef();
   const transformWidth = typeof width === 'string' ? parseInt(width.split('px')[0]) : width;
@@ -119,7 +119,6 @@ function SwiperComponent({imageArray, width, height, borderRadius = 'Bottom', is
         ]}
         onMomentumScrollEnd={onScrollSlide}
         onScrollToIndexFailed={info => {
-          console.log(info);
           const wait = new Promise(resolve => setTimeout(resolve, 500));
           wait.then(() => {
             ref.current?.scrollToIndex({index: info.index, animated: true});

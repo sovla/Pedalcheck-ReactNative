@@ -305,7 +305,7 @@ const RepairHistoryDetailHeader = ({
   );
 };
 
-const payState = state => {
+export const payState = state => {
   //ready / paid / failed
   switch (state) {
     case 'ready':

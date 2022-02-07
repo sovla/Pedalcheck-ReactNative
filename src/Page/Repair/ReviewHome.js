@@ -21,7 +21,7 @@ export default function ReviewHome() {
     React.useCallback(() => {
       getReviewList({
         _mt_idx: login?.idx,
-        mst_idx: shopInfo?.store_info?.mst_idx,
+        mst_idx: shopInfo?.store_info?.mt_idx,
       })
         .then(res => res.data.result === 'true' && res.data.data.data)
         .then(data => {

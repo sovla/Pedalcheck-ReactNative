@@ -26,6 +26,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {showToastMessage} from '@/Util/Toast';
 import {imageAddress} from '@assets/global/config';
 import {useIsFocused} from '@react-navigation/native';
+import {payState} from '../More/MyInformation/RepairHistoryDetail';
 
 export default function ReservationManagementDetail({navigation, route: {params}}) {
   const type = params?.type;
@@ -53,6 +54,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
     mt_name: '',
     mt_email: '',
     mt_hp: '',
+    ot_pay_status: '',
     //  결제대기
     //  고객 레벨 일반 관심매장 고객 여부
     //  거절일 경우 거절에 대한 메모 값
@@ -240,7 +242,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
               <RowBox mg="10px 0px 20px" justifyContent="space-between" width={size.minusPadding}>
                 <DarkMediumText fontSize={Theme.fontSize.fs15}> 가격</DarkMediumText>
                 <RowBox>
-                  <Badge badgeContent={reservationInfo.status} />
+                  <Badge badgeContent={payState(reservationInfo.ot_pay_status)} />
                   <MoneyText
                     mg="0px 0px 0px 10px"
                     fontSize={Theme.fontSize.fs15}

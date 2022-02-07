@@ -81,7 +81,6 @@ export default function Post({route: {params}}) {
       });
     setIsLoading(false);
   };
-  console.log(noticeData);
   return (
     <>
       <Header title="공지 및 이벤트" />

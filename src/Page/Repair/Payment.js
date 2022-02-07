@@ -9,18 +9,29 @@ import {useSelector} from 'react-redux';
 import {useState} from 'react';
 import {sendOrder} from '@/API/Shop/Shop';
 import {AlertButton} from '@/Util/Alert';
+import {useNavigationState} from '@react-navigation/native';
 
 export function Payment({navigation, route: {params}}) {
   const [isLoading, setIsLoading] = useState(true);
   const [responseData, setresponseData] = useState(null);
   const {reservationInfo, login, shopInfo} = useSelector(state => state);
+  const naviState = useNavigationState(state => state);
 
   const {selectBike, selectDate, selectPayment, selectProduct} = reservationInfo;
   /* [필수입력] 결제 종료 후, 라우터를 변경하고 결과를 전달합니다. */
   function callback(response) {
     console.log(response);
     if (response.imp_success === 'true') {
-      navigation.replace('ReservationPayment', response);
+      navigation.reset({
+        index: naviState.index - 4,
+        routes: [
+          ...naviState.routes.filter((value, index) => index < naviState.index - 4),
+          {
+            name: 'ReservationPayment',
+            params: response,
+          },
+        ],
+      });
     } else {
       if (response.error_msg?.includes('F0005')) {
         AlertButton('결제를 취소 했습니다.');
@@ -70,7 +81,7 @@ export function Payment({navigation, route: {params}}) {
         ot_pt_date: selectDate.date,
         ot_pt_time: selectDate.time,
         ot_pay_type: changePayment(selectPayment.selectPayment),
-        ot_price: selectProduct.totalPrice,
+        ot_price: parseInt(selectProduct.totalPrice),
         // ot_pdate:2022-01-06 18:06:42,
         ot_memo: selectPayment?.repairRequest,
         pt_idx: pt_idx,
@@ -93,7 +104,6 @@ export function Payment({navigation, route: {params}}) {
             setresponseData(data);
           }
         } else {
-          console.log(res.data?.msg);
           AlertButton('오류가 발생했습니다.');
           navigation.goBack();
         }

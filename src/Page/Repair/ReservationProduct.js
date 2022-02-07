@@ -72,12 +72,6 @@ export default function ShopReservationProduct({navigation}) {
     }
   };
 
-  useEffect(() => {
-    return () => {
-      dispatch(clearReservation());
-    };
-  }, []);
-
   return (
     <>
       <Header title="정비예약" />

@@ -28,7 +28,7 @@ export const reservationEdit = async args => {
 };
 export const reservationComplete = async args => {
   try {
-    const response = await ImageAPI(args, 'opt_image', 'mng/order_proc.php');
+    const response = await ImageAPI(args, 'opt_image', 'mng/order_proc.php', true);
     return response;
   } catch (error) {
     console.log(error);
@@ -110,6 +110,14 @@ export const reservationTimeList = async args => {
 export const getOrderCount = async args => {
   try {
     const response = await API.post('mng/order_day_cnt.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const sendAllApprove = async args => {
+  try {
+    const response = await API.post('mng/order_ok_all.php', args);
     return response;
   } catch (error) {
     console.log(error);

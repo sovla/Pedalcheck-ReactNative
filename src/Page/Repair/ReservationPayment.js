@@ -4,7 +4,7 @@ import {DarkBoldText, DarkText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import React from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import RepairReservationHeader from './RepairReservationHeader';
 import BorderCheckIcon from '@assets/image/ic_complete.png';
 import DefaultImage from '@assets/global/Image';
@@ -17,6 +17,10 @@ import {useLayoutEffect} from 'react';
 import {getOrderCheck} from '@/API/Shop/Shop';
 import {AlertButton} from '@/Util/Alert';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
+import {useEffect} from 'react';
+import {BackHandler} from 'react-native';
+import {useNavigationState} from '@react-navigation/native';
+import {clearReservation} from '@/Store/reservationState';
 
 export default function ReservationPayment({navigation, route: {params}}) {
   const [isLoading, setIsLoading] = useState(true);
@@ -30,6 +34,8 @@ export default function ReservationPayment({navigation, route: {params}}) {
   });
 
   const [orderIdx, setOrderIdx] = useState('');
+
+  const dispatch = useDispatch();
 
   const {
     reservationInfo,
@@ -99,6 +105,11 @@ export default function ReservationPayment({navigation, route: {params}}) {
       params?.price_zero && setIsLoading(false);
     }
   }, []);
+  useEffect(() => {
+    return () => {
+      dispatch(clearReservation());
+    };
+  }, []);
 
   if (isLoading) {
     return <Loading />;
@@ -142,7 +153,13 @@ export default function ReservationPayment({navigation, route: {params}}) {
             });
           }}
           content="장비 신청 확인하기"></LinkWhiteButton>
-        <LinkButton mg="10px 0px 0px 0px" to={() => navigation.navigate('RepairHome')} content="홈으로 돌아가기" />
+        <LinkButton
+          mg="10px 0px 0px 0px"
+          to={() => {
+            navigation.replace('RepairHome');
+          }}
+          content="홈으로 돌아가기"
+        />
       </Box>
     </>
   );

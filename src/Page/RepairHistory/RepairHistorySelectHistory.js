@@ -128,6 +128,10 @@ export default function RepairHistorySelectHistory() {
   };
   const onChange = (event, selectedDate) => {
     if (event.type !== 'set') {
+      setDatePicker({
+        end: false,
+        start: false,
+      });
       return null;
     }
     if (datePicker.start) {
@@ -191,7 +195,7 @@ export default function RepairHistorySelectHistory() {
               data={productList}
               value={selectItem}
               setValue={item => setSelectItem(item)}
-              width={100}
+              width={100 + selectItem.length * 15}
               pdLeft={20}
               fontType="Medium"
               isBorder={false}

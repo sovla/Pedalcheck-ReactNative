@@ -19,12 +19,20 @@ export default function ReviewWrite({navigation, route}) {
 
   const shopItem = route.params.item;
 
-  const errorMessage = '리뷰를 입력해주세요.';
+  const [errorMessage, setErrorMessage] = useState('');
 
   const onPressSend = () => {
+    if (content === '') {
+      setErrorMessage('리뷰를 입력해주세요.');
+      return;
+    }
+    if (content.length < 10) {
+      setErrorMessage('리뷰는 10자 이상이어야 합니다.');
+      return;
+    }
     sendReview({
       _mt_idx: login?.idx,
-      mst_idx: shopInfo?.store_info?.mst_idx ? shopInfo?.store_info?.mst_idx : shopItem?.mst_idx,
+      mst_idx: shopInfo?.store_info?.mt_idx ?? shopItem?.mst_idx,
       od_idx: shopItem?.od_idx,
       srt_content: content,
       srt_img: imageArray,
@@ -57,7 +65,7 @@ export default function ReviewWrite({navigation, route}) {
             multiline={true}
           />
           <Box mg="1px 0px"></Box>
-          {errorMessage && (
+          {errorMessage.length > 0 && (
             <DefaultText fontSize={Theme.fontSize.fs12} color={Theme.color.indigo}>
               {errorMessage}
             </DefaultText>

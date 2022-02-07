@@ -41,6 +41,7 @@ export default function RegisterInformation({navigation}) {
       mt_addr: information.location,
       mt_idx: snsLogin.mt_idx,
       mt_app_token: token.token,
+
     })
       .then(res => {
         if (res?.data?.data?.result !== 'false') {
@@ -48,7 +49,7 @@ export default function RegisterInformation({navigation}) {
           navigation.navigate('RepairHome');
         }
       })
-      .catch(err => console.log(err));
+
   };
 
   const onPressAddInformation = () => {
