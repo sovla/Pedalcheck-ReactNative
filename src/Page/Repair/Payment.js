@@ -66,7 +66,7 @@ export function Payment({navigation, route: {params}}) {
         ot_bike_nick: selectBike.selectItem !== 2000 && selectBike.selectBike.mbt_nick,
         ot_bike_brand: selectBike.selectItem === 2000 && selectBike.selectBike.bikeBrand,
         ot_bike_model: selectBike.selectItem === 2000 && selectBike.selectBike.bikeModel,
-        mst_idx: shopInfo.store_info.mst_idx,
+        mst_idx: shopInfo.store_info.mt_idx,
         ot_pt_date: selectDate.date,
         ot_pt_time: selectDate.time,
         ot_pay_type: changePayment(selectPayment.selectPayment),
@@ -78,7 +78,7 @@ export function Payment({navigation, route: {params}}) {
         pt_price: pt_price,
         pt_sprice: pt_sprice,
         ot_rbank: params?.bank.bankName, //            환불은행코드
-        ot_pay_type: params?.bank.accountNumber, //   환불 계좌
+        ot_rbank_num: params?.bank.accountNumber, //   환불 계좌
         ot_rbank_name: params?.bank.accountName, //  환불 예금주
       }).then(res => {
         if (res.data?.result === 'true') {

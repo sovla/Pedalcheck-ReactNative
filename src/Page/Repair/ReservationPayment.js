@@ -124,7 +124,7 @@ export default function ReservationPayment({navigation, route: {params}}) {
               return (
                 <RowBox key={item.title} justifyContent="space-between" mg="0px 0px 10px">
                   <DarkBoldText width="100px">{item.title}</DarkBoldText>
-                  <DarkText>{item.content}</DarkText>
+                  <DarkText accessibilityState={{selected: true}}>{item.content}</DarkText>
                 </RowBox>
               );
             })}
@@ -153,15 +153,15 @@ const VirtualAccountItem = ({ot_vbank, ot_vbank_date, ot_vbank_name, ot_vbank_nu
     <Box width="380px" mg="0px 0px 15px" style={borderBottomWhiteGray}>
       <RowBox justifyContent="space-between" mg="0px 0px 10px">
         <DarkBoldText width="100px">은행명</DarkBoldText>
-        <DarkText>{ot_vbank}</DarkText>
+        <DarkText selectable>{ot_vbank}</DarkText>
       </RowBox>
       <RowBox justifyContent="space-between" mg="0px 0px 10px">
         <DarkBoldText width="100px">계좌번호</DarkBoldText>
-        <DarkText>{ot_vbank_num}</DarkText>
+        <DarkText selectable>{ot_vbank_num}</DarkText>
       </RowBox>
       <RowBox justifyContent="space-between" mg="0px 0px 10px">
         <DarkBoldText width="100px">예금주</DarkBoldText>
-        <DarkText>{ot_vbank_name}</DarkText>
+        <DarkText selectable>{ot_vbank_name}</DarkText>
       </RowBox>
       <RowBox justifyContent="space-between" mg="0px 0px 10px">
         <DarkBoldText width="100px">입금기간</DarkBoldText>
