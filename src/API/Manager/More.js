@@ -44,3 +44,12 @@ export const getNoticeList = async args => {
     console.log(error);
   }
 };
+
+export const readNotice = async args => {
+  try {
+    const response = await API.post('mng/notification_read.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

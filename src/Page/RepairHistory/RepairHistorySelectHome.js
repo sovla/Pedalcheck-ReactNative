@@ -5,7 +5,7 @@ import ArrowRightIcon from '@assets/image/arr_right.png';
 import DefaultImage from '@/assets/global/Image';
 import {DarkBoldText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
-import {TouchableOpacity} from 'react-native';
+import {ScrollView, TouchableOpacity} from 'react-native';
 import ReservationStats from '@/Component/RepairHistory/ReservationStats';
 import CalculateStats from '@/Component/RepairHistory/CalculateStats';
 import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
@@ -19,35 +19,53 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useLayoutEffect} from 'react';
 import {getRepairHomeInformation} from '@/API/Manager/RepairHistory';
 import {numberChangeFormat} from '@/Util/numberFormat';
+import {dateFormat} from '@/Util/DateFormat';
+import {VictoryAxis, VictoryChart, VictoryLabel, VictoryLine, VictoryScatter, VictoryTheme} from 'victory-native';
+
+// react-native-month-year-picker 년 월 픽커
 
 export default function RepairHistorySelectHome() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const {login} = useSelector(state => state);
+  const {login, storeInfo, size} = useSelector(state => state);
 
   const [date, setDate] = useState(new Date());
   const [selectDate, setSelectDate] = useState('지난 6개월');
   const [isLoading, setIsLoading] = useState(true);
   const [homeInfo, setHomeInfo] = useState(initData);
+  const [staticData, setStaticData] = useState([]);
 
   useLayoutEffect(() => {
     setIsLoading(true);
     getRepairHomeInformation({
-      _mt_idx: login?.idx,
+      _mt_idx: 2,
       search_mon: date.getFullYear() + '-' + numberChangeFormat(date.getMonth() + 1),
     })
       .then(res => res.data?.result === 'true' && res.data.data.data)
-      .then(data => setHomeInfo(data));
+      .then(data => {
+        setHomeInfo({...data, static: {max_cnt: 36}});
+        let staticTemp = [];
+        let i = 1;
+
+        for (const [key, value] of Object.entries(homeInfo?.static?.data)) {
+          staticTemp.push({x: `${key.slice(0, 4)}\n${key.slice(5, 7)}`, y: i * 3});
+          i++;
+        }
+        setStaticData(staticTemp);
+      });
     setIsLoading(false);
   }, []);
 
   if (isLoading) {
     return null;
   }
+
   return (
     <Box pd="0px 16px" backgroundColor="#F8F8F8">
       <BetweenBox backgroundColor="#0000" mg="20px 0px" width="380px" alignItems="center">
-        <TouchableOpacity onPress={() => setDate(new Date(date.setMonth(date.getMonth() - 1)))}>
+        <TouchableOpacity
+          disabled={dateFormat(date).slice(0, 7) === storeInfo.mst_wdate.slice(0, 7)}
+          onPress={() => setDate(new Date(date.setMonth(date.getMonth() - 1)))}>
           <DefaultImage source={ArrowLeftIcon} width="24px" height="24px" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => dispatch(modalOpen('slide/repairDatePicker'))}>
@@ -86,7 +104,36 @@ export default function RepairHistorySelectHome() {
             />
           </Box>
         </BetweenBox>
-        <DefaultImage width="348px" height="220px" source={DummyChart} resizeMode="contain" />
+        {/* <DefaultImage width="348px" height="220px" source={DummyChart} resizeMode="contain" /> */}
+
+        <VictoryChart
+          minDomain={{y: 0, x: 0}}
+          width={1000}
+          height={500}
+          maxDomain={{y: homeInfo.static.max_cnt + 10, x: staticData.length + 1}}>
+          <VictoryAxis tickCount={12} />
+          <VictoryAxis
+            dependentAxis
+            tickValues={[
+              0,
+              Math.round(homeInfo.static.max_cnt * 0.2),
+              Math.round(homeInfo.static.max_cnt * 0.4),
+              Math.round(homeInfo.static.max_cnt * 0.6),
+              Math.round(homeInfo.static.max_cnt * 0.8),
+              Math.round(homeInfo.static.max_cnt),
+            ]}
+            tickCount={4}
+            offsetX={50}
+            domain="test"
+          />
+          <VictoryLine
+            style={{data: {stroke: '#707070'}}}
+            data={staticData.slice(0, 12)}
+            labels={({datum}) => datum.y}
+            labelComponent={<VictoryLabel style={{fill: '#005475', fontFamily: 'Lato-Bold'}} />}
+          />
+          <VictoryScatter data={staticData.slice(0, 12)} size={5} style={{data: {fill: '#00B7FF'}}} />
+        </VictoryChart>
       </Box>
       <ShopCustomerStats
         customer={homeInfo.quick.customers}

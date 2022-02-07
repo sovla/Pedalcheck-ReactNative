@@ -3,10 +3,11 @@ import GradientHeader from '@/Component/Layout/GradientHeader';
 import HeaderButton from '@/Component/ReservationManagement/HeaderButton';
 import React from 'react';
 import {useState} from 'react';
-import NoticeWhiteIcon from '@assets/image/notice_white.png';
+import NoticeWhiteIconDot from '@assets/image/notice_white.png';
+import NoticeWhiteIcon from '@assets/image/ic_bell_top.png';
 import FooterButtons from '@/Component/Layout/FooterButtons';
-import {useDispatch} from 'react-redux';
-import {modalOpen} from '@/Store/modalState';
+import {useDispatch, useSelector} from 'react-redux';
+import {modalOpen, modalOpenAndProp} from '@/Store/modalState';
 import RepairHistorySelectHome from './RepairHistorySelectHome';
 import RepairHistorySelectReview from './RepairHistorySelectReview';
 import RepairHistorySelectQuestion from './RepairHistorySelectQuestion';
@@ -14,18 +15,40 @@ import RepairHistorySelectHistory from './RepairHistorySelectHistory';
 import {FlatList} from 'react-native-gesture-handler';
 import {useLayoutEffect} from 'react';
 import {useIsFocused} from '@react-navigation/native';
+import {getNoticeList} from '@/API/Manager/More';
+import {useEffect} from 'react';
 
 export default function RepairHistoryHome({route: {params}}) {
+  const {modal} = useSelector(state => state);
+
   const [select, setSelect] = useState('홈');
 
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
+
+  const [noticeList, setNoticeList] = useState([]);
+
+  const getNoticeListHandle = async () => {
+    const response = await getNoticeList({
+      _mt_idx: 6, //storeInfo.idx, 수정 필요
+    });
+
+    if (response?.data?.result === 'true') {
+      setNoticeList(response?.data?.data?.data);
+    }
+  };
 
   useLayoutEffect(() => {
     if (isFocused && params?.menu) {
       setSelect(params.menu);
     }
   }, [isFocused]);
+
+  useEffect(() => {
+    if (isFocused) {
+      getNoticeListHandle();
+    }
+  }, [isFocused, modal.isOpenModal]);
 
   return (
     <Container>
@@ -34,12 +57,21 @@ export default function RepairHistoryHome({route: {params}}) {
           <>
             <GradientHeader
               title="정비내역"
-              imageSource={NoticeWhiteIcon}
+              imageSource={true ? NoticeWhiteIconDot : NoticeWhiteIcon}
+              // 수정 필요
               imageSize={{
                 width: '35px',
                 height: '29px',
               }}
-              onPressImage={() => dispatch(modalOpen('fullSize/notice'))}>
+              onPressImage={() =>
+                dispatch(
+                  modalOpenAndProp({
+                    modalComponent: 'fullSize/notice',
+                    setNoticeList: setNoticeList,
+                    noticeList: noticeList,
+                  }),
+                )
+              }>
               <HeaderButton
                 select={select}
                 setSelect={setSelect}
