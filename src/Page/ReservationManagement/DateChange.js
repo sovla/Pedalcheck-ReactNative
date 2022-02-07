@@ -71,27 +71,32 @@ export default function DateChange({route: {params}}) {
   }, [isFocused]);
   const getReservationTimeListHandle = async () => {
     setIsLoading(true);
-    const data = await getReservationTimeList({
+    await getReservationTimeList({
       ot_pt_date: selectDate,
       mt_idx: login.idx,
-    }).then(res => res.data?.result === 'true' && res.data.data.data);
-    if (data) {
-      setDisabledTimeList(data?.order_time);
-      if (Array.isArray(data?.store_time)) {
-        const result = data.store_time
-          .filter(item => item.flag === 'Y')
-          .reduce((prev, curr) => {
-            if (!prev?.ot_time) {
-              return [...prev, curr.ot_time];
-            } else {
-              return [prev.ot_time, curr.ot_time];
-            }
-          });
+    })
+      .then(res => res.data?.result === 'true' && res.data.data.data)
+      .then(data => {
+        if (data) {
+          setDisabledTimeList(data?.order_time ?? []);
+          if (Array.isArray(data?.store_time)) {
+            const result = data.store_time
+              .filter(item => item.flag === 'Y')
+              .reduce((prev, curr) => {
+                if (!prev?.st_time) {
+                  return [...prev, curr.st_time];
+                } else {
+                  return [prev.st_time, curr.st_time];
+                }
+              });
 
-        setTimeList(result);
-      }
-    }
-    setIsLoading(false);
+            setTimeList(result);
+          }
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const onChangeMonth = day => {

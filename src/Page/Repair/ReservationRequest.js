@@ -1,13 +1,15 @@
 import {LinkButton} from '@/assets/global/Button';
 import {Box, PositionBox, RowBox} from '@/assets/global/Container';
+import {bankList} from '@/assets/global/dummy';
 import {DefaultInput} from '@/assets/global/Input';
 import DefaultLine from '@/assets/global/Line';
-import {DarkBoldText, DarkText, IndigoText} from '@/assets/global/Text';
+import {DarkBoldText, DarkMediumText, DarkText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import CheckBox, {DefaultCheckBox} from '@/Component/Home/CheckBox';
 import Header from '@/Component/Layout/Header';
 import {modalClose, modalOpen, modalOpenAndProp, setNavigator} from '@/Store/modalState';
 import {setReservationPayment} from '@/Store/reservationState';
+import {AlertButton} from '@/Util/Alert';
 import {useIsFocused} from '@react-navigation/native';
 import React from 'react';
 import {useLayoutEffect} from 'react';
@@ -25,34 +27,56 @@ export default function ShopReservationRequest({navigation, route: {params}}) {
   const [selectPayment, setSelectPayment] = useState('');
   const [thirdParty, setThirdParty] = useState(false);
 
+  const [bank, setBank] = useState({
+    accountName: '',
+    bankName: '',
+    accountNumber: '',
+  });
+
   const onPressNext = async () => {
     if (!selectPayment) {
-      Alert.alert('', '결제 방법을 선택해주세요.');
+      AlertButton('결제 방법을 선택해주세요.');
       return;
     }
-    if (thirdParty) {
-      await dispatch(
-        setReservationPayment({
-          repairRequest,
-          selectPayment,
-        }),
-      );
-      await dispatch(
-        modalOpenAndProp({
-          modalComponent: 'paymentInformationCheck',
-          onPressComplete: () => {
-            dispatch(modalClose());
-
-            navigation.navigate('Payment');
-          },
-        }),
-      );
-    } else {
-      Alert.alert(
-        '',
+    if (!thirdParty) {
+      AlertButton(
         '정비 예약 결제를 위해서는 개인정보 제3자 제공 동의가 필요합니다. 개인 정보 제3자 제공에 동의해주세요.',
       );
+      return;
     }
+
+    if (selectPayment === '무통장 입금' && Object.values(bank).find(v => v == '') !== undefined) {
+      AlertButton('무통장 입금은 환불 계좌 입력이 필요합니다.', '확인', () =>
+        dispatch(
+          modalOpenAndProp({
+            modalComponent: 'reservationCancle',
+            setBank,
+            bank,
+          }),
+        ),
+      );
+
+      return;
+    }
+
+    await dispatch(
+      setReservationPayment({
+        repairRequest,
+        selectPayment,
+      }),
+    );
+    await dispatch(
+      modalOpenAndProp({
+        modalComponent: 'paymentInformationCheck',
+        onPressComplete: () => {
+          dispatch(modalClose());
+
+          navigation.navigate('Payment', {
+            bank,
+          });
+        },
+      }),
+    );
   };
   useLayoutEffect(() => {
     if (isFocuesd) {
@@ -66,6 +90,7 @@ export default function ShopReservationRequest({navigation, route: {params}}) {
       <Header title="정비예약" />
       <Box style={{flex: 1}}>
         <RepairReservationHeader step={4} content="요청사항 입력" />
+
         <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
         <Box mg="20px 16px">
           <DarkBoldText mg="0px 0px 10px">요청사항 (선택)</DarkBoldText>
@@ -87,11 +112,20 @@ export default function ShopReservationRequest({navigation, route: {params}}) {
             <RowBox width={size.minusPadding} justifyContent="space-between" flexWrap="wrap">
               {paymentMethod.map(item => {
                 return (
-                  <RowBox width="50%" mg="0px 0px 12px" key={item}>
+                  <RowBox width="50%" mg="0px 0px 12px">
                     <TouchableOpacity
                       style={{flexDirection: 'row'}}
                       onPress={() => {
                         setSelectPayment(item);
+                        if (item === '무통장 입금') {
+                          dispatch(
+                            modalOpenAndProp({
+                              modalComponent: 'reservationCancle',
+                              setBank,
+                              bank,
+                            }),
+                          );
+                        }
                       }}>
                       <DefaultCheckBox isDisabled isRadio isCheck={selectPayment === item} />
                       <DarkText fontSize={Theme.fontSize.fs15} mg="0px 0px 0px 10px">
