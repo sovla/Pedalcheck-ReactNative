@@ -10,7 +10,7 @@ import {useState} from 'react';
 import {sendOrder} from '@/API/Shop/Shop';
 import {AlertButton} from '@/Util/Alert';
 
-export function Payment({navigation}) {
+export function Payment({navigation, route: {params}}) {
   const [isLoading, setIsLoading] = useState(true);
   const [responseData, setresponseData] = useState(null);
   const {reservationInfo, login, shopInfo} = useSelector(state => state);
@@ -62,7 +62,7 @@ export function Payment({navigation}) {
       });
       sendOrder({
         _mt_idx: login.idx,
-        mbt_idx: selectBike.selectItem !== 2000 && selectBike.selectBike.mbt_idx,
+        mbt_idx: selectBike.selectItem !== 2000 && selectBike.selectBike.mbt_idx, // 2000 은 기타 선택시 값
         ot_bike_nick: selectBike.selectItem !== 2000 && selectBike.selectBike.mbt_nick,
         ot_bike_brand: selectBike.selectItem === 2000 && selectBike.selectBike.bikeBrand,
         ot_bike_model: selectBike.selectItem === 2000 && selectBike.selectBike.bikeModel,
@@ -77,6 +77,9 @@ export function Payment({navigation}) {
         pt_title: pt_title,
         pt_price: pt_price,
         pt_sprice: pt_sprice,
+        ot_rbank: params?.bank.bankName, //            환불은행코드
+        ot_pay_type: params?.bank.accountNumber, //   환불 계좌
+        ot_rbank_name: params?.bank.accountName, //  환불 예금주
       }).then(res => {
         if (res.data?.result === 'true') {
           const data = res.data.data.data;
