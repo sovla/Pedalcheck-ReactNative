@@ -211,7 +211,7 @@ const DefaultInputStyle = styled.TextInput`
   ${p =>
     p.height &&
     css`
-      height: ${pixelChange(p.height)};
+      height: ${p.height};
     `};
   ${p =>
     p.maxHeight &&

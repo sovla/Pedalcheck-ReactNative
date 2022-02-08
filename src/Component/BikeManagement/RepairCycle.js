@@ -6,9 +6,7 @@ import DistanceIcon from '@assets/image/ic_distance.png';
 import DefaultImage from '@/assets/global/Image';
 export default function RepairCycle({item}) {
   return (
-    <RowBox
-      mg="16px 0px 0px"
-      style={{borderBottomWidth: 1, borderBottomColor: Theme.borderColor.whiteGray}}>
+    <RowBox mg="16px 0px 0px" style={{borderBottomWidth: 1, borderBottomColor: Theme.borderColor.whiteGray}}>
       <Box mg="0px 16px 0px 0px">
         <DefaultImage source={item.image} width="60px" height="60px" />
       </Box>
@@ -16,17 +14,13 @@ export default function RepairCycle({item}) {
         <RowBox mg="0px 0px 10px" width="304px" justifyContent="space-between">
           <DarkBoldText fontSize={Theme.fontSize.fs15}>{item.title}</DarkBoldText>
           <RowBox alignItems="center">
-            <DefaultImage source={DistanceIcon} width="16px" height="16px"></DefaultImage>
+            {/* <DefaultImage source={DistanceIcon} width="16px" height="16px"></DefaultImage>
             <IndigoText fontSize={Theme.fontSize.fs13} fontWeight={Theme.fontWeight.medium}>
               주행거리 변경
-            </IndigoText>
+            </IndigoText> */}
           </RowBox>
         </RowBox>
-        <RowBox
-          width="304px"
-          height="5px"
-          backgroundColor={Theme.color.backgroundBlue}
-          borderRadius="5px">
+        <RowBox width="304px" height="5px" backgroundColor={Theme.color.backgroundBlue} borderRadius="5px">
           <RowBox
             width={`${(item.lastChange / item.changeCycle) * 100}%`}
             height="5px"
@@ -38,9 +32,7 @@ export default function RepairCycle({item}) {
           <DarkText fontSize={Theme.fontSize.fs14}>
             마치막 교체 후{' '}
             <DarkBoldText>
-              {item.title === '바테이프 교체 주기'
-                ? item.lastChange + ' 일'
-                : item.lastChange + ' km'}{' '}
+              {item.title === '바테이프 교체 주기' ? item.lastChange + ' 일' : item.lastChange + ' km'}{' '}
             </DarkBoldText>
             주행
           </DarkText>

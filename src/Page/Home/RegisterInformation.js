@@ -41,15 +41,12 @@ export default function RegisterInformation({navigation}) {
       mt_addr: information.location,
       mt_idx: snsLogin.mt_idx,
       mt_app_token: token.token,
-
-    })
-      .then(res => {
-        if (res?.data?.data?.result !== 'false') {
-          dispatch(setUserInfo(res?.data?.data?.data));
-          navigation.navigate('RepairHome');
-        }
-      })
-
+    }).then(res => {
+      if (res?.data?.result === 'true') {
+        dispatch(setUserInfo(res?.data?.data?.data));
+        navigation.reset({routes: [{name: 'RepairHome'}]});
+      }
+    });
   };
 
   const onPressAddInformation = () => {
