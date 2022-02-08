@@ -52,7 +52,7 @@ export default function ScrollDays({setDaySelect, daySelect, isNotPrev, orderLis
       <FlatList
         ref={flatListRef}
         horizontal
-        getItemLayout={(data, index) => ({length: 83, offset: 300, index})}
+        getItemLayout={(data, index) => ({length: getPixel(83), offset: getPixel(300), index})}
         data={dateList}
         renderItem={({item, index}) => {
           if (!item?.date) {

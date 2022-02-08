@@ -49,26 +49,32 @@ export default function RepairReservation({type}) {
   const [isLoading, setIsLoading] = useState({
     isCount: true,
     isReservation: true,
+    isSave: false,
   }); // 로딩여부
 
   const onPressAllApprove = async () => {
     AlertButtons('예약 건 전체를 승인 처리하시겠습니까?', '확인', '취소', () => {
+      setIsLoading(prev => ({...prev, isSave: true}));
       sendAllApprove({
         _mt_idx: login.idx,
         od_idx: list
           .filter((value, index) => {
-            value.ot_status === '예약';
+            return value.ot_status === '예약';
           })
           .map((value, index) => {
             return value.od_idx;
           })
           .join(','),
-      }).then(res => {
-        if (res.data?.result === 'true') {
-          showToastMessage('변경되었습니다.');
-          getReservationListHandle(1);
-        }
-      });
+      })
+        .then(res => {
+          if (res.data?.result === 'true') {
+            showToastMessage('변경되었습니다.');
+            getReservationListHandle(1);
+          }
+        })
+        .finally(() => {
+          setIsLoading(prev => ({...prev, isSave: false}));
+        });
     });
   };
   const onPressProduct = item => {
@@ -140,7 +146,9 @@ export default function RepairReservation({type}) {
   };
   return (
     <>
-      {(isLoading.isCount || isLoading.isReservation) && <Loading isAbsolute height="712px" top="-100px" />}
+      {(isLoading.isCount || isLoading.isReservation || isLoading.isSave) && (
+        <Loading isAbsolute height="712px" top="-100px" />
+      )}
       <FlatList
         data={list}
         onEndReached={() => {
@@ -201,7 +209,7 @@ export default function RepairReservation({type}) {
           </Box>
         }
         ListFooterComponent={
-          list.length > 0 &&
+          list.length > 0 && //
           list.filter((value, index) => {
             return value.ot_status === '예약';
           }).length > 0 && (

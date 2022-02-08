@@ -27,6 +27,7 @@ import {showToastMessage} from '@/Util/Toast';
 import {imageAddress} from '@assets/global/config';
 import {useIsFocused} from '@react-navigation/native';
 import {payState} from '../More/MyInformation/RepairHistoryDetail';
+import Loading from '@/Component/Layout/Loading';
 
 export default function ReservationManagementDetail({navigation, route: {params}}) {
   const type = params?.type;
@@ -63,12 +64,15 @@ export default function ReservationManagementDetail({navigation, route: {params}
   const [memo, setMemo] = useState('');
   const [isChange, setIsChange] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(true);
+
   const {size, login} = useSelector(state => state);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
   const onPressApprove = async () => {
     // 승인 누를시
+    setIsLoading(true);
     const result = await editApiHandle(3);
 
     if (result) {
@@ -76,6 +80,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
       showToastMessage('정비요청이 승인되었습니다.');
     } else {
     }
+    setIsLoading(false);
   };
   const onPressRejection = async () => {
     // 거절 누를시
@@ -84,10 +89,12 @@ export default function ReservationManagementDetail({navigation, route: {params}
       modalOpenAndProp({
         modalComponent: 'repairRejection',
         onPressReject: async content => {
+          setIsLoading(true);
           const result = await editApiHandle(4, content);
           if (result) {
             showToastMessage('승인거부되었습니다.');
           }
+          setIsLoading(false);
         },
       }),
     );
@@ -133,13 +140,17 @@ export default function ReservationManagementDetail({navigation, route: {params}
 
   const getReservationInfoHandle = async () => {
     // 예약 정보 API
+    setIsLoading(true);
     const detailApiFunction = type === 'coupon' ? getCouponReservationDetail : getReservationDetail;
     await detailApiFunction({
       _mt_idx: login?.idx,
       od_idx: params?.od_idx,
     })
       .then(res => res.data?.result === 'true' && res.data.data.data)
-      .then(data => setReservationInfo(data));
+      .then(data => setReservationInfo(data))
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -196,6 +207,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
   const isPrevTime = reservationTime <= now;
   return (
     <>
+      {isLoading && <Loading isAbsolute />}
       <Header title="상세보기" />
       <Box style={{flex: 1}}>
         <ScrollBox pd="0px 16px">

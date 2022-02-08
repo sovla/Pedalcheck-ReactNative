@@ -5,20 +5,28 @@ import {DarkBoldText, DarkText, DefaultText, MoneyText} from '@/assets/global/Te
 import Theme from '@/assets/global/Theme';
 import ShopDummyImage from '@assets/image/shop_default.png';
 import {useSelector} from 'react-redux';
-import ReviewComment from './ReviewComment';
+import ProfileDefaultIcon from '@/assets/image/profile_default.png';
 import {LinkWhiteButton} from '@/assets/global/Button';
 import {useNavigation} from '@react-navigation/core';
 import Swiper from './Swiper';
 import {imageAddress} from '@assets/global/config';
+import {useState} from 'react';
+import ReviewComment from './ReviewComment';
+import {useLayoutEffect} from 'react';
 
 export default function Review({
   isDetail = false,
   isDetailPage = false,
-  isRecomment = true,
+  isRecomment = false,
   width = 'auto',
   mg = '0px',
   item = {},
 }) {
+  const [isDetailButton, setIsDetailButton] = useState(false);
+  if ((item?.srt_content?.length >= 90 || item?.srt_res_content?.length >= 90) && !isDetailButton) {
+    setIsDetailButton(true);
+  }
+
   const {size} = useSelector(state => state);
   const navigation = useNavigation();
 
@@ -32,6 +40,9 @@ export default function Review({
           return {uri: imageAddress + v};
         })
       : [];
+  useLayoutEffect(() => {
+    setIsDetailButton(isDetail);
+  }, []);
 
   return (
     <Box
@@ -46,7 +57,11 @@ export default function Review({
         }
       }>
       <RowBox>
-        <DefaultImage source={{uri: imageAddress + item?.mt_image}} width="50px" height="50px" />
+        <DefaultImage
+          source={item?.mt_image ? {uri: imageAddress + item?.mt_image} : ProfileDefaultIcon}
+          width="50px"
+          height="50px"
+        />
         <Box mg="0px 0px 0px 5px" justifyContent="center" height="50px">
           <RowBox>
             <DarkBoldText fontSize={Theme.fontSize.fs15} mg="0px 10px 0px 0px">
@@ -56,7 +71,7 @@ export default function Review({
             <DefaultText color={Theme.color.gray} fontSize={Theme.fontSize.fs12}>
               |
             </DefaultText>
-            <DarkText fontSize={Theme.fontSize.fs13}> {item?.srt_model}</DarkText>
+            <DarkText fontSize={Theme.fontSize.fs13}> {item?.srt_pt_model}</DarkText>
           </RowBox>
           <RowBox>
             <DefaultText fontSize={Theme.fontSize.fs12} color={Theme.color.gray}>
@@ -114,10 +129,20 @@ export default function Review({
           {item?.srt_content}
         </DarkText>
       </Box>
+      {isRecomment && (
+        <RowBox mg="20px 0px 0px">
+          <ReviewComment
+            reviewDate={item?.srt_adate}
+            reviewContent={item?.srt_res_content}
+            size={size}
+            deletePress={() => deletePress(item?.srt_idx)}
+          />
+        </RowBox>
+      )}
 
-      {isDetail && (
+      {isDetailButton && !isDetailPage && (
         <LinkWhiteButton
-          to={() => navigation.navigate('ReviewDetail', {item})}
+          to={() => navigation.navigate('ReviewDetail', {item: item, isRecomment: true})}
           width={size.minusPadding}
           mg="15px 0px 0px 0px"
           content="자세히보기"

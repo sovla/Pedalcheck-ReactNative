@@ -32,13 +32,15 @@ export default function ReviewComment({
             {reviewDate?.slice(0, 10)}
           </DefaultText>
         </RowBox>
-        <TouchableOpacity onPress={deletePress}>
-          <Box mg="0px 5px">
-            <BorderButton width="auto" height="25px" borderColor={Theme.borderColor.gray} color={Theme.color.black}>
-              <DarkMediumText fontSize={Theme.fontSize.fs13}>삭제</DarkMediumText>
-            </BorderButton>
-          </Box>
-        </TouchableOpacity>
+        {deletePress && (
+          <TouchableOpacity onPress={deletePress}>
+            <Box mg="0px 5px">
+              <BorderButton width="auto" height="25px" borderColor={Theme.borderColor.gray} color={Theme.color.black}>
+                <DarkMediumText fontSize={Theme.fontSize.fs13}>삭제</DarkMediumText>
+              </BorderButton>
+            </Box>
+          </TouchableOpacity>
+        )}
       </BetweenBox>
       <RowBox backgroundColor="#0000">
         <DefaultText

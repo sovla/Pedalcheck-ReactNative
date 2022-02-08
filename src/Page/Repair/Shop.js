@@ -1,4 +1,4 @@
-import {Container} from '@/assets/global/Container';
+import {Container, RowBox} from '@/assets/global/Container';
 import React, {useState} from 'react';
 import {FlatList, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -18,6 +18,7 @@ import {RequireLoginAlert} from '@/Util/Alert';
 import Loading from '@/Component/Layout/Loading';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {useIsFocused} from '@react-navigation/native';
+import ReviewComment from '@/Component/Repair/ReviewComment';
 
 export default function Shop({route, navigation}) {
   const mt_idx = route.params?.mt_idx ?? shopInfo?.store_info?.mt_idx;
@@ -86,14 +87,15 @@ export default function Shop({route, navigation}) {
           }
           data={selectMenu === '리뷰' ? shopInfo?.review_list : []}
           renderItem={({item, index}) => (
-            <Review
-              item={item}
-              index={index}
-              width="380px"
-              mg="0px 16px"
-              isRecomment={!item?.srt_res_content}
-              isDetail
-            />
+            <>
+              <Review
+                item={item}
+                index={index}
+                width="380px"
+                mg="0px 16px"
+                isRecomment={item?.srt_res_content?.length > 0}
+              />
+            </>
           )}
           keyExtractor={(item, index) => index.toString()}
           ListFooterComponent={<View style={{marginBottom: 70}}></View>}
