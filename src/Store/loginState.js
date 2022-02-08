@@ -1,7 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-  idx: '2',
+  idx: '',
   mt_account: null,
   mt_ad: '',
   mt_addr: '',

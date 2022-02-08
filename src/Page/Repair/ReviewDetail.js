@@ -28,21 +28,15 @@ export default function ReviewDetail({route: {params}}) {
               ...item,
               pt_title: item?.pt_info?.split('|')[0],
               ot_price: item?.pt_info?.split('|')[1],
-              srt_brand: item?.ot_bike_brand,
-              srt_model: item?.ot_bike_model,
+              srt_brand: item?.ot_bike_brand ?? item?.srt_brand,
+              srt_pt_model: item?.ot_bike_model ?? item?.srt_pt_model,
             }}
             isDetailPage
-            isRecomment={isRecomment}
           />
         </Box>
-        {isRecomment && (
-          <RowBox mg="20px 0px 0px">
-            <ReviewComment
-              reviewDate={item.srt_adate}
-              reviewContent={item.srt_res_content}
-              size={size}
-              deletePress={() => deletePress(item.srt_idx)}
-            />
+        {isRecomment && item?.srt_res_content?.length > 0 && (
+          <RowBox mg="0px 0px 40px">
+            <ReviewComment reviewDate={item.srt_adate} reviewContent={item.srt_res_content} size={size} />
           </RowBox>
         )}
       </ScrollBox>

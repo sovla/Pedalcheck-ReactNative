@@ -58,22 +58,28 @@ export default function ScheduleManagement() {
   }, [daySelect]);
 
   const onPressSave = () => {
-    setIsLoading(true);
     if (!timeList?.length) {
-      setIsLoading(false);
       return null;
     }
+    setIsLoading(true);
+
     let st_time = [];
     let flag = [];
 
     timeList.map((item, index) => {
       // {st_time1:시간,flag1:Y||N} 처럼 객체로 데이터 가공
-      const findItem = selectTime.find(findItem => findItem === item.ot_time);
+      const findItem = selectTime.find(findItem => {
+        if (findItem === item?.ot_time) {
+          return findItem;
+        } else if (findItem === item?.st_time) {
+          return findItem;
+        }
+      });
       if (findItem) {
-        st_time.push(item.ot_time);
+        st_time.push(item?.ot_time ?? item?.st_time);
         flag.push('N');
       } else {
-        st_time.push(item.ot_time);
+        st_time.push(item?.ot_time ?? item?.st_time);
         flag.push(item.flag);
       }
     });
