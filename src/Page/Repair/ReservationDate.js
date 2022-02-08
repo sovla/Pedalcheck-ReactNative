@@ -59,8 +59,10 @@ export default function ReservationDate({navigation, route: {params}}) {
             });
           setTimeList(result);
         }
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
-    setIsLoading(false);
   }, [selectDate]);
 
   useEffect(() => {
@@ -81,8 +83,10 @@ export default function ReservationDate({navigation, route: {params}}) {
       mt_idx: shopInfo?.store_info?.mt_idx,
     })
       .then(res => res.data.result === 'true' && res.data.data.data)
-      .then(data => setDisabledDayList(data.disabled_date));
-    setIsLoading(false);
+      .then(data => setDisabledDayList(data.disabled_date))
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const onPressNext = () => {

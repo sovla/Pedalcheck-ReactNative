@@ -16,13 +16,11 @@ import {useEffect} from 'react';
 import {useLayoutEffect} from 'react';
 import ModifyButton from '../Buttons/ModifyButton';
 import TrashButton from '../Buttons/TrashButton';
-import {
-  reservationTimeList,
-  reservationTimeListSave,
-} from '@/API/ReservationManagement/ReservationManagement';
+import {reservationTimeList, reservationTimeListSave} from '@/API/ReservationManagement/ReservationManagement';
 import {AlertButton} from '@/Util/Alert';
 import {useIsFocused} from '@react-navigation/native';
 import {showToastMessage} from '@/Util/Toast';
+import Loading from '../Layout/Loading';
 
 export default function ReservationTimeManagement() {
   const isFocused = useIsFocused();
@@ -31,8 +29,11 @@ export default function ReservationTimeManagement() {
   const [timeList, setTimeList] = useState([]);
   const [orderTimeIdx, setOrderTimeIdx] = useState('');
 
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     if (isFocused) {
+      setIsLoading(true);
       reservationTimeList({
         _mt_idx: login?.idx,
       })
@@ -40,6 +41,9 @@ export default function ReservationTimeManagement() {
         .then(data => {
           setTimeList(data.store_ordertime);
           setOrderTimeIdx(data.ordertime_idx);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     }
   }, [isFocused]);
@@ -88,6 +92,7 @@ export default function ReservationTimeManagement() {
     if (!timeList?.length) {
       return null;
     }
+
     const copyTimeList = timeList.slice();
 
     const changeTime = time => {
@@ -118,6 +123,8 @@ export default function ReservationTimeManagement() {
     if (result) {
       return null;
     }
+    setIsLoading(true);
+
     copyTimeList.forEach((item, index) => {
       ot_time.push(item.ot_time);
       flag.push(item.flag);
@@ -128,15 +135,21 @@ export default function ReservationTimeManagement() {
       ot_time,
       flag,
       ordertime_idx: orderTimeIdx,
-    }).then(res => res.data?.result === 'true' && showToastMessage('저장되었습니다.'));
+    })
+      .then(res => res.data?.result === 'true' && showToastMessage('저장되었습니다.'))
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const onPressDelete = index => {
     setTimeList(prev => prev.filter((item, filterIndex) => filterIndex !== index));
   };
+
   return (
     <Container style={{paddingBottom: 80}}>
-      <Box mg="20px 16px">
+      {isLoading && <Loading isAbsolute top="-120px" />}
+      <Box mg="20px 16px 0px">
         <TouchableOpacity onPress={onPressAdd}>
           <Button backgroundColor={Theme.color.white} borderColor={Theme.borderColor.whiteGray}>
             <RowBox alignItems="center">
@@ -166,6 +179,7 @@ export default function ReservationTimeManagement() {
               />
             );
           }}
+          style={{paddingTop: 20}}
           ListFooterComponent={<Box height="80px" />}
         />
         {/* {timeList.map(item => (
@@ -179,13 +193,7 @@ export default function ReservationTimeManagement() {
   );
 }
 
-const TimeManagementCheckBox = ({
-  time,
-  isCheck,
-  setReservationTime,
-  setChangeFlag,
-  onPressDelete,
-}) => {
+const TimeManagementCheckBox = ({time, isCheck, setReservationTime, setChangeFlag, onPressDelete}) => {
   const [isUpdate, setIsUpdate] = useState(false);
   return (
     <RowBox width="50%" alignItems="center" pd="0px 16px 15px">
