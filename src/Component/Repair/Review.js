@@ -21,6 +21,7 @@ export default function Review({
   width = 'auto',
   mg = '0px',
   item = {},
+  isJustShow = false,
 }) {
   const [isDetailButton, setIsDetailButton] = useState(false);
   if ((item?.srt_content?.length >= 90 || item?.srt_res_content?.length >= 90) && !isDetailButton) {
@@ -135,7 +136,7 @@ export default function Review({
             reviewDate={item?.srt_adate}
             reviewContent={item?.srt_res_content}
             size={size}
-            deletePress={() => deletePress(item?.srt_idx)}
+            deletePress={isJustShow ? null : () => deletePress(item?.srt_idx)}
           />
         </RowBox>
       )}

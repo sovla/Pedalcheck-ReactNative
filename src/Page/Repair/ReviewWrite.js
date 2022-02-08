@@ -1,6 +1,6 @@
 import {Box, PositionBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
-import {DefaultText} from '@/assets/global/Text';
+import {DefaultText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import ReviewRecord from '@/Component/Repair/ReviewRecord';
@@ -72,6 +72,8 @@ export default function ReviewWrite({navigation, route}) {
           )}
           <Box mg="4px 0px"></Box>
           <Photo imageArray={imageArray} setImageArray={setImageArray} />
+          <Box height="10px" />
+          <IndigoText fontSize={Theme.fontSize.fs14}>최대 5장까지 등록가능</IndigoText>
         </ScrollView>
         <PositionBox bottom="20px">
           <LinkButton width={size.minusPadding} content="게시" to={onPressSend}></LinkButton>

@@ -152,11 +152,11 @@ export default function ReservationPayment({navigation, route: {params}}) {
               },
             });
           }}
-          content="장비 신청 확인하기"></LinkWhiteButton>
+          content="정비 신청 확인하기"></LinkWhiteButton>
         <LinkButton
           mg="10px 0px 0px 0px"
           to={() => {
-            navigation.replace('RepairHome');
+            navigation.replace('RepairHome', {mst_name: store_info?.mst_name});
           }}
           content="홈으로 돌아가기"
         />

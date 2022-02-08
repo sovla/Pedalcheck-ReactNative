@@ -94,6 +94,7 @@ export default function Shop({route, navigation}) {
                 width="380px"
                 mg="0px 16px"
                 isRecomment={item?.srt_res_content?.length > 0}
+                isJustShow={true}
               />
             </>
           )}

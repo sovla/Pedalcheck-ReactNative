@@ -25,7 +25,7 @@ export default function RepairHistory() {
   const [isScroll, setIsScroll] = useState(false);
 
   const onPressHistory = item => {
-    navigation.navigate('RepairHistoryDetail', {item});
+    navigation.navigate('RepairHistoryDetail', {item: item});
   };
 
   const getHistoryListApi = () => {
@@ -76,7 +76,8 @@ export default function RepairHistory() {
                     },
                   });
                 } else {
-                  showToastMessage('이미 작성된 주문건입니다.');
+                  // showToastMessage('이미 작성된 주문건입니다.');
+                  navigation.navigate('ReviewDetail');
                 }
               },
             };

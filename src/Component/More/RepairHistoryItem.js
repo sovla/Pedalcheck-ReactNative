@@ -33,9 +33,11 @@ export default function RepairHistoryItem({
             {shopName}
           </IndigoText>
         </RowBox>
-        <RowBox>
-          <DarkText fontSize={Theme.fontSize.fs13}>{bikeName}</DarkText>
-        </RowBox>
+        {bikeName && (
+          <RowBox>
+            <DarkText fontSize={Theme.fontSize.fs13}>{bikeName}</DarkText>
+          </RowBox>
+        )}
         <RowBox>
           <GrayText letterSpacing="0px" fontSize={Theme.fontSize.fs12}>
             {date}
@@ -44,21 +46,21 @@ export default function RepairHistoryItem({
       </Box>
       <Box height="100%" alignItems="center">
         <Badge badgeContent={status} />
-        {isReview && (
-          <TouchableOpacity onPress={onPressReview} style={{marginTop: 10}}>
-            <BorderButton
-              fontSize={Theme.fontSize.fs13}
-              fontWeight={Theme.fontWeight.medium}
-              width="66px"
-              height="25px"
-              alignItems="center"
-              justifyContent="center"
-              borderColor={Theme.borderColor.gray}
-              color={Theme.color.black}>
-              리뷰작성
-            </BorderButton>
-          </TouchableOpacity>
-        )}
+
+        <TouchableOpacity onPress={onPressReview} style={{marginTop: 10}}>
+          <BorderButton
+            borderRadius="5px"
+            fontSize={Theme.fontSize.fs13}
+            fontWeight={Theme.fontWeight.medium}
+            width="66px"
+            height="25px"
+            alignItems="center"
+            justifyContent="center"
+            borderColor={Theme.borderColor.gray}
+            color={Theme.color.black}>
+            {!isReview ? '리뷰작성' : '리뷰확인'}
+          </BorderButton>
+        </TouchableOpacity>
       </Box>
     </BetweenBox>
   );

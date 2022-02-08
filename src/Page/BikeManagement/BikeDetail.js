@@ -131,10 +131,6 @@ export default function BikeDetail({navigation, route}) {
         bikeImage: bike?.mbt_image,
         detail: [
           {
-            title: '차대번호',
-            value: bike?.mbt_serial,
-          },
-          {
             title: '연식',
             value: bike?.mbt_year ? bike.mbt_year + '년식' : '',
           },
@@ -161,6 +157,10 @@ export default function BikeDetail({navigation, route}) {
           {
             title: '파워',
             value: bike?.mbt_power,
+          },
+          {
+            title: '차대번호',
+            value: bike?.mbt_serial,
           },
           {
             title: '모델상세',
@@ -212,6 +212,8 @@ export default function BikeDetail({navigation, route}) {
     );
   };
 
+  console.log(order);
+
   return (
     <>
       <Header title="자전거 상세" RightComponent={RightComponent} />
@@ -251,12 +253,22 @@ export default function BikeDetail({navigation, route}) {
                 width="310px"
                 placeHolder="주행거리를 입력하세요"
                 mg="0px 10px 0px 0px"
+                maxLength={4}
+                keyboardType={'number-pad'}
               />
               <LinkButton width="60px" height="44px" content="저장" to={() => setBikeDistacneHandle()} />
             </RowBox>
           </Box>
           <Box>
-            <DarkText fontWeight={Theme.fontWeight.medium}>정비 주기</DarkText>
+            <RowBox width="380px" justifyContent="space-between">
+              <DarkText fontWeight={Theme.fontWeight.medium}>정비 주기</DarkText>
+              <RowBox>
+                <DarkText fontWeight={Theme.fontWeight.medium} mg="0px 10px 0px 0px">
+                  총 주행거리
+                </DarkText>
+                <DarkText fontWeight={Theme.fontWeight.medium}>{bike_km}km</DarkText>
+              </RowBox>
+            </RowBox>
             {dummyItem.map((item, index) => {
               return <RepairCycle key={index} item={item} />;
             })}
@@ -265,7 +277,10 @@ export default function BikeDetail({navigation, route}) {
             <TouchableOpacity onPress={() => navigation.navigate('RepairHistory')}>
               <RowBox mg="20px 0px 0px" alignItems="center" justifyContent="space-between" width={size.minusPadding}>
                 <DarkText fontWeight={Theme.fontWeight.medium}>정비이력</DarkText>
-                <DefaultImage source={ArrowRightIcon} width="24px" height="24px" />
+                <RowBox>
+                  <DarkText fontWeight={Theme.fontWeight.medium}>전체 목록 보기</DarkText>
+                  <DefaultImage source={ArrowRightIcon} width="24px" height="24px" />
+                </RowBox>
               </RowBox>
             </TouchableOpacity>
             <Box>
@@ -275,11 +290,18 @@ export default function BikeDetail({navigation, route}) {
                     ? {
                         shopName: item.mst_name,
                         product: item.pt_title,
-                        date: item.ot_pt_date + ' ' + item.ot_pt_time.slice(0, 4),
-                        status: item.ot_status,
+                        date: item.ot_pt_date + ' ' + item.ot_pt_time.slice(0, 5),
+                        status: item.ot_status ? item.ot_status : 'test',
                       }
                     : {};
-                  return <ShopRepairHistory key={index} item={shopItem} />;
+                  return (
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate('RepairHistoryDetail', {item});
+                      }}>
+                      <ShopRepairHistory key={index} item={shopItem} />
+                    </TouchableOpacity>
+                  );
                 })
               ) : (
                 <Box alignItems="center" justifyContent="space-between" width="380px" mg="30px 0px 30px 0px">
