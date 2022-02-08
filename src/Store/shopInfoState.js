@@ -14,6 +14,15 @@ export const shopSlice = createSlice({
     setShopInfo: (state, action) => {
       return action.payload;
     },
+    setLikeCount: (state, action) => {
+      return {
+        ...state,
+        store_info: {
+          ...state.store_info,
+          mst_likes: action.payload,
+        },
+      };
+    },
     ResetShopInfo: state => {
       return initialState;
     },
@@ -26,6 +35,6 @@ export const shopSlice = createSlice({
   },
 });
 
-export const {setShopInfo, ResetShopInfo, setShopStoreInfo} = shopSlice.actions;
+export const {setShopInfo, ResetShopInfo, setShopStoreInfo, setLikeCount} = shopSlice.actions;
 
 export default shopSlice.reducer;

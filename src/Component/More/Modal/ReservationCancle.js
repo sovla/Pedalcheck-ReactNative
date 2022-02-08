@@ -90,6 +90,7 @@ export default function ReservationCancle({ot_code, cancelComplete, setBank, ban
                 <DarkMediumText>{title}</DarkMediumText>
               </RowBox>
               <DefaultInput
+                maxLength={25}
                 keyboardType={index === 2 ? 'numeric' : 'default'}
                 isDropdown={item === 'bankName' && true}
                 dropdownItem={bankList1}

@@ -17,7 +17,7 @@ import QuestionIcon from '@assets/image/btn_inq.png';
 import {MediumText} from '@/assets/global/Text';
 import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {RequireLoginAlert} from '@/Util/Alert';
+import {AlertButton, RequireLoginAlert} from '@/Util/Alert';
 import BackIcon from '@assets/image/ic_detail_back.png';
 
 import {imageAddress} from '@assets/global/config';
@@ -41,6 +41,10 @@ const ShopHeader = ({size}) => {
   const isPartner = store_info?.mst_type === '1';
 
   const onPressQuestion = () => {
+    if (store_info?.mt_idx === login.idx) {
+      AlertButton('본인 매장에는 문의를 남길 수 없습니다.');
+      return;
+    }
     if (RequireLoginAlert(login, navigation)) {
       navigation.navigate('RepairQuestion');
     }
@@ -60,16 +64,19 @@ const ShopHeader = ({size}) => {
         <Swiper imageArray={dummyImageArray} width={size.designWidth} height={250} isRolling />
         {isPartner ? (
           <>
-            <PositionBox backgroundColor="#0000" bottom="-35px" right="87px" zIndex={100} alignItems="center">
-              <TouchableOpacity
-                onPress={() => Linking.openURL(`tel:${store_info?.mst_tel}`)}
-                style={{flex: 1, alignItems: 'center'}}>
-                <DefaultImage source={DisabledCallIcon} width="57px" height="57px" />
-                <MediumText color={Theme.color.gray} fontSize={Theme.fontSize.fs13}>
-                  전화하기
-                </MediumText>
-              </TouchableOpacity>
-            </PositionBox>
+            {store_info?.mst_tel?.length > 0 && (
+              <PositionBox backgroundColor="#0000" bottom="-35px" right="87px" zIndex={100} alignItems="center">
+                <TouchableOpacity
+                  onPress={() => Linking.openURL(`tel:${store_info?.mst_tel}`)}
+                  style={{flex: 1, alignItems: 'center'}}>
+                  <DefaultImage source={DisabledCallIcon} width="57px" height="57px" />
+                  <MediumText color={Theme.color.gray} fontSize={Theme.fontSize.fs13}>
+                    전화하기
+                  </MediumText>
+                </TouchableOpacity>
+              </PositionBox>
+            )}
+
             <PositionBox backgroundColor="#0000" bottom="-35px" right="26px" zIndex={100} alignItems="center">
               <TouchableOpacity onPress={onPressQuestion} style={{flex: 1, alignItems: 'center'}}>
                 <DefaultImage source={QuestionIcon} width="57px" height="57px" />

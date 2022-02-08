@@ -149,7 +149,7 @@ export default function ReservationTimeManagement() {
   return (
     <Container style={{paddingBottom: 80}}>
       {isLoading && <Loading isAbsolute top="-120px" />}
-      <Box mg="20px 16px 0px">
+      <Box mg="20px 16px 10px">
         <TouchableOpacity onPress={onPressAdd}>
           <Button backgroundColor={Theme.color.white} borderColor={Theme.borderColor.whiteGray}>
             <RowBox alignItems="center">
@@ -179,14 +179,13 @@ export default function ReservationTimeManagement() {
               />
             );
           }}
-          style={{paddingTop: 20}}
           ListFooterComponent={<Box height="80px" />}
         />
         {/* {timeList.map(item => (
           <TimeManagementCheckBox key={item + 'time'} time={item} />
         ))} */}
       </RowBox>
-      <PositionBox bottom="0px" left="16px" pd="0px 0px 20px">
+      <PositionBox bottom="0px" left="16px" pd="10px 0px 20px">
         <LinkButton to={onPressSave} content="저장하기" />
       </PositionBox>
     </Container>

@@ -12,9 +12,9 @@ import MenuNav from '@/Component/Layout/MenuNav';
 import {useEffect} from 'react';
 import {getShopDetail, sendLikeShop} from '@/API/Shop/Shop';
 import Review from '@/Component/Repair/Review';
-import {ResetShopInfo, setShopInfo} from '@/Store/shopInfoState';
+import {ResetShopInfo, setLikeCount, setShopInfo} from '@/Store/shopInfoState';
 import ShopHeader from '@/Component/Repair/ShopHeader';
-import {RequireLoginAlert} from '@/Util/Alert';
+import {AlertButton, RequireLoginAlert} from '@/Util/Alert';
 import Loading from '@/Component/Layout/Loading';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {useIsFocused} from '@react-navigation/native';
@@ -45,16 +45,31 @@ export default function Shop({route, navigation}) {
   }, [isFocused]);
   useUpdateEffect(() => {
     setIsLike(shopInfo?.store_info?.like_on === 'on');
-  }, [shopInfo?.store_info]);
+  }, [shopInfo?.store_info.like_on]);
 
   const onPressLike = async () => {
+    if (shopInfo?.store_info?.mt_idx === login.idx) {
+      AlertButton('본인 매장에는 좋아요를 누를 수 없습니다.');
+      return;
+    }
     if (RequireLoginAlert(login, navigation)) {
       //  로그인 여부 확인
       await sendLikeShop({
         //  좋아요 API 치고
         _mt_idx: login?.idx,
         mt_idx: mt_idx,
-      }).then(res => res?.data?.result === 'true' && setIsLike(prev => !prev)); // 좋아요 상태 바꾸기
+      }).then(res => {
+        if (res?.data?.result === 'true') {
+          dispatch(
+            setLikeCount(
+              res.data.msg.includes('추가')
+                ? `${parseInt(shopInfo.store_info.mst_likes) + 1}`
+                : `${parseInt(shopInfo.store_info.mst_likes) - 1}`,
+            ),
+          );
+          setIsLike(prev => !prev);
+        }
+      }); // 좋아요 상태 바꾸기
     }
   };
 

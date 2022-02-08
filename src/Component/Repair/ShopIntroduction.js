@@ -54,24 +54,32 @@ export default function ShopIntroduction() {
             <RowBox key={index + 'Shop'} mg="0px 0px 15px 0px">
               <RowBox width="127px" alignItems="center">
                 <DefaultImage source={item.image} width="15px" height="15px" />
+
                 <DarkBoldText fontSize={Theme.fontSize.fs15} mg="0px 0px 0px 8px">
                   {item.title}
                 </DarkBoldText>
               </RowBox>
-              <DarkText fontSize={Theme.fontSize.fs15}>{item.content}</DarkText>
+              <RowBox width="252px">
+                <DarkText fontSize={Theme.fontSize.fs15}>{item.content}</DarkText>
+              </RowBox>
             </RowBox>
           );
         })}
       </Box>
 
-      <Box mg="20px 0px 10px">
-        <DarkBoldText>매장 상세</DarkBoldText>
-      </Box>
-      <Box width={size.minusPadding}>
-        <DarkText lineHeight="22px" width={size.minusPadding}>
-          {store_info.mst_intro}
-        </DarkText>
-      </Box>
+      {store_info?.mst_intro?.length > 0 && (
+        <>
+          <Box mg="20px 0px 10px">
+            <DarkBoldText>매장 상세</DarkBoldText>
+          </Box>
+          <Box width={size.minusPadding}>
+            <DarkText lineHeight="22px" width={size.minusPadding}>
+              {store_info?.mst_intro}
+            </DarkText>
+          </Box>
+        </>
+      )}
+
       <Box mg="20px 0px 10px">
         <DarkBoldText>매장 위치</DarkBoldText>
       </Box>
