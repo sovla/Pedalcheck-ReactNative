@@ -17,6 +17,7 @@ import {cancelOrder, getRepairHistoryDetail} from '@/API/More/More';
 import {useLayoutEffect} from 'react';
 import {AlertButtons} from '@/Util/Alert';
 import {showToastMessage} from '@/Util/Toast';
+import {imageAddress} from '@assets/global/config';
 
 // 2022-01-03 14:50:20
 // Junhan
@@ -136,7 +137,8 @@ export default function RepairHistoryDetail({route: {params}}) {
               {repair?.opt_img?.length > 0 && (
                 <Box mg="0px 16px 20px">
                   <DarkBoldText>정비사진</DarkBoldText>
-                  <Photo imageArray={repair?.opt_img} isView />
+                  <Box height="10px" />
+                  <Photo imageArray={repair?.opt_img.map(item => ({path: imageAddress + item}))} isView />
                 </Box>
               )}
               {repair?.ot_note && (
@@ -201,51 +203,62 @@ export default function RepairHistoryDetail({route: {params}}) {
                   </BetweenBox>
                 </Box>
               )}
-              <Box mg="10px 16px 0px" style={borderBottomWhiteGray}>
-                <RowBox>
-                  <DarkBoldText>결제정보</DarkBoldText>
-                </RowBox>
-                <BetweenBox mg="10px 0px" width={size.minusPadding}>
-                  <DarkMediumText fontSize={Theme.fontSize.fs15}>결제수단</DarkMediumText>
-                  <DarkText fontSize={Theme.fontSize.fs15}>
-                    {repair?.ot_pay_type === 'card'
-                      ? '카드'
-                      : repair?.ot_pay_type === 'trans'
-                      ? '계좌이체'
-                      : repair?.ot_pay_type === 'kakaopay'
-                      ? '카카오 페이'
-                      : '무통장'}
-                  </DarkText>
-                </BetweenBox>
-                <BetweenBox width={size.minusPadding}>
-                  <DarkMediumText fontSize={Theme.fontSize.fs15}>가격</DarkMediumText>
-                  <MoneyText
-                    money={repair?.ot_price}
-                    fontSize={Theme.fontSize.fs15}
-                    color={Theme.color.black}
-                    fontWeight={Theme.fontWeight.bold}
-                  />
-                </BetweenBox>
-                <BetweenBox width={size.minusPadding} mg="10px 0px 15px">
-                  <DarkMediumText fontSize={Theme.fontSize.fs15}>할인</DarkMediumText>
-                  <MoneyText money={repair?.ot_sprice * -1} fontSize={Theme.fontSize.fs15} color={Theme.color.black} />
-                </BetweenBox>
-              </Box>
-              <Box mg="0px 16px" style={borderBottomWhiteGray}>
-                <BetweenBox mg="20px 0px" width={size.minusPadding}>
-                  <DarkBoldText>결제 금액</DarkBoldText>
-                  <RowBox alignItems="center">
-                    <Badge badgeContent={payState(repair?.ot_pay_status)} />
-                    <MoneyText
-                      mg="0px 0px 0px 10px"
-                      fontSize={Theme.fontSize.fs18}
-                      fontWeight={Theme.fontWeight.bold}
-                      color={Theme.color.black}
-                      money={repair?.ot_price}
-                    />
-                  </RowBox>
-                </BetweenBox>
-              </Box>
+              {repair?.ot_use_coupon === '0' && (
+                <>
+                  <Box mg="10px 16px 0px" style={borderBottomWhiteGray}>
+                    <RowBox>
+                      <DarkBoldText>결제정보</DarkBoldText>
+                    </RowBox>
+                    <BetweenBox mg="10px 0px" width={size.minusPadding}>
+                      <DarkMediumText fontSize={Theme.fontSize.fs15}>결제수단</DarkMediumText>
+                      <DarkText fontSize={Theme.fontSize.fs15}>
+                        {repair?.ot_pay_type === 'card'
+                          ? '카드'
+                          : repair?.ot_pay_type === 'trans'
+                          ? '계좌이체'
+                          : repair?.ot_pay_type === 'kakaopay'
+                          ? '카카오 페이'
+                          : repair?.ot_pay_type === 'v_bank'
+                          ? '무통장'
+                          : '쿠폰 예약'}
+                      </DarkText>
+                    </BetweenBox>
+                    <BetweenBox width={size.minusPadding}>
+                      <DarkMediumText fontSize={Theme.fontSize.fs15}>가격</DarkMediumText>
+                      <MoneyText
+                        money={repair?.ot_price}
+                        fontSize={Theme.fontSize.fs15}
+                        color={Theme.color.black}
+                        fontWeight={Theme.fontWeight.bold}
+                      />
+                    </BetweenBox>
+                    <BetweenBox width={size.minusPadding} mg="10px 0px 15px">
+                      <DarkMediumText fontSize={Theme.fontSize.fs15}>할인</DarkMediumText>
+                      <MoneyText
+                        money={repair?.ot_sprice * -1}
+                        fontSize={Theme.fontSize.fs15}
+                        color={Theme.color.black}
+                      />
+                    </BetweenBox>
+                  </Box>
+                  <Box mg="0px 16px" style={borderBottomWhiteGray}>
+                    <BetweenBox mg="20px 0px" width={size.minusPadding}>
+                      <DarkBoldText>결제 금액</DarkBoldText>
+                      <RowBox alignItems="center">
+                        <Badge badgeContent={payState(repair?.ot_pay_status)} />
+                        <MoneyText
+                          mg="0px 0px 0px 10px"
+                          fontSize={Theme.fontSize.fs18}
+                          fontWeight={Theme.fontWeight.bold}
+                          color={Theme.color.black}
+                          money={repair?.ot_price}
+                        />
+                      </RowBox>
+                    </BetweenBox>
+                  </Box>
+                </>
+              )}
+
               <RowBox mg="20px 16px">
                 {/* <FooterButton
                   isRelative

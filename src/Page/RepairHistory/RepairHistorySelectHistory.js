@@ -245,11 +245,11 @@ export default function RepairHistorySelectHistory() {
         ListEmptyComponent={
           <>
             {isLoading ? (
-              <Box justifyContent="center" alignItems="center" width="380px" height={`${getHeightPixel(200)}`}>
+              <Box justifyContent="center" alignItems="center" width="380px" height={`${getHeightPixel(200)}px`}>
                 <Loading />
               </Box>
             ) : (
-              <Box justifyContent="center" alignItems="center" width="380px" height={`${getHeightPixel(200)}`}>
+              <Box justifyContent="center" alignItems="center" width="380px" height={`${getHeightPixel(200)}px`}>
                 <DarkMediumText>정비 이력이 없습니다.</DarkMediumText>
               </Box>
             )}
