@@ -95,6 +95,7 @@ export default function ShopReservationRequest({navigation, route: {params}}) {
         <Box mg="20px 16px">
           <DarkBoldText mg="0px 0px 10px">요청사항 (선택)</DarkBoldText>
           <DefaultInput
+            multiline
             width={size.minusPadding}
             height="100px"
             value={repairRequest}
@@ -112,7 +113,7 @@ export default function ShopReservationRequest({navigation, route: {params}}) {
             <RowBox width={size.minusPadding} justifyContent="space-between" flexWrap="wrap">
               {paymentMethod.map(item => {
                 return (
-                  <RowBox width="50%" mg="0px 0px 12px">
+                  <RowBox key={item} width="50%" mg="0px 0px 12px">
                     <TouchableOpacity
                       style={{flexDirection: 'row'}}
                       onPress={() => {

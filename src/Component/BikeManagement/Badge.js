@@ -12,6 +12,7 @@ export default function Badge({badgeContent}) {
       backgroundColor = Theme.color.indigo;
       break;
     case '처리완료':
+    case '환불':
       backgroundColor = Theme.color.black;
       break;
     case '승인거부':

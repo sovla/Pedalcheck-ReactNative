@@ -21,10 +21,10 @@ import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {useSelector} from 'react-redux';
 import DatePickerComponent from '@/Component/BikeManagement/DatePickerComponent';
 import {getCouponCategoryNumber} from '@/Util/changeCategory';
+import Loading from '@/Component/Layout/Loading';
 
 export default function Coupon() {
   // 날짜 선택 필요한 상태, 함수 시작
-  const [date, setDate] = useState(new Date());
   const [selectDate, setSelectDate] = useState({
     start: '',
     end: '',
@@ -48,6 +48,8 @@ export default function Coupon() {
   const [page, setPage] = useState(1);
   const [isLast, setIsLast] = useState(false);
   const [content, setContent] = useState('');
+
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (isFocused) {
@@ -85,13 +87,13 @@ export default function Coupon() {
       setPage(1);
       setIsLast(false);
     }
-
+    setIsLoading(true);
     const data = await getCouponList({
       _mt_idx: login.idx,
       keyword: content,
       cst_status: getCouponCategoryNumber(dropMenu),
-      cst_s_wdate: times.prev ?? '',
-      cst_e_wdate: times.next ?? '',
+      cst_s_wdate: selectDate.start ?? '',
+      cst_e_wdate: selectDate.end ?? '',
     }).then(res => res.data?.result === 'true' && res.data.data.data);
 
     if (data?.length) {
@@ -107,10 +109,12 @@ export default function Coupon() {
       }
       setIsLast(true);
     }
+    setIsLoading(false);
   };
 
   return (
     <>
+      {isLoading && <Loading isAbsolute />}
       <Header title="쿠폰 관리" />
 
       <FlatList
