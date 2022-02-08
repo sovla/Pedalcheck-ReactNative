@@ -133,11 +133,11 @@ export default function RepairHistorySelectQuestion() {
         ListEmptyComponent={
           <>
             {isLoading ? (
-              <Box alignItems="center" justifyContent="center" width="380px" height={`${getHeightPixel(450)}`}>
+              <Box alignItems="center" justifyContent="center" width="380px" height={`${getHeightPixel(450)}px`}>
                 <Loading />
               </Box>
             ) : (
-              <Box alignItems="center" justifyContent="center" width="380px" height={`${getHeightPixel(450)}`}>
+              <Box alignItems="center" justifyContent="center" width="380px" height={`${getHeightPixel(450)}px`}>
                 <DarkMediumText>1:1 문의 내역이 없습니다.</DarkMediumText>
               </Box>
             )}

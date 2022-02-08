@@ -99,6 +99,7 @@ const Photo = React.memo(PhotoComponent);
 export default Photo;
 
 const MapInnerItem = ({index, mg, item, onPressDelete, isView}) => {
+  console.log(item, 'item');
   return (
     <Box width="120px" height="80px" mg={mg} style={{borderRadius: 5}}>
       <FastImage

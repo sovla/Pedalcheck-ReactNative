@@ -17,13 +17,7 @@ import {getQnaList} from '@/API/More/More';
 import {getCategoryName} from '@/Util/changeCategory';
 import {getPixel} from '@/Util/pixelChange';
 
-export default function PedalCheck({
-  pedalChecklist,
-  setPedalCheckList,
-  setSelect,
-  select,
-  menuItem,
-}) {
+export default function PedalCheck({pedalChecklist, setPedalCheckList, setSelect, select, menuItem}) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const isFocus = navigation.isFocused();
@@ -46,6 +40,7 @@ export default function PedalCheck({
     dispatch(modalOpen('questionDelete'));
   };
 
+  // 수정 필요
   const apiGetQnaList = () => {
     getQnaList({
       _mt_idx: 4,
