@@ -1,7 +1,7 @@
 import {Button} from '@/assets/global/Button';
 import {BetweenBox, Box, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
-import {DarkBoldText, DarkText, DefaultText, GrayText, MediumText} from '@/assets/global/Text';
+import {DarkBoldText, DarkMediumText, DarkText, DefaultText, GrayText, MediumText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import React from 'react';
@@ -34,10 +34,16 @@ const CouponItem = ({
               {shopName}
             </MediumText>
             <DarkText mg="0px 0px 0px 5px" fontSize={Theme.fontSize.fs13}>
+              발급날
+            </DarkText>
+            <DarkText mg="0px 0px 0px 5px" fontSize={Theme.fontSize.fs13}>
               {issueDate}
             </DarkText>
           </RowBox>
           <RowBox>
+            <DarkText mg="0px 5px 0px 0px" fontSize={Theme.fontSize.fs13}>
+              사용기한
+            </DarkText>
             <GrayText fontSize={Theme.fontSize.fs13}>{startOfAvailability} ~ </GrayText>
 
             <GrayText fontSize={Theme.fontSize.fs13}>{endOfAvailability}</GrayText>

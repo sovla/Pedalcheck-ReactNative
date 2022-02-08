@@ -1,11 +1,4 @@
-import {
-  BetweenBox,
-  Box,
-  Container,
-  PositionBox,
-  RowBox,
-  ScrollBox,
-} from '@/assets/global/Container';
+import {BetweenBox, Box, Container, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import CustomerSmileIcon from '@assets/image/menu07_top.png';
@@ -16,15 +9,7 @@ import CustomerIcon from '@assets/image/ic_user.png';
 import GradientHeader from '@/Component/Layout/GradientHeader';
 import Theme from '@/assets/global/Theme';
 import DefaultImage from '@/assets/global/Image';
-import {
-  BoldText,
-  DarkBoldText,
-  DarkMediumText,
-  DarkText,
-  GrayText,
-  IndigoText,
-  MediumText,
-} from '@/assets/global/Text';
+import {BoldText, DarkBoldText, DarkMediumText, DarkText, GrayText, IndigoText, MediumText} from '@/assets/global/Text';
 import numberFormat, {numberChangeFormat} from '@/Util/numberFormat';
 import CustomerHeader from '@/Component/Customer/CustomerHeader';
 import {DefaultInput} from '@/assets/global/Input';
@@ -48,19 +33,8 @@ export default function CustomerInformation({
       <BetweenBox width={`${380 - 20}px`} mg="16px 0px 7px">
         <RowBox alignItems="center">
           <DarkBoldText mg="0px 5px 0px 0px">{name}</DarkBoldText>
-          <IndigoText mg="0px 3px 0px 0px" fontSize={Theme.fontSize.fs13}>
-            정비횟수
-          </IndigoText>
-          <BoldText mg="0px 5px 0px 0px" fontSize={Theme.fontSize.fs13} color={Theme.color.indigo}>
-            {numberChangeFormat(repairCount)}
-          </BoldText>
-          <IndigoText mg="0px 3px 0px 0px" fontSize={Theme.fontSize.fs13}>
-            예약취소
-          </IndigoText>
-          <BoldText fontSize={Theme.fontSize.fs13} color={Theme.color.indigo}>
-            {numberChangeFormat(reservationCancleCount)}
-          </BoldText>
         </RowBox>
+
         <BorderButton
           height="25px"
           width="auto"
@@ -70,6 +44,20 @@ export default function CustomerInformation({
           {level}
         </BorderButton>
       </BetweenBox>
+      <RowBox alignItems="center" mg="0px 0px 7px">
+        <IndigoText mg="0px 3px 0px 0px" fontSize={Theme.fontSize.fs13}>
+          정비횟수
+        </IndigoText>
+        <BoldText mg="0px 5px 0px 0px" fontSize={Theme.fontSize.fs13} color={Theme.color.indigo}>
+          {numberChangeFormat(repairCount)}
+        </BoldText>
+        <IndigoText mg="0px 3px 0px 0px" fontSize={Theme.fontSize.fs13}>
+          예약취소
+        </IndigoText>
+        <BoldText fontSize={Theme.fontSize.fs13} color={Theme.color.indigo}>
+          {numberChangeFormat(reservationCancleCount)}
+        </BoldText>
+      </RowBox>
       <RowBox>
         <DarkText mg="0px 5px 0px 0px" fontSize={Theme.fontSize.fs12}>
           최초방문일
