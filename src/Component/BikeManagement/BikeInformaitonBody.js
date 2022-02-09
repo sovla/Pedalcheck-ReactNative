@@ -22,13 +22,14 @@ export default function BikeInformaitonBody({bikeInfoDetail}) {
       <RowBox width="100%" flexWrap="wrap" backgroundColor="#0000">
         {filterBikeInfo.map((item, index) => {
           const innerMargin = item.title !== '모델상세' ? '0px 0px 10px' : '0px';
+
           const isLast = filterBikeInfo.length === index + 1;
           return (
             <RowBox
               key={item.title}
               backgroundColor="#0000"
               mg={isLast ? '0px' : innerMargin}
-              width={item.title !== '모델상세' ? '50%' : '100%'}>
+              width={item.title !== '모델상세' && item.title !== '차대번호' ? '50%' : '100%'}>
               <DarkBoldText width="67px" fontSize={Theme.fontSize.fs15}>
                 {item.title}
               </DarkBoldText>

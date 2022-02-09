@@ -24,6 +24,7 @@ export default function ShopRepairHistory({
       <Box>
         <RowBox>
           <DarkBoldText fontSize={Theme.fontSize.fs15}>{item.product}</DarkBoldText>
+          <Box width="5px" />
           <IndigoText fontSize={Theme.fontSize.fs14}>{item.shopName}</IndigoText>
         </RowBox>
         <RowBox>

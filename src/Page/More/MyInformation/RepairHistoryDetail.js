@@ -33,8 +33,9 @@ export default function RepairHistoryDetail({route: {params}}) {
   const [repair, setRepair] = useState({});
   const [checkList, setCheckList] = useState(initCheckList);
   const [isCheckListShow, setIsCheckListShow] = useState(true);
+  console.log(repair?.ot_pay_status);
   const onPressReservationCancle = async () => {
-    if (repair?.ot_pay_type === 'vbank') {
+    if (repair?.ot_pay_type === 'vbank' && repair?.ot_pay_status !== 'ready') {
       dispatch(
         modalOpenAndProp({
           modalComponent: 'reservationCancle',
@@ -118,7 +119,7 @@ export default function RepairHistoryDetail({route: {params}}) {
         }
       });
   }, [isFocused]);
-
+  console.log(repair);
   return (
     <>
       <Header title="정비이력 상세" />
@@ -131,7 +132,8 @@ export default function RepairHistoryDetail({route: {params}}) {
                 productName={[repair?.pt_title]}
                 shopName={params?.item?.mst_name}
                 rejectionReason={repair?.ot_cmemo ? repair?.ot_cmemo : ''}
-                completeDate="2021-10-14 10:58"
+                completeDate={repair?.ot_status === '처리완료' ? repair?.ot_cdate?.slice(0, 16) : ''}
+                // 수정 필요
               />
               <Box height="20px" />
               {repair?.opt_img?.length > 0 && (
@@ -203,26 +205,26 @@ export default function RepairHistoryDetail({route: {params}}) {
                   </BetweenBox>
                 </Box>
               )}
-              {repair?.ot_use_coupon === '0' && (
-                <>
-                  <Box mg="10px 16px 0px" style={borderBottomWhiteGray}>
-                    <RowBox>
-                      <DarkBoldText>결제정보</DarkBoldText>
-                    </RowBox>
-                    <BetweenBox mg="10px 0px" width={size.minusPadding}>
-                      <DarkMediumText fontSize={Theme.fontSize.fs15}>결제수단</DarkMediumText>
-                      <DarkText fontSize={Theme.fontSize.fs15}>
-                        {repair?.ot_pay_type === 'card'
-                          ? '카드'
-                          : repair?.ot_pay_type === 'trans'
-                          ? '계좌이체'
-                          : repair?.ot_pay_type === 'kakaopay'
-                          ? '카카오 페이'
-                          : repair?.ot_pay_type === 'v_bank'
-                          ? '무통장'
-                          : '쿠폰 예약'}
-                      </DarkText>
-                    </BetweenBox>
+              <Box mg="10px 16px 0px" style={borderBottomWhiteGray}>
+                <RowBox>
+                  <DarkBoldText>결제정보</DarkBoldText>
+                </RowBox>
+                <BetweenBox mg="10px 0px" width={size.minusPadding}>
+                  <DarkMediumText fontSize={Theme.fontSize.fs15}>결제수단</DarkMediumText>
+                  <DarkText fontSize={Theme.fontSize.fs15}>
+                    {repair?.ot_pay_type === 'card'
+                      ? '카드'
+                      : repair?.ot_pay_type === 'trans'
+                      ? '계좌이체'
+                      : repair?.ot_pay_type === 'kakaopay'
+                      ? '카카오 페이'
+                      : repair?.ot_pay_type === 'vbank'
+                      ? '무통장'
+                      : '쿠폰 예약'}
+                  </DarkText>
+                </BetweenBox>
+                {repair?.ot_use_coupon === '0' && (
+                  <>
                     <BetweenBox width={size.minusPadding}>
                       <DarkMediumText fontSize={Theme.fontSize.fs15}>가격</DarkMediumText>
                       <MoneyText
@@ -240,23 +242,27 @@ export default function RepairHistoryDetail({route: {params}}) {
                         color={Theme.color.black}
                       />
                     </BetweenBox>
-                  </Box>
-                  <Box mg="0px 16px" style={borderBottomWhiteGray}>
-                    <BetweenBox mg="20px 0px" width={size.minusPadding}>
-                      <DarkBoldText>결제 금액</DarkBoldText>
-                      <RowBox alignItems="center">
+                  </>
+                )}
+              </Box>
+              {repair?.ot_use_coupon === '0' && (
+                <Box mg="0px 16px" style={borderBottomWhiteGray}>
+                  <BetweenBox mg="20px 0px" width={size.minusPadding}>
+                    <DarkBoldText>결제 금액</DarkBoldText>
+                    <RowBox alignItems="center">
+                      {repair?.ot_status !== '예약취소' && repair?.ot_status !== '환불' && (
                         <Badge badgeContent={payState(repair?.ot_pay_status)} />
-                        <MoneyText
-                          mg="0px 0px 0px 10px"
-                          fontSize={Theme.fontSize.fs18}
-                          fontWeight={Theme.fontWeight.bold}
-                          color={Theme.color.black}
-                          money={repair?.ot_price}
-                        />
-                      </RowBox>
-                    </BetweenBox>
-                  </Box>
-                </>
+                      )}
+                      <MoneyText
+                        mg="0px 0px 0px 10px"
+                        fontSize={Theme.fontSize.fs18}
+                        fontWeight={Theme.fontWeight.bold}
+                        color={Theme.color.black}
+                        money={repair?.ot_price}
+                      />
+                    </RowBox>
+                  </BetweenBox>
+                </Box>
               )}
 
               <RowBox mg="20px 16px">
@@ -289,7 +295,7 @@ const RepairHistoryDetailHeader = ({
   productName = ['정비-오버홀'],
   shopName = '인천신스',
   rejectionReason = '승인거절 사유 노출 영역 승인거절 사유노출 영역 승인거절 사유 노출 영역',
-  completeDate = '2021-10-14 10:58',
+  completeDate,
 }) => {
   return (
     <Box mg="0px 16px" pd="20px 0px" style={borderBottomWhiteGray}>
@@ -302,12 +308,14 @@ const RepairHistoryDetailHeader = ({
           <IndigoText fontSize={Theme.fontSize.fs15}>{shopName} </IndigoText>
         </Box>
       </RowBox>
+      {/* // 수정 필요 */}
       {rejectionReason !== '' && (
         <RowBox mg="0px 0px 10px">
           <DarkMediumText width="110px">승인거절 사유</DarkMediumText>
           <DarkText width="275px">{rejectionReason}</DarkText>
         </RowBox>
       )}
+      {/* // 수정 필요 */}
       {completeDate !== '' && (
         <RowBox>
           <DarkMediumText width="110px">완료시간</DarkMediumText>
