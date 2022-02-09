@@ -58,8 +58,7 @@ const CouponItem = ({
           <Box height="100%" justifyContent="center">
             <TouchableOpacity onPress={onPressCouponUse}>
               <Button width="auto" height="auto" borderRadius="3px" pd="3px 7px" style={{flexDirection: 'row'}}>
-                <DefaultImage source={CheckIcon} width="20px" height="20px" />
-                <DefaultText>{status}</DefaultText>
+                <DefaultText>{status === '사용' ? '사용가능' : status}</DefaultText>
               </Button>
             </TouchableOpacity>
           </Box>
