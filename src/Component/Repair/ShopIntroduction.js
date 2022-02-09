@@ -9,16 +9,19 @@ import DefaultLine from '@/assets/global/Line';
 import Theme from '@/assets/global/Theme';
 import {useSelector} from 'react-redux';
 import Dummy from '@assets/image/map.png';
-import {Dimensions} from 'react-native';
+import {Dimensions, TouchableOpacity} from 'react-native';
 import {borderBottomWhiteGray} from '../BikeManagement/ShopRepairHistory';
 import MapView, {Marker} from 'react-native-maps';
 import {getPixel} from '@/Util/pixelChange';
+import {useState} from 'react';
 
 export default function ShopIntroduction() {
   const {
     size,
     shopInfo: {store_info},
   } = useSelector(state => state);
+
+  const [isBrand, setIsBrand] = useState(true);
 
   const shopInformation = [
     {
@@ -59,9 +62,24 @@ export default function ShopIntroduction() {
                   {item.title}
                 </DarkBoldText>
               </RowBox>
-              <RowBox width="252px">
-                <DarkText fontSize={Theme.fontSize.fs15}>{item.content}</DarkText>
-              </RowBox>
+              {item.title === '취급 브랜드' ? (
+                <TouchableOpacity
+                  style={{
+                    width: getPixel(252),
+                    flexDirection: 'row',
+                  }}
+                  onPress={() => {
+                    setIsBrand(prev => !prev);
+                  }}>
+                  <DarkText fontSize={Theme.fontSize.fs15} numberOfLines={isBrand ? 3 : 1000}>
+                    {item.content}
+                  </DarkText>
+                </TouchableOpacity>
+              ) : (
+                <RowBox width="252px">
+                  <DarkText fontSize={Theme.fontSize.fs15}>{item.content}</DarkText>
+                </RowBox>
+              )}
             </RowBox>
           );
         })}

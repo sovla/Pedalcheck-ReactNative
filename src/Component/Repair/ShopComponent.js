@@ -35,7 +35,7 @@ export default function ShopComponent({
     return (
       <RowBox justifyContent="space-between" alignItems="center" width={width} minHeight="100px" mg={mg} pd={pd}>
         <Box height="74px" justifyContent="center">
-          <RowBox height="33.33%" alignItems="center">
+          <RowBox height="33.33%" mg={titleFontSize ? '0px 0px 20px' : '0px'} alignItems="center">
             <DarkBoldText mg="0px 5px 0px 0px" fontSize={titleFontSize ?? Theme.fontSize.fs16}>
               {shopTitle}
             </DarkBoldText>
@@ -48,7 +48,8 @@ export default function ShopComponent({
               </RowBox>
             )}
           </RowBox>
-          <RowBox mg="5px 0px 0px 0px" height="33.33%" alignItems="center">
+
+          <RowBox height="33.33%" alignItems="center">
             <DefaultImage source={LikeIcon} width="12px" height="12px" />
             <GrayText fontSize={Theme.fontSize.fs13} mg="0px 10px 0px 3px">
               {numberFormat(likeCount)}
@@ -67,7 +68,7 @@ export default function ShopComponent({
               {numberFormat(repairCount)}
             </GrayText>
           </RowBox>
-          <RowBox mg="5px 0px 0px 0px" width="286px" alignItems="center" flexWrap="wrap">
+          <RowBox width="286px" alignItems="center" flexWrap="wrap">
             {tagList.map((item, index) => {
               if (item === '') {
                 return null;

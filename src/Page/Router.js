@@ -91,7 +91,7 @@ export default function Router() {
   const dispatch = useDispatch();
   const {height, width} = useWindowDimensions();
   const navigationRef = useRef(null);
-
+  console.log(navigationRef);
   const getToken = async () => {
     try {
       const token = await messaging().getToken();
@@ -121,7 +121,7 @@ export default function Router() {
         remoteMessage: remoteMessage,
         onPress: () => {
           if (remoteMessage?.data?.intent) {
-            navigation.navigate(remoteMessage?.data?.intent, {
+            navigationRef.current.navigate(remoteMessage?.data?.intent, {
               menu: remoteMessage?.data?.content_idx2,
               od_idx: remoteMessage?.data?.content_idx,
             });

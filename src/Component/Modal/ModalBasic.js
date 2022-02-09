@@ -114,7 +114,7 @@ export default function ModalBasic() {
   if (RenderItem !== <></>) {
     return (
       <Modal
-        animationType={!isSlide ? 'none' : 'none'}
+        animationType={!isSlide ? 'fade' : 'fade'}
         transparent={true}
         visible={modal.isOpenModal}
         onRequestClose={() => {

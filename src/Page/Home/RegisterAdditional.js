@@ -80,12 +80,19 @@ export default function RegisterAdditional({navigation, route}) {
   );
 }
 
-export const RegisterAdditionalBody = ({sex, setSex, setSelectImage, selectImage, imageType, setImageType, login}) => {
+export const RegisterAdditionalBody = ({
+  sex,
+  setSex,
+  setSelectImage,
+  selectImage,
+  imageType,
+  setImageType,
+  birthDate,
+  setBirthDate,
+}) => {
   const {size} = useSelector(state => state);
 
   const dispatch = useDispatch();
-
-  const {birthDate} = useSelector(state => state);
 
   const birthDateValue = birthDate?.year !== '' ? `${birthDate.year}년 ${birthDate.month}월 ${birthDate.day}일` : '';
 
@@ -169,7 +176,13 @@ export const RegisterAdditionalBody = ({sex, setSex, setSelectImage, selectImage
           width={size.minusPadding}
           value={birthDateValue}
           PressText={() => {
-            dispatch(modalOpen('slide/birthDate'));
+            dispatch(
+              modalOpenAndProp({
+                modalComponent: 'slide/birthDate',
+                birth: birthDate,
+                setBirth: setBirthDate,
+              }),
+            );
           }}
           fontSize={Theme.fontSize.fs15}
           pd="0px 0px 10px"

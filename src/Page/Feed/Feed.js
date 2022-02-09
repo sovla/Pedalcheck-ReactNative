@@ -141,7 +141,7 @@ const FeedBox = ({item, size, onPressImage}) => {
               borderTopLeftRadius: 15,
               borderTopRightRadius: 15,
             }}
-            resizeMode="contain"
+            resizeMode="stretch"
             source={thumbImage}
             width="380px"
             height="200px"

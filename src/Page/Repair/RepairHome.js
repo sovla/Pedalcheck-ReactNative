@@ -67,7 +67,7 @@ export default function RepairHome() {
 
   // 현태 최초 실행 시 위치 상태
   useEffect(() => {
-    if (isFocused) {
+    if (isFocused && storeList?.length < 1) {
       getShopListHandle(1);
     }
   }, [isFocused]);

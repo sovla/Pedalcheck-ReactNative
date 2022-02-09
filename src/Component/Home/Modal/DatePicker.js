@@ -4,20 +4,21 @@ import {useDispatch, useSelector} from 'react-redux';
 import ModalTitleBox from '../../Modal/ModalTitleBox';
 import {LinkWhiteButton} from '@/assets/global/Button';
 import {modalClose} from '@/Store/modalState';
-import {Picker} from 'react-native-wheel-pick';
+import {DatePicker, Picker} from 'react-native-wheel-pick';
 import {SetBirthDate} from '@/Store/birthDateState';
 import {getHeightPixel, getPixel} from '@/Util/pixelChange';
+import {parse} from '@babel/core';
+import {useLayoutEffect} from 'react';
 
-export default function BirthDatePicker() {
+export default function BirthDatePicker({birth, setBirth}) {
   const now = new Date();
   const [birthDate, setBirthDate] = useState({
     year,
     month,
     day,
   });
-  const [day, setDay] = useState(
-    getBetweenNumber(1, new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()),
-  );
+  const [day, setDay] = useState(getBetweenNumber(1, new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()));
+  const [isRender, setIsRender] = useState(false);
   const size = useSelector(state => state.size);
   const dispatch = useDispatch();
 
@@ -25,20 +26,37 @@ export default function BirthDatePicker() {
   const month = getBetweenNumber(1, 12);
 
   const ChangeYear = (value, key) => {
-    setBirthDate(prev => {
-      return {...prev, [key]: value};
-    });
+    if (isRender) {
+      console.log(birthDate, 'changeYear');
+
+      setBirthDate(prev => {
+        return {...prev, [key]: value};
+      });
+    }
   };
 
   const pickerWidth = getPixel((size.designWidth - 100) / 4);
   const onPressConfirm = () => {
+    if (setBirth) {
+      setBirth(birthDate);
+    }
     dispatch(SetBirthDate({year: birthDate.year, month: birthDate.month, day: birthDate.day}));
     dispatch(modalClose());
   };
   useEffect(() => {
-    if (birthDate?.year > 1900)
-      setDay(getBetweenNumber(1, new Date(birthDate?.year, birthDate?.month, 0).getDate()));
+    if (birthDate?.year > 1900) setDay(getBetweenNumber(1, new Date(birthDate?.year, birthDate?.month, 0).getDate()));
   }, [birthDate.month]);
+
+  useLayoutEffect(() => {
+    if (birth) {
+      setBirthDate({
+        year: parseInt(birth.year),
+        month: parseInt(birth.month),
+        day: parseInt(birth.day),
+      });
+    }
+    setIsRender(true);
+  }, []);
 
   if (day.length === 0) {
     return null;
@@ -53,7 +71,7 @@ export default function BirthDatePicker() {
           onValueChange={value => ChangeYear(value, 'year')}
           pickerData={year}
           itemSpace={getPixel(40)}
-          selectedValue={now.getFullYear()}
+          selectedValue={birthDate?.year ?? now.getFullYear()}
         />
         <Picker
           style={{backgroundColor: 'white', width: pickerWidth, height: getHeightPixel(120)}}
@@ -61,7 +79,7 @@ export default function BirthDatePicker() {
           onValueChange={value => ChangeYear(value, 'month')}
           pickerData={month}
           itemSpace={getPixel(40)}
-          selectedValue={now.getMonth() + 1}
+          selectedValue={birthDate?.month ?? now.getMonth() + 1}
         />
         <Picker
           style={{backgroundColor: 'white', width: pickerWidth, height: getHeightPixel(120)}}
@@ -69,7 +87,7 @@ export default function BirthDatePicker() {
           onValueChange={value => ChangeYear(value, 'day')}
           pickerData={day}
           itemSpace={getPixel(40)}
-          selectedValue={1}
+          selectedValue={birthDate?.day ?? now.getDate()}
         />
         <Picker
           style={{backgroundColor: 'white', width: pickerWidth, height: getHeightPixel(120)}}
