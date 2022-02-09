@@ -35,11 +35,16 @@ export default function Update({navigation}) {
   const isFocused = useIsFocused();
   const [imageType, setImageType] = useState(1);
   const [select, setSelect] = useState('기본 정보 수정');
-  const {sizem, login, location, birthDate} = useSelector(state => state);
+  const {sizem, login, location} = useSelector(state => state);
   const [user, setUser] = useState(); //  기본정보 (유저정보)
   const [image, setImage] = useState(); //  기본정보
   const [selectImage, setSelectImage] = useState(); //  추가정보
   const [sex, setSex] = useState();
+  const [birthDate, setBirthDate] = useState({
+    year: '',
+    month: '',
+    day: '',
+  });
   const [errorMessage, setErrorMessage] = useState({
     name: '',
     nickname: '',
@@ -78,6 +83,14 @@ export default function Update({navigation}) {
       setImage(data.mt_bank_image);
       setSelectImage(data.mt_image);
       setSex(data?.mt_gender === 'M' ? 'man' : 'woman');
+      if (data.mt_birth) {
+        const splitDate = data.mt_birth.split('-');
+        setBirthDate({
+          year: splitDate[0],
+          month: splitDate[1],
+          day: splitDate[2],
+        });
+      }
     }
   };
 
@@ -245,6 +258,8 @@ export default function Update({navigation}) {
               setSelectImage={setSelectImage}
               imageType={imageType}
               setImageType={setImageType}
+              birthDate={birthDate}
+              setBirthDate={setBirthDate}
             />
           )}
         </ScrollBox>

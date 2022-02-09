@@ -105,6 +105,7 @@ export function Payment({navigation, route: {params}}) {
           }
         } else {
           AlertButton('오류가 발생했습니다.');
+          console.log(res.data);
           navigation.goBack();
         }
       });
