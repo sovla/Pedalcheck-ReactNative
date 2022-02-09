@@ -38,6 +38,7 @@ export const DefaultInput = ({
   pd = '0px 10px 5px',
   onBlur = () => {},
   onContentSizeChange,
+  innerPadding = '0px 0px 0px 10px', //     인풋 내에 패딩
 }) => {
   let RenderCondition = 'Default';
   if (disabled && !isText && !isDropdown) {
@@ -114,7 +115,7 @@ export const DefaultInput = ({
       )}
       {RenderCondition === 'isText' && ( // 텍스트 형태
         <TouchableOpacity onPress={PressText}>
-          <DefaultInputTextStyle minHeight={minHeight} pd="0px 0px 0px 10px" width={width} height={height}>
+          <DefaultInputTextStyle minHeight={minHeight} pd={innerPadding} width={width} height={height}>
             <DefaultText fontSize={fontSize} color={value !== '' ? Theme.color.black : Theme.color.gray}>
               {value !== '' ? value : placeHolder}
             </DefaultText>
@@ -196,7 +197,7 @@ export const DefaultInput = ({
 const DefaultInputStyle = styled.TextInput`
   background-color: ${p => p.backgroundColor ?? Theme.color.backgroundBlue};
   border-radius: 10px;
-  padding: ${pixelChange('10px')};
+  padding: ${p => pixelChange(p.pd) ?? pixelChange('10px')};
   font-size: ${pixelChange(Theme.fontSize.fs15)};
   line-height: 22px;
   include-font-padding: false;
