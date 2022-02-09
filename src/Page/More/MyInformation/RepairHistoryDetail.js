@@ -19,10 +19,12 @@ import {AlertButtons} from '@/Util/Alert';
 import {showToastMessage} from '@/Util/Toast';
 import {imageAddress} from '@assets/global/config';
 
-// 2022-01-03 14:50:20
-// Junhan
-// 승인거절 등 여러 상태에 대한 더미가 있어야 작업가능
-
+/**
+ * 2022-02-09 15:51:54
+ * 현태
+ * 정비이력 푸시 터치시 API수정
+ *
+ */
 export default function RepairHistoryDetail({route: {params}}) {
   const {size, login} = useSelector(state => state);
   const navigation = useNavigation();
@@ -33,7 +35,6 @@ export default function RepairHistoryDetail({route: {params}}) {
   const [repair, setRepair] = useState({});
   const [checkList, setCheckList] = useState(initCheckList);
   const [isCheckListShow, setIsCheckListShow] = useState(true);
-  console.log(repair?.ot_pay_status);
   const onPressReservationCancle = async () => {
     if (repair?.ot_pay_type === 'vbank' && repair?.ot_pay_status !== 'ready') {
       dispatch(
@@ -119,7 +120,6 @@ export default function RepairHistoryDetail({route: {params}}) {
         }
       });
   }, [isFocused]);
-  console.log(repair);
   return (
     <>
       <Header title="정비이력 상세" />

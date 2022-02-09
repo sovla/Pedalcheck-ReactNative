@@ -121,7 +121,7 @@ export default function Router() {
         remoteMessage: remoteMessage,
         onPress: () => {
           if (remoteMessage?.data?.intent) {
-            navigation.navigate(remoteMessage?.data?.intent, {
+            navigationRef.current.navigate(remoteMessage?.data?.intent, {
               menu: remoteMessage?.data?.content_idx2,
               od_idx: remoteMessage?.data?.content_idx,
             });

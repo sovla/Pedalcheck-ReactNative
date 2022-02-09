@@ -48,15 +48,28 @@ export default function CheckList({setIsShow, isShow, checkList, setCheckList, d
       </TouchableOpacity>
 
       {isShow &&
-        checkList.map(list => (
-          <ProductCheckBox
-            disabled={disabled}
-            key={list.title}
-            title={list.title}
-            item={list.item}
-            onPress={onPressCheckList}
-          />
-        ))}
+        checkList.map(list => {
+          let count = 0;
+          list.item.map((value, index) => {
+            if (value.select !== '') {
+              count++;
+            }
+          });
+          if (count !== 0) {
+            return (
+              <>
+                <ProductCheckBox
+                  disabled={disabled}
+                  key={list.title}
+                  title={list.title}
+                  item={list.item}
+                  onPress={onPressCheckList}
+                />
+              </>
+            );
+          }
+        })}
+      {isShow && <Box height="10px" />}
     </Box>
   );
 }
