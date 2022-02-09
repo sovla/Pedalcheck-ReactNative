@@ -17,6 +17,7 @@ import {deleteLikeShop, getLikeShopList} from '@/API/More/More';
 import {getPixel} from '@/Util/pixelChange';
 import {modalClose, modalOpenAndProp} from '@/Store/modalState';
 import {DarkBoldText, DarkMediumText} from '@/assets/global/Text';
+import {AlertButton, AlertButtons} from '@/Util/Alert';
 
 export default function LikeShop() {
   const {login} = useSelector(state => state);
@@ -57,29 +58,13 @@ export default function LikeShop() {
 
   const onPressDeleteButton = () => {
     if (deleteList?.length === 0) {
-      dispatch(
-        modalOpenAndProp({
-          content: '매장을 선택해주세요.',
-          leftPress: () => dispatch(modalClose()),
-        }),
-      );
+      AlertButton('매장을 선택해주세요.');
       return;
     } else {
-      dispatch(
-        modalOpenAndProp({
-          content: '선택한 매장을 관심매장에서 삭제하시겠습니까?',
-          leftContent: '삭제',
-          rightContent: '취소',
-          leftPress: () => {
-            deleteApi();
-            setIsEdit(!isEdit);
-          },
-          rightPress: () => {
-            dispatch(modalClose());
-            setIsEdit(!isEdit);
-          },
-        }),
-      );
+      AlertButtons('선택한 매장을 관심매장에서 삭제하시겠습니까?', '삭제', '취소', () => {
+        deleteApi();
+        setIsEdit(!isEdit);
+      });
     }
   };
 
@@ -97,15 +82,9 @@ export default function LikeShop() {
   useEffect(() => {
     getLikeShopListApi();
   }, [isFocused]);
-
   const RightComponent = () => {
     return (
-      <Box
-        width="100%"
-        height="100%"
-        pd="0px 16px 0px 0px"
-        alignItems="flex-end"
-        justifyContent="center">
+      <Box width="100%" height="100%" pd="0px 16px 0px 0px" alignItems="flex-end" justifyContent="center">
         <TouchableOpacity
           onPress={() => {
             setIsEdit(!isEdit);
@@ -131,10 +110,7 @@ export default function LikeShop() {
 
       <Box style={{flex: 1}}>
         <FlatList
-          style={[
-            {paddingHorizontal: getPixel(16), marginBottom: isEdit ? 70 : 0},
-            !likeShopList?.length && {flex: 1},
-          ]}
+          style={[{paddingHorizontal: getPixel(16), marginBottom: isEdit ? 70 : 0}, !likeShopList?.length && {flex: 1}]}
           data={likeShopList}
           ListEmptyComponent={
             <Box justifyContent="center" alignItems="center" width="380px" minHeight="90%">
@@ -148,7 +124,14 @@ export default function LikeShop() {
                 <LikeShopItem item={item} isEdit={isEdit} deleteList={deleteList} />
               </TouchableOpacity>
             ) : (
-              <LikeShopItem item={item} isEdit={isEdit} deleteList={deleteList} />
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Shop', {
+                    mt_idx: item?.mt_idx,
+                  })
+                }>
+                <LikeShopItem item={item} isEdit={isEdit} deleteList={deleteList} />
+              </TouchableOpacity>
             )
           }
         />

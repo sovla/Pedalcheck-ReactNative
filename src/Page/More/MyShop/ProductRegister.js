@@ -190,7 +190,7 @@ export default function ProductRegister({route: {params}}) {
           />
         </Box>
 
-        <Box>
+        <Box mg="20px 0px 0px">
           <DarkMediumText fontSize={Theme.fontSize.fs15}>가격</DarkMediumText>
           <DefaultInput
             width="355px"
@@ -207,13 +207,13 @@ export default function ProductRegister({route: {params}}) {
             <DarkMediumText>원</DarkMediumText>
           </PositionBox>
         </Box>
-        <Box width="55px" mg="20px 0px" alignItems="center">
+        <Box width="55px" mg="20px 0px">
           <DarkMediumText fontSize={Theme.fontSize.fs15}>할인율</DarkMediumText>
           <DefaultInput
             isCenter
             value={product?.pt_discount_per}
             fontSize={Theme.fontSize.fs15}
-            width="55px"
+            width="50px"
             keyboardType={'numeric'}
             changeFn={text => {
               if (typeof text === 'string' && parseInt(text) > 100) {
@@ -312,7 +312,7 @@ export default function ProductRegister({route: {params}}) {
           <DarkBoldText mg="40px 0px 20px">선택 입력 항목</DarkBoldText>
         </Box>
         <Box mg="20px 0px">
-          <DarkMediumText>카테고리 선택</DarkMediumText>
+          <DarkMediumText fontSize={Theme.fontSize.fs15}>카테고리 선택</DarkMediumText>
           <DefaultInput
             isDropdown
             dropdownItem={mainCategory.map(item => {

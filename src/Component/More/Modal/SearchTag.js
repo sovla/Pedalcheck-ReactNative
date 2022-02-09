@@ -12,9 +12,10 @@ import {getTagList} from '@/API/More/More';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import {useEffect} from 'react';
 import Theme from '@/assets/global/Theme';
-import {BorderButton} from '@/assets/global/Button';
+import {BorderButton, LinkButton} from '@/assets/global/Button';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {useLayoutEffect} from 'react';
+import {modalClose} from '@/Store/modalState';
 
 export default function SearchTag({setShopInformation, shopInformation}) {
   const dispatch = useDispatch();
@@ -52,6 +53,8 @@ export default function SearchTag({setShopInformation, shopInformation}) {
         setTagList(data);
       });
   };
+
+  let selectListCopy = selectList?.length > 0 ? selectList.concat() : [];
   return (
     <>
       <ModalTitleBox
@@ -76,7 +79,12 @@ export default function SearchTag({setShopInformation, shopInformation}) {
       <Box height="200px" mg="5px 0px">
         <ScrollBox>
           {tagList?.map((item, index) => {
-            const isSelect = selectList?.find(findItem => findItem === item.st_title);
+            const isSelect = selectListCopy?.find((findItem, findIndex) => {
+              if (findItem === item.st_title) {
+                selectListCopy.splice(findIndex, 1);
+                return true;
+              }
+            });
             return (
               <TouchableOpacity
                 onPress={() => {
@@ -105,6 +113,13 @@ export default function SearchTag({setShopInformation, shopInformation}) {
           })}
         </ScrollBox>
       </Box>
+      <LinkButton
+        to={() => {
+          dispatch(modalClose());
+        }}
+        content="확인"
+        width="350px"
+      />
     </>
   );
 }

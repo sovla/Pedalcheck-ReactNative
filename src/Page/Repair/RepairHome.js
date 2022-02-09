@@ -29,6 +29,8 @@ import {useIsFocused, useNavigation, useNavigationState} from '@react-navigation
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {reduceItemSplit} from '@/Util/reduceItem';
 import Loading from '@/Component/Layout/Loading';
+import Dummy from '@assets/image/shop_dummy.png';
+import {imageAddress} from '@assets/global/config';
 
 export default function RepairHome() {
   const {size, login} = useSelector(state => state);
@@ -158,6 +160,7 @@ export default function RepairHome() {
                   reviewCount={item?.mst_reviews ?? 0}
                   repairCount={item?.mst_orders ?? 0}
                   tagList={item?.mst_tag?.split(',')}
+                  image={item?.mst_img ? {uri: imageAddress + item.mst_img} : Dummy}
                   isImage
                 />
               </Box>

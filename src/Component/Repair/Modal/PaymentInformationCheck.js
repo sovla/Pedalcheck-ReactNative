@@ -41,11 +41,17 @@ export default function PaymentInformationCheck({onPressComplete}) {
     {title: '결제금액', content: numberFormat(totalPrice) + '원'},
     {title: '예약시간', content: reservationTime},
     {title: '예약자 이름', content: login?.mt_name},
-    {title: '이메일', content: login?.mt_id},
+    {
+      title: '브랜드 - 모델',
+      content:
+        selectBike.selectItem === 2000
+          ? selectBike.bikeName.bikeBrand + ' - ' + selectBike.bikeName.bikeModel
+          : selectBike.selectBike.mbt_brand + ' - ' + selectBike.selectBike.mbt_model,
+    },
     {title: '전화번호', content: login?.mt_sms},
     {title: '요청사항', content: selectPayment?.repairRequest},
   ];
-
+  console.log(selectBike);
   return (
     <>
       <ModalTitleBox size={size} title="결제정보 확인" padding={64} />
