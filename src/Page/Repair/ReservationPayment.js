@@ -133,9 +133,11 @@ export default function ReservationPayment({navigation, route: {params}}) {
                 return null;
               }
               return (
-                <RowBox key={item.title} justifyContent="space-between" mg="0px 0px 10px">
+                <RowBox key={item.title} mg="0px 0px 10px">
                   <DarkBoldText width="100px">{item.title}</DarkBoldText>
-                  <DarkText accessibilityState={{selected: true}}>{item.content}</DarkText>
+                  <RowBox width="240px">
+                    <DarkText accessibilityState={{selected: true}}>{item.content}</DarkText>
+                  </RowBox>
                 </RowBox>
               );
             })}

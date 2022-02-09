@@ -1,7 +1,7 @@
 import {Button} from '@/assets/global/Button';
 import {BetweenBox, Box, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
-import {DarkBoldText, DarkText, DefaultText, GrayText, MediumText} from '@/assets/global/Text';
+import {DarkBoldText, DarkMediumText, DarkText, DefaultText, GrayText, MediumText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import React from 'react';
@@ -34,10 +34,16 @@ const CouponItem = ({
               {shopName}
             </MediumText>
             <DarkText mg="0px 0px 0px 5px" fontSize={Theme.fontSize.fs13}>
+              발급날
+            </DarkText>
+            <DarkText mg="0px 0px 0px 5px" fontSize={Theme.fontSize.fs13}>
               {issueDate}
             </DarkText>
           </RowBox>
           <RowBox>
+            <DarkText mg="0px 5px 0px 0px" fontSize={Theme.fontSize.fs13}>
+              사용기한
+            </DarkText>
             <GrayText fontSize={Theme.fontSize.fs13}>{startOfAvailability} ~ </GrayText>
 
             <GrayText fontSize={Theme.fontSize.fs13}>{endOfAvailability}</GrayText>
@@ -52,8 +58,7 @@ const CouponItem = ({
           <Box height="100%" justifyContent="center">
             <TouchableOpacity onPress={onPressCouponUse}>
               <Button width="auto" height="auto" borderRadius="3px" pd="3px 7px" style={{flexDirection: 'row'}}>
-                <DefaultImage source={CheckIcon} width="20px" height="20px" />
-                <DefaultText>{status}</DefaultText>
+                <DefaultText>{status === '사용' ? '사용가능' : status}</DefaultText>
               </Button>
             </TouchableOpacity>
           </Box>

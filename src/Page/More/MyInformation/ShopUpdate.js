@@ -2,7 +2,7 @@ import {deleteImage, getStoreInfo, updateStore, updateStoreImage} from '@/API/Mo
 import {BorderButton, Button, LinkButton} from '@/assets/global/Button';
 import {BetweenBox, Box, Container, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
-import {DarkBoldText, DarkMediumText, ErrorText} from '@/assets/global/Text';
+import {DarkBoldText, DarkMediumText, ErrorText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import Header from '@/Component/Layout/Header';
@@ -22,6 +22,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {imageAddress} from '@assets/global/config';
 import {setStoreInfo} from '@/Store/storeInfoState';
 import Loading from '@/Component/Layout/Loading';
+import pixelChange from '@/Util/pixelChange';
 
 export default function ShopUpdate() {
   const navigation = useNavigation();
@@ -149,13 +150,16 @@ export default function ShopUpdate() {
   };
 
   const deleteImageHandle = async item => {
-    const response = await deleteImage({
-      mode: 'member_seller',
-      idx: item.idx,
-      fname: item.fname,
-    });
-
-    return response.data?.result === 'true';
+    if (item?.idx) {
+      const response = await deleteImage({
+        mode: 'member_seller',
+        idx: item?.idx,
+        fname: item?.fname,
+      });
+      return response.data?.result === 'true';
+    } else {
+      return true;
+    }
   };
   return (
     <>
@@ -257,6 +261,7 @@ export default function ShopUpdate() {
           </Box>
           <DefaultInput
             title="브랜드"
+            innerPadding={pixelChange('10px')}
             width={size.minusPadding}
             fontSize={Theme.fontSize.fs15}
             height="auto"
@@ -265,6 +270,7 @@ export default function ShopUpdate() {
             pd="0px 0px 5px"
             mg="20px 0px 20px"
             value={shopInformation?.mst_brand ?? ''}
+            backgroundColor={Theme.color.backgroundDarkGray}
             PressText={() => {
               dispatch(
                 modalOpenAndProp({
@@ -293,9 +299,13 @@ export default function ShopUpdate() {
             maxLength={13}
           />
           <Box>
-            <DarkMediumText fontSize={Theme.fontSize.fs15} mg="0px 0px 5px">
-              대표 이미지 (375×237px 권장)
-            </DarkMediumText>
+            <BetweenBox width="380px">
+              <DarkMediumText fontSize={Theme.fontSize.fs15} mg="0px 0px 5px">
+                대표 이미지 (375×237px 권장)
+              </DarkMediumText>
+              <IndigoText fontSize={Theme.fontSize.fs13}>최대 15장까지 등록가능</IndigoText>
+            </BetweenBox>
+
             <Photo
               imageCount={15}
               imageArray={imageArray}
@@ -369,6 +379,7 @@ export default function ShopUpdate() {
           />
           <DefaultInput
             title="태그"
+            innerPadding={pixelChange('10px')}
             width={size.minusPadding}
             fontSize={Theme.fontSize.fs15}
             placeHolder="태그를 선택해주세요"

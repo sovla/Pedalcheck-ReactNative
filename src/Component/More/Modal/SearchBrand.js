@@ -12,10 +12,12 @@ import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistor
 import {getBikeModel} from '@/API/Bike/Bike';
 import {useEffect} from 'react';
 import Theme from '@/assets/global/Theme';
-import {BorderButton, Button, DisabledBorderButton, FooterButton} from '@/assets/global/Button';
+import {BorderButton, Button, DisabledBorderButton, FooterButton, LinkButton} from '@/assets/global/Button';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
+import {useDispatch} from 'react-redux';
 
 export default function SearchBrand({setShopInformation, shopInformation}) {
+  const dispatch = useDispatch();
   const [brand, setBrand] = useState('');
   const [brandList, setBrandList] = useState([]);
   const [selectList, setSelectList] = useState(
@@ -41,6 +43,7 @@ export default function SearchBrand({setShopInformation, shopInformation}) {
       .then(res => res.data.result === 'true' && res.data.data.data)
       .then(data => setBrandList(data));
   };
+  let selectListCopy = selectList?.length > 0 ? selectList.concat() : [];
   return (
     <>
       <ModalTitleBox title="브랜드 검색" />
@@ -60,12 +63,19 @@ export default function SearchBrand({setShopInformation, shopInformation}) {
       <Box height="250px" mg="5px 0px">
         <ScrollBox>
           {brandList?.map((item, index) => {
-            const isSelect = selectList?.find(findItem => findItem === item.bt_brand);
+            const isSelect = selectListCopy?.find((findItem, findIndex) => {
+              if (findItem === item.bt_brand) {
+                selectListCopy.splice(findIndex, 1);
+                return true;
+              }
+            });
             return (
               <TouchableOpacity
                 onPress={async () => {
                   if (!isSelect) {
-                    setSelectList(prev => [...prev, item.bt_brand]);
+                    setSelectList(prev => {
+                      return [...prev, item.bt_brand];
+                    });
                   } else {
                     setSelectList(prev => prev.filter(filterItem => filterItem !== item.bt_brand));
                   }
@@ -89,6 +99,13 @@ export default function SearchBrand({setShopInformation, shopInformation}) {
           })}
         </ScrollBox>
       </Box>
+      <LinkButton
+        to={() => {
+          dispatch(modalClose());
+        }}
+        content="확인"
+        width="350px"
+      />
     </>
   );
 }

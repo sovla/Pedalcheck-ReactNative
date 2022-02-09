@@ -29,6 +29,8 @@ import {useIsFocused, useNavigation, useNavigationState} from '@react-navigation
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {reduceItemSplit} from '@/Util/reduceItem';
 import Loading from '@/Component/Layout/Loading';
+import Dummy from '@assets/image/shop_dummy.png';
+import {imageAddress} from '@assets/global/config';
 
 export default function RepairHome() {
   const {size, login} = useSelector(state => state);
@@ -95,7 +97,7 @@ export default function RepairHome() {
       mst_name: searchText ?? '', // 검색하는 경우 추가
       mst_tag: mst_tag, //
       mst_type: selectItem === '전체보기' ? '' : '1',
-      sorting: sortSelectItem === '정비횟수순' ? '2' : sortSelectItem === '거리순' ? '3' : '1', // 인기순 1 거리순 2 정비횟수순 3
+      sorting: sortSelectItem === '정비횟수순' ? '2' : sortSelectItem === '거리순' ? (login?.idx ? '3' : '1') : '1', // 인기순 1 거리순 2 정비횟수순 3
     })
       .then(res => {
         if (res?.data?.result === 'true') {
@@ -158,6 +160,7 @@ export default function RepairHome() {
                   reviewCount={item?.mst_reviews ?? 0}
                   repairCount={item?.mst_orders ?? 0}
                   tagList={item?.mst_tag?.split(',')}
+                  image={item?.mst_img ? {uri: imageAddress + item.mst_img} : Dummy}
                   isImage
                 />
               </Box>
@@ -287,7 +290,7 @@ const Header = ({
                 }),
               );
             }}>
-            <RowBox height="100%" alignItems="center" mg="0px 0px 0px 5px">
+            <RowBox width="160px" height="100%" alignItems="center" mg="0px 0px 0px 5px">
               <DarkMediumText fontSize={Theme.fontSize.fs15}>{innerLocation}</DarkMediumText>
               <DefaultImage width="24px" height="24px" source={LocationIcon} />
             </RowBox>
@@ -347,6 +350,7 @@ const Event = () => {
             eventList.map((item, index) => (
               <TouchableOpacity
                 key={index + 'Event'}
+                style={{marginBottom: 5}}
                 onPress={() => navigation.navigate('Post', {...item, select: '이벤트'})}>
                 <DarkText numberOfLines={1} style={{width: getPixel(272)}}>
                   {item?.bt_title}

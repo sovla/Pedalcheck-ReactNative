@@ -106,8 +106,8 @@ export default function ProductRegister({route: {params}}) {
       pt_etime: product.pt_etime,
       pt_weekend: product.pt_weekend,
       pt_weekend_time: product.pt_weekend_time,
-      pt_weekend_stime: product.pt_weekend_stime,
-      pt_weekend_etime: product.pt_weekend_etime,
+      pt_weekend_stime: product.pt_weekend_time === 'Y' ? product.pt_weekend_stime : '',
+      pt_weekend_etime: product.pt_weekend_time === 'Y' ? product.pt_weekend_etime : '',
       pt_type: product.pt_type,
       ct_pid: product.ct_pid,
       ct_id: product.ct_id,
@@ -178,23 +178,26 @@ export default function ProductRegister({route: {params}}) {
         <RowBox pd="20px 0px" style={borderBottomWhiteGray}>
           <RequireFieldText />
         </RowBox>
-        <DefaultInput
-          mg="20px 0px 0px"
-          title="상품명"
-          width="380px"
-          placeHolder="상품명을 입력해주세요"
-          value={product.pt_title}
-          changeFn={text => setProduct(prev => ({...prev, pt_title: text}))}
-          maxLength={20}
-          errorMessage={errorMessage?.pt_title !== '' && errorMessage.pt_price}
-        />
-        <RowBox alignItems="center">
+        <Box mg="20px 0px 0px">
+          <DarkMediumText fontSize={Theme.fontSize.fs15}>상품명</DarkMediumText>
           <DefaultInput
-            title="가격"
+            width="380px"
+            placeHolder="상품명을 입력해주세요"
+            value={product.pt_title}
+            changeFn={text => setProduct(prev => ({...prev, pt_title: text}))}
+            maxLength={20}
+            errorMessage={errorMessage?.pt_title !== '' && errorMessage.pt_price}
+          />
+        </Box>
+
+        <Box mg="20px 0px 0px">
+          <DarkMediumText fontSize={Theme.fontSize.fs15}>가격</DarkMediumText>
+          <DefaultInput
             width="355px"
             placeHolder="가격을 입력해주세요"
             value={product.pt_price}
             keyboardType={'numeric'}
+            maxLength={10}
             changeFn={text => {
               setProduct(prev => ({...prev, pt_price: numberFormat(text)}));
             }}
@@ -203,13 +206,14 @@ export default function ProductRegister({route: {params}}) {
           <PositionBox right="0" bottom="10" width="25px" justifyContent="center" alignItems="center">
             <DarkMediumText>원</DarkMediumText>
           </PositionBox>
-        </RowBox>
-        <RowBox width="55px" mg="20px 0px">
+        </Box>
+        <Box width="55px" mg="20px 0px">
+          <DarkMediumText fontSize={Theme.fontSize.fs15}>할인율</DarkMediumText>
           <DefaultInput
             isCenter
-            title="할인율"
             value={product?.pt_discount_per}
-            width="55px"
+            fontSize={Theme.fontSize.fs15}
+            width="50px"
             keyboardType={'numeric'}
             changeFn={text => {
               if (typeof text === 'string' && parseInt(text) > 100) {
@@ -221,10 +225,10 @@ export default function ProductRegister({route: {params}}) {
               setProduct(prev => ({...prev, pt_discount_per: text}));
             }}
           />
-          <PositionBox bottom="10" right="-17">
+          <PositionBox bottom="10" right="-22">
             <DarkMediumText fontSize={Theme.fontSize.fs15}>%</DarkMediumText>
           </PositionBox>
-        </RowBox>
+        </Box>
         <DarkMediumText fontSize={Theme.fontSize.fs15}>사용가능시간</DarkMediumText>
         <RowBox mg="0px 0px 10px">
           <DropdownTimeBox
@@ -253,21 +257,26 @@ export default function ProductRegister({route: {params}}) {
           </Box>
         )}
         <TouchableOpacity
-          onPress={() => setProduct(prev => ({...prev, pt_weekend: prev.pt_weekend === 'Y' ? 'N' : 'Y'}))}
+          onPress={() =>
+            setProduct(prev => ({...prev, pt_weekend: prev.pt_weekend === 'Y' ? 'N' : 'Y', pt_weekend_time: 'N'}))
+          }
           style={{marginBottom: getPixel(10)}}>
           <RowBox alignItems="center">
             <DefaultCheckBox isCheck={product.pt_weekend === 'Y'} isDisabled />
             <DarkText mg="0px 0px 0px 10px">주말예약 불가</DarkText>
           </RowBox>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setProduct(prev => ({...prev, pt_weekend_time: prev.pt_weekend_time === 'Y' ? 'N' : 'Y'}))}>
-          <RowBox alignItems="center">
-            <DefaultCheckBox isCheck={product.pt_weekend_time === 'Y'} isDisabled />
-            <DarkText mg="0px 0px 0px 10px">주말 이용시간 별도 설정</DarkText>
-          </RowBox>
-        </TouchableOpacity>
-        {product.pt_weekend_time === 'Y' && (
+        {product.pt_weekend !== 'Y' && (
+          <TouchableOpacity
+            onPress={() => setProduct(prev => ({...prev, pt_weekend_time: prev.pt_weekend_time === 'Y' ? 'N' : 'Y'}))}>
+            <RowBox alignItems="center">
+              <DefaultCheckBox isCheck={product.pt_weekend_time === 'Y'} isDisabled />
+              <DarkText mg="0px 0px 0px 10px">주말 이용시간 별도 설정</DarkText>
+            </RowBox>
+          </TouchableOpacity>
+        )}
+
+        {product.pt_weekend !== 'Y' && product.pt_weekend_time === 'Y' && (
           <RowBox mg="10px 0px 0px">
             <DropdownTimeBox
               value={product.pt_weekend_stime?.substring(0, 2)}
@@ -303,7 +312,7 @@ export default function ProductRegister({route: {params}}) {
           <DarkBoldText mg="40px 0px 20px">선택 입력 항목</DarkBoldText>
         </Box>
         <Box mg="20px 0px">
-          <DarkMediumText>카테고리 선택</DarkMediumText>
+          <DarkMediumText fontSize={Theme.fontSize.fs15}>카테고리 선택</DarkMediumText>
           <DefaultInput
             isDropdown
             dropdownItem={mainCategory.map(item => {
@@ -331,8 +340,8 @@ export default function ProductRegister({route: {params}}) {
           />
         </Box>
         <Box>
+          <DarkMediumText fontSize={Theme.fontSize.fs15}>상품설명</DarkMediumText>
           <DefaultInput
-            title="상품설명"
             placeHolder={'상품설명을 입력해주세요.'}
             isAlignTop
             multiline
@@ -373,8 +382,8 @@ export default function ProductRegister({route: {params}}) {
           </RowBox>
         </Box>
         <Box>
+          <DarkMediumText fontSize={Theme.fontSize.fs15}>유의사항</DarkMediumText>
           <DefaultInput
-            title="유의사항"
             placeHolder="유의사항을 입력해주세요"
             width="380px"
             height="100px"
