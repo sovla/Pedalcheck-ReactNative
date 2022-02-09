@@ -5,7 +5,7 @@ import {modalClose} from '@/Store/modalState';
 import React from 'react';
 import {useState} from 'react';
 import {TouchableOpacity} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import SearchIcon from '@assets/image/ic_search.png';
 import {DefaultInput} from '@/assets/global/Input';
 import DefaultImage from '@/assets/global/Image';
@@ -13,6 +13,7 @@ import {getShopList} from '@/API/More/More';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 
 export default function SearchShop({setShopInfo}) {
+  const {login} = useSelector(state => state);
   const dispatch = useDispatch();
   const [shop, setShop] = useState('');
   const [shopList, setShopList] = useState([]);
@@ -20,7 +21,15 @@ export default function SearchShop({setShopInfo}) {
   const onPressSearch = () => {
     getShopList({mst_name: shop})
       .then(res => res.data.result === 'true' && res.data.data.data)
-      .then(data => setShopList(data));
+      .then(data => {
+        if (data?.length) {
+          setShopList(
+            data.filter((value, index) => {
+              return value.mst_idx !== login.idx;
+            }),
+          );
+        }
+      });
   };
   return (
     <>
