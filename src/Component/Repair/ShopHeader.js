@@ -102,7 +102,7 @@ const ShopHeader = ({size}) => {
         isPress={false}
         isImage={false}
         mg="0px 16px"
-        titleFontSize="20px"
+        titleFontSize="21px"
         isBorder={false}
       />
 

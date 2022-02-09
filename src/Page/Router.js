@@ -120,13 +120,12 @@ export default function Router() {
       showPushToastMessage({
         remoteMessage: remoteMessage,
         onPress: () => {
-          navigationRef.current.navigate(remoteMessage?.data?.intent, {
-            menu:
-              remoteMessage?.data?.content_idx === '1:1문의'
-                ? remoteMessage?.data?.content_idx
-                : remoteMessage?.data?.content_idx2,
-            notificationIdx: remoteMessage?.data?.content_idx,
-          });
+          if (remoteMessage?.data?.intent) {
+            navigation.navigate(remoteMessage?.data?.intent, {
+              menu: remoteMessage?.data?.content_idx2,
+              od_idx: remoteMessage?.data?.content_idx,
+            });
+          }
         },
       });
     });

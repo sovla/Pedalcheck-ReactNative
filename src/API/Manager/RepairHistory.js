@@ -72,3 +72,12 @@ export const getRepairHomeInformation = async args => {
     console.log(error);
   }
 };
+
+export const getNotificationIsRead = async args => {
+  try {
+    const response = await API.post('mng/notification_check.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

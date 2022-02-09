@@ -78,7 +78,7 @@ export default function BikeExportList() {
             brandName={item.sbt_brand}
             modelName={item.sbt_model}
             vehicleNumber={item.sbt_serial}
-            year={20 + item.sbt_year}
+            year={item.sbt_year}
             onPressModify={() => {
               onPressModify(item);
             }}

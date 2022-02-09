@@ -17,6 +17,7 @@ import {useLayoutEffect} from 'react';
 import {useIsFocused} from '@react-navigation/native';
 import {getNoticeList} from '@/API/Manager/More';
 import {useEffect} from 'react';
+import {getNotificationIsRead} from '@/API/Manager/RepairHistory';
 
 export default function RepairHistoryHome({route: {params}}) {
   const {modal} = useSelector(state => state);
@@ -27,14 +28,26 @@ export default function RepairHistoryHome({route: {params}}) {
   const isFocused = useIsFocused();
 
   const [noticeList, setNoticeList] = useState([]);
+  const [isRead, setIsRead] = useState(false);
 
   const getNoticeListHandle = async () => {
     const response = await getNoticeList({
-      _mt_idx: 6, //storeInfo.idx, 수정 필요
+      _mt_idx: 2, // storeInfo.idx, 수정필요
     });
 
     if (response?.data?.result === 'true') {
       setNoticeList(response?.data?.data?.data);
+    }
+  };
+
+  const getIsRead = async () => {
+    const response = await getNotificationIsRead({
+      _mt_idx: 2, // storeInfo.idx,수정필요
+    });
+    if (response?.data?.result === 'false') {
+      setIsRead(true);
+    } else {
+      setIsRead(false);
     }
   };
 
@@ -47,6 +60,7 @@ export default function RepairHistoryHome({route: {params}}) {
   useEffect(() => {
     if (isFocused) {
       getNoticeListHandle();
+      getIsRead();
     }
   }, [isFocused, modal.isOpenModal]);
 
@@ -57,12 +71,19 @@ export default function RepairHistoryHome({route: {params}}) {
           <>
             <GradientHeader
               title="정비내역"
-              imageSource={true ? NoticeWhiteIconDot : NoticeWhiteIcon}
+              imageSource={isRead ? NoticeWhiteIconDot : NoticeWhiteIcon}
               // 수정 필요
-              imageSize={{
-                width: '35px',
-                height: '29px',
-              }}
+              imageSize={
+                isRead
+                  ? {
+                      width: '35px',
+                      height: '29px',
+                    }
+                  : {
+                      width: '27px',
+                      height: '29px',
+                    }
+              }
               onPressImage={() =>
                 dispatch(
                   modalOpenAndProp({

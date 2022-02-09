@@ -44,6 +44,7 @@ export default function Review({
   useLayoutEffect(() => {
     setIsDetailButton(isDetail);
   }, []);
+  console.log('item :::', item);
 
   return (
     <Box
