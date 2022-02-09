@@ -51,10 +51,8 @@ export default function Notice({noticeList, setNoticeList}) {
               readNoticeHandle={readNoticeHandle}
             />
           );
-
         }}
       />
-
     </>
   );
 }
@@ -82,7 +80,6 @@ const NoticeItem = ({
   isCheck,
   readNoticeHandle,
 }) => {
-
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -94,8 +91,7 @@ const NoticeItem = ({
         if (item?.intent) {
           await navigation.navigate(item?.intent, {menu: item?.noticeData, od_idx: item?.noticeIdx});
         }
-      }}
-      disabled={isCheck}>
+      }}>
       <Box width="380px" minHeight="95px" justifyContent="center" style={borderBottomWhiteGray}>
         <BoldText fontSize={Theme.fontSize.fs15} color={isCheck ? Theme.color.darkGray : Theme.color.black}>
           {item.title}

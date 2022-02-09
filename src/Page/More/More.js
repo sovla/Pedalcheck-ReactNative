@@ -33,7 +33,7 @@ import {useNavigation, useIsFocused} from '@react-navigation/core';
 import {imageAddress} from '@assets/global/config';
 import {loginType} from '@/assets/global/dummy';
 import {useEffect} from 'react';
-import {getStoreInfo} from '@/API/More/More';
+import {getFooter, getStoreInfo} from '@/API/More/More';
 import {setStoreInfo} from '@/Store/storeInfoState';
 import {getUserInformation} from '@/API/User/Login';
 import {setUserInfo} from '@/Store/loginState';
@@ -272,42 +272,54 @@ const MoreFooter = () => {
 };
 
 const PedalCheckInfo = () => {
+  const [companyInfo, setCompanyInfo] = useState([]);
+  useEffect(() => {
+    getCompanyInfo();
+  }, []);
+
+  const getCompanyInfo = async () => {
+    const response = await getFooter();
+    if (response?.data?.result === 'true') {
+      setCompanyInfo(response?.data?.data?.data);
+    }
+  };
+
   return (
     <Box backgroundColor="#0000" mg="10px 0px 0px" width="380px" mg="20px 16px">
       <RowBox mg="0px 0px 5px" backgroundColor="#0000" width="380px">
         <DarkMediumText fontSize={Theme.fontSize.fs13}>주식회사</DarkMediumText>
         <GrayText mg="0px 5px" fontSize={Theme.fontSize.fs13}>
-          와이크
+          {companyInfo?.st_company_name}
         </GrayText>
         <DarkMediumText fontSize={Theme.fontSize.fs13}>대표</DarkMediumText>
         <GrayText mg="0px 5px" fontSize={Theme.fontSize.fs13}>
-          이무비
+          {companyInfo?.st_company_boss}
         </GrayText>
         <DarkMediumText fontSize={Theme.fontSize.fs13}>사업자등록번호</DarkMediumText>
         <GrayText mg="0px 5px" fontSize={Theme.fontSize.fs13}>
-          618-88-02068
+          {companyInfo?.st_company_num1}
         </GrayText>
       </RowBox>
       <RowBox mg="0px 0px 5px" backgroundColor="#0000" width="380px">
         <DarkMediumText fontSize={Theme.fontSize.fs13}>주소</DarkMediumText>
         <GrayText mg="0px 5px" fontSize={Theme.fontSize.fs13}>
-          인천광역시 연수구 갯벌로12, 미추홀타워 7층 7-5호
+          {companyInfo?.st_company_add}
         </GrayText>
       </RowBox>
       <RowBox mg="0px 0px 5px" backgroundColor="#0000" width="380px">
         <DarkMediumText fontSize={Theme.fontSize.fs13}>통신판매업 신고번호</DarkMediumText>
         <GrayText mg="0px 5px" fontSize={Theme.fontSize.fs13}>
-          제 2021-인천연수구-1616 호
+          {companyInfo?.st_company_num2}
         </GrayText>
         <DarkMediumText fontSize={Theme.fontSize.fs13}>Call</DarkMediumText>
         <GrayText mg="0px 5px" fontSize={Theme.fontSize.fs13}>
-          070-5227-0240
+          {companyInfo?.st_customer_tel}
         </GrayText>
       </RowBox>
       <RowBox mg="0px 0px 5px" backgroundColor="#0000">
         <DarkMediumText fontSize={Theme.fontSize.fs13}>Email</DarkMediumText>
         <GrayText mg="0px 5px" fontSize={Theme.fontSize.fs13}>
-          pedalcheck@gmail.com
+          {companyInfo?.st_customer_email}
         </GrayText>
       </RowBox>
 

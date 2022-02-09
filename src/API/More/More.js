@@ -200,3 +200,12 @@ export const cancelOrder = async args => {
     console.log(error);
   }
 };
+
+export const getFooter = async args => {
+  try {
+    const response = await API.post('footer.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

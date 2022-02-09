@@ -1,3 +1,4 @@
+import {getMyReviewItem} from '@/API/Repair/Repair';
 import {LinkButton} from '@/assets/global/Button';
 import {BetweenBox, Box, Container, RowBox, ScrollBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
@@ -7,17 +8,34 @@ import ReviewComment from '@/Component/Repair/ReviewComment';
 import {useNavigation} from '@react-navigation/native';
 import moment from 'moment';
 import React from 'react';
+import {useEffect} from 'react';
 import {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {useSelector} from 'react-redux';
 
 export default function ReviewDetail({route: {params}}) {
   const [comment, setComment] = useState('');
-  const {size} = useSelector(state => state);
-  const isRecomment = params?.isRecomment;
-  const item = params?.item;
+  const {size, login} = useSelector(state => state);
+  const isRecomment = params?.isRecomment !== undefined ? params?.isRecomment : !item?.srt_res_content;
+  const [item, setItem] = useState(params?.item);
   const commentSubmit = params?.commentSubmit;
   const navigation = useNavigation();
+
+  useEffect(() => {
+    if (!params?.item) {
+      getReviewItem();
+    }
+  }, []);
+  const getReviewItem = async () => {
+    const response = await getMyReviewItem({
+      _mt_idx: login?.idx,
+      od_idx: params?.od_idx,
+    });
+    if (response?.data?.result === 'true') {
+      setItem(Object.assign(response?.data?.data?.data, params?.shopItem));
+    }
+  };
+
   return (
     <>
       <Header title="리뷰" />

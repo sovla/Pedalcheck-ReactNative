@@ -132,13 +132,10 @@ const FeedBox = ({item, size, onPressImage}) => {
       pd="0px 0px 20px"
       alignItems="center"
       style={{
-        borderBottomLeftRadius: 15,
-        borderBottomRightRadius: 15,
+        borderRadius: 15,
       }}>
       {item?.ft_thumb && (
-        <TouchableOpacity
-          style={{borderTopLeftRadius: 15, borderTopRightRadius: 15}}
-          onPress={() => onPressImage(item?.ft_link)}>
+        <TouchableOpacity onPress={() => onPressImage(item?.ft_link)}>
           <DefaultImage
             style={{
               borderTopLeftRadius: 15,

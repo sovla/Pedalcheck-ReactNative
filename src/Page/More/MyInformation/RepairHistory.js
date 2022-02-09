@@ -77,7 +77,10 @@ export default function RepairHistory() {
                   });
                 } else {
                   // showToastMessage('이미 작성된 주문건입니다.');
-                  navigation.navigate('ReviewDetail');
+                  navigation.navigate('ReviewDetail', {
+                    od_idx: item?.od_idx,
+                    shopItem: item,
+                  });
                 }
               },
             };
