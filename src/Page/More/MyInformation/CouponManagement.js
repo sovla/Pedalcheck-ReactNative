@@ -60,7 +60,7 @@ export default function CouponManagement({navigation, route: {params}}) {
   }, [dropMenu]);
 
   useLayoutEffect(() => {
-    if (isFocused) setSelectMenu(params?.menu ?? '쿠폰함');
+    if (isFocused && params?.menu) setSelectMenu(params?.menu);
   }, [isFocused]);
 
   const getCouponListHandle = async initPage => {
@@ -200,24 +200,34 @@ export default function CouponManagement({navigation, route: {params}}) {
                 />
               )}
               {selectMenu === '쿠폰함' && selectSubMenu === '완료 · 만료' && (
-                <CouponItem
-                  couponName={item?.ct_title}
-                  shopName={item?.mst_name}
-                  issueDate={item?.cst_wdate?.substr(0, 16)}
-                  startOfAvailability={item?.cst_sdate?.substr(0, 10)}
-                  endOfAvailability={item?.cst_edate?.substr(0, 10)}
-                  badgeContent={item?.cst_status}
-                />
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('RepairHistoryDetail', {item});
+                  }}>
+                  <CouponItem
+                    couponName={item?.ct_title}
+                    shopName={item?.mst_name}
+                    issueDate={item?.cst_wdate?.substr(0, 16)}
+                    startOfAvailability={item?.cst_sdate?.substr(0, 10)}
+                    endOfAvailability={item?.cst_edate?.substr(0, 10)}
+                    badgeContent={item?.cst_status}
+                  />
+                </TouchableOpacity>
               )}
               {selectMenu === '쿠폰 사용 현황' && (
-                <UseCouponItem
-                  couponName={item?.ct_title}
-                  shopName={item?.mst_name}
-                  bikeNickName={item?.ot_bike_nick}
-                  useCouponDate={item?.ot_pt_date + ' ' + item?.ot_pt_time.substr(0, 5)}
-                  badgeContent={item?.ot_status}
-                  // rejectionContent={item?.cst_edate}
-                />
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('RepairHistoryDetail', {item});
+                  }}>
+                  <UseCouponItem
+                    couponName={item?.ct_title}
+                    shopName={item?.mst_name}
+                    bikeNickName={item?.ot_bike_nick}
+                    useCouponDate={item?.ot_pt_date + ' ' + item?.ot_pt_time.substr(0, 5)}
+                    badgeContent={item?.ot_status}
+                    // rejectionContent={item?.cst_edate}
+                  />
+                </TouchableOpacity>
               )}
             </>
           );

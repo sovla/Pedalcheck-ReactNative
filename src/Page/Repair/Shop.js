@@ -85,12 +85,13 @@ export default function Shop({route, navigation}) {
     });
     setIsDone(false);
   };
-  if (isDone) {
+  if (isDone && !shopInfo?.store_info) {
     return <Loading />;
   }
   return (
     <>
       <Container>
+        {isDone && <Loading isAbsolute backgroundColor="#0000" />}
         <FlatList
           ListHeaderComponent={
             <>

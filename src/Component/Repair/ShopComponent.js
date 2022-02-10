@@ -30,12 +30,11 @@ export default function ShopComponent({
 }) {
   const navigation = useNavigation();
 
-  const tagListText = tagList.map(item => `#${item} `);
   const ShopItem = () => {
     return (
       <RowBox alignItems="center" width={width} minHeight="100px" mg={mg} pd={pd}>
         <Box minHeight={titleFontSize ? '100px' : '74px'} justifyContent="center">
-          <RowBox mg={titleFontSize ? '10px 0px 10px' : '0px'} alignItems="center">
+          <RowBox mg={titleFontSize ? '10px 0px 15px' : '0px'} alignItems="center">
             <DarkBoldText mg="0px 5px 0px 0px" fontSize={titleFontSize ?? Theme.fontSize.fs16}>
               {shopTitle}
             </DarkBoldText>
