@@ -19,6 +19,7 @@ import Loading from '@/Component/Layout/Loading';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {useIsFocused} from '@react-navigation/native';
 import ReviewComment from '@/Component/Repair/ReviewComment';
+import {clearReservation} from '@/Store/reservationState';
 
 export default function Shop({route, navigation}) {
   const mt_idx = route.params?.mt_idx ?? shopInfo?.store_info?.mt_idx;
@@ -41,6 +42,7 @@ export default function Shop({route, navigation}) {
   useEffect(() => {
     if (isFocused) {
       getShopDetailApi();
+      dispatch(clearReservation());
     }
   }, [isFocused]);
   useUpdateEffect(() => {
