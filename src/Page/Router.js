@@ -129,6 +129,7 @@ export default function Router() {
         },
       });
     });
+
     return () => {
       dispatch(resetUserInfo());
       unsubscribe();
