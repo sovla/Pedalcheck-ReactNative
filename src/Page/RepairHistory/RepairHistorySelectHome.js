@@ -10,7 +10,7 @@ import ReservationStats from '@/Component/RepairHistory/ReservationStats';
 import CalculateStats from '@/Component/RepairHistory/CalculateStats';
 import ShopCustomerStats from '@/Component/RepairHistory/ShopCustomerStats';
 import ItemStats from '@/Component/RepairHistory/ItemStats';
-import {modalOpen} from '@/Store/modalState';
+import {modalOpen, modalOpenAndProp} from '@/Store/modalState';
 import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -45,26 +45,15 @@ export default function RepairHistorySelectHome() {
     })
       .then(res => res.data?.result === 'true' && res.data.data.data)
       .then(data => {
-        setHomeInfo({...data, static: {max_cnt: 36}});
-        let staticTemp = [];
-        let i = 1;
-
-        for (const [key, value] of Object.entries(homeInfo?.static?.data)) {
-          staticTemp.push({x: `${key.slice(0, 4)}\n${key.slice(5, 7)}`, y: i * 3});
-          i++;
-        }
-        setStaticData(staticTemp);
+        setHomeInfo({...data});
       });
+
     setIsLoading(false);
-  }, []);
+  }, [date]);
 
   if (isLoading) {
     return null;
   }
-
-  console.log(
-    `https://pedalcheck.co.kr/home_graph.php?mst_idx=${login.idx}&mon_cnt=${selectDate.split(' ')[1].split('개월')[0]}`,
-  );
 
   return (
     <ScrollBox pd="0px 16px" backgroundColor="#F8F8F8">
@@ -74,7 +63,16 @@ export default function RepairHistorySelectHome() {
           onPress={() => setDate(new Date(date.setMonth(date.getMonth() - 1)))}>
           <DefaultImage source={ArrowLeftIcon} width="24px" height="24px" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => dispatch(modalOpen('slide/repairDatePicker'))}>
+        <TouchableOpacity
+          onPress={() =>
+            dispatch(
+              modalOpenAndProp({
+                modalComponent: 'slide/repairDatePicker',
+                birth: date,
+                setBirth: setDate,
+              }),
+            )
+          }>
           <DarkBoldText fontSize={Theme.fontSize.fs18}>
             {`${date.getFullYear()}년 ${date.getMonth() + 1}월`}
           </DarkBoldText>
