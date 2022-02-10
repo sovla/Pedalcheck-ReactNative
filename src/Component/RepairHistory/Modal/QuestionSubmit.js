@@ -15,6 +15,7 @@ import {modalClose} from '@/Store/modalState';
 import {useState} from 'react';
 import {qnaUpdate, qnaWrite} from '@/API/Manager/RepairHistory';
 import {useEffect} from 'react';
+import {showToastMessage} from '@/Util/Toast';
 
 export default function QuestionSubmit({item, setRecomment}) {
   const [answer, setAnswer] = useState('');
@@ -37,18 +38,23 @@ export default function QuestionSubmit({item, setRecomment}) {
       return;
     }
 
+    let response;
+
     if (item.qt_status === '답변') {
-      const response = await qnaUpdate({
+      response = await qnaUpdate({
         _mt_idx: login.idx,
         qt_idx: item.qt_idx,
         qt_answer: answer,
       });
     } else {
-      const response = await qnaWrite({
+      response = await qnaWrite({
         _mt_idx: login.idx,
         qt_idx: item.qt_idx,
         qt_answer: answer,
       });
+    }
+    if (response?.data?.result === 'true') {
+      showToastMessage('저장되었습니다.');
     }
     await setRecomment(item.qt_idx, answer);
     dispatch(modalClose());
@@ -93,6 +99,7 @@ export default function QuestionSubmit({item, setRecomment}) {
           multiline
           isAlignTop
           fontSize={Theme.fontSize.fs16}
+          maxLength={2000}
         />
 
         {errorMessage !== '' && <ErrorText>{errorMessage}</ErrorText>}

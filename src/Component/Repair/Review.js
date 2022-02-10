@@ -77,7 +77,7 @@ export default function Review({
           </RowBox>
           <RowBox>
             <DefaultText fontSize={Theme.fontSize.fs12} color={Theme.color.gray}>
-              {item?.srt_wdate}
+              {item?.srt_wdate?.slice(0, 16)}
             </DefaultText>
           </RowBox>
         </Box>

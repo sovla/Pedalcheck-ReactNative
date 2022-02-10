@@ -1,25 +1,25 @@
-import {Box, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
-import {BoldText, DarkBoldText, DarkText, DefaultText, GrayText} from '@/assets/global/Text';
-import ModalTitleBox from '@/Component/Modal/ModalTitleBox';
+import {Box, PositionBox, RowBox} from '@/assets/global/Container';
+import {BoldText, DarkBoldText, DefaultText} from '@/assets/global/Text';
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import CloseIcon from '@assets/image/pop_close.png';
 import DefaultImage from '@/assets/global/Image';
 import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import {modalClose} from '@/Store/modalState';
-import {useEffect} from 'react';
-import {getNoticeList, readNotice} from '@/API/Manager/More';
+import {readNotice} from '@/API/Manager/More';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {FlatList} from 'react-native-gesture-handler';
-import {useState} from 'react';
-import Loading from '@/Component/Layout/Loading';
+import Header from '@/Component/Layout/Header';
+import {getPixel} from '@/Util/pixelChange';
 
-export default function Notice({noticeList, setNoticeList}) {
+export default function Notice({route: {params}}) {
   const {login} = useSelector(state => state);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
+
+  const noticeList = params?.noticeList;
 
   const readNoticeHandle = async selectIdx => {
     await readNotice({
@@ -28,10 +28,13 @@ export default function Notice({noticeList, setNoticeList}) {
     });
   };
 
+  console.log(noticeList);
+
   return (
     <>
-      <ModalFullHeader title="알림" />
+      <Header title="알림" />
       <FlatList
+        style={{paddingHorizontal: getPixel(16)}}
         data={noticeList}
         keyExtractor={(item, index) => item + index}
         renderItem={({item, index}) => {
@@ -83,7 +86,7 @@ const NoticeItem = ({
 }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-
+  console.log(item);
   return (
     <TouchableOpacity
       onPress={async () => {
@@ -97,10 +100,14 @@ const NoticeItem = ({
         <BoldText fontSize={Theme.fontSize.fs15} color={isCheck ? Theme.color.darkGray : Theme.color.black}>
           {item.title}
         </BoldText>
-        <DefaultText fontSize={Theme.fontSize.fs15} color={isCheck ? Theme.color.darkGray : Theme.color.black}>
+        <DefaultText
+          width="380px"
+          fontSize={Theme.fontSize.fs15}
+          color={isCheck ? Theme.color.darkGray : Theme.color.black}>
           {item.content}
         </DefaultText>
         <DefaultText
+          width="380px"
           letterSpacing="0px"
           fontSize={Theme.fontSize.fs13}
           color={isCheck ? Theme.color.darkGray : Theme.color.black}>

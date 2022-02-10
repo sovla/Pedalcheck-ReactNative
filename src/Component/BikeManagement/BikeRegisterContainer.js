@@ -42,6 +42,10 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
       width: 300,
       height: 400,
       cropping: false, // 자르기 활성화
+      forceJpg: true,
+      compressImageQuality: 0.8,
+      compressImageMaxWidth: 375 * 3,
+      compressImageMaxHeight: 275 * 3,
     }).then(images => {
       setImage(images);
     });

@@ -46,21 +46,22 @@ export default function RepairHistoryItem({
       </Box>
       <Box height="100%" alignItems="center">
         <Badge badgeContent={status} />
-
-        <TouchableOpacity onPress={onPressReview} style={{marginTop: 10}}>
-          <BorderButton
-            borderRadius="5px"
-            fontSize={Theme.fontSize.fs13}
-            fontWeight={Theme.fontWeight.medium}
-            width="66px"
-            height="25px"
-            alignItems="center"
-            justifyContent="center"
-            borderColor={Theme.borderColor.gray}
-            color={Theme.color.black}>
-            {!isReview ? '리뷰작성' : '리뷰확인'}
-          </BorderButton>
-        </TouchableOpacity>
+        {status === '처리완료' && (
+          <TouchableOpacity onPress={onPressReview} style={{marginTop: 10}}>
+            <BorderButton
+              borderRadius="5px"
+              fontSize={Theme.fontSize.fs13}
+              fontWeight={Theme.fontWeight.medium}
+              width="66px"
+              height="25px"
+              alignItems="center"
+              justifyContent="center"
+              borderColor={Theme.borderColor.gray}
+              color={Theme.color.black}>
+              {!isReview ? '리뷰작성' : '리뷰확인'}
+            </BorderButton>
+          </TouchableOpacity>
+        )}
       </Box>
     </BetweenBox>
   );

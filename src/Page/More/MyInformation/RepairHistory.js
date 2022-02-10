@@ -61,7 +61,7 @@ export default function RepairHistory() {
               bikeName: item?.ot_bike_nick,
               date: `${item?.ot_pt_date} ${item?.ot_pt_time}`,
               status: item?.ot_status,
-              isReview: item?.ot_review === 'Y' && item?.ot_status === '처리완료',
+              isReview: item?.ot_review === 'Y' && item?.ot_status === '처리완료' ? true : false,
               onPressReview: () => {
                 if (item?.ot_review === 'N') {
                   navigation.navigate('ReviewWrite', {

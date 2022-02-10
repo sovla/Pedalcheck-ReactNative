@@ -16,23 +16,6 @@ import {useEffect} from 'react';
 export default function Home({navigation}) {
   const betweenBoxWidth = Platform.OS === 'android' ? '262px' : '312px';
 
-  useEffect(() => {
-    messaging().onNotificationOpenedApp(async remoteMessage => {
-      console.log('Message handled in the background!', remoteMessage);
-    });
-    //포그라운드
-    messaging()
-      .getInitialNotification()
-      .then(async remoteMessage => {
-        console.log('getInitialNotification', remoteMessage);
-      }, 1000);
-
-    messaging().setBackgroundMessageHandler(async remoteMessage => {
-      console.log('setBackgroundMessageHandler', remoteMessage);
-      // navigation.navigate(remoteMessage?.data?.intent);
-    });
-  }, []);
-
   // 안드로이드 카카오 구글 네이버    3가지
   // IOS 카카오 구글 네이버 애플로그인 4가지 로 크기가 다릅니다.
   return (

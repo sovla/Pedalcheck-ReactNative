@@ -1,4 +1,4 @@
-import {ScrollBox} from '@/assets/global/Container';
+import {Box, ScrollBox} from '@/assets/global/Container';
 import Header from '@/Component/Layout/Header';
 import MenuNav from '@/Component/Layout/MenuNav';
 import React from 'react';
@@ -13,6 +13,8 @@ import {Alert} from 'react-native';
 import {useIsFocused} from '@react-navigation/native';
 import BikeRegisterFirst from './BikeRegisterFirst';
 import Loading from '@/Component/Layout/Loading';
+import Theme from '@/assets/global/Theme';
+import FooterButtons from '@/Component/Layout/FooterButtons';
 
 export default function BikeManagement({navigation}) {
   const {size, login} = useSelector(state => state);
@@ -65,25 +67,35 @@ export default function BikeManagement({navigation}) {
 
     setIsDone(false);
   };
-  if (isDone) {
-    return <Loading />;
-  }
+  // if (isDone) {
+  //   return <Loading />;
+  // }
 
   return (
     <>
-      {useBikeList?.length || storageBikeList?.length ? (
+      {isDone ? (
+        <Loading />
+      ) : (
         <>
-          <Header title="자전거 관리" />
+          {useBikeList?.length || storageBikeList?.length ? (
+            <>
+              <Header title="자전거 관리" />
 
-          <MenuNav menuItem={menuItem} setSelect={setSelect} select={select} />
-          {select === '사용중인 자전거' && <UseBike size={size} items={useBikeList} />}
-          {select === '보관 자전거' && (
-            <StorageBike size={size} getBikeListHandle={getBikeListHandle} item={storageBikeList} />
+              <MenuNav menuItem={menuItem} setSelect={setSelect} select={select} />
+              {select === '사용중인 자전거' && <UseBike size={size} items={useBikeList} />}
+              {select === '보관 자전거' && (
+                <StorageBike size={size} getBikeListHandle={getBikeListHandle} item={storageBikeList} />
+              )}
+            </>
+          ) : (
+            <BikeRegisterFirst navigation={navigation} />
           )}
         </>
-      ) : (
-        <BikeRegisterFirst navigation={navigation} />
       )}
+
+      <Box backgroundColor={Theme.color.backgroundWhiteGray}>
+        <FooterButtons selectMenu={2} backgroundColor={Theme.color.backgroundWhiteGray} />
+      </Box>
     </>
   );
 }

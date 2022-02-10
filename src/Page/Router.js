@@ -80,6 +80,7 @@ import {useState} from 'react';
 import {resetUserInfo} from '@/Store/loginState';
 import {showPushToastMessage, showToastMessage} from '@/Util/Toast';
 import {useRef} from 'react';
+import Notice from '@/Component/RepairHistory/Modal/Notice';
 
 const INIT_ROUTER_COMPONENT_NAME = 'Home';
 
@@ -135,6 +136,30 @@ export default function Router() {
       unsubscribe();
       getToken();
     };
+  }, []);
+
+  useEffect(() => {
+    //종료된 상태
+    messaging()
+      .getInitialNotification()
+      .then(async remoteMessage => {
+        if (remoteMessage) {
+          navigationRef.current.navigate(remoteMessage?.data?.intent, {
+            od_idx: remoteMessage?.data?.content_idx,
+            menu: remoteMessage?.data?.content_idx2,
+          });
+        } else {
+          return null;
+        }
+      }, 1000);
+
+    //종료 안된 상태
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      navigationRef.current.navigate(remoteMessage?.data?.intent, {
+        od_idx: remoteMessage?.data?.content_idx,
+        menu: remoteMessage?.data?.content_idx2,
+      });
+    });
   }, []);
 
   return (
@@ -483,5 +508,9 @@ const RouterSetting = [
   {
     name: 'RepairHome',
     component: RepairHome,
+  },
+  {
+    name: 'Notice',
+    component: Notice,
   },
 ];

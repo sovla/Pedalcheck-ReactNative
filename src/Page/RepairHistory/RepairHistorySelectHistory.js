@@ -64,11 +64,6 @@ export default function RepairHistorySelectHistory() {
   }, []);
 
   const getOrderListHandle = async insertPage => {
-    if (insertPage) {
-      await setPage(1);
-      await setIsLast(false);
-    }
-
     if (isLast && !insertPage) {
       return null;
     }
@@ -76,6 +71,10 @@ export default function RepairHistorySelectHistory() {
     if (RegJoin() && insertPage) {
       showToastMessage('종료일은 시작일 이후여야 합니다.');
       return;
+    }
+    if (insertPage) {
+      await setPage(1);
+      await setIsLast(false);
     }
     setIsLoading(true);
     const response = await getOrderList({
@@ -177,7 +176,7 @@ export default function RepairHistorySelectHistory() {
               alignItems="center">
               <RowBox backgroundColor="#0000" alignItems="center">
                 <DefaultImage source={SpannerIcon} width="24px" height="24px" />
-                <DarkBoldText mg="0px 0px 0px 5px">누적장비</DarkBoldText>
+                <DarkBoldText mg="0px 0px 0px 5px">누적정비</DarkBoldText>
               </RowBox>
               <RowBox backgroundColor="#0000" alignItems="center">
                 <IndigoText fontWeight={Theme.fontWeight.bold}>{numberFormat(totalCount)}</IndigoText>

@@ -31,17 +31,9 @@
         android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
         android:launchMode="singleTask"
         android:windowSoftInputMode="adjustPan"
-        android:exported="true">
-        <!-- <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter> -->
-      </activity>
-       <activity
-          android:name=".SplashActivity"
-          android:theme="@style/SplashTheme"
-          android:label="@string/app_name">
-          <intent-filter>
+        android:exported="true"
+        >
+        <intent-filter>
               <action android:name="android.intent.action.MAIN" />
               <category android:name="android.intent.category.LAUNCHER" />
           </intent-filter>
@@ -49,6 +41,11 @@
               <data android:host="oauth"
                   android:scheme="kakaoc5c4f79c76267d1389a50dc49dd52020" />
           </intent-filter>
-        </activity>
+        <!-- <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter> -->
+      </activity>
+
     </application>
 </manifest>
