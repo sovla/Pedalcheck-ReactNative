@@ -93,7 +93,7 @@ export default function RepairHome() {
     await getShopList({
       _mt_idx: login?.idx,
       page: initPage ?? apiPage,
-      mst_addr: innerLocation === '전체' ? '' : innerLocation, // 위치로 검색
+      mst_addr: innerLocation === '전체' ? '전체' : innerLocation.includes('전체') && innerLocation.split(' 전체')[0], // 위치로 검색
       mst_name: searchText ?? '', // 검색하는 경우 추가
       mst_tag: mst_tag, //
       mst_type: selectItem === '전체보기' ? '' : '1',
@@ -287,6 +287,7 @@ const Header = ({
                 modalOpenAndProp({
                   modalComponent: 'locationPicker',
                   setLocation: setInnerLocation,
+                  isHome: true,
                 }),
               );
             }}>

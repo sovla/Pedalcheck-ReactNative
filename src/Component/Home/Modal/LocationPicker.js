@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import ArrowRightIcon from '@assets/image/arr_right.png';
 import Theme from '@/assets/global/Theme';
 import {AddLocation, DeleteLocation} from '@/Store/locationState';
-import {modalClose, modalOpen, setModalProp} from '@/Store/modalState';
+import {modalClose, modalOpen, modalOpenAndProp, setModalProp} from '@/Store/modalState';
 import ModalTitleBox from '../../Modal/ModalTitleBox';
 import {useEffect} from 'react';
 import {getLocationList} from '@/API/Location/Location';
@@ -18,7 +18,7 @@ import {useLayoutEffect} from 'react';
 // Junhan
 // prop , setLocation 추가 / 정비소 홈에서 API를 두번 쳐서 추가했음
 
-export default function LocationPicker({setLocation}) {
+export default function LocationPicker({setLocation, isHome}) {
   const {modal, size, location} = useSelector(state => state);
   const dispatch = useDispatch();
 
@@ -36,7 +36,7 @@ export default function LocationPicker({setLocation}) {
       };
 
   const itemWidth = isDetail ? (BoxWidth - 25) / 3 : (BoxWidth - 10) / 2;
-
+  console.log(modal.modalProp, isHome, isDetail);
   useLayoutEffect(() => {
     if (!isDetail) {
       dispatch(DeleteLocation());
@@ -49,7 +49,17 @@ export default function LocationPicker({setLocation}) {
     setIsLoading(true);
     await getLocationList(apiObject).then(res => {
       if (res.data?.result === 'true') {
-        setLocationArray(res.data.data.data);
+        if (isDetail && isHome) {
+          setLocationArray([
+            {
+              code: '0',
+              name: '전체',
+            },
+            ...res.data.data.data,
+          ]);
+        } else {
+          setLocationArray(res.data.data.data);
+        }
       }
     });
     setIsLoading(false);
@@ -58,7 +68,13 @@ export default function LocationPicker({setLocation}) {
     //  지역 눌럿을때
     await dispatch(AddLocation(locationObject));
     if (!isDetail) {
-      await dispatch(modalOpen('locationPickerDetail'));
+      await dispatch(
+        modalOpenAndProp({
+          modalComponent: 'locationPickerDetail',
+          setLocation: setLocation,
+          isHome: isHome,
+        }),
+      );
     } else {
       if (setLocation) await setLocation(location.name + ' ' + locationObject.name);
       await dispatch(DeleteLocation());

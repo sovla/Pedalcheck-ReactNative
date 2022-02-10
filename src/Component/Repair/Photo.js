@@ -21,17 +21,21 @@ const PhotoComponent = ({
   onPressDelete = () => {
     return true;
   },
+  isMulti = false,
+  imageWidth,
+  imageHeight,
 }) => {
   const {size} = useSelector(state => state);
 
-  const onPressAddPhoto = () => {
+  const onPressAddPhoto = async () => {
     if (checkImageCount()) {
       return;
     }
-    ImageCropPicker.openPicker({
-      width: 375,
-      height: 275,
+    await ImageCropPicker.openPicker({
+      width: imageWidth,
+      height: imageHeight,
       cropping: true, // 자르기 활성화
+      multiple: isMulti,
       compressImageQuality: 0.8,
       compressImageMaxWidth: 375 * 3,
       compressImageMaxHeight: 275 * 3,
@@ -40,7 +44,11 @@ const PhotoComponent = ({
       if (checkImageCount(images)) {
         return null;
       }
-      setImageArray(prev => [...prev, ...images]);
+      if (isMulti) {
+        setImageArray(prev => [...prev, ...images]);
+      } else {
+        setImageArray(prev => [...prev, images]);
+      }
     });
   };
   const onPressDeleteHandle = async (deleteIndex, item) => {

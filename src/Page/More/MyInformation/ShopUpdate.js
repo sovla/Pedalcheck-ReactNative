@@ -2,7 +2,7 @@ import {deleteImage, getStoreInfo, updateStore, updateStoreImage} from '@/API/Mo
 import {BorderButton, Button, LinkButton} from '@/assets/global/Button';
 import {BetweenBox, Box, Container, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
-import {DarkBoldText, DarkMediumText, ErrorText, IndigoText} from '@/assets/global/Text';
+import {DarkBoldText, DarkMediumText, DarkText, ErrorText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import Header from '@/Component/Layout/Header';
@@ -23,15 +23,25 @@ import {imageAddress} from '@assets/global/config';
 import {setStoreInfo} from '@/Store/storeInfoState';
 import Loading from '@/Component/Layout/Loading';
 import pixelChange from '@/Util/pixelChange';
+import {openTimehalfList, openTimePmList} from '@/assets/global/dummy';
+import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
+import {numberChangeFormat} from '@/Util/numberFormat';
 
 export default function ShopUpdate() {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const {size, login, storeInfo} = useSelector(state => state);
+
   const [imageArray, setImageArray] = useState([]);
   const [selectDay, setSelectDay] = useState([]);
   const [isDaumOpen, setIsDaumOpen] = useState(false);
   const [shopInformation, setShopInformation] = useState(null);
+  const [openingHours, setOpeningHours] = useState({
+    weekdayStart: '00',
+    weekdayEnd: '01',
+    weekendStart: '00',
+    weekendEnd: '01',
+  });
   const [errorMessage, setErrorMessage] = useState({
     mst_name: '',
     mst_company_num: '',
@@ -41,22 +51,32 @@ export default function ShopUpdate() {
   });
 
   const dispatch = useDispatch();
-  const [postData, setPostData] = useState([]); // ??
   const [lastSortCount, setLastSortCount] = useState(0);
 
   const [isLoading, setIsLoading] = useState(false);
-
+  console.log(storeInfo?.mst_worktime, openingHours, 'gg');
   useEffect(() => {
     if (isFocused) {
       setShopInformation(storeInfo);
-
       const changeValue = storeInfo?.mst_holiday?.includes(',') ? storeInfo?.mst_holiday?.split(',') : [];
+      if (storeInfo?.mst_worktime && storeInfo.mst_worktime.includes('오전')) {
+        const mstWorktime = storeInfo.mst_worktime;
+        try {
+          setOpeningHours({
+            weekdayStart: numberChangeFormat(mstWorktime.split('오전 ')[1].split('시')[0]),
+            weekdayEnd: numberChangeFormat(mstWorktime.split('오후 ')[1].split('시')[0]),
+            weekendStart: numberChangeFormat(mstWorktime.split('오전 ')[2].split('시')[0]),
+            weekendEnd: numberChangeFormat(mstWorktime.split('오전 ')[2].split('시')[0]),
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      }
       setSelectDay(
         changeValue.map(value => {
           return value * 1;
         }),
       );
-
       setImageArray(storeInfo.mst_image);
       let maxSort = 0;
       for (const item of storeInfo.mst_image) {
@@ -72,15 +92,11 @@ export default function ShopUpdate() {
 
   const onPressDay = dayIndex => {
     const day = dayIndex + 1;
-
     if (selectDay.find(findItem => findItem === day)) {
       setSelectDay(prev => prev.filter(filterItem => filterItem !== day));
     } else {
       setSelectDay(prev => [...prev, day]);
     }
-  };
-  const openDaumPost = () => {
-    setIsDaumOpen(true);
   };
 
   const RegJoin = async () => {
@@ -114,6 +130,7 @@ export default function ShopUpdate() {
     }
     return check;
   };
+
   const updateStoreHandle = async () => {
     const result = await RegJoin();
     if (!result) {
@@ -125,6 +142,7 @@ export default function ShopUpdate() {
       const localImageArray = imageArray.filter(item => !item?.sort);
       response = await updateStoreImage({
         ...shopInformation,
+        mst_worktime: `평일 오전 ${+openingHours.weekdayStart}시 ~ 오후 ${+openingHours.weekdayEnd}시\n주말 오전 ${+openingHours.weekendStart}시 ~ 오후 ${+openingHours.weekendEnd}시`,
         mst_holiday: selectDay.sort().join(),
         mst_image: localImageArray,
         _mt_idx: login.idx,
@@ -133,7 +151,12 @@ export default function ShopUpdate() {
         }),
       });
     } else {
-      response = await updateStore({...shopInformation, mst_holiday: selectDay.sort().join(), _mt_idx: login.idx});
+      response = await updateStore({
+        ...shopInformation,
+        mst_holiday: selectDay.sort().join(),
+        _mt_idx: login.idx,
+        mst_worktime: `평일 오전 ${+openingHours.weekdayStart}시 ~ 오후 ${+openingHours.weekdayEnd}시\n주말 오전 ${+openingHours.weekendStart}시 ~ 오후 ${+openingHours.weekendEnd}시`,
+      });
     }
 
     if (response?.data?.result === 'true') {
@@ -161,6 +184,11 @@ export default function ShopUpdate() {
       return true;
     }
   };
+  const onChangeDate = (value, type) => {
+    // type -> amStart amEnd pmStart pmEnd
+    setOpeningHours(prev => ({...prev, [type]: value}));
+  };
+  console.log(openingHours, 'openingHours');
   return (
     <>
       {isLoading && <Loading isAbsolute />}
@@ -217,7 +245,7 @@ export default function ShopUpdate() {
               value={shopInformation?.mst_zip}
             />
 
-            <TouchableOpacity onPress={() => openDaumPost()}>
+            <TouchableOpacity onPress={() => setIsDaumOpen(true)}>
               <BorderButton width="100px" height="44px" borderRadius="10px">
                 주소검색
               </BorderButton>
@@ -313,7 +341,44 @@ export default function ShopUpdate() {
               onPressDelete={deleteImageHandle}
             />
           </Box>
-          <DefaultInput
+          <Box width="380px">
+            <DarkBoldText fontSize={Theme.fontSize.fs15}>영업시간</DarkBoldText>
+            <RowBox alignItems="center">
+              <DarkText>평일</DarkText>
+              <DarkText mg="0px 0px 0px 10px">오전</DarkText>
+              <Box width="10px" />
+              <DefaultDropdown
+                data={openTimehalfList}
+                value={openingHours.weekdayStart} // 오전 00
+                setValue={value => onChangeDate(value, 'weekdayStart')}
+              />
+              <DarkText mg="0px 10px">~</DarkText>
+              <DarkText mg="0px 10px 0px 0px">오후</DarkText>
+              <DefaultDropdown
+                data={openTimePmList}
+                value={openingHours.weekdayEnd}
+                setValue={value => onChangeDate(value, 'weekdayEnd')}
+              />
+            </RowBox>
+            <RowBox alignItems="center" mg="10px 0px 0px">
+              <DarkText>주말</DarkText>
+              <DarkText mg="0px 0px 0px 10px">오전</DarkText>
+              <Box width="10px" />
+              <DefaultDropdown
+                data={openTimehalfList}
+                value={openingHours.weekendStart}
+                setValue={value => onChangeDate(value, 'weekendStart')}
+              />
+              <DarkText mg="0px 10px">~</DarkText>
+              <DarkText mg="0px 10px 0px 0px">오후</DarkText>
+              <DefaultDropdown
+                data={openTimePmList}
+                value={openingHours.weekendEnd}
+                setValue={value => onChangeDate(value, 'weekendEnd')}
+              />
+            </RowBox>
+          </Box>
+          {/* <DefaultInput
             title="영업시간"
             width={size.minusPadding}
             fontSize={Theme.fontSize.fs15}
@@ -331,11 +396,11 @@ export default function ShopUpdate() {
               }));
             }}
             maxLength={200}
-          />
+          /> */}
           <Box width={size.minusPadding}>
-            <DarkMediumText fontSize={Theme.fontSize.fs15} mg="0px 0px 10px">
+            <DarkBoldText fontSize={Theme.fontSize.fs15} mg="10px 0px 10px">
               휴무요일
-            </DarkMediumText>
+            </DarkBoldText>
             <BetweenBox width={size.minusPadding}>
               {dayList.map((item, Index) => {
                 const isSelect = selectDay.find(findItem => findItem === Index + 1) !== undefined;
@@ -375,7 +440,7 @@ export default function ShopUpdate() {
                 mst_intro: text,
               }));
             }}
-            maxLength={1000}
+            maxLength={200}
           />
           <DefaultInput
             title="태그"

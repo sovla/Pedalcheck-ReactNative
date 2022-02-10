@@ -18,9 +18,10 @@ import {useIsFocused} from '@react-navigation/native';
 import {getNoticeList} from '@/API/Manager/More';
 import {useEffect} from 'react';
 import {getNotificationIsRead} from '@/API/Manager/RepairHistory';
+import Loading from '@/Component/Layout/Loading';
 
 export default function RepairHistoryHome({route: {params}}) {
-  const {modal} = useSelector(state => state);
+  const {modal, login} = useSelector(state => state);
 
   const [select, setSelect] = useState('홈');
 
@@ -29,26 +30,34 @@ export default function RepairHistoryHome({route: {params}}) {
 
   const [noticeList, setNoticeList] = useState([]);
   const [isRead, setIsRead] = useState(false);
+  const [isLoading, setisLoading] = useState({
+    isNotice: true,
+    isRead: true,
+  });
 
   const getNoticeListHandle = async () => {
+    setisLoading(prev => ({...prev, isNotice: true}));
     const response = await getNoticeList({
-      _mt_idx: 2, // storeInfo.idx, 수정필요
+      _mt_idx: login.idx,
     });
 
     if (response?.data?.result === 'true') {
       setNoticeList(response?.data?.data?.data);
     }
+    setisLoading(prev => ({...prev, isNotice: false}));
   };
 
   const getIsRead = async () => {
+    setisLoading(prev => ({...prev, isRead: true}));
     const response = await getNotificationIsRead({
-      _mt_idx: 2, // storeInfo.idx,수정필요
+      _mt_idx: login.idx,
     });
     if (response?.data?.result === 'false') {
       setIsRead(true);
     } else {
       setIsRead(false);
     }
+    setisLoading(prev => ({...prev, isRead: false}));
   };
 
   useLayoutEffect(() => {
@@ -66,6 +75,7 @@ export default function RepairHistoryHome({route: {params}}) {
 
   return (
     <Container>
+      {(isLoading.isDashboard || isLoading.isRead) && <Loading isAbsolute />}
       <FlatList
         ListHeaderComponent={
           <>
@@ -84,15 +94,16 @@ export default function RepairHistoryHome({route: {params}}) {
                       height: '29px',
                     }
               }
-              onPressImage={() =>
+              onPressImage={() => {
+                console.log(Date.now(), 'start');
                 dispatch(
                   modalOpenAndProp({
                     modalComponent: 'fullSize/notice',
                     setNoticeList: setNoticeList,
                     noticeList: noticeList,
                   }),
-                )
-              }>
+                );
+              }}>
               <HeaderButton
                 select={select}
                 setSelect={setSelect}

@@ -14,7 +14,7 @@ import {useIsFocused} from '@react-navigation/native';
 import React from 'react';
 import {useLayoutEffect} from 'react';
 import {useState} from 'react';
-import {Alert, TouchableOpacity} from 'react-native';
+import {Alert, Modal, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import RepairReservationHeader from './RepairReservationHeader';
 
@@ -26,6 +26,7 @@ export default function ShopReservationRequest({navigation, route: {params}}) {
   const [repairRequest, setRepairRequest] = useState('');
   const [selectPayment, setSelectPayment] = useState('');
   const [thirdParty, setThirdParty] = useState(false);
+  const [isModal, setIsModal] = useState(false);
 
   const [bank, setBank] = useState({
     accountName: '',
@@ -156,6 +157,16 @@ export default function ShopReservationRequest({navigation, route: {params}}) {
           </CheckBox>
         </Box>
       </Box>
+      <LinkButton
+        to={() => {
+          setIsModal(prev => !prev);
+        }}
+        content={'모달온'}></LinkButton>
+      <Modal visible={isModal} onRequestClose={() => setIsModal(prev => !prev)}>
+        <Box>
+          <DarkBoldText>나는모달</DarkBoldText>
+        </Box>
+      </Modal>
 
       <LinkButton
         mg="0px 16px 20px"
