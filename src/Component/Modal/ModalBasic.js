@@ -82,8 +82,6 @@ export default function ModalBasic() {
         return DeleteAccount;
       case 'slide/repairDatePicker':
         return RepairDatePicker;
-      case 'fullSize/notice':
-        return Notice;
       case 'adjustmentHistory':
         return AdjustmentHistory;
       case 'questionDelete':

@@ -304,6 +304,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
                   value={memo}
                   changeFn={setMemo}
                   disabled={reservationInfo.ot_status === '승인거부' || reservationInfo.ot_status === '처리완료'}
+                  maxLength={500}
                 />
               </Box>
               <Box mg="0px 0px 20px">

@@ -138,6 +138,7 @@ export default function RepairHistorySelectReview() {
                 width="380px"
                 value={keyword}
                 changeFn={text => setKeyword(text)}
+                maxLength={50}
               />
               <PositionBox backgroundColor="#0000" right="16px" bottom="11px">
                 <TouchableOpacity

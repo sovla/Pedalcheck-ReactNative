@@ -60,16 +60,16 @@ export default function RepairHistoryDetail({route: {params}}) {
   };
 
   const onPressReview = () => {
-    if (params?.item?.ot_review === 'N') {
+    if (repair?.ot_review === 'N') {
       navigation.navigate('ReviewWrite', {
         navigate: 'RepairHistory',
         item: {
-          title: params?.item?.mst_name,
+          title: repair?.mst_name,
           date: repair?.ot_pt_date,
           product: repair?.pt_title,
           price: repair?.ot_price,
-          od_idx: params?.item?.od_idx,
-          mst_idx: params?.item?.mst_idx,
+          od_idx: params?.item?.od_idx ? params?.item?.od_idx : params?.od_idx,
+          mst_idx: repair?.mst_idx,
         },
       });
     } else {
@@ -91,7 +91,7 @@ export default function RepairHistoryDetail({route: {params}}) {
   useLayoutEffect(() => {
     getRepairHistoryDetail({
       _mt_idx: login?.idx,
-      od_idx: params?.item?.od_idx,
+      od_idx: params?.item?.od_idx ? params?.item?.od_idx : params?.od_idx,
     })
       .then(res => res.data.result === 'true' && res.data.data.data)
       .then(data => {
@@ -130,7 +130,7 @@ export default function RepairHistoryDetail({route: {params}}) {
               <RepairHistoryDetailHeader
                 status={repair?.ot_status}
                 productName={[repair?.pt_title]}
-                shopName={params?.item?.mst_name}
+                shopName={repair?.mst_name}
                 rejectionReason={repair?.ot_cmemo ? repair?.ot_cmemo : ''}
                 completeDate={repair?.ot_status === '처리완료' ? repair?.ot_cdate?.slice(0, 16) : ''}
                 // 수정 필요
@@ -190,15 +190,17 @@ export default function RepairHistoryDetail({route: {params}}) {
                   <Box mg="10px 0px" />
                 )}
               </Box>
-              {repair?.opt_return === 'Y' && (
+              {(repair?.ot_return === 'A' || repair?.ot_return === 'R') && ( // 추가/반환 공임비 N:없음/A:추가공임비/R:반환공임비
                 <Box mg="10px 16px 0px">
                   <RowBox>
                     <DarkBoldText>추가/반환 공임비</DarkBoldText>
                   </RowBox>
                   <BetweenBox mg="10px 0px" width={size.minusPadding}>
-                    <DarkMediumText fontSize={Theme.fontSize.fs15}>추가 공임비</DarkMediumText>
+                    <DarkMediumText fontSize={Theme.fontSize.fs15}>
+                      {repair?.ot_return === 'A' ? '추가' : '반환'} 공임비
+                    </DarkMediumText>
                     <MoneyText
-                      money={repair?.opt_return_price}
+                      money={repair?.ot_return_price}
                       fontSize={Theme.fontSize.fs15}
                       color={Theme.color.black}
                     />
@@ -228,7 +230,7 @@ export default function RepairHistoryDetail({route: {params}}) {
                     <BetweenBox width={size.minusPadding}>
                       <DarkMediumText fontSize={Theme.fontSize.fs15}>가격</DarkMediumText>
                       <MoneyText
-                        money={repair?.ot_price}
+                        money={repair?.ot_sprice}
                         fontSize={Theme.fontSize.fs15}
                         color={Theme.color.black}
                         fontWeight={Theme.fontWeight.bold}
@@ -237,7 +239,7 @@ export default function RepairHistoryDetail({route: {params}}) {
                     <BetweenBox width={size.minusPadding} mg="10px 0px 15px">
                       <DarkMediumText fontSize={Theme.fontSize.fs15}>할인</DarkMediumText>
                       <MoneyText
-                        money={repair?.ot_sprice * -1}
+                        money={(+repair?.ot_sprice - repair?.ot_price) * -1}
                         fontSize={Theme.fontSize.fs15}
                         color={Theme.color.black}
                       />
@@ -281,7 +283,9 @@ export default function RepairHistoryDetail({route: {params}}) {
                 <LinkWhiteButton width="185px" content="예약 취소" to={onPressReservationCancle} />
               )}
 
-              {repair?.ot_status === '처리완료' && <LinkButton to={onPressReview} width="185px" content="리뷰작성" />}
+              {repair?.ot_status === '처리완료' && repair?.ot_review === 'N' ? (
+                <LinkButton to={onPressReview} width="185px" content="리뷰작성" />
+              ) : null}
             </RowBox>
           </>
         )}

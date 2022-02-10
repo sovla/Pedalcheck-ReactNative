@@ -4,7 +4,7 @@ import HeaderButton from '@/Component/ReservationManagement/HeaderButton';
 import React from 'react';
 import {useState} from 'react';
 import NoticeWhiteIconDot from '@assets/image/notice_white.png';
-import NoticeWhiteIcon from '@assets/image/ic_bell_top.png';
+import NoticeWhiteIcon from '@assets/image/notice_red.png';
 import FooterButtons from '@/Component/Layout/FooterButtons';
 import {useDispatch, useSelector} from 'react-redux';
 import {modalOpen, modalOpenAndProp} from '@/Store/modalState';
@@ -20,7 +20,7 @@ import {useEffect} from 'react';
 import {getNotificationIsRead} from '@/API/Manager/RepairHistory';
 import Loading from '@/Component/Layout/Loading';
 
-export default function RepairHistoryHome({route: {params}}) {
+export default function RepairHistoryHome({navigation, route: {params}}) {
   const {modal, login} = useSelector(state => state);
 
   const [select, setSelect] = useState('홈');
@@ -72,7 +72,6 @@ export default function RepairHistoryHome({route: {params}}) {
       getIsRead();
     }
   }, [isFocused, modal.isOpenModal]);
-
   return (
     <Container>
       {(isLoading.isDashboard || isLoading.isRead) && <Loading isAbsolute />}
@@ -81,28 +80,14 @@ export default function RepairHistoryHome({route: {params}}) {
           <>
             <GradientHeader
               title="정비내역"
-              imageSource={isRead ? NoticeWhiteIconDot : NoticeWhiteIcon}
+              imageSource={!isRead ? NoticeWhiteIconDot : NoticeWhiteIcon}
               // 수정 필요
-              imageSize={
-                isRead
-                  ? {
-                      width: '35px',
-                      height: '29px',
-                    }
-                  : {
-                      width: '27px',
-                      height: '29px',
-                    }
-              }
+              imageSize={{
+                width: '35px',
+                height: '29px',
+              }}
               onPressImage={() => {
-                console.log(Date.now(), 'start');
-                dispatch(
-                  modalOpenAndProp({
-                    modalComponent: 'fullSize/notice',
-                    setNoticeList: setNoticeList,
-                    noticeList: noticeList,
-                  }),
-                );
+                navigation.navigate('Notice', {setNoticeList: setNoticeList, noticeList: noticeList});
               }}>
               <HeaderButton
                 select={select}

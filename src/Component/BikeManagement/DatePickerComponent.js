@@ -10,10 +10,11 @@ import {dateFormat} from '@/Util/DateFormat';
 import CalendarIcon from '@assets/image/calendar.png';
 import DefaultImage from '@/assets/global/Image';
 import pixelChange, {getPixel} from '@/Util/pixelChange';
+import {useLayoutEffect} from 'react';
 
 export default function DatePickerComponent({onPressStart, onPressEnd, selectDate, onPressSearch, setSelectDate}) {
   const storeInfo = useSelector(state => state.storeInfo);
-  useEffect(() => {
+  useLayoutEffect(() => {
     setSelectDate({
       start: storeInfo.mst_wdate.substring(0, 10),
       end: dateFormat(new Date()),
