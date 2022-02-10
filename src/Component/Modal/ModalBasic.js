@@ -36,9 +36,9 @@ import BikeBrand from '../BikeManagement/Modal/BikeBrand';
 // 사용법 modal.modalComponent에 원하는 값을 넣고 switch문을 추가하면 됩니다.
 
 export default function ModalBasic() {
-  const modal = useSelector(state => state.modal);
-  const size = useSelector(state => state.size);
+  const {modal, size} = useSelector(state => state);
   const dispatch = useDispatch();
+
   if (modal?.isOpenModal !== true) {
     return null;
   }
@@ -111,6 +111,7 @@ export default function ModalBasic() {
   const isSlide = modal?.modalComponent?.split('/')[0] === 'slide';
   const isFullSize = modal?.modalComponent?.split('/')[0] === 'fullSize';
   RenderItem = selectRenderItem();
+
   if (RenderItem !== <></>) {
     return (
       <Modal

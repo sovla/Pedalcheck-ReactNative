@@ -69,8 +69,9 @@ export function Payment({navigation, route: {params}}) {
         pt_idx.push(forItem.item.pt_idx);
         pt_title.push(forItem.item.pt_title);
         pt_price.push(forItem.item.pt_dc_price);
-        pt_sprice.push(forItem.item.pt_price);
+        pt_sprice.push(+forItem.item.pt_price);
       });
+
       sendOrder({
         _mt_idx: login.idx,
         mbt_idx: selectBike.selectItem !== 2000 && selectBike.selectBike.mbt_idx, // 2000 은 기타 선택시 값
@@ -82,6 +83,7 @@ export function Payment({navigation, route: {params}}) {
         ot_pt_time: selectDate.time,
         ot_pay_type: changePayment(selectPayment.selectPayment),
         ot_price: parseInt(selectProduct.totalPrice),
+        ot_sprice: pt_sprice.reduce((prev, curr) => prev + curr),
         // ot_pdate:2022-01-06 18:06:42,
         ot_memo: selectPayment?.repairRequest,
         pt_idx: pt_idx,

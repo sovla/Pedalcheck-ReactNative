@@ -14,15 +14,16 @@ import {getNoticeList, readNotice} from '@/API/Manager/More';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {FlatList} from 'react-native-gesture-handler';
 import {useState} from 'react';
+import Loading from '@/Component/Layout/Loading';
 
 export default function Notice({noticeList, setNoticeList}) {
-  const {storeInfo} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
   const readNoticeHandle = async selectIdx => {
     await readNotice({
-      _mt_idx: 6, // storeInfo.idx,수정 필요
+      _mt_idx: login.idx, // storeInfo.idx,수정 필요
       nt_idx: selectIdx,
     });
   };

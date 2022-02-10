@@ -4,7 +4,7 @@ import React from 'react';
 import LocationIcon from '@assets/image/ic_location2.png';
 import TimeIcon from '@assets/image/ic_time.png';
 import BikeIcon from '@assets/image/ic_brand.png';
-import {DarkBoldText, DarkText} from '@/assets/global/Text';
+import {DarkBoldText, DarkMediumText, DarkText} from '@/assets/global/Text';
 import DefaultLine from '@/assets/global/Line';
 import Theme from '@/assets/global/Theme';
 import {useSelector} from 'react-redux';
@@ -22,6 +22,17 @@ export default function ShopIntroduction() {
   } = useSelector(state => state);
 
   const [isBrand, setIsBrand] = useState(true);
+  const openTime = () => {
+    if (store_info?.mst_worktime !== '') {
+      if (store_info?.mst_holiday !== '') {
+        const result = store_info?.mst_worktime + '\n' + changeHolyday(store_info.mst_holiday);
+        return result;
+      }
+      return store_info?.mst_worktime;
+    } else {
+      return '';
+    }
+  };
 
   const shopInformation = [
     {
@@ -32,7 +43,7 @@ export default function ShopIntroduction() {
     {
       image: TimeIcon,
       title: '영업시간',
-      content: store_info?.mst_worktime,
+      content: openTime(),
     },
     {
       image: BikeIcon,
@@ -76,9 +87,31 @@ export default function ShopIntroduction() {
                   </DarkText>
                 </TouchableOpacity>
               ) : (
-                <RowBox width="252px">
-                  <DarkText fontSize={Theme.fontSize.fs15}>{item.content}</DarkText>
-                </RowBox>
+                <>
+                  {item.title === '영업시간' ? (
+                    <Box width="252px">
+                      {item.content.includes('\n') &&
+                      item.content.includes('오전') &&
+                      item.content.includes('오후') &&
+                      item.content.includes('시') ? (
+                        item.content.split('\n').map((mapItem, index) => (
+                          <RowBox width="252px" key={index} mg={index !== 2 ? '0px 0px 3px' : '0px'}>
+                            <DarkMediumText fontSize={Theme.fontSize.fs15}>{mapItem.substring(0, 2)}</DarkMediumText>
+                            <DarkText mg="0px 0px 0px 5px" fontSize={Theme.fontSize.fs15}>
+                              {mapItem.substring(2)}
+                            </DarkText>
+                          </RowBox>
+                        ))
+                      ) : (
+                        <DarkText fontSize={Theme.fontSize.fs15}>{item.content}</DarkText>
+                      )}
+                    </Box>
+                  ) : (
+                    <RowBox width="252px">
+                      <DarkText fontSize={Theme.fontSize.fs15}>{item.content}</DarkText>
+                    </RowBox>
+                  )}
+                </>
               )}
             </RowBox>
           );
@@ -128,3 +161,33 @@ export default function ShopIntroduction() {
     </Box>
   );
 }
+
+const changeHolyday = string => {
+  if (string !== '') {
+    let result = '휴무 ';
+    if (string.includes('1')) {
+      result += '월';
+    }
+    if (string.includes('2')) {
+      result += ', 화';
+    }
+    if (string.includes('3')) {
+      result += ', 수';
+    }
+    if (string.includes('4')) {
+      result += ', 목';
+    }
+    if (string.includes('5')) {
+      result += ', 금';
+    }
+    if (string.includes('6')) {
+      result += ', 토';
+    }
+    if (string.includes('0')) {
+      result += ', 일';
+    }
+    return result;
+  } else {
+    return '';
+  }
+};
