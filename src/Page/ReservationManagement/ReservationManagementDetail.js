@@ -28,6 +28,7 @@ import {imageAddress} from '@assets/global/config';
 import {useIsFocused} from '@react-navigation/native';
 import {payState} from '../More/MyInformation/RepairHistoryDetail';
 import Loading from '@/Component/Layout/Loading';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export default function ReservationManagementDetail({navigation, route: {params}}) {
   const type = params?.type;
@@ -210,7 +211,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
       {isLoading && <Loading isAbsolute />}
       <Header title="상세보기" />
       <Box style={{flex: 1}}>
-        <ScrollBox pd="0px 16px">
+        <KeyboardAwareScrollView style={{paddingHorizontal: getPixel(16)}}>
           <Box style={borderBottomWhiteGray}>
             <RowBox mg="20px 0px 0px" alignItems="center">
               <Badge badgeContent={reservationInfo?.ot_status} />
@@ -330,7 +331,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
               </Box>
             </>
           )}
-        </ScrollBox>
+        </KeyboardAwareScrollView>
         {type === 'coupon' && ( // 쿠폰인 경우 줄이 짧아서 스크롤 뷰 밖에서
           <Box mg="0px 0px 20px">
             {reservationInfo.ot_status === '예약' && !isPrevTime && (

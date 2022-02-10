@@ -123,3 +123,12 @@ export const sendAllApprove = async args => {
     console.log(error);
   }
 };
+
+export const getAllOrderList = async args => {
+  try {
+    const response = await API.post('mng/order_list_all.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

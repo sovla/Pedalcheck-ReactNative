@@ -34,17 +34,19 @@ export default function RepairProduct({
               </>
             )}
           </RowBox>
-          <GrayText fontSize={Theme.fontSize.fs12}>{reservationDate}</GrayText>
+          <GrayText fontSize={Theme.fontSize.fs12}>{reservationDate.substring(0, 16)}</GrayText>
         </Box>
         <Box alignItems="flex-end">
           <Badge badgeContent={status} />
-          <MoneyText
-            mg="13px 0px 0px"
-            money={totalPrice}
-            color={Theme.color.black}
-            fontSize={Theme.fontSize.fs18}
-            fontWeight={Theme.fontWeight.bold}
-          />
+          {+totalPrice > 0 && (
+            <MoneyText
+              mg="13px 0px 0px"
+              money={totalPrice}
+              color={Theme.color.black}
+              fontSize={Theme.fontSize.fs18}
+              fontWeight={Theme.fontWeight.bold}
+            />
+          )}
         </Box>
       </RowBox>
     </Box>

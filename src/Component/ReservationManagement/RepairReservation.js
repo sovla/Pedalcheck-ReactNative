@@ -1,8 +1,8 @@
-import {Box, Container, RowBox} from '@/assets/global/Container';
+import {BetweenBox, Box, Container, RowBox} from '@/assets/global/Container';
 import React from 'react';
 import {FlatList, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
-import {Button} from '@/assets/global/Button';
+import {BorderButton, Button, LinkWhiteButton} from '@/assets/global/Button';
 import Theme from '@/assets/global/Theme';
 import {useState} from 'react';
 import {DarkMediumText, DarkText, GrayText} from '@/assets/global/Text';
@@ -118,7 +118,7 @@ export default function RepairReservation({type}) {
     const getListFunction = type === 'coupon' ? getCouponReservationList : getReservationList;
     setIsLoading(prev => ({...prev, isReservation: true}));
     await getListFunction({
-      _mt_idx: login?.idx,
+      _mt_idx: login.idx,
       ot_date: typeof daySelect === 'object' ? getDay(daySelect) : daySelect,
       ot_status: changeDropMenu(dropDown),
       page: initPage ?? page,
@@ -169,7 +169,15 @@ export default function RepairReservation({type}) {
               </GrayText>
             </Box>
 
-            <Box width="100%" alignItems="flex-end">
+            <BetweenBox width="412px" alignItems="center">
+              <Box mg="0px 0px 0px 10px">
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('ReservationManagementAll', {type: type});
+                  }}>
+                  <BorderButton>전체 내역보기</BorderButton>
+                </TouchableOpacity>
+              </Box>
               <Box mg="0px 15px 0px 0px">
                 <DefaultDropdown
                   data={repairHistoryDropdownList}
@@ -180,7 +188,7 @@ export default function RepairReservation({type}) {
                   width={90}
                 />
               </Box>
-            </Box>
+            </BetweenBox>
           </Box>
         }
         renderItem={({item, index}) => {

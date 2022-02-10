@@ -81,7 +81,7 @@ import {resetUserInfo} from '@/Store/loginState';
 import {showPushToastMessage, showToastMessage} from '@/Util/Toast';
 import {useRef} from 'react';
 
-const INIT_ROUTER_COMPONENT_NAME = 'Home';
+const INIT_ROUTER_COMPONENT_NAME = 'More';
 
 let count = 0;
 
