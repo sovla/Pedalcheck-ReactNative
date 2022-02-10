@@ -13,6 +13,7 @@ import ReservationManagementHome from '@/Component/ReservationManagement/Reserva
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {useRef} from 'react';
 import {ScrollBox} from '@/assets/global/Container';
+import ReservationManagementAll from './ReservationManagementAll';
 
 const Stack = createNativeStackNavigator();
 
@@ -57,6 +58,7 @@ export default function ReservationManagement() {
         }}
         initialRouteName="ReservationManagementHome">
         <Stack.Screen name="ReservationManagementHome" component={ReservationManagementHome} />
+        <Stack.Screen name="ReservationManagementAll" component={ReservationManagementAll} />
         <Stack.Screen name="ScheduleManagement" component={ScheduleManagement} />
         <Stack.Screen name="ReservationTimeManagement" component={ReservationTimeManagement} />
       </Stack.Navigator>

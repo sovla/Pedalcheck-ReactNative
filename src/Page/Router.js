@@ -82,7 +82,7 @@ import {showPushToastMessage, showToastMessage} from '@/Util/Toast';
 import {useRef} from 'react';
 import Notice from '@/Component/RepairHistory/Modal/Notice';
 
-const INIT_ROUTER_COMPONENT_NAME = 'Home';
+const INIT_ROUTER_COMPONENT_NAME = 'More';
 
 let count = 0;
 

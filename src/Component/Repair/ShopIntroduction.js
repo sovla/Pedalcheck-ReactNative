@@ -22,13 +22,19 @@ export default function ShopIntroduction() {
   } = useSelector(state => state);
 
   const [isBrand, setIsBrand] = useState(true);
+  const [isMoreBrand, setIsMoreBrand] = useState(true);
   const openTime = () => {
     if (store_info?.mst_worktime !== '') {
+      let result = store_info?.mst_worktime;
+      if (!store_info?.mst_worktime?.includes('\n주말') && store_info?.mst_worktime?.includes('주말')) {
+        result = result.replace('주말', '\n주말');
+      }
       if (store_info?.mst_holiday !== '') {
-        const result = store_info?.mst_worktime + '\n' + changeHolyday(store_info.mst_holiday);
+        result += '\n' + changeHolyday(store_info.mst_holiday);
         return result;
       }
-      return store_info?.mst_worktime;
+
+      return result;
     } else {
       return '';
     }
@@ -73,46 +79,56 @@ export default function ShopIntroduction() {
                   {item.title}
                 </DarkBoldText>
               </RowBox>
-              {item.title === '취급 브랜드' ? (
-                <TouchableOpacity
-                  style={{
-                    width: getPixel(252),
-                    flexDirection: 'row',
-                  }}
-                  onPress={() => {
-                    setIsBrand(prev => !prev);
-                  }}>
-                  <DarkText fontSize={Theme.fontSize.fs15} numberOfLines={isBrand ? 3 : 1000}>
-                    {item.content}
-                  </DarkText>
-                </TouchableOpacity>
-              ) : (
-                <>
-                  {item.title === '영업시간' ? (
-                    <Box width="252px">
-                      {item.content.includes('\n') &&
-                      item.content.includes('오전') &&
-                      item.content.includes('오후') &&
-                      item.content.includes('시') ? (
-                        item.content.split('\n').map((mapItem, index) => (
-                          <RowBox width="252px" key={index} mg={index !== 2 ? '0px 0px 3px' : '0px'}>
-                            <DarkMediumText fontSize={Theme.fontSize.fs15}>{mapItem.substring(0, 2)}</DarkMediumText>
-                            <DarkText mg="0px 0px 0px 5px" fontSize={Theme.fontSize.fs15}>
-                              {mapItem.substring(2)}
-                            </DarkText>
-                          </RowBox>
-                        ))
-                      ) : (
-                        <DarkText fontSize={Theme.fontSize.fs15}>{item.content}</DarkText>
-                      )}
-                    </Box>
-                  ) : (
-                    <RowBox width="252px">
+              <>
+                {item.title === '취급 브랜드' && (
+                  <TouchableOpacity
+                    style={{
+                      width: getPixel(252),
+                      flexDirection: 'row',
+                    }}
+                    disabled={isMoreBrand}
+                    onPress={() => {
+                      setIsBrand(prev => !prev);
+                    }}>
+                    <DarkText
+                      onTextLayout={({nativeEvent: {lines}}) => {
+                        if (lines.length > 3) {
+                          setIsMoreBrand(false);
+                        }
+                      }}
+                      fontSize={Theme.fontSize.fs15}
+                      numberOfLines={isBrand ? 3 : 1000}>
+                      {item.content}
+                    </DarkText>
+                  </TouchableOpacity>
+                )}
+                {item.title === '영업시간' && (
+                  <Box width="252px">
+                    {item?.content?.includes('평일') &&
+                    item?.content?.includes('주말') &&
+                    item?.content?.includes('오전') &&
+                    item?.content?.includes('\n') &&
+                    item?.content?.includes('오후') &&
+                    item?.content?.includes('시') ? (
+                      item.content.split('\n').map((mapItem, index) => (
+                        <RowBox width="252px" key={index} mg={index !== 2 ? '0px 0px 3px' : '0px'}>
+                          <DarkMediumText fontSize={Theme.fontSize.fs15}>{mapItem.substring(0, 2)}</DarkMediumText>
+                          <DarkText mg="0px 0px 0px 5px" fontSize={Theme.fontSize.fs15}>
+                            {mapItem.substring(2)}
+                          </DarkText>
+                        </RowBox>
+                      ))
+                    ) : (
                       <DarkText fontSize={Theme.fontSize.fs15}>{item.content}</DarkText>
-                    </RowBox>
-                  )}
-                </>
-              )}
+                    )}
+                  </Box>
+                )}
+                {item.title === '매장주소' && (
+                  <RowBox width="252px">
+                    <DarkText fontSize={Theme.fontSize.fs15}>{item.content}</DarkText>
+                  </RowBox>
+                )}
+              </>
             </RowBox>
           );
         })}
@@ -165,25 +181,25 @@ export default function ShopIntroduction() {
 const changeHolyday = string => {
   if (string !== '') {
     let result = '휴무 ';
-    if (string.includes('1')) {
+    if (string?.includes('1')) {
       result += '월';
     }
-    if (string.includes('2')) {
+    if (string?.includes('2')) {
       result += ', 화';
     }
-    if (string.includes('3')) {
+    if (string?.includes('3')) {
       result += ', 수';
     }
-    if (string.includes('4')) {
+    if (string?.includes('4')) {
       result += ', 목';
     }
-    if (string.includes('5')) {
+    if (string?.includes('5')) {
       result += ', 금';
     }
-    if (string.includes('6')) {
+    if (string?.includes('6')) {
       result += ', 토';
     }
-    if (string.includes('0')) {
+    if (string?.includes('0')) {
       result += ', 일';
     }
     return result;

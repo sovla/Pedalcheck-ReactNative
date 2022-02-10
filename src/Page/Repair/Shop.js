@@ -19,6 +19,7 @@ import Loading from '@/Component/Layout/Loading';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {useIsFocused} from '@react-navigation/native';
 import ReviewComment from '@/Component/Repair/ReviewComment';
+import {clearReservation} from '@/Store/reservationState';
 
 export default function Shop({route, navigation}) {
   const mt_idx = route.params?.mt_idx ?? shopInfo?.store_info?.mt_idx;
@@ -41,6 +42,7 @@ export default function Shop({route, navigation}) {
   useEffect(() => {
     if (isFocused) {
       getShopDetailApi();
+      dispatch(clearReservation());
     }
   }, [isFocused]);
   useUpdateEffect(() => {
@@ -54,6 +56,7 @@ export default function Shop({route, navigation}) {
     }
     if (RequireLoginAlert(login, navigation)) {
       //  로그인 여부 확인
+      setIsLike(prev => !prev);
       await sendLikeShop({
         //  좋아요 API 치고
         _mt_idx: login?.idx,
@@ -67,7 +70,6 @@ export default function Shop({route, navigation}) {
                 : `${parseInt(shopInfo.store_info.mst_likes) - 1}`,
             ),
           );
-          setIsLike(prev => !prev);
         }
       }); // 좋아요 상태 바꾸기
     }
@@ -83,12 +85,14 @@ export default function Shop({route, navigation}) {
     });
     setIsDone(false);
   };
-  if (isDone) {
+
+  if (isDone && !shopInfo?.store_info?.mst_idx) {
     return <Loading />;
   }
   return (
     <>
       <Container>
+        {isDone && <Loading isAbsolute backgroundColor="#0000" />}
         <FlatList
           ListHeaderComponent={
             <>
