@@ -56,6 +56,7 @@ export default function Shop({route, navigation}) {
     }
     if (RequireLoginAlert(login, navigation)) {
       //  로그인 여부 확인
+      setIsLike(prev => !prev);
       await sendLikeShop({
         //  좋아요 API 치고
         _mt_idx: login?.idx,
@@ -69,7 +70,6 @@ export default function Shop({route, navigation}) {
                 : `${parseInt(shopInfo.store_info.mst_likes) - 1}`,
             ),
           );
-          setIsLike(prev => !prev);
         }
       }); // 좋아요 상태 바꾸기
     }
@@ -85,7 +85,8 @@ export default function Shop({route, navigation}) {
     });
     setIsDone(false);
   };
-  if (isDone && !shopInfo?.store_info) {
+
+  if (isDone && !shopInfo?.store_info?.mst_idx) {
     return <Loading />;
   }
   return (

@@ -36,6 +36,7 @@ export default function RepairHome() {
   const {size, login} = useSelector(state => state);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
+  const [selectType, setselectType] = useState('매장명'); //   매장명, 브랜드 검색
   const [selectItem, setSelectItem] = useState('전체보기');
   const [sortSelectItem, setSortSelectItem] = useState('인기순');
 
@@ -94,7 +95,8 @@ export default function RepairHome() {
       _mt_idx: login?.idx,
       page: initPage ?? apiPage,
       mst_addr: innerLocation === '전체' ? '전체' : innerLocation.includes('전체') && innerLocation.split(' 전체')[0], // 위치로 검색
-      mst_name: searchText ?? '', // 검색하는 경우 추가
+      search_sel: selectType === '매장명' ? 'mst_name' : 'mst_brand', // 검색하는 경우 추가
+      search_txt: searchText,
       mst_tag: mst_tag, //
       mst_type: selectItem === '전체보기' ? '' : '1',
       sorting: sortSelectItem === '정비횟수순' ? '2' : sortSelectItem === '거리순' ? (login?.idx ? '3' : '1') : '1', // 인기순 1 거리순 2 정비횟수순 3
@@ -144,6 +146,8 @@ export default function RepairHome() {
               setIsSearch={setIsSearch}
               setInnerLocation={setInnerLocation}
               dispatch={dispatch}
+              setselectType={setselectType}
+              selectType={selectType}
             />
           }
           data={storeList}
@@ -209,27 +213,39 @@ const Header = ({
   setSearchText,
   setIsSearch,
   setInnerLocation,
+  selectType,
+  setselectType,
 }) => {
   return (
     <>
       <GradientHeader title="정비소" imageSource={WhiteSpannerIcon}>
-        <Box backgroundColor="rgba(0,0,0,0)" mg="20px 0px 0px">
+        <RowBox backgroundColor="rgba(0,0,0,0)" mg="20px 0px 0px">
+          <DefaultDropdown
+            data={sortArray2}
+            value={selectType}
+            setValue={setselectType}
+            width={90}
+            pdLeft={10}
+            backgroundColor="#fff"
+          />
+          <Box width="10px" />
           <WhiteInput
             height="43px"
-            width={size.minusPadding}
+            width={`${380 - 100}px`}
             placeholder="매장명을 입력해주세요."
             value={searchText}
             onChangeText={setSearchText}
           />
-          <PositionBox top="11px" right="15px">
+          <PositionBox top="2.5px" right="0px" backgroundColor="#0000">
             <TouchableOpacity
+              style={{paddingHorizontal: 10, paddingVertical: 10}}
               onPress={() => {
                 setIsSearch(prev => !prev);
               }}>
               <DefaultImage source={SearchIcon} width="21px" height="21px"></DefaultImage>
             </TouchableOpacity>
           </PositionBox>
-        </Box>
+        </RowBox>
       </GradientHeader>
       <Box
         pd="20px 16px 0px"
@@ -415,6 +431,17 @@ const sortArray = [
   {
     label: '파트너 매장',
     value: '파트너 매장',
+  },
+];
+
+const sortArray2 = [
+  {
+    label: '매장명',
+    value: '매장명',
+  },
+  {
+    label: '브랜드',
+    value: '브랜드',
   },
 ];
 const sortArray1 = [

@@ -19,6 +19,7 @@ export default function DefaultDropdown({
   fontType = 'normal',
   fontSize = 15,
   disabled,
+  backgroundColor = '#fff0',
 }) {
   let fontFamily = '';
   if (Platform.OS === 'android') {
@@ -48,13 +49,14 @@ export default function DefaultDropdown({
         width: getPixel(width),
         height: height,
         color: 'black',
+        backgroundColor: backgroundColor,
         borderRadius: 10,
         borderWidth: isBorder ? 1 : 0,
         borderColor: isBorder ? Theme.borderColor.gray : Theme.color.white,
       }}
       maxHeight={data.length * height}
       autoScroll={false}
-      showsVerticalScrollIndicator={true}
+      showsVerticalScrollIndicator={false}
       renderItem={item => {
         const isEqual = item?.value === value;
         return (
@@ -64,11 +66,15 @@ export default function DefaultDropdown({
             height={`${height}px`}
             alignItems="center"
             justifyContent="center"
-            style={
+            style={[
               isEqual && {
                 backgroundColor: '#F6F7F8',
-              }
-            }>
+              },
+              isBorder && {
+                borderWidth: 1,
+                borderColor: Theme.borderColor.gray,
+              },
+            ]}>
             <DarkText>{item?.label}</DarkText>
           </Box>
         );

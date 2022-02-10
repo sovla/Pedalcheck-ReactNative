@@ -25,7 +25,7 @@ function SwiperComponent({imageArray, width, height, borderRadius = 'Bottom', is
 
   const onScrollSlide = e => {
     if (typeof width === 'string') {
-      setImageNumber(scrollSlideNumber(e, width.split('px')[0]));
+      setImageNumber(scrollSlideNumber(e, +width.split('px')[0]));
     } else {
       setImageNumber(scrollSlideNumber(e, width));
     }
