@@ -33,7 +33,10 @@ export default function UpdateHome() {
             </Box>
           </TouchableOpacity>
         )}
-        <TouchableOpacity onPress={() => dispatch(modalOpen('deleteAccount'))}>
+        <TouchableOpacity
+          onPress={() => {
+            dispatch(modalOpen('deleteAccount'));
+          }}>
           <Box backgroundColor="#0000" width={size.minusPadding} style={borderBottomWhiteGray}>
             <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
               회원탈퇴

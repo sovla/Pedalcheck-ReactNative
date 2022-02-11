@@ -14,6 +14,7 @@ import {Alert, TouchableOpacity} from 'react-native';
 import {useState} from 'react';
 import {memberRetire} from '@/API/User/Login';
 import {resetUserInfo} from '@/Store/loginState';
+import {useEffect} from 'react';
 
 export default function DeleteAccount() {
   const [isCheck, setIsCheck] = useState(false);

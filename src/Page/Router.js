@@ -81,8 +81,9 @@ import {resetUserInfo} from '@/Store/loginState';
 import {showPushToastMessage, showToastMessage} from '@/Util/Toast';
 import {useRef} from 'react';
 import Notice from '@/Component/RepairHistory/Modal/Notice';
+import ReservationManagementAll from './ReservationManagement/ReservationManagementAll';
 
-const INIT_ROUTER_COMPONENT_NAME = 'More';
+const INIT_ROUTER_COMPONENT_NAME = 'Home';
 
 let count = 0;
 
@@ -500,7 +501,10 @@ const RouterSetting = [
     name: 'ReservationManagement',
     component: ReservationManagement,
   },
-
+  {
+    name: 'ReservationManagementAll',
+    component: ReservationManagementAll,
+  },
   {
     name: 'ReservationManagementDetail',
     component: ReservationManagementDetail,

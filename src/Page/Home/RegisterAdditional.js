@@ -20,10 +20,15 @@ import ImageCropPicker from 'react-native-image-crop-picker';
 import {login} from '@react-native-seoul/kakao-login';
 
 export default function RegisterAdditional({navigation, route}) {
-  const {snsLogin, token, birthDate} = useSelector(state => state);
+  const {snsLogin, token} = useSelector(state => state);
   const [selectImage, setSelectImage] = useState();
   const [imageType, setImageType] = useState(1);
   const [sex, setSex] = useState('man');
+  const [birthDate, setBirthDate] = useState({
+    year: '',
+    month: '',
+    day: '',
+  });
 
   const dispatch = useDispatch();
   const information = route.params.information;
@@ -67,6 +72,8 @@ export default function RegisterAdditional({navigation, route}) {
         imageType={imageType}
         setImageType={setImageType}
         information={information}
+        birthDate={birthDate}
+        setBirthDate={setBirthDate}
       />
       <Box mg="0px 16px 20px">
         <FooterButton

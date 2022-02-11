@@ -1,38 +1,24 @@
-import {BetweenBox, Box, Container, RowBox} from '@/assets/global/Container';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {FlatList, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
-import {BorderButton, Button, LinkWhiteButton} from '@/assets/global/Button';
 import Theme from '@/assets/global/Theme';
-import {useState} from 'react';
-import {DarkBoldText, DarkMediumText, DarkText, GrayText} from '@/assets/global/Text';
+import {DarkBoldText, DarkMediumText} from '@/assets/global/Text';
 import DefaultImage from '@assets/global/Image';
-import ArrowDownIcon from '@assets/image/arr_down.png';
 import RepairProduct from '@/Component/ReservationManagement/RepairProduct';
-import CheckIcon from '@assets/image/ic_check_cal.png';
 import {useNavigation} from '@react-navigation/core';
-import {useEffect} from 'react';
-import {
-  getAllOrderList,
-  getCouponReservationList,
-  getOrderCount,
-  getReservationDayList,
-  getReservationList,
-  sendAllApprove,
-} from '@/API/ReservationManagement/ReservationManagement';
+import {getAllOrderList} from '@/API/ReservationManagement/ReservationManagement';
 import {getPixel} from '@/Util/pixelChange';
 import {repairHistoryDropdownList} from '@/assets/global/dummy';
-import {getDay} from '@/Util/getDateList';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {changeDropMenu} from '@/Page/More/MyInformation/CouponManagement';
 import ArrowLeftIcon from '@assets/image/arr_left.png';
 import ArrowRightIcon from '@assets/image/arr_right.png';
 import {useIsFocused} from '@react-navigation/native';
-import {useLayoutEffect} from 'react';
 import Loading from '@/Component/Layout/Loading';
 import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
-import {Dropdown} from 'react-native-element-dropdown';
 import {numberChangeFormat} from '@/Util/numberFormat';
+import Header from '@/Component/Layout/Header';
+import {BetweenBox, Box, Container} from '@/assets/global/Container';
 
 export default function ReservationManagementAll({
   route: {
@@ -87,6 +73,7 @@ export default function ReservationManagementAll({
   };
   return (
     <Container>
+      <Header title={`${type === 'coupon' ? '쿠폰' : '정비'} 예약 전체보기`} />
       {isLoading && <Loading isAbsolute height="712px" top="-100px" backgroundColor="#0000" />}
       <FlatList
         data={list}
@@ -106,14 +93,7 @@ export default function ReservationManagementAll({
               </TouchableOpacity>
             </BetweenBox>
             <BetweenBox width="412px" pd="0px 16px" alignItems="center">
-              <Box mg="0px 0px 0px 10px">
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.goBack();
-                  }}>
-                  <BorderButton>이전</BorderButton>
-                </TouchableOpacity>
-              </Box>
+              <Box mg="0px 0px 0px 10px"></Box>
               <Box mg="0px 15px 0px 0px">
                 <DefaultDropdown
                   data={repairHistoryDropdownList}

@@ -136,7 +136,7 @@ export default function Approval({navigation, route: {params}}) {
               <DarkMediumText>정비사진 업로드</DarkMediumText>
               <IndigoText fontSize={Theme.fontSize.fs14}>최대 15장까지 등록가능</IndigoText>
             </RowBox>
-            <Photo imageArray={imageArray} setImageArray={setImageArray} imageCount={15} />
+            <Photo imageArray={imageArray} setImageArray={setImageArray} imageCount={15} isMulti />
           </Box>
           <Box mg="20px 0px 0px">
             <DefaultInput

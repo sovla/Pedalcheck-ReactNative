@@ -1,6 +1,5 @@
 import GradientHeader from '@/Component/Layout/GradientHeader';
 import React from 'react';
-import {useSelector} from 'react-redux';
 import ReservationIcon from '@assets/image/menu06_top.png';
 import FooterButtons from '@/Component/Layout/FooterButtons';
 import HeaderButton from '@/Component/ReservationManagement/HeaderButton';
@@ -10,10 +9,7 @@ import ReservationTimeManagement from '@/Component/ReservationManagement/Reserva
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import ReservationManagementHome from '@/Component/ReservationManagement/ReservationManagementHome';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import {useRef} from 'react';
-import {ScrollBox} from '@/assets/global/Container';
-import ReservationManagementAll from './ReservationManagementAll';
+import {useNavigation} from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
 
@@ -58,7 +54,6 @@ export default function ReservationManagement() {
         }}
         initialRouteName="ReservationManagementHome">
         <Stack.Screen name="ReservationManagementHome" component={ReservationManagementHome} />
-        <Stack.Screen name="ReservationManagementAll" component={ReservationManagementAll} />
         <Stack.Screen name="ScheduleManagement" component={ScheduleManagement} />
         <Stack.Screen name="ReservationTimeManagement" component={ReservationTimeManagement} />
       </Stack.Navigator>

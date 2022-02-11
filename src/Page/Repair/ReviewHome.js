@@ -36,14 +36,21 @@ export default function ReviewHome() {
     <>
       <Header title="리뷰 작성" />
       <Container pd="0px 16px">
-        {reviewList.length ? (
+        {reviewList.length > 0 ? (
           reviewList.map(item => {
+            let product = '';
+            let price = '';
+            if (item?.ot_pt_title.length && item.ot_pt_title[0] !== '' && item.ot_pt_title[0].includes(' ')) {
+              product = item.ot_pt_title[0].split(' ')[0];
+              price = item.ot_pt_title[0].split(' ')[1];
+            }
+
             const changeItem = {
               title: item?.mst_name,
               isPartner: true,
               date: item?.ot_pt_date,
-              product: item?.ot_pt_title,
-              price: 20000,
+              product: product,
+              price: price,
               od_idx: item?.od_idx,
             };
             return <ReviewRecord itemArray={[changeItem]} />;

@@ -48,7 +48,7 @@ export default function CheckList({setIsShow, isShow, checkList, setCheckList, d
       </TouchableOpacity>
 
       {isShow &&
-        checkList.map(list => {
+        checkList.map((list, listIndex) => {
           let count = 0;
           list.item.map((value, index) => {
             if (value.select !== '') {
@@ -60,7 +60,7 @@ export default function CheckList({setIsShow, isShow, checkList, setCheckList, d
               <>
                 <ProductCheckBox
                   disabled={disabled}
-                  key={list.title}
+                  key={listIndex}
                   title={list.title}
                   item={list.item}
                   onPress={onPressCheckList}
