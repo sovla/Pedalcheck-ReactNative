@@ -3,7 +3,7 @@ import DefaultImage from '@/assets/global/Image';
 import {DarkBoldText, DarkMediumText, DarkText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import React, {useState} from 'react';
-import {ScrollView, TouchableOpacity, FlatList} from 'react-native';
+import {ScrollView, TouchableOpacity, FlatList, Modal} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import WhiteSpannerIcon from '@assets/image/menu01_top.png';
 import {WhiteInput} from '@assets/global/Input';
@@ -31,9 +31,16 @@ import {reduceItemSplit} from '@/Util/reduceItem';
 import Loading from '@/Component/Layout/Loading';
 import Dummy from '@assets/image/shop_dummy.png';
 import {imageAddress} from '@assets/global/config';
+import Ad from '@/Component/Modal/Ad';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function RepairHome() {
-  const {size, login} = useSelector(state => state);
+  const {
+    size,
+    login,
+    banner: {bannerList},
+    ad,
+  } = useSelector(state => state);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const [selectType, setselectType] = useState('매장명'); //   매장명, 브랜드 검색
@@ -42,7 +49,6 @@ export default function RepairHome() {
 
   const [apiPage, setApiPage] = useState(1); // API Page
   const [selectImage, setSelectImage] = useState(0);
-
   const [tag, setTag] = useState([]);
   const [innerLocation, setInnerLocation] = useState(login.mt_addr === '' ? '전체' : login.mt_addr);
   const [storeList, setStoreList] = useState([]);
@@ -52,7 +58,7 @@ export default function RepairHome() {
   const [isLast, setisLast] = useState(false);
   const [isScroll, setIsScroll] = useState(false);
   const [isDone, setIsDone] = useState(true);
-
+  const [isModal, setIsModal] = useState(false);
   const onPressTag = tagName => {
     // By.Junhan tag에 값이 없다면 넣어주고 있다면 제거
     if (tag.find(item => item === tagName)) {
@@ -66,6 +72,34 @@ export default function RepairHome() {
     setSelectImage(scrollSlideNumber(e, size.designWidth - 36));
   };
 
+  useEffect(() => {
+    if (isFocused && ad.loading === 'success' && Object.keys(ad?.ad)?.length > 0) {
+      const getData = async () => {
+        try {
+          const getAd = await AsyncStorage.getItem('ad');
+          const date = parseInt(getAd);
+
+          const now = Date.now();
+          if (ad?.ad?.at_type === '2' && !login?.idx) {
+            return;
+          }
+          if (!date) {
+            setIsModal(true);
+            return;
+          }
+          const dateDay = Math.floor(date / 1000 / 60 / 60 / 24);
+          const nowDay = Math.floor(now / 1000 / 60 / 60 / 24);
+          if (nowDay - dateDay >= 1) {
+            setIsModal(true);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      };
+
+      getData();
+    }
+  }, []);
   // 현태 최초 실행 시 위치 상태
   useEffect(() => {
     if (isFocused && storeList?.length < 1) {
@@ -148,6 +182,7 @@ export default function RepairHome() {
               dispatch={dispatch}
               setselectType={setselectType}
               selectType={selectType}
+              bannerList={bannerList}
             />
           }
           data={storeList}
@@ -194,6 +229,13 @@ export default function RepairHome() {
         <Box height="20px" backgroundColor="#000" />
       </Container>
       <FooterButtons selectMenu={1} />
+      {isModal && (
+        <Modal visible={isModal} transparent>
+          <Box justifyContent="center" alignItems="center" flex={1} backgroundColor="#0006">
+            <Ad info={ad.ad} setIsModal={setIsModal} />
+          </Box>
+        </Modal>
+      )}
     </>
   );
 }
@@ -215,6 +257,7 @@ const Header = ({
   setInnerLocation,
   selectType,
   setselectType,
+  bannerList,
 }) => {
   return (
     <>
@@ -315,7 +358,7 @@ const Header = ({
         </RowBox>
       </Box>
       <Box mg="20px 16px 0px">
-        <RecommenderShop totalCount={dummyImageArray?.length} count={selectImage + 1} />
+        <RecommenderShop totalCount={bannerList?.length} count={selectImage + 1} />
         <Box>
           <Box height="200px">
             <ScrollView
@@ -323,12 +366,17 @@ const Header = ({
               pagingEnabled
               showsHorizontalScrollIndicator={false}
               onMomentumScrollEnd={onScrollSlide}>
-              {dummyImageArray.map((item, index) => (
-                <DefaultImage key={`image_${index}`} resizeMode="stretch" source={item} width={size.minusPadding} />
+              {bannerList.map((item, index) => (
+                <DefaultImage
+                  key={`image_${index}`}
+                  resizeMode="stretch"
+                  source={{uri: imageAddress + item?.bt_image}}
+                  width={size.minusPadding}
+                />
               ))}
             </ScrollView>
             <PositionBox style={{flexDirection: 'row'}} right="20px" top="20px" backgroundColor="rgba(0,0,0,0)">
-              {dummyImageArray.map((item, index) => {
+              {bannerList.map((item, index) => {
                 const isEqual = selectImage === index;
                 return isEqual ? (
                   <DefaultImage key={index + 'images'} source={BlackDot} width="15px" height="15px" />

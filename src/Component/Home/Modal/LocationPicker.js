@@ -79,6 +79,11 @@ export default function LocationPicker({setLocation, isHome}) {
       if (setLocation) await setLocation(location.name + ' ' + locationObject.name);
       await dispatch(DeleteLocation());
       await dispatch(modalClose());
+      await dispatch(
+        setModalProp({
+          modalProp: undefined,
+        }),
+      );
     }
   };
   return (

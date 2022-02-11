@@ -29,6 +29,7 @@ import SearchTag from '../More/Modal/SearchTag';
 import SearchId from '../More/Modal/SearchId';
 import BikeBrand from '../BikeManagement/Modal/BikeBrand';
 import RepairDatePicker from '../Home/Modal/RepairDatePicker';
+import Ad from './Ad';
 
 // 2022-01-04 08:31:15
 // Junhan
@@ -102,6 +103,8 @@ export default function ModalBasic() {
         return SearchTag;
       case 'searchId':
         return SearchId;
+      case 'ad':
+        return Ad;
       default:
         return AlertModal;
     }

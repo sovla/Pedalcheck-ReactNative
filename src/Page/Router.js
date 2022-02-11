@@ -61,27 +61,26 @@ import DateChange from './ReservationManagement/DateChange';
 import ReservationManagement from './ReservationManagement/ReservationManagement';
 import ReservationManagementDetail from './ReservationManagement/ReservationManagementDetail';
 import RepairHome from './Repair/RepairHome';
-import {BackHandler, SafeAreaView, ToastAndroid, useWindowDimensions, View} from 'react-native';
+import {BackHandler, SafeAreaView, useWindowDimensions, View} from 'react-native';
 import Theme from '@/assets/global/Theme';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import ModalBasic from '@/Component/Modal/ModalBasic';
 import {initSetting} from '@/Store/sizeState';
 import ProductDetail from './Repair/ProductDetail';
 import BikeRegisterFirst from './BikeManagement/BikeRegisterFirst';
 import {useIsFocused, useNavigation} from '@react-navigation/core';
 import RepairHistoryDetail from './More/MyInformation/RepairHistoryDetail';
-import {PositionBox} from '@/assets/global/Container';
-import {DarkBoldText} from '@/assets/global/Text';
 import CouponUseComplete from './More/Coupon/CouponUseComplete';
 import CouponUseDateSelect from './More/Coupon/CouponUseDateSelect';
 import messaging from '@react-native-firebase/messaging';
 import {setToken} from '@/Store/tokenState';
-import {useState} from 'react';
 import {resetUserInfo} from '@/Store/loginState';
 import {showPushToastMessage, showToastMessage} from '@/Util/Toast';
 import {useRef} from 'react';
 import Notice from '@/Component/RepairHistory/Modal/Notice';
 import ReservationManagementAll from './ReservationManagement/ReservationManagementAll';
+import {fetchBannerList} from '@/Store/BannerState';
+import {fetchAd} from '@/Store/AdState';
 
 const INIT_ROUTER_COMPONENT_NAME = 'Home';
 
@@ -93,7 +92,6 @@ export default function Router() {
   const dispatch = useDispatch();
   const {height, width} = useWindowDimensions();
   const navigationRef = useRef(null);
-  console.log(navigationRef);
   const getToken = async () => {
     try {
       const token = await messaging().getToken();
@@ -132,10 +130,12 @@ export default function Router() {
       });
     });
 
+    dispatch(fetchBannerList()); // 배너
+    dispatch(fetchAd()); // 광고
+
     return () => {
       dispatch(resetUserInfo());
       unsubscribe();
-      getToken();
     };
   }, []);
 

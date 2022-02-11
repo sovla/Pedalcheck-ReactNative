@@ -123,6 +123,7 @@ export default function RegisterInformation({navigation}) {
             placeHolder="'-'없이 숫자만 입력하세요"
             value={information.tel}
             changeFn={e => onChangeInformation(phoneNumber(e), 'tel')}
+            keyboardType="numeric"
             errorMessage={errorMessage.tel !== '' && errorMessage.tel}
             pd="0px 0px 5px"
             mg={errorMessage.tel === '' && '0px 0px 20px'}
