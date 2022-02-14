@@ -149,7 +149,7 @@ export const DefaultInput = ({
           containerStyle={{
             //  드롭다운 클릭시 내부 View
             width: getPixel(width ? width?.slice(0, width?.length - 2) : 380),
-            height: 10,
+            height: 44,
             backgroundColor: Theme.color.white,
             borderColor: Theme.borderColor.gray,
             borderWidth: 1,
@@ -163,6 +163,7 @@ export const DefaultInput = ({
             borderColor: Theme.borderColor.gray,
             borderWidth: 1,
             borderRadius: 10,
+            padding: 0,
             paddingRight: 6,
             paddingLeft: 15,
           }}

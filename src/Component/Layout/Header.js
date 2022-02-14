@@ -1,6 +1,5 @@
 import {Box, RowBox} from '@/assets/global/Container';
 import React from 'react';
-import {Text} from 'react-native';
 import BackArrow from '@assets/image/back.png';
 import Theme from '@/assets/global/Theme';
 import styled from 'styled-components/native';

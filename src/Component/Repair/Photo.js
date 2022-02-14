@@ -40,16 +40,18 @@ const PhotoComponent = ({
       compressImageMaxWidth: 375 * 3,
       compressImageMaxHeight: 275 * 3,
       forceJpg: true,
-    }).then(images => {
-      if (checkImageCount(images)) {
-        return null;
-      }
-      if (isMulti) {
-        setImageArray(prev => [...prev, ...images]);
-      } else {
-        setImageArray(prev => [...prev, images]);
-      }
-    });
+    })
+      .then(images => {
+        if (checkImageCount(images)) {
+          return null;
+        }
+        if (isMulti) {
+          setImageArray(prev => [...prev, ...images]);
+        } else {
+          setImageArray(prev => [...prev, images]);
+        }
+      })
+      .catch(err => console.log(err));
   };
   const onPressDeleteHandle = async (deleteIndex, item) => {
     const result = await onPressDelete(item);

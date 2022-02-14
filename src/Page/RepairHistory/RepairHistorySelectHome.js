@@ -38,9 +38,8 @@ export default function RepairHistorySelectHome() {
 
   useLayoutEffect(() => {
     setIsLoading(true);
-    // 수정 필요
     getRepairHomeInformation({
-      _mt_idx: 2,
+      _mt_idx: login.idx,
       search_mon: date.getFullYear() + '-' + numberChangeFormat(date.getMonth() + 1),
     })
       .then(res => res.data?.result === 'true' && res.data.data.data)

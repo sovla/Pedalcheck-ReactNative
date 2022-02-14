@@ -1,14 +1,14 @@
 import styled, {css} from 'styled-components/native';
 import Theme from './Theme';
 import React from 'react';
-import pixelChange, {fontSizeChange, pixelHeightChange} from '@/Util/pixelChange';
+import pixelChange, {fontSizeChange, getPixel, pixelHeightChange} from '@/Util/pixelChange';
 import numberFormat from '@/Util/numberFormat';
 import {Platform} from 'react-native';
 
 export const DefaultText = styled.Text`
   font-family: ${Platform.OS === 'android' ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF'};
   color: ${p => p.color ?? Theme.color.white};
-  font-size: ${p => p.fontSize ?? Theme.fontSize.fs16};
+  font-size: ${p => pixelChange(p.fontSize) ?? pixelChange(Theme.fontSize.fs16)};
   width: ${p => pixelChange(p.width) ?? 'auto'};
   height: ${p => pixelChange(p.height) ?? 'auto'};
   letter-spacing: ${p => p.letterSpacing ?? '-0.84px'};
@@ -114,11 +114,7 @@ export const MoneyText = props => {
     return null;
   }
   return props.disabled ? (
-    <DefaultText
-      textDecoration="line-through"
-      fontSize={Theme.fontSize.fs12}
-      color={Theme.color.gray}
-      {...props}>
+    <DefaultText textDecoration="line-through" fontSize={Theme.fontSize.fs12} color={Theme.color.gray} {...props}>
       {numberFormat(props.money)}&nbsp;원
     </DefaultText>
   ) : (

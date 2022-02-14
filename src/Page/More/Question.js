@@ -15,6 +15,8 @@ import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {useSelector} from 'react-redux';
 import {showToastMessage} from '@/Util/Toast';
 import {useLayoutEffect} from 'react';
+import {DarkMediumText} from '@/assets/global/Text';
+import Loading from '@/Component/Layout/Loading';
 
 // 2022-01-03 10:51:16
 // Junhan
@@ -38,6 +40,8 @@ export default function Question({route: {params}}) {
     pedalCheck: false,
     shop: false,
   });
+  const [isLoading, setIsLoading] = useState(true);
+  const [isScroll, setIsScroll] = useState(false);
 
   const initState = () => {
     setSelect('페달체크');
@@ -73,20 +77,25 @@ export default function Question({route: {params}}) {
   };
 
   const questionDelete = idx => {
+    setIsLoading(true);
     deleteQna({
       _mt_idx: login?.idx,
       qt_idx: idx,
-    }).then(async res => {
-      if (res.data.result === 'true') {
-        if (select === '페달체크') {
-          await setPedalCheckList(prev => prev.filter(item => item.qt_idx !== idx));
-        } else {
-          await setShopList(prev => prev.filter(item => item.qt_idx !== idx));
+    })
+      .then(async res => {
+        if (res.data.result === 'true') {
+          if (select === '페달체크') {
+            await setPedalCheckList(prev => prev.filter(item => item.qt_idx !== idx));
+          } else {
+            await setShopList(prev => prev.filter(item => item.qt_idx !== idx));
+          }
+          await dispatch(modalClose());
+          showToastMessage('삭제했습니다.');
         }
-        await dispatch(modalClose());
-        showToastMessage('삭제했습니다.');
-      }
-    });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
   const onPressUpdate = item => {
     if (select === '페달체크') {
@@ -99,30 +108,35 @@ export default function Question({route: {params}}) {
   const apiGetQnaList = paramPage => {
     const type = select === '페달체크' ? 'pedalCheck' : 'shop';
     if (!isLastPage[type]) {
+      setIsLoading(true);
       getQnaList({
         _mt_idx: login?.idx,
         qt_type: select === '페달체크' ? 2 : 1,
         page: paramPage ?? select === '페달체크' ? page : shopPage,
-      }).then(res => {
-        const qna_list = res?.data?.data?.data?.qna_list;
+      })
+        .then(res => {
+          const qna_list = res?.data?.data?.data?.qna_list;
 
-        if (res.data.result === 'true' && qna_list) {
-          // 데이터 true , qna_list 존재
-          if (select === '페달체크') {
-            setPage(prev => prev + 1);
-            setPedalCheckList(prev => [...prev, ...qna_list]);
-          } else {
-            setShopPage(prev => prev + 1);
-            setShopList(prev => [...prev, ...qna_list]);
+          if (res.data.result === 'true' && qna_list) {
+            // 데이터 true , qna_list 존재
+            if (select === '페달체크') {
+              setPage(prev => prev + 1);
+              setPedalCheckList(prev => [...prev, ...qna_list]);
+            } else {
+              setShopPage(prev => prev + 1);
+              setShopList(prev => [...prev, ...qna_list]);
+            }
+          } else if (res.data.result === 'true') {
+            // 데이터 true , qna_list 없을때 라스트페이지 적용
+            setIsLastPage(prev => ({
+              ...prev,
+              [type]: true,
+            }));
           }
-        } else if (res.data.result === 'true') {
-          // 데이터 true , qna_list 없을때 라스트페이지 적용
-          setIsLastPage(prev => ({
-            ...prev,
-            [type]: true,
-          }));
-        }
-      });
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
   };
 
@@ -150,6 +164,7 @@ export default function Question({route: {params}}) {
 
   return (
     <>
+      {isLoading && <Loading isAbsolute backgroundColor="#0000" />}
       <Header title="1:1문의" />
 
       <FlatList
@@ -161,7 +176,13 @@ export default function Question({route: {params}}) {
           </>
         }
         onEndReached={() => {
-          apiGetQnaList();
+          if (isScroll) {
+            apiGetQnaList();
+            setIsScroll(false);
+          }
+        }}
+        onScrollBeginDrag={() => {
+          setIsScroll(true);
         }}
         data={select === '페달체크' ? pedalCheckList : shopList}
         renderItem={({item, index}) => {
@@ -189,6 +210,11 @@ export default function Question({route: {params}}) {
         keyExtractor={(item, index) => {
           return select + index;
         }}
+        ListEmptyComponent={
+          <Box mg="150px 0px 0px" justifyContent="center" alignItems="center">
+            {!isLoading && <DarkMediumText>1:1 문의 내역이 없습니다.</DarkMediumText>}
+          </Box>
+        }
       />
     </>
   );

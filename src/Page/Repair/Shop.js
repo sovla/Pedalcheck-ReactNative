@@ -35,7 +35,6 @@ export default function Shop({route, navigation}) {
 
   useEffect(() => {
     return () => {
-      console.log('Shop useEffect Return');
       dispatch(ResetShopInfo());
     };
   }, []);
@@ -63,6 +62,7 @@ export default function Shop({route, navigation}) {
         mt_idx: mt_idx,
       }).then(res => {
         if (res?.data?.result === 'true') {
+          //  수정필요
           dispatch(
             setLikeCount(
               res.data.msg.includes('추가')

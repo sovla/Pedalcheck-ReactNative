@@ -1,18 +1,20 @@
 import {addBikeExport, updateBikeExport} from '@/API/Manager/More';
 import {LinkButton} from '@/assets/global/Button';
-import {ScrollBox} from '@/assets/global/Container';
+import {Box, ScrollBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
 import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {modalOpen, modalOpenAndProp, modalSlice, setModalProp} from '@/Store/modalState';
 import {phoneNumber} from '@/Util/phoneFormatter';
+import {getPixel} from '@/Util/pixelChange';
 import {showToastMessage} from '@/Util/Toast';
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {useEffect} from 'react';
 import {useState} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch, useSelector} from 'react-redux';
 
 export default function BikeExport({route}) {
@@ -113,7 +115,7 @@ export default function BikeExport({route}) {
   return (
     <>
       <Header title="출고 등록" />
-      <ScrollBox pd="20px 16px">
+      <KeyboardAwareScrollView style={{paddingHorizontal: getPixel(16), paddingVertical: 20}}>
         <DefaultInput
           fontSize={Theme.fontSize.fs15}
           title="모델"
@@ -187,7 +189,9 @@ export default function BikeExport({route}) {
           value={bikeData.sbt_memo}
           maxLength={200}
         />
-      </ScrollBox>
+        <Box height="40px" />
+      </KeyboardAwareScrollView>
+
       <LinkButton content="확인" to={() => registerBikeExport()} mg="0px 16px 20px" />
     </>
   );

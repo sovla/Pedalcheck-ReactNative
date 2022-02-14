@@ -24,9 +24,6 @@ export default function Review({
   isJustShow = false,
 }) {
   const [isDetailButton, setIsDetailButton] = useState(false);
-  if ((item?.srt_content?.length >= 90 || item?.srt_res_content?.length >= 90) && !isDetailButton) {
-    setIsDetailButton(true);
-  }
 
   const {size} = useSelector(state => state);
   const navigation = useNavigation();
@@ -41,6 +38,12 @@ export default function Review({
           return {uri: imageAddress + v};
         })
       : [];
+  if (
+    (item?.srt_content?.length >= 90 || item?.srt_res_content?.length >= 90 || imageArray.length > 1) &&
+    !isDetailButton
+  ) {
+    setIsDetailButton(true);
+  }
   useLayoutEffect(() => {
     setIsDetailButton(isDetail);
   }, []);

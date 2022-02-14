@@ -123,10 +123,9 @@ export function Payment({navigation, route: {params}}) {
     return <Loading />;
   }
   /* [필수입력] 결제에 필요한 데이터를 입력합니다. */
-  console.log(selectProduct.totalPrice);
 
   const data = {
-    pg: selectPayment.selectPayment === '카카오페이' ? 'kakaopay' : 'html5_inicis',
+    pg: selectPayment.selectPayment === '카카오페이' ? 'html5_inicis' : 'html5_inicis',
     pay_method: changePayment(selectPayment.selectPayment, 'non-api'),
     name: `페달체크 결제`,
     merchant_uid: responseData.ot_code,

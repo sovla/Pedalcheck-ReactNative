@@ -51,7 +51,6 @@ export default function PaymentInformationCheck({onPressComplete}) {
     {title: '전화번호', content: login?.mt_sms},
     {title: '요청사항', content: selectPayment?.repairRequest},
   ];
-  console.log(selectBike);
   return (
     <>
       <ModalTitleBox size={size} title="결제정보 확인" padding={64} />

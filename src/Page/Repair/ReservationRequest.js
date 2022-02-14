@@ -26,7 +26,6 @@ export default function ShopReservationRequest({navigation, route: {params}}) {
   const [repairRequest, setRepairRequest] = useState('');
   const [selectPayment, setSelectPayment] = useState('');
   const [thirdParty, setThirdParty] = useState(false);
-  const [isModal, setIsModal] = useState(false);
 
   const [bank, setBank] = useState({
     accountName: '',
@@ -157,16 +156,6 @@ export default function ShopReservationRequest({navigation, route: {params}}) {
           </CheckBox>
         </Box>
       </Box>
-      <LinkButton
-        to={() => {
-          setIsModal(prev => !prev);
-        }}
-        content={'모달온'}></LinkButton>
-      <Modal visible={isModal} onRequestClose={() => setIsModal(prev => !prev)}>
-        <Box>
-          <DarkBoldText>나는모달</DarkBoldText>
-        </Box>
-      </Modal>
 
       <LinkButton
         mg="0px 16px 20px"
@@ -179,4 +168,4 @@ export default function ShopReservationRequest({navigation, route: {params}}) {
   );
 }
 
-const paymentMethod = ['신용카드', '실시간 계좌이체', '카카오페이', '무통장 입금'];
+const paymentMethod = ['신용카드', '실시간 계좌이체', '무통장 입금'];

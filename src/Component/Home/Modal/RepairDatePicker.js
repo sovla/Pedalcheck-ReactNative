@@ -27,8 +27,6 @@ export default function RepairDatePicker({birth, setBirth}) {
 
   const ChangeYear = (value, key) => {
     if (isRender) {
-      console.log(birthDate, 'changeYear');
-
       setBirthDate(prev => {
         return {...prev, [key]: value};
       });
@@ -59,7 +57,6 @@ export default function RepairDatePicker({birth, setBirth}) {
   if (day.length === 0) {
     return null;
   }
-  console.log(birthDate);
   return (
     <>
       <ModalTitleBox size={size} title="날짜 선택" padding={32} />

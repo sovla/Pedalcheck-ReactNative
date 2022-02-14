@@ -26,3 +26,21 @@ export const getMyReviewItem = async args => {
     console.log(error);
   }
 };
+
+export const getAd = async args => {
+  try {
+    const response = await API.post('get_ad.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getBannerList = async args => {
+  try {
+    const response = await API.post('get_banner.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
