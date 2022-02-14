@@ -30,8 +30,7 @@ import {useState} from 'react';
 import BikeChangeCycle from '@/Util/BikeChangeCycle';
 import {showToastMessage} from '@/Util/Toast';
 import {AlertButton} from '@/Util/Alert';
-
-// Toast 메시지 추가 필요
+import numberFormat from '@/Util/numberFormat';
 
 export default function BikeDetail({navigation, route}) {
   const {size, login} = useSelector(state => state);
@@ -99,7 +98,7 @@ export default function BikeDetail({navigation, route}) {
 
   const setBikeDistacneHandle = async bikeStatus => {
     setBikeDistacneText('');
-    const response = await setBikeDistacne({
+    await setBikeDistacne({
       _mt_idx: login.idx,
       mbt_idx: route?.params?.mbt_idx,
       mbt_km: bikeDistanceText,
@@ -212,6 +211,8 @@ export default function BikeDetail({navigation, route}) {
     );
   };
 
+  console.log(order);
+
   return (
     <>
       <Header title="자전거 상세" RightComponent={RightComponent} />
@@ -264,11 +265,11 @@ export default function BikeDetail({navigation, route}) {
                 <DarkText fontWeight={Theme.fontWeight.medium} mg="0px 10px 0px 0px">
                   총 주행거리
                 </DarkText>
-                <DarkText fontWeight={Theme.fontWeight.medium}>{bike_km}km</DarkText>
+                <DarkText fontWeight={Theme.fontWeight.medium}>{numberFormat(bike_km)}km</DarkText>
               </RowBox>
             </RowBox>
             {dummyItem.map((item, index) => {
-              return <RepairCycle key={index} item={item} />;
+              return <RepairCycle key={item + index} item={item} />;
             })}
           </Box>
           <Box>
@@ -313,22 +314,3 @@ export default function BikeDetail({navigation, route}) {
     </>
   );
 }
-
-// const shopItem = {
-//   shopName: '인천신스',
-//   product: '정비 - 오버홀',
-//   date: '2021-10-07 16:00',
-//   status: '예약',
-// };
-// const shopItem1 = {
-//   shopName: '인천신스',
-//   product: '정비 - 오버홀',
-//   date: '2021-10-07 16:00',
-//   status: '승인',
-// };
-// const shopItem2 = {
-//   shopName: '인천신스',
-//   product: '정비 - 오버홀',
-//   date: '2021-10-07 16:00',
-//   status: '처리완료',
-// };

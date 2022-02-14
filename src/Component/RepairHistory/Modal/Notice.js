@@ -87,7 +87,6 @@ const NoticeItem = ({
   return (
     <TouchableOpacity
       onPress={async () => {
-        await dispatch(modalClose());
         await readNoticeHandle(item?.nt_idx);
         if (item?.intent) {
           await navigation.navigate(item?.intent, {menu: item?.noticeData, od_idx: item?.noticeIdx});

@@ -95,41 +95,20 @@ export default function Update({navigation}) {
   };
 
   const UpdateMemberHandle = async () => {
-    if (RegJoin()) {
-      return;
-    }
+    const regResult = await RegJoin();
     let response;
-    if (image?.path) {
-      response = await UpdateMemberImage({...user, mt_bank_image: image, _mt_idx: user.idx});
+    if (regResult && select === '기본 정보 수정') {
+      // 필수 입력값 X,
+      return;
+    } else if (regResult && select !== '기본 정보 수정') {
+      response = await AddInformationHandle();
     } else {
-      response = await UpdateMember({...user, _mt_idx: user.idx});
-    }
-
-    const sendData = {
-      mt_idx: user.idx,
-      mt_image_type: isNaN(selectImage) ? 2 : imageType, // 수정 필요
-      mt_gender: sex === 'man' ? 'M' : 'F',
-      mt_birth: birthDateValue,
-      mt_hp: user.mt_hp,
-    };
-    if (selectImage?.path) {
-      // 로컬에서 갤러리
-      await AddInformationImage({
-        ...sendData,
-        mt_image: selectImage,
-      });
-    } else {
-      if (isNaN(selectImage)) {
-        await AddInformation({
-          ...sendData,
-        });
+      if (image?.path) {
+        response = await UpdateMemberImage({...user, mt_bank_image: image, _mt_idx: user.idx});
       } else {
-        await AddInformation({
-          //  로컬에서 기본이미지 선택
-          ...sendData,
-          mt_image_num: selectImage,
-        });
+        response = await UpdateMember({...user, _mt_idx: user.idx});
       }
+      await AddInformationHandle();
     }
 
     if (response?.data?.result === 'true') {
@@ -137,7 +116,7 @@ export default function Update({navigation}) {
         _mt_idx: login.idx,
       });
 
-      if (response?.data?.result === 'true') {
+      if (responseMember?.data?.result === 'true') {
         const data = responseMember?.data?.data?.data;
         dispatch(setUserInfo(data));
       }
@@ -150,6 +129,29 @@ export default function Update({navigation}) {
         },
       ]);
     }
+  };
+
+  const AddInformationHandle = async () => {
+    const sendData = {
+      mt_idx: user.idx,
+      mt_image_type: isNaN(selectImage) ? 2 : imageType, // 수정 필요
+      mt_gender: sex === 'man' ? 'M' : 'F',
+      mt_birth: birthDateValue,
+      mt_hp: user.mt_hp,
+    };
+    if (selectImage?.path) {
+      // 로컬에서 갤러리
+      Object.assign(sendData, {
+        mt_image: selectImage,
+      });
+    } else {
+      if (!isNaN(selectImage)) {
+        Object.assign(sendData, {
+          mt_image_num: selectImage,
+        });
+      }
+    }
+    return await AddInformationImage({...sendData});
   };
   const getGeo = () => {
     Geolocation.getCurrentPosition(
@@ -164,7 +166,7 @@ export default function Update({navigation}) {
     );
   };
 
-  const RegJoin = () => {
+  const RegJoin = async () => {
     let result = false;
     if (emptyData(user.mt_name)) {
       setErrorMessage(prev => ({
