@@ -68,7 +68,7 @@ export default function RepairQuestion({route: {params}}) {
     if (checkContents()) {
       sendShopQuestion({
         _mt_idx: login.idx,
-        mst_idx: store_info?.mst_idx,
+        mst_idx: store_info?.mt_idx,
         mst_name: store_info?.mst_name,
         qt_title: title,
         qt_content: content,
