@@ -24,9 +24,10 @@ export default function ShopIntroduction() {
   const [isBrand, setIsBrand] = useState(true);
   const [isMoreBrand, setIsMoreBrand] = useState(true);
   const openTime = () => {
-    if (store_info?.mst_worktime !== '') {
+    if (store_info?.mst_worktime !== '' && store_info?.mst_worktime) {
       let result = store_info?.mst_worktime;
-      if (!store_info?.mst_worktime?.includes('\n주말') && store_info?.mst_worktime?.includes('주말')) {
+      console.log(result);
+      if (result && !store_info?.mst_worktime?.includes('\n주말') && store_info?.mst_worktime?.includes('주말')) {
         result = result.replace('주말', '\n주말');
       }
       if (store_info?.mst_holiday !== '') {
@@ -179,7 +180,7 @@ export default function ShopIntroduction() {
 }
 
 const changeHolyday = string => {
-  if (string !== '') {
+  if (string !== '' && string) {
     let result = '휴무 ';
     string.split('').forEach((v, i) => {
       if (v === '1') {

@@ -30,11 +30,34 @@ export default function CouponUseBikeSelect({route: {params}}) {
     bikeModel: '',
   }); // 직접입력 선택한 경우
 
+  const [bikeNick, setBikeNick] = useState('');
+
   const [shopInfo, setShopInfo] = useState({
     mst_idx: '',
     mst_name: '',
   });
   const onPressNext = () => {
+    if (selectItem === '') {
+      AlertButton('자전거를 선택해주세요.');
+      return;
+    } else if (shopInfo.mst_name === '') {
+      AlertButton('매장을 선택해주세요.');
+      return;
+    } else if (selectItem === 2000) {
+      if (bikeName.bikeBrand === '') {
+        AlertButton('자전거 브랜드를 선택해주세요.');
+        return;
+      }
+      if (bikeName.bikeModel === '') {
+        AlertButton('자전거 모델을 선택해주세요.');
+        return;
+      }
+      if (bikeNick === '') {
+        AlertButton('자전거 이름을 적어주세요.');
+        return;
+      }
+    }
+
     if (selectItem !== '' && shopInfo.mst_name !== '') {
       navigation.navigate('CouponUseDateSelect', {
         shopInfo: shopInfo,
@@ -42,20 +65,16 @@ export default function CouponUseBikeSelect({route: {params}}) {
           selectItem !== 2000
             ? bikeList[selectItem]
             : {
-                mbt_nick: bikeName.bikeBrand + bikeName.bikeModel,
+                mbt_nick: bikeNick,
+                ot_bike_brand: bikeName?.bikeBrand,
+                ot_bike_model: bikeName?.bikeModel,
               },
         ...params,
       });
     } else {
-      if (selectItem === '') {
-        AlertButton('자전거를 선택해주세요.');
-        return null;
-      } else {
-        AlertButton('매장을 선택해주세요.');
-      }
     }
   };
-
+  console.log(bikeList);
   const onPressSearch = () => {
     dispatch(modalOpenAndProp({modalComponent: 'searchShop', setShopInfo}));
   };
@@ -91,6 +110,8 @@ export default function CouponUseBikeSelect({route: {params}}) {
             bikeName={bikeName}
             setBikeName={setBikeName}
             onPressNext={onPressNext}
+            bikeNick={bikeNick}
+            setBikeNick={setBikeNick}
           />
           <BetweenBox mg="40px 16px 0px" alignItems="flex-end">
             <DefaultInput

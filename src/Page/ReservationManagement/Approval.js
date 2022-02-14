@@ -18,6 +18,7 @@ import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {showToastMessage} from '@/Util/Toast';
 import {AlertButton} from '@/Util/Alert';
 import numberFormat from '@/Util/numberFormat';
+import Loading from '@/Component/Layout/Loading';
 
 export default function Approval({navigation, route: {params}}) {
   const {size, login} = useSelector(state => state);
@@ -26,8 +27,9 @@ export default function Approval({navigation, route: {params}}) {
   const [imageArray, setImageArray] = useState([]);
   const [selectWages, setSelectWages] = useState('없음');
   const [memo, setMemo] = useState('');
-
   const [wages, setWages] = useState('');
+
+  const [isLoading, setIsLoading] = useState(false);
   const onPressCancle = () => {
     navigation.goBack();
   };
@@ -54,6 +56,7 @@ export default function Approval({navigation, route: {params}}) {
         return null;
       }
     }
+    setIsLoading(true);
     const result = changeCheckList();
     reservationComplete({
       _mt_idx: login.idx,
@@ -63,18 +66,22 @@ export default function Approval({navigation, route: {params}}) {
       opt_note: memo,
       opt_image: imageArray,
       ...result,
-    }).then(res => {
-      const {data} = res;
-      if (data.result === 'true') {
-        //  수정필요  정비내역 정비이력으로 이동 추가 확인 필요
-        showToastMessage('정비 처리완료 되었습니다.');
-        navigation.navigate('RepairHistoryHome', {
-          menu: '정비이력',
-        });
-      } else {
-        showToastMessage(data.msg);
-      }
-    });
+    })
+      .then(res => {
+        const {data} = res;
+        if (data.result === 'true') {
+          //  수정필요  정비내역 정비이력으로 이동 추가 확인 필요
+          showToastMessage('정비 처리완료 되었습니다.');
+          navigation.navigate('RepairHistoryHome', {
+            menu: '정비이력',
+          });
+        } else {
+          showToastMessage(data.msg);
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
     // navigation.navigate('ReservationManagement');
   };
 
@@ -84,6 +91,7 @@ export default function Approval({navigation, route: {params}}) {
   const menuItem = ['없음', '추가공임비', '반환공임비'];
   return (
     <>
+      {isLoading && <Loading isAbsolute />}
       <Header title="처리완료" />
       <Box flex={1}>
         <ScrollBox flex={1} pd="0px 16px">

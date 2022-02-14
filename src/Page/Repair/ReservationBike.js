@@ -5,6 +5,7 @@ import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import ReservationBikeSelect from '@/Component/Repair/ReservationBikeSelect';
 import {setReservationBike} from '@/Store/reservationState';
+import {AlertButton} from '@/Util/Alert';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import React from 'react';
 import {useLayoutEffect} from 'react';
@@ -25,13 +26,30 @@ export default function ShopReservationBike({navigation, route: {params}}) {
     bikeModel: '',
   }); // 직접입력 선택한 경우
 
+  const [bikeNick, setBikeNick] = useState('');
+
   const onPressNext = () => {
     if (selectItem !== '') {
+      if (selectItem === 2000) {
+        if (bikeName.bikeBrand === '') {
+          AlertButton('자전거 브랜드를 선택해주세요.');
+          return;
+        }
+        if (bikeName.bikeModel === '') {
+          AlertButton('자전거 모델을 선택해주세요.');
+          return;
+        }
+        if (bikeNick === '') {
+          AlertButton('자전거 이름을 적어주세요.');
+          return;
+        }
+      }
       dispatch(
         setReservationBike({
           selectItem,
           bikeName,
           selectBike: selectItem !== 2000 ? bikeList[selectItem] : bikeName,
+          selectBikeNick: bikeNick,
         }),
       );
       navigation.navigate('ReservationDate');
@@ -70,6 +88,8 @@ export default function ShopReservationBike({navigation, route: {params}}) {
           bikeName={bikeName}
           setBikeName={setBikeName}
           onPressNext={onPressNext}
+          bikeNick={bikeNick}
+          setBikeNick={setBikeNick}
         />
       </Box>
     </>

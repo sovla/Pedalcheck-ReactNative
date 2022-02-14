@@ -55,7 +55,7 @@ export default function ShopUpdate() {
 
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
-    if (isFocused) {
+    if (isFocused && storeInfo) {
       setShopInformation(storeInfo);
       const changeValue = storeInfo?.mst_holiday?.includes(',')
         ? storeInfo?.mst_holiday?.split(',')

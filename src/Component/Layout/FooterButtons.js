@@ -124,9 +124,7 @@ export default function FooterButtons({selectMenu, isAdmin}) {
                 height="22px"
                 resizeMode="contain"
               />
-              <DefaultText color={isOn ? Theme.color.skyBlue : Theme.color.gray}>
-                {item.content}
-              </DefaultText>
+              <DefaultText color={isOn ? Theme.color.skyBlue : Theme.color.gray}>{item.content}</DefaultText>
             </Box>
           </TouchableOpacity>
         );

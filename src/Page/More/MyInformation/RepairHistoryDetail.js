@@ -68,7 +68,7 @@ export default function RepairHistoryDetail({route: {params}}) {
           date: repair?.ot_pt_date,
           product: repair?.pt_title,
           price: repair?.ot_price,
-          od_idx: params?.item?.od_idx ? params?.item?.od_idx : params?.od_idx,
+          od_idx: params?.item?.od_idx ?? params?.od_idx,
           mst_idx: repair?.mst_idx,
         },
       });
@@ -91,7 +91,7 @@ export default function RepairHistoryDetail({route: {params}}) {
   useLayoutEffect(() => {
     getRepairHistoryDetail({
       _mt_idx: login?.idx,
-      od_idx: params?.item?.od_idx ? params?.item?.od_idx : params?.od_idx,
+      od_idx: params?.item?.od_idx ?? params?.od_idx,
     })
       .then(res => res.data.result === 'true' && res.data.data.data)
       .then(data => {
