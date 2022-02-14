@@ -19,10 +19,9 @@ export default function ReservationBikeSelect({
   bikeName,
   setBikeName,
   onPressNext,
+  bikeNick,
+  setBikeNick,
 }) {
-  const {size} = useSelector(state => state);
-  const navigation = useNavigation();
-  const route = useRoute();
   const dispatch = useDispatch();
   return (
     <>
@@ -58,49 +57,60 @@ export default function ReservationBikeSelect({
             </DarkText>
           </RowBox>
           {selectItem === 2000 && (
-            <BetweenBox onFocus={() => setSelectItem(2000)} width="380px">
+            <Box>
+              <BetweenBox onFocus={() => setSelectItem(2000)} width="380px">
+                <DefaultInput
+                  placeHolder="브랜드명"
+                  width="185px"
+                  value={bikeName.bikeBrand}
+                  isText
+                  fontSize={Theme.fontSize.fs16}
+                  PressText={() => {
+                    dispatch(
+                      modalOpenAndProp({
+                        modalComponent: 'bikeModel',
+                        setBikeInfo: text => {
+                          const bikeInfo = text.split('\t\t');
+                          setBikeName(prev => ({
+                            ...prev,
+                            bikeBrand: bikeInfo[0],
+                            bikeModel: bikeInfo[1],
+                          }));
+                        },
+                      }),
+                    );
+                  }}
+                  changeFn={text =>
+                    setBikeName(prev => ({
+                      ...prev,
+                      bikeBrand: text,
+                    }))
+                  }
+                />
+                <DefaultInput
+                  placeHolder="모델명"
+                  width="185px"
+                  value={bikeName.bikeModel}
+                  isText
+                  fontSize={Theme.fontSize.fs16}
+                  changeFn={text =>
+                    setBikeName(prev => ({
+                      ...prev,
+                      bikeModel: text,
+                    }))
+                  }
+                />
+              </BetweenBox>
               <DefaultInput
-                placeHolder="브랜드명"
-                width="185px"
-                value={bikeName.bikeBrand}
-                isText
+                mg="20px 0px 0px"
+                placeHolder="자전거 이름을 입력해주세요."
+                width="380px"
+                maxLength={20}
+                value={bikeNick}
                 fontSize={Theme.fontSize.fs16}
-                PressText={() => {
-                  dispatch(
-                    modalOpenAndProp({
-                      modalComponent: 'bikeModel',
-                      setBikeInfo: text => {
-                        const bikeInfo = text.split('\t\t');
-                        setBikeName(prev => ({
-                          ...prev,
-                          bikeBrand: bikeInfo[0],
-                          bikeModel: bikeInfo[1],
-                        }));
-                      },
-                    }),
-                  );
-                }}
-                changeFn={text =>
-                  setBikeName(prev => ({
-                    ...prev,
-                    bikeBrand: text,
-                  }))
-                }
+                changeFn={setBikeNick}
               />
-              <DefaultInput
-                placeHolder="모델명"
-                width="185px"
-                value={bikeName.bikeModel}
-                isText
-                fontSize={Theme.fontSize.fs16}
-                changeFn={text =>
-                  setBikeName(prev => ({
-                    ...prev,
-                    bikeModel: text,
-                  }))
-                }
-              />
-            </BetweenBox>
+            </Box>
           )}
         </Box>
       </ScrollBox>

@@ -1,5 +1,5 @@
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator, CardStyleInterpolators} from '@react-navigation/stack';
 import React, {useEffect} from 'react';
 import BikeDetail from './BikeManagement/BikeDetail';
 import BikeManagement from './BikeManagement/BikeManagement';
@@ -81,12 +81,14 @@ import Notice from '@/Component/RepairHistory/Modal/Notice';
 import ReservationManagementAll from './ReservationManagement/ReservationManagementAll';
 import {fetchBannerList} from '@/Store/BannerState';
 import {fetchAd} from '@/Store/AdState';
+import {getStoreInfo} from '@/API/More/More';
+import {setStoreInfo} from '@/Store/storeInfoState';
 
 const INIT_ROUTER_COMPONENT_NAME = 'Home';
 
 let count = 0;
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 export default function Router() {
   const dispatch = useDispatch();
@@ -103,6 +105,13 @@ export default function Router() {
     }
   };
 
+  const forFade = ({current}) => {
+    console.log(current, 'forFade');
+    return {
+      cardStyle: {opacity: current.progress},
+    };
+  };
+
   useEffect(() => {
     dispatch(
       initSetting({
@@ -112,6 +121,29 @@ export default function Router() {
       }),
     );
   }, [height]);
+  const mesagingHandler = async remoteMessage => {
+    if (remoteMessage?.data?.intent) {
+      if (remoteMessage.data.intent === 'ShopUpdate') {
+        // 업체정보수정일때
+        const response = await getStoreInfo({
+          _mt_idx: remoteMessage.data?.content_idx,
+        });
+        if (response?.data?.result === 'true') {
+          dispatch(setStoreInfo(response?.data?.data?.data));
+        }
+        navigationRef.current.navigate(remoteMessage?.data?.intent);
+      } else {
+        navigationRef.current.navigate(remoteMessage?.data?.intent, {
+          menu: remoteMessage?.data?.content_idx2,
+          od_idx: remoteMessage?.data?.content_idx,
+        });
+      }
+
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   useEffect(() => {
     getToken();
@@ -120,12 +152,7 @@ export default function Router() {
       showPushToastMessage({
         remoteMessage: remoteMessage,
         onPress: () => {
-          if (remoteMessage?.data?.intent) {
-            navigationRef.current.navigate(remoteMessage?.data?.intent, {
-              menu: remoteMessage?.data?.content_idx2,
-              od_idx: remoteMessage?.data?.content_idx,
-            });
-          }
+          mesagingHandler(remoteMessage);
         },
       });
     });
@@ -145,10 +172,7 @@ export default function Router() {
       .getInitialNotification()
       .then(async remoteMessage => {
         if (remoteMessage) {
-          navigationRef.current.navigate(remoteMessage?.data?.intent, {
-            od_idx: remoteMessage?.data?.content_idx,
-            menu: remoteMessage?.data?.content_idx2,
-          });
+          mesagingHandler(remoteMessage);
         } else {
           return null;
         }
@@ -156,10 +180,7 @@ export default function Router() {
 
     //종료 안된 상태
     messaging().setBackgroundMessageHandler(async remoteMessage => {
-      navigationRef.current.navigate(remoteMessage?.data?.intent, {
-        od_idx: remoteMessage?.data?.content_idx,
-        menu: remoteMessage?.data?.content_idx2,
-      });
+      mesagingHandler(remoteMessage);
     });
   }, []);
 
@@ -171,6 +192,7 @@ export default function Router() {
           screenOptions={{
             headerShown: false,
             gestureDirection: 'horizontal',
+            cardStyleInterpolator: forFade,
           }}>
           {RouterSetting.map((item, index) => (
             <Stack.Screen
@@ -180,11 +202,10 @@ export default function Router() {
               options={{
                 headerShown: false,
                 cardStyleInterpolator: forFade,
-                // cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                gestureDirection: 'horizontal',
               }}
             />
           ))}
-          <></>
         </Stack.Navigator>
       </NavigationContainer>
     </>
@@ -225,22 +246,12 @@ const withScrollView = WrappedComponent => {
         <SafeAreaView style={{flex: 1}}>
           <View style={{flex: 1, backgroundColor: Theme.color.white}}>
             <WrappedComponent {...props} />
-
             {isFocus && <ModalBasic navigation={props?.navigation} />}
-            {/* <PositionBox backgroundColor="#0000" flexDirection="row" top="0px" right="0px" zIndex={3000}>
-              <DarkBoldText>{props.route.name}</DarkBoldText>
-            </PositionBox> */}
           </View>
         </SafeAreaView>
         <SafeAreaView style={{flex: 0, backgroundColor: '#fff'}} />
       </>
     );
-  };
-};
-
-const forFade = ({current}) => {
-  return {
-    cardStyle: {opacity: current.progress},
   };
 };
 

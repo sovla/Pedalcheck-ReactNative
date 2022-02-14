@@ -67,40 +67,53 @@ export default function ReservationPayment({navigation, route: {params}}) {
     {title: '전화번호', content: login?.mt_sms},
     {title: '요청사항', content: selectPayment?.repairRequest},
   ];
+
+  const getOrderCheckHandle = async () => {
+    let result = false;
+    while (!result) {
+      await getOrderCheck({
+        ot_code: params.merchant_uid,
+      })
+        .then(res => {
+          if (res.data?.result === 'true') {
+            result = true;
+            const {data} = res.data.data;
+
+            setOrderIdx(data?.od_idx);
+            if (data.ot_pay_type === 'vbank') {
+              //  가상계좌일때
+              setVirtualAccount(data);
+              setIsLoading(false);
+            } else {
+              // 가상계좌 아닐때
+              if (data.ot_pay_status === 'ready') {
+                //  결제 준비 상태이면 실패 리턴
+                AlertButton('결제 실패했습니다. 다시 시도해주세요.', '확인', () => {
+                  navigation.goBack();
+                });
+              } else {
+                setIsLoading(false);
+              }
+            }
+          } else {
+            // 결제실패시 리턴
+            AlertButton('결제 실패했습니다. 다시 시도해주세요.', '확인', () => {
+              navigation.goBack();
+            });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  };
+
   useLayoutEffect(() => {
     if (params?.merchant_uid) {
       //  가상계좌 일때
       //  ot_pay_status : "ready" 넘기기
       //  ot_pay_status : "paid" // 결제 완료상태
-      getOrderCheck({
-        ot_code: params.merchant_uid,
-      }).then(res => {
-        if (res.data?.result === 'true') {
-          const {data} = res.data.data;
-
-          setOrderIdx(data?.od_idx);
-          if (data.ot_pay_type === 'vbank') {
-            //  가상계좌일때
-            setVirtualAccount(data);
-            setIsLoading(false);
-          } else {
-            // 가상계좌 아닐때
-            if (data.ot_pay_status === 'ready') {
-              //  결제 준비 상태이면 실패 리턴
-              AlertButton('결제 실패했습니다. 다시 시도해주세요.', '확인', () => {
-                navigation.goBack();
-              });
-            } else {
-              setIsLoading(false);
-            }
-          }
-        } else {
-          // 결제실패시 리턴
-          AlertButton('결제 실패했습니다. 다시 시도해주세요.', '확인', () => {
-            navigation.goBack();
-          });
-        }
-      });
+      getOrderCheckHandle();
     } else {
       params?.price_zero && setIsLoading(false);
     }

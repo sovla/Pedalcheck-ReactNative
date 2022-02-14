@@ -75,7 +75,7 @@ export function Payment({navigation, route: {params}}) {
       sendOrder({
         _mt_idx: login.idx,
         mbt_idx: selectBike.selectItem !== 2000 && selectBike.selectBike.mbt_idx, // 2000 은 기타 선택시 값
-        ot_bike_nick: selectBike.selectItem !== 2000 && selectBike.selectBike.mbt_nick,
+        ot_bike_nick: selectBike.selectItem !== 2000 ? selectBike.selectBike.mbt_nick : selectBike?.selectBikeNick,
         ot_bike_brand: selectBike.selectItem === 2000 && selectBike.selectBike.bikeBrand,
         ot_bike_model: selectBike.selectItem === 2000 && selectBike.selectBike.bikeModel,
         mst_idx: shopInfo.store_info.mt_idx,
