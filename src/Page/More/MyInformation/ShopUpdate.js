@@ -54,11 +54,12 @@ export default function ShopUpdate() {
   const [lastSortCount, setLastSortCount] = useState(0);
 
   const [isLoading, setIsLoading] = useState(false);
-  console.log(storeInfo?.mst_worktime, openingHours, 'gg');
   useEffect(() => {
     if (isFocused) {
       setShopInformation(storeInfo);
-      const changeValue = storeInfo?.mst_holiday?.includes(',') ? storeInfo?.mst_holiday?.split(',') : [];
+      const changeValue = storeInfo?.mst_holiday?.includes(',')
+        ? storeInfo?.mst_holiday?.split(',')
+        : [storeInfo?.mst_holiday];
       if (storeInfo?.mst_worktime && storeInfo.mst_worktime.includes('오전')) {
         const mstWorktime = storeInfo.mst_worktime;
         try {
@@ -74,7 +75,7 @@ export default function ShopUpdate() {
       }
       setSelectDay(
         changeValue.map(value => {
-          return value * 1;
+          return value * 1 + 1;
         }),
       );
       setImageArray(storeInfo.mst_image);
@@ -130,7 +131,6 @@ export default function ShopUpdate() {
     }
     return check;
   };
-
   const updateStoreHandle = async () => {
     const result = await RegJoin();
     if (!result) {
@@ -143,7 +143,10 @@ export default function ShopUpdate() {
       response = await updateStoreImage({
         ...shopInformation,
         mst_worktime: `평일 오전 ${+openingHours.weekdayStart}시 ~ 오후 ${+openingHours.weekdayEnd}시\n주말 오전 ${+openingHours.weekendStart}시 ~ 오후 ${+openingHours.weekendEnd}시`,
-        mst_holiday: selectDay.sort().join(),
+        mst_holiday: selectDay
+          .map(v => v - 1)
+          .sort()
+          .join(),
         mst_image: localImageArray,
         _mt_idx: login.idx,
         store_image_num: localImageArray.map((item, index) => {
@@ -153,7 +156,10 @@ export default function ShopUpdate() {
     } else {
       response = await updateStore({
         ...shopInformation,
-        mst_holiday: selectDay.sort().join(),
+        mst_holiday: selectDay
+          .map(v => v - 1)
+          .sort()
+          .join(),
         _mt_idx: login.idx,
         mst_worktime: `평일 오전 ${+openingHours.weekdayStart}시 ~ 오후 ${+openingHours.weekdayEnd}시\n주말 오전 ${+openingHours.weekendStart}시 ~ 오후 ${+openingHours.weekendEnd}시`,
       });
@@ -188,7 +194,6 @@ export default function ShopUpdate() {
     // type -> amStart amEnd pmStart pmEnd
     setOpeningHours(prev => ({...prev, [type]: value}));
   };
-  console.log(openingHours, 'openingHours');
   return (
     <>
       {isLoading && <Loading isAbsolute />}

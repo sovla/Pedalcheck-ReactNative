@@ -35,7 +35,6 @@ export default function Shop({route, navigation}) {
 
   useEffect(() => {
     return () => {
-      console.log('Shop useEffect Return');
       dispatch(ResetShopInfo());
     };
   }, []);

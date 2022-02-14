@@ -171,7 +171,6 @@ export const RequireFieldText = () => {
 const RegJoin = (object, setFunction) => {
   let result = false;
   setFunction(informationInit);
-  console.log(object.tel.length < 12);
   if (object.name === '') {
     setFunction(prev => ({
       ...prev,

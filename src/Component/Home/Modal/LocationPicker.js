@@ -36,7 +36,6 @@ export default function LocationPicker({setLocation, isHome}) {
       };
 
   const itemWidth = isDetail ? (BoxWidth - 25) / 3 : (BoxWidth - 10) / 2;
-  console.log(modal.modalProp, isHome, isDetail);
   useLayoutEffect(() => {
     if (!isDetail) {
       dispatch(DeleteLocation());
@@ -49,14 +48,8 @@ export default function LocationPicker({setLocation, isHome}) {
     setIsLoading(true);
     await getLocationList(apiObject).then(res => {
       if (res.data?.result === 'true') {
-        if (isDetail && isHome) {
-          setLocationArray([
-            {
-              code: '0',
-              name: '전체',
-            },
-            ...res.data.data.data,
-          ]);
+        if (isHome) {
+          setLocationArray([{code: '0', name: '전체'}, ...res.data.data.data]);
         } else {
           setLocationArray(res.data.data.data);
         }
@@ -67,7 +60,15 @@ export default function LocationPicker({setLocation, isHome}) {
   const pressLocation = async locationObject => {
     //  지역 눌럿을때
     await dispatch(AddLocation(locationObject));
+    if (locationObject?.name === '전체' && !isDetail) {
+      //  맨처음 전체를 누를때
+      if (setLocation) await setLocation(locationObject.name);
+      dispatch(modalClose());
+      return;
+    }
+
     if (!isDetail) {
+      //  스텝 1 맨처음
       await dispatch(
         modalOpenAndProp({
           modalComponent: 'locationPickerDetail',
@@ -76,6 +77,7 @@ export default function LocationPicker({setLocation, isHome}) {
         }),
       );
     } else {
+      //  스텝 2 두번째
       if (setLocation) await setLocation(location.name + ' ' + locationObject.name);
       await dispatch(DeleteLocation());
       await dispatch(modalClose());

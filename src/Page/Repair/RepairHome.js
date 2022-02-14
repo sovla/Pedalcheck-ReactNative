@@ -73,7 +73,7 @@ export default function RepairHome() {
   };
 
   useEffect(() => {
-    if (isFocused && ad.loading === 'success' && Object.keys(ad?.ad)?.length > 0) {
+    if (isFocused && ad.loading === 'success' && ad?.ad && Object.keys(ad?.ad)?.length > 0) {
       const getData = async () => {
         try {
           const getAd = await AsyncStorage.getItem('ad');

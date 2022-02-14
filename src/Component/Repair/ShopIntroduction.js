@@ -181,27 +181,33 @@ export default function ShopIntroduction() {
 const changeHolyday = string => {
   if (string !== '') {
     let result = '휴무 ';
-    if (string?.includes('1')) {
-      result += '월';
-    }
-    if (string?.includes('2')) {
-      result += ', 화';
-    }
-    if (string?.includes('3')) {
-      result += ', 수';
-    }
-    if (string?.includes('4')) {
-      result += ', 목';
-    }
-    if (string?.includes('5')) {
-      result += ', 금';
-    }
-    if (string?.includes('6')) {
-      result += ', 토';
-    }
-    if (string?.includes('0')) {
-      result += ', 일';
-    }
+    string.split('').forEach((v, i) => {
+      if (v === '1') {
+        result += '월';
+      }
+      if (v === '2') {
+        result += '화';
+      }
+      if (v === '3') {
+        result += '수';
+      }
+      if (v === '4') {
+        result += '목';
+      }
+      if (v === '5') {
+        result += '금';
+      }
+      if (v === '6') {
+        result += '토';
+      }
+      if (v === '0') {
+        result += '일';
+      }
+      if (v === ',') {
+        result += ', ';
+      }
+    });
+
     return result;
   } else {
     return '';

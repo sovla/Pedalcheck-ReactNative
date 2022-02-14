@@ -35,7 +35,6 @@ export default function ReservationManagement() {
       setSelect('예약 시간 관리');
     }
   }, [routes]);
-  console.log(routes);
 
   return (
     <>

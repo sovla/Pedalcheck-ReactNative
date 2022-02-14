@@ -28,8 +28,6 @@ export default function Notice({route: {params}}) {
     });
   };
 
-  console.log(noticeList);
-
   return (
     <>
       <Header title="알림" />
@@ -86,7 +84,6 @@ const NoticeItem = ({
 }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  console.log(item);
   return (
     <TouchableOpacity
       onPress={async () => {

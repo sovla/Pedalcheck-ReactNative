@@ -27,8 +27,6 @@ export default function BirthDatePicker({birth, setBirth}) {
 
   const ChangeYear = (value, key) => {
     if (isRender) {
-      console.log(birthDate, 'changeYear');
-
       setBirthDate(prev => {
         return {...prev, [key]: value};
       });
