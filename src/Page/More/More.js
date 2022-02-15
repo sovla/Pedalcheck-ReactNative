@@ -38,12 +38,20 @@ import {setStoreInfo} from '@/Store/storeInfoState';
 import {getUserInformation} from '@/API/User/Login';
 import {setUserInfo} from '@/Store/loginState';
 import {setCompanyInfo} from '@/Store/companyInfoState';
+import useUpdateEffect from '@/Hooks/useUpdateEffect';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {setIsAdmin} from '@/Store/adminState';
 
 export default function More() {
-  const {size, login, storeInfo} = useSelector(state => state);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const {
+    size,
+    login,
+    admin: {isAdmin},
+  } = useSelector(state => state);
   const isFocused = useIsFocused();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
   const onPressMenu = item => {
     switch (item) {
       case '내 정보':
@@ -65,7 +73,6 @@ export default function More() {
         return navigation.navigate('BikeExportList');
     }
   };
-  const dispatch = useDispatch();
 
   const menuItem = isAdmin
     ? [
@@ -118,6 +125,21 @@ export default function More() {
       setUserInformation();
     }
   }, [isFocused]);
+  useUpdateEffect(() => {
+    changeAdmin();
+  }, [isAdmin]);
+
+  const changeAdmin = async () => {
+    try {
+      if (isAdmin) {
+        //  어드민인 경우 true 값
+        await AsyncStorage.setItem('isAdmin', 'true');
+      } else {
+        //  어드민 아닌 경우 제거
+        await AsyncStorage.setItem('isAdmin', 'false');
+      }
+    } catch (error) {}
+  };
 
   const getStoreInfoHandle = async () => {
     const response = await getStoreInfo({
@@ -164,7 +186,7 @@ export default function More() {
         {login.mt_level >= 5 ? (
           <BetweenBox width={size.designWidth} pd="20px 16px 10px 16px" alignItems="center">
             <DarkBoldText>정비소 관리자 화면으로 전환</DarkBoldText>
-            <TouchableOpacity onPress={() => setIsAdmin(!isAdmin)}>
+            <TouchableOpacity onPress={() => dispatch(setIsAdmin(!isAdmin))}>
               <DefaultImage source={isAdmin ? SwitchOnIcon : SwitchOffIcon} width="61px" height="27px" />
             </TouchableOpacity>
           </BetweenBox>
