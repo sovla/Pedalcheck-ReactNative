@@ -106,7 +106,6 @@ export default function Router() {
       }).then(res => {
         if (res.data?.result === 'true') {
           dispatch(setUserInfo(res.data.data.data));
-          navigationRef.current.navigate('RepairHome');
         }
       });
     } catch (error) {
