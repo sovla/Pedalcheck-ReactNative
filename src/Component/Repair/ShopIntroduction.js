@@ -25,12 +25,17 @@ export default function ShopIntroduction() {
   const [isMoreBrand, setIsMoreBrand] = useState(true);
   const openTime = () => {
     if (store_info?.mst_worktime !== '' && store_info?.mst_worktime) {
+      // 메모였던것을
+      //  평일 오전 00시 ~ 오후 00시
+      //  주말 오전 00시 ~ 오후 00시
+      //  휴무 0,1,2 -> 일,월,화
       let result = store_info?.mst_worktime;
-      console.log(result);
       if (result && !store_info?.mst_worktime?.includes('\n주말') && store_info?.mst_worktime?.includes('주말')) {
+        //  주말이 \n 개행 없이 들어오는 경우 개행추가
         result = result.replace('주말', '\n주말');
       }
       if (store_info?.mst_holiday !== '') {
+        //  휴무일 변환 fn
         result += '\n' + changeHolyday(store_info.mst_holiday);
         return result;
       }

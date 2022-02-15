@@ -25,6 +25,7 @@ import DatePickerComponent from '@/Component/BikeManagement/DatePickerComponent'
 import {showToastMessage} from '@/Util/Toast';
 import Loading from '@/Component/Layout/Loading';
 import {getHeightPixel} from '@/Util/pixelChange';
+import Badge from '@/Component/BikeManagement/Badge';
 
 // 데이트 픽커
 
@@ -60,8 +61,8 @@ export default function RepairHistorySelectHistory() {
   const login = useSelector(state => state.login);
 
   useEffect(() => {
-    getOrderListHandle();
-  }, []);
+    getOrderListHandle(1);
+  }, [selectItem]);
 
   const getOrderListHandle = async insertPage => {
     if (isLast && !insertPage) {
@@ -226,8 +227,9 @@ export default function RepairHistorySelectHistory() {
             <ReceiptProduct
               productName={item.ot_title}
               name={item.ot_name}
-              date={item.ot_pt_date + ' ' + item.ot_pt_time}
-              price={item.ot_price}
+              date={item.ot_pt_date + ' ' + item.ot_pt_time?.substring(0, 5)}
+              price={item?.ot_price}
+              couponUse={item?.ot_use_coupon !== '0'}
               onPress={() => onPressProduct(item)}
             />
           );
@@ -259,13 +261,7 @@ export default function RepairHistorySelectHistory() {
   );
 }
 
-const ReceiptProduct = ({
-  productName = '정비 - 오버홀',
-  name = '홍길동',
-  date = '2021-10-07 16:00',
-  price = 19000,
-  onPress,
-}) => {
+const ReceiptProduct = ({productName = '', name = '', date = '', price = 0, couponUse = false, onPress}) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <BetweenBox width="380px" pd="0px 10px" height="92px" alignItems="center" style={borderBottomWhiteGray}>
@@ -276,8 +272,14 @@ const ReceiptProduct = ({
         </Box>
         <Box>
           <RowBox alignItems="center">
-            <DarkBoldText fontSize={Theme.fontSize.fs18}>{numberFormat(price)}</DarkBoldText>
-            <DarkMediumText fontSize={Theme.fontSize.fs15}>원</DarkMediumText>
+            {couponUse ? (
+              <Badge badgeContent="쿠폰" />
+            ) : (
+              <>
+                <DarkBoldText fontSize={Theme.fontSize.fs18}>{numberFormat(price)}</DarkBoldText>
+                <DarkMediumText fontSize={Theme.fontSize.fs15}>원</DarkMediumText>
+              </>
+            )}
           </RowBox>
         </Box>
       </BetweenBox>

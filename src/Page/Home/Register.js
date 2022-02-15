@@ -1,4 +1,4 @@
-import {LinkButton} from '@/assets/global/Button';
+import {LinkButton, LinkWhiteButton} from '@/assets/global/Button';
 import {Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
 import DefaultLine from '@/assets/global/Line';
 import {DarkBoldText, DarkText, DefaultText} from '@/assets/global/Text';
@@ -8,6 +8,7 @@ import Header from '@/Component/Layout/Header';
 import {modalOpen} from '@/Store/modalState';
 import React from 'react';
 import {useState} from 'react';
+import {Platform} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 export default function Register({navigation}) {
@@ -71,10 +72,7 @@ export default function Register({navigation}) {
           <DarkBoldText fontSize={Theme.fontSize.fs18}>페달체크</DarkBoldText>
           <DarkText fontSize={Theme.fontSize.fs18}>이용 약관 동의</DarkText>
         </Box>
-        <Box
-          style={{borderTopWidth: 1, borderBottomWidth: 1}}
-          width={size.minusPadding}
-          pd="6px 0px 20px">
+        <Box style={{borderTopWidth: 1, borderBottomWidth: 1}} width={size.minusPadding} pd="6px 0px 20px">
           <CheckBox isCheck={isAllCheck} setIsCheck={onPressAllCheck}>
             <DarkBoldText mg="0px 0px 0px 10px">전체 동의하기</DarkBoldText>
           </CheckBox>
@@ -87,10 +85,7 @@ export default function Register({navigation}) {
                 setIsCheck={() => onPressCheck(item.name)}
                 isRight
                 onPressRight={() => dispatch(modalOpen(item.name))}>
-                <DefaultText
-                  fontSize={Theme.fontSize.fs16}
-                  color={Theme.color.black}
-                  mg="0px 0px 0px 10px">
+                <DefaultText fontSize={Theme.fontSize.fs16} color={Theme.color.black} mg="0px 0px 0px 10px">
                   {item.content}
                 </DefaultText>
               </CheckBox>
@@ -113,6 +108,11 @@ export default function Register({navigation}) {
             disabled={!checkObject.service || !checkObject.privacy}
             // || !checkObject.location
           />
+          {Platform.OS === 'android' && (
+            <Box>
+              <DarkText>다음에 입력하기</DarkText>
+            </Box>
+          )}
         </PositionBox>
       </Container>
     </>

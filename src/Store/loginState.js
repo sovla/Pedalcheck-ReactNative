@@ -1,4 +1,5 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {autoLoginApi} from '@/API/User/Login';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   idx: '',

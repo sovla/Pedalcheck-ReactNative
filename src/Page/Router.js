@@ -63,7 +63,7 @@ import ReservationManagementDetail from './ReservationManagement/ReservationMana
 import RepairHome from './Repair/RepairHome';
 import {BackHandler, SafeAreaView, useWindowDimensions, View} from 'react-native';
 import Theme from '@/assets/global/Theme';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import ModalBasic from '@/Component/Modal/ModalBasic';
 import {initSetting} from '@/Store/sizeState';
 import ProductDetail from './Repair/ProductDetail';
@@ -74,7 +74,7 @@ import CouponUseComplete from './More/Coupon/CouponUseComplete';
 import CouponUseDateSelect from './More/Coupon/CouponUseDateSelect';
 import messaging from '@react-native-firebase/messaging';
 import {setToken} from '@/Store/tokenState';
-import {resetUserInfo} from '@/Store/loginState';
+import {resetUserInfo, setUserInfo} from '@/Store/loginState';
 import {showPushToastMessage, showToastMessage} from '@/Util/Toast';
 import {useRef} from 'react';
 import Notice from '@/Component/RepairHistory/Modal/Notice';
@@ -83,10 +83,15 @@ import {fetchBannerList} from '@/Store/BannerState';
 import {fetchAd} from '@/Store/AdState';
 import {getStoreInfo} from '@/API/More/More';
 import {setStoreInfo} from '@/Store/storeInfoState';
+import {autoLoginApi} from '@/API/User/Login';
+import {useState} from 'react';
+import useUpdateEffect from '@/Hooks/useUpdateEffect';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {setIsAdmin} from '@/Store/adminState';
 
-const INIT_ROUTER_COMPONENT_NAME = 'Home';
+const INIT_ROUTER_COMPONENT_NAME = 'Home'; //  라우팅 초기값
 
-let count = 0;
+let count = 0; //  종료카운트
 
 const Stack = createStackNavigator();
 
@@ -94,22 +99,26 @@ export default function Router() {
   const dispatch = useDispatch();
   const {height, width} = useWindowDimensions();
   const navigationRef = useRef(null);
+
+  const [isLoading, setIsLoading] = useState(true);
   const getToken = async () => {
+    setIsLoading(true);
     try {
       const token = await messaging().getToken();
 
       dispatch(setToken(token));
-      console.log(token, '토큰 설정 완료');
+      autoLoginApi({
+        mt_app_token: token,
+      }).then(res => {
+        if (res.data?.result === 'true') {
+          dispatch(setUserInfo(res.data.data.data));
+        }
+      });
     } catch (error) {
       console.log(error, 'tokenError');
+    } finally {
+      setIsLoading(false);
     }
-  };
-
-  const forFade = ({current}) => {
-    console.log(current, 'forFade');
-    return {
-      cardStyle: {opacity: current.progress},
-    };
   };
 
   useEffect(() => {
@@ -121,28 +130,46 @@ export default function Router() {
       }),
     );
   }, [height]);
-  const mesagingHandler = async remoteMessage => {
-    if (remoteMessage?.data?.intent) {
-      if (remoteMessage.data.intent === 'ShopUpdate') {
-        // 업체정보수정일때
-        const response = await getStoreInfo({
-          _mt_idx: remoteMessage.data?.content_idx,
-        });
-        if (response?.data?.result === 'true') {
-          dispatch(setStoreInfo(response?.data?.data?.data));
-        }
-        navigationRef.current.navigate(remoteMessage?.data?.intent);
-      } else {
-        navigationRef.current.navigate(remoteMessage?.data?.intent, {
-          menu: remoteMessage?.data?.content_idx2,
-          od_idx: remoteMessage?.data?.content_idx,
-        });
-      }
 
-      return true;
-    } else {
-      return false;
+  const mesagingHandler = async remoteMessage => {
+    let active = false;
+    while (!active) {
+      if (!isLoading) {
+        if (remoteMessage?.data?.intent) {
+          if (remoteMessage.data.intent === 'ShopUpdate') {
+            // 업체정보수정일때
+            const response = await getStoreInfo({
+              _mt_idx: remoteMessage.data?.content_idx,
+            });
+            if (response?.data?.result === 'true') {
+              await dispatch(setStoreInfo(response?.data?.data?.data));
+            }
+            await navigationRef.current.navigate(remoteMessage?.data?.intent);
+            active = true;
+          } else {
+            await navigationRef.current.navigate(remoteMessage?.data?.intent, {
+              menu: remoteMessage?.data?.content_idx2,
+              od_idx: remoteMessage?.data?.content_idx,
+            });
+          }
+
+          return true;
+        } else {
+          return false;
+        }
+      }
     }
+  };
+
+  const getIsAdmin = async () => {
+    try {
+      const isAdmin = await AsyncStorage.getItem('isAdmin');
+      if (isAdmin) {
+        dispatch(setIsAdmin(true));
+      } else {
+        dispatch(setIsAdmin(false));
+      }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -159,14 +186,14 @@ export default function Router() {
 
     dispatch(fetchBannerList()); // 배너
     dispatch(fetchAd()); // 광고
-
+    getIsAdmin();
     return () => {
       dispatch(resetUserInfo());
       unsubscribe();
     };
   }, []);
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     //종료된 상태
     messaging()
       .getInitialNotification()
@@ -182,33 +209,31 @@ export default function Router() {
     messaging().setBackgroundMessageHandler(async remoteMessage => {
       mesagingHandler(remoteMessage);
     });
-  }, []);
+  }, [isLoading]);
 
   return (
-    <>
-      <NavigationContainer ref={navigationRef}>
-        <Stack.Navigator
-          initialRouteName={INIT_ROUTER_COMPONENT_NAME}
-          screenOptions={{
-            headerShown: false,
-            gestureDirection: 'horizontal',
-            cardStyleInterpolator: forFade,
-          }}>
-          {RouterSetting.map((item, index) => (
-            <Stack.Screen
-              name={item.name}
-              component={withScrollView(item.component)}
-              key={item.name + index}
-              options={{
-                headerShown: false,
-                cardStyleInterpolator: forFade,
-                gestureDirection: 'horizontal',
-              }}
-            />
-          ))}
-        </Stack.Navigator>
-      </NavigationContainer>
-    </>
+    <NavigationContainer ref={navigationRef}>
+      <Stack.Navigator
+        initialRouteName={INIT_ROUTER_COMPONENT_NAME}
+        screenOptions={{
+          headerShown: false,
+          gestureDirection: 'horizontal',
+          cardStyleInterpolator: forFade,
+        }}>
+        {RouterSetting.map((item, index) => (
+          <Stack.Screen
+            name={item.name}
+            component={withScrollView(item.component)}
+            key={item.name + index}
+            options={{
+              headerShown: false,
+              cardStyleInterpolator: forFade,
+              gestureDirection: 'horizontal',
+            }}
+          />
+        ))}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
@@ -529,3 +554,8 @@ const RouterSetting = [
     component: Notice,
   },
 ];
+const forFade = ({current}) => {
+  return {
+    cardStyle: {opacity: current.progress},
+  };
+};

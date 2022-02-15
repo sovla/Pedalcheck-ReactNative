@@ -82,13 +82,12 @@ export default function Detail({navigation, route}) {
     ],
   };
 
-
   return (
     <>
       <Header title="상세보기" />
       <Box flex={1}>
         <ScrollBox flex={1} pd="0px 16px">
-          <Box style={borderBottomWhiteGray}>
+          <Box style={borderBottomWhiteGray} pd="0px 0px 20px">
             <RowBox mg="20px 0px 0px" alignItems="center">
               <Badge badgeContent={changeItem.status} />
               <DarkBoldText mg="0px 0px 0px 10px">{changeItem.productName}</DarkBoldText>
@@ -105,71 +104,91 @@ export default function Detail({navigation, route}) {
                 <DarkText width="270px">{changeItem.request}</DarkText>
               </RowBox>
             )}
-
-            <RowBox mg="0px 0px 20px">
-              <DarkMediumText width="110px">완료시간</DarkMediumText>
-              <DarkText width="270px">{'2021-10-14 10:58'}</DarkText>
-            </RowBox>
+            {item?.ot_cdate?.length > 0 && (
+              <RowBox>
+                <DarkMediumText width="110px">완료시간</DarkMediumText>
+                <DarkText width="270px">{item?.ot_cdate}</DarkText>
+              </RowBox>
+            )}
           </Box>
           <Box mg="20px 0px 0px">
             <DarkBoldText>정비 자전거 정보</DarkBoldText>
             <BikeInformationHeader item={changeBikeItem} mg="10px 0px" />
             <BikeInformaitonBody bikeInfoDetail={changeBikeItem.detail} />
           </Box>
-          <Box mg="10px 0px 0px" style={borderBottomWhiteGray}>
-            <DarkBoldText>결제정보</DarkBoldText>
-            <BetweenBox mg="10px 0px 0px" width={size.minusPadding}>
-              <DarkMediumText fontSize={Theme.fontSize.fs15}>가격</DarkMediumText>
-              <RowBox alignItems="center">
-                {changeItem.salePrice * 1 - changeItem.totalPrice * 1 > 0 && (
-                  <MoneyText disabled money={changeItem?.salePrice} />
-                )}
+          {item.ot_use_coupon !== '0' ? (
+            <>
+              <Box mg="10px 0px 0px" style={borderBottomWhiteGray}>
+                <DarkBoldText>결제정보</DarkBoldText>
+
+                <BetweenBox mg="10px 0px 0px" width={size.minusPadding}>
+                  <DarkMediumText fontSize={Theme.fontSize.fs15}>결제 방식</DarkMediumText>
+                  <RowBox alignItems="center">
+                    <Badge badgeContent="쿠폰" />
+                  </RowBox>
+                </BetweenBox>
+                <RowBox mg="10px 0px" width="380px" justifyContent="flex-end"></RowBox>
+              </Box>
+            </>
+          ) : (
+            <>
+              <Box mg="10px 0px 0px" style={borderBottomWhiteGray}>
+                <DarkBoldText>결제정보</DarkBoldText>
+                <BetweenBox mg="10px 0px 0px" width={size.minusPadding}>
+                  <DarkMediumText fontSize={Theme.fontSize.fs15}>가격</DarkMediumText>
+                  <RowBox alignItems="center">
+                    {changeItem.salePrice * 1 - changeItem.totalPrice * 1 > 0 && (
+                      <MoneyText disabled money={changeItem?.salePrice} />
+                    )}
+                    <MoneyText
+                      mg="0px 0px 0px 10px"
+                      fontSize={Theme.fontSize.fs15}
+                      fontWeight={Theme.fontWeight.bold}
+                      color={Theme.color.black}
+                      money={changeItem.totalPrice}
+                    />
+                  </RowBox>
+                </BetweenBox>
+                <BetweenBox mg="10px 0px 0px" width={size.minusPadding}>
+                  <DarkMediumText fontSize={Theme.fontSize.fs15}>결제</DarkMediumText>
+                  <RowBox alignItems="center">
+                    <MoneyText
+                      mg="0px 0px 0px 10px"
+                      fontSize={Theme.fontSize.fs15}
+                      color={Theme.color.black}
+                      money={changeItem.totalPrice}
+                    />
+                  </RowBox>
+                </BetweenBox>
+                <BetweenBox mg="10px 0px 0px" width={size.minusPadding}>
+                  <DarkMediumText fontSize={Theme.fontSize.fs15}>할인</DarkMediumText>
+                  <RowBox alignItems="center">
+                    <MoneyText
+                      mg="0px 0px 0px 10px"
+                      fontSize={Theme.fontSize.fs15}
+                      color={Theme.color.black}
+                      money={
+                        changeItem.salePrice * 1 - changeItem.totalPrice * 1 > 0
+                          ? changeItem.salePrice * 1 - changeItem.totalPrice * 1
+                          : 0
+                      }
+                    />
+                  </RowBox>
+                </BetweenBox>
+                <RowBox mg="10px 0px" width="380px" justifyContent="flex-end"></RowBox>
+              </Box>
+              <BetweenBox style={borderBottomWhiteGray} width="380px" height="55px" alignItems="center">
+                <DarkBoldText fontSize={Theme.fontSize.fs15}>합계</DarkBoldText>
                 <MoneyText
-                  mg="0px 0px 0px 10px"
-                  fontSize={Theme.fontSize.fs15}
+                  money={changeItem.totalPrice}
+                  color={Theme.color.black}
+                  fontSize={Theme.fontSize.fs18}
                   fontWeight={Theme.fontWeight.bold}
-                  color={Theme.color.black}
-                  money={changeItem.totalPrice}
                 />
-              </RowBox>
-            </BetweenBox>
-            <BetweenBox mg="10px 0px 0px" width={size.minusPadding}>
-              <DarkMediumText fontSize={Theme.fontSize.fs15}>결제</DarkMediumText>
-              <RowBox alignItems="center">
-                <MoneyText
-                  mg="0px 0px 0px 10px"
-                  fontSize={Theme.fontSize.fs15}
-                  color={Theme.color.black}
-                  money={changeItem.totalPrice}
-                />
-              </RowBox>
-            </BetweenBox>
-            <BetweenBox mg="10px 0px 0px" width={size.minusPadding}>
-              <DarkMediumText fontSize={Theme.fontSize.fs15}>할인</DarkMediumText>
-              <RowBox alignItems="center">
-                <MoneyText
-                  mg="0px 0px 0px 10px"
-                  fontSize={Theme.fontSize.fs15}
-                  color={Theme.color.black}
-                  money={
-                    changeItem.salePrice * 1 - changeItem.totalPrice * 1 > 0
-                      ? changeItem.salePrice * 1 - changeItem.totalPrice * 1
-                      : 0
-                  }
-                />
-              </RowBox>
-            </BetweenBox>
-            <RowBox mg="10px 0px" width="380px" justifyContent="flex-end"></RowBox>
-          </Box>
-          <BetweenBox style={borderBottomWhiteGray} width="380px" height="55px" alignItems="center">
-            <DarkBoldText fontSize={Theme.fontSize.fs15}>합계</DarkBoldText>
-            <MoneyText
-              money={changeItem.totalPrice}
-              color={Theme.color.black}
-              fontSize={Theme.fontSize.fs18}
-              fontWeight={Theme.fontWeight.bold}
-            />
-          </BetweenBox>
+              </BetweenBox>
+            </>
+          )}
+
           <Box mg="20px 0px 0px">
             <DarkBoldText>고객정보</DarkBoldText>
             <Box width={size.minusPadding}>

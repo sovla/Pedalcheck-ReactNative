@@ -340,7 +340,7 @@ export const payState = state => {
     case 'failed':
       return '결제취소';
     case 'cancelled':
-      return '환불';
+      return '환불완료';
     default:
       return '';
   }

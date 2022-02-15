@@ -10,17 +10,29 @@ import {useState} from 'react';
 import {NaverLogin, getProfile} from '@react-native-seoul/naver-login';
 import {SnsLogin} from '../../../Hooks/SnsLogin';
 
+// const iosKeys = {
+//   kConsumerKey: 'ITpjZ2KbbItwBYgm1Kjh',
+//   kConsumerSecret: '2Ue9R_kQzN',
+//   kServiceAppName: '테스트앱(iOS)',
+//   kServiceAppUrlScheme: 'testapp', // only for iOS
+// };
+// const androidKeys = {
+//   kConsumerKey: 'ITpjZ2KbbItwBYgm1Kjh',
+//   kConsumerSecret: '2Ue9R_kQzN',
+//   kServiceAppName: '테스트앱(안드로이드)',
+// };
+
 const iosKeys = {
   kConsumerKey: 'ITpjZ2KbbItwBYgm1Kjh',
   kConsumerSecret: '2Ue9R_kQzN',
-  kServiceAppName: '테스트앱(iOS)',
-  kServiceAppUrlScheme: 'testapp', // only for iOS
+  kServiceAppName: 'PedalCheck',
+  kServiceAppUrlScheme: 'NaverPedalcheck', // only for iOS
 };
 
 const androidKeys = {
   kConsumerKey: 'ITpjZ2KbbItwBYgm1Kjh',
   kConsumerSecret: '2Ue9R_kQzN',
-  kServiceAppName: '테스트앱(안드로이드)',
+  kServiceAppName: 'PedalCheck',
 };
 
 const initials = Platform.OS === 'ios' ? iosKeys : androidKeys;

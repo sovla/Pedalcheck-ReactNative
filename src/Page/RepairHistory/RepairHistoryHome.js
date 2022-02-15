@@ -62,6 +62,10 @@ export default function RepairHistoryHome({navigation, route: {params}}) {
 
   useLayoutEffect(() => {
     if (isFocused && params?.menu) {
+      navigation.setParams({
+        ...params,
+        menu: undefined,
+      });
       setSelect(params.menu);
     }
   }, [isFocused]);
@@ -74,7 +78,7 @@ export default function RepairHistoryHome({navigation, route: {params}}) {
   }, [isFocused, modal.isOpenModal]);
   return (
     <Container>
-      {(isLoading.isDashboard || isLoading.isRead) && <Loading isAbsolute />}
+      {(isLoading.isDashboard || isLoading.isRead) && <Loading isAbsolute backgroundColor="#0000" />}
       <FlatList
         ListHeaderComponent={
           <>

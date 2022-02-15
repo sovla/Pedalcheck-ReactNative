@@ -19,7 +19,6 @@ export default function CouponUseComplete({route: {params}, route}) {
   const {item: coupon, selectBike, selectDate, shopInfo} = params;
   const {size, login} = useSelector(state => state);
   const navigation = useNavigation();
-  console.log(route, navigation);
   const dummy = {
     cst_title: '무료세차',
     mst_name: '제일정비',
