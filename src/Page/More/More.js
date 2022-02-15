@@ -229,7 +229,7 @@ const UserButton = () => {
   return (
     <BetweenBox pd="0px 16px">
       <TouchableOpacity onPress={() => navigation.navigate('RepairHistory')}>
-        <BorderButton
+        <Box
           width="185px"
           height="43px"
           justifyContent="center"
@@ -243,11 +243,11 @@ const UserButton = () => {
               정비이력
             </DarkMediumText>
           </RowBox>
-        </BorderButton>
+        </Box>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate('LikeShop')}>
-        <BorderButton
+        <Box
           width="185px"
           height="43px"
           justifyContent="center"
@@ -261,7 +261,7 @@ const UserButton = () => {
               관심매장
             </DarkMediumText>
           </RowBox>
-        </BorderButton>
+        </Box>
       </TouchableOpacity>
     </BetweenBox>
   );

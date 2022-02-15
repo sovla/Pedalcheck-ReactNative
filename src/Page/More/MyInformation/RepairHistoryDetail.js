@@ -58,7 +58,6 @@ export default function RepairHistoryDetail({route: {params}}) {
       );
     }
   };
-  console.log(repair);
   const onPressReview = () => {
     if (repair?.ot_review === 'N') {
       navigation.navigate('ReviewWrite', {
@@ -168,6 +167,17 @@ export default function RepairHistoryDetail({route: {params}}) {
                     {repair?.ot_bike_nick}
                   </DarkText>
                 </RowBox>
+                {repair?.ot_bike_brand?.length > 0 && repair?.ot_bike_model?.length > 0 && (
+                  <RowBox mg="0px 0px 10px">
+                    <DarkMediumText width="110px" fontSize={Theme.fontSize.fs15}>
+                      브랜드 / 모델
+                    </DarkMediumText>
+                    <DarkText style={{flex: 1}} fontSize={Theme.fontSize.fs15}>
+                      {repair?.ot_bike_brand} / {repair?.ot_bike_model}
+                    </DarkText>
+                  </RowBox>
+                )}
+
                 <RowBox>
                   <DarkMediumText width="110px" fontSize={Theme.fontSize.fs15}>
                     예약시간

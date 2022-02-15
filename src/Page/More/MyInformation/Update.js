@@ -1,7 +1,7 @@
 import {AddInformationImage, getUserInformation, UpdateMember, UpdateMemberImage} from '@/API/User/Login';
 import {BorderButton, LinkButton} from '@/assets/global/Button';
 import {Box, Container, RowBox, ScrollBox} from '@/assets/global/Container';
-import {bankList} from '@/assets/global/dummy';
+import {bankList1} from '@/assets/global/dummy';
 import {DefaultInput} from '@/assets/global/Input';
 import {DarkText, ErrorText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
@@ -372,7 +372,7 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
               <DefaultInput
                 mg="10px 0px"
                 isDropdown
-                dropdownItem={bankList}
+                dropdownItem={bankList1}
                 changeFn={text => setUser(prev => ({...prev, mt_bank: text}))}
                 value={user?.mt_bank ?? ''}
                 placeHolder={'은행을 선택하세요.'}

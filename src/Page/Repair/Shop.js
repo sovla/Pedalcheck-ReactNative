@@ -53,7 +53,7 @@ export default function Shop({route, navigation}) {
       AlertButton('본인 매장에는 좋아요를 누를 수 없습니다.');
       return;
     }
-    if (RequireLoginAlert(login, navigation)) {
+    if (RequireLoginAlert(login, navigation, '좋아요를')) {
       //  로그인 여부 확인
       setIsLike(prev => !prev);
       await sendLikeShop({

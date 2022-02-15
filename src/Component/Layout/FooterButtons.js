@@ -81,9 +81,11 @@ export default function FooterButtons({selectMenu, isAdmin}) {
         },
       ];
   const onPressMenu = item => {
-    if (item.content !== '정비소' && RequireLoginAlert(login, navigation)) {
-      navigation.navigate(item?.navigate);
-    } else if (item.content === '정비소' && login.idx) {
+    if (!(item.content === '정비소' || item.content === '피드')) {
+      if (RequireLoginAlert(login, navigation, item.content === '내 자전거' ? '자전거 등록을' : '더보기 기능을')) {
+        navigation.navigate(item?.navigate);
+      }
+    } else {
       navigation.navigate(item?.navigate);
     }
   };

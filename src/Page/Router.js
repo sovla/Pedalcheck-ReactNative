@@ -88,6 +88,7 @@ import {useState} from 'react';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setIsAdmin} from '@/Store/adminState';
+import Toast from 'react-native-toast-message';
 
 const INIT_ROUTER_COMPONENT_NAME = 'Home'; //  라우팅 초기값
 
@@ -102,7 +103,6 @@ export default function Router() {
 
   const [isLoading, setIsLoading] = useState(true);
   const getToken = async () => {
-    setIsLoading(true);
     try {
       const token = await messaging().getToken();
 
@@ -133,7 +133,7 @@ export default function Router() {
       }),
     );
   }, [height]);
-
+  console.log('isLoadingisLoadingisLoading', isLoading);
   const mesagingHandler = async remoteMessage => {
     let active = false;
     while (!active) {
@@ -154,10 +154,12 @@ export default function Router() {
               menu: remoteMessage?.data?.content_idx2,
               od_idx: remoteMessage?.data?.content_idx,
             });
+            active = true;
           }
-
+          active = true;
           return true;
         } else {
+          active = true;
           return false;
         }
       }
@@ -183,6 +185,7 @@ export default function Router() {
         remoteMessage: remoteMessage,
         onPress: () => {
           mesagingHandler(remoteMessage);
+          Toast.hide();
         },
       });
     });
@@ -195,7 +198,7 @@ export default function Router() {
     };
   }, []);
 
-  useUpdateEffect(() => {
+  useEffect(() => {
     //종료된 상태
     messaging()
       .getInitialNotification()
@@ -211,7 +214,7 @@ export default function Router() {
     messaging().setBackgroundMessageHandler(async remoteMessage => {
       mesagingHandler(remoteMessage);
     });
-  }, [isLoading]);
+  }, []);
 
   return (
     <NavigationContainer ref={navigationRef}>

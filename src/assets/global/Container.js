@@ -44,11 +44,14 @@ export const Box = styled.View`
   align-items: ${p => p.alignItems ?? 'flex-start'};
   padding: ${p => pixelChange(p.pd) ?? '0px'};
   margin: ${p => pixelChange(p.mg) ?? '0px'};
-
   background-color: ${p => p.backgroundColor ?? Theme.color.white};
   z-index: ${p => p.zIndex ?? 0};
   border-radius: ${p => p.borderRadius ?? 0};
-
+  ${p =>
+    p.borderColor &&
+    css`
+      border: 1px solid ${p => p.borderColor};
+    `};
   ${p =>
     p.width &&
     css`

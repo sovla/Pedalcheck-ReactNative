@@ -1,4 +1,4 @@
-import {Container, ScrollBox} from '@/assets/global/Container';
+import {Container} from '@/assets/global/Container';
 import GradientHeader from '@/Component/Layout/GradientHeader';
 import HeaderButton from '@/Component/ReservationManagement/HeaderButton';
 import React from 'react';
@@ -6,8 +6,7 @@ import {useState} from 'react';
 import NoticeWhiteIconDot from '@assets/image/notice_white.png';
 import NoticeWhiteIcon from '@assets/image/notice_red.png';
 import FooterButtons from '@/Component/Layout/FooterButtons';
-import {useDispatch, useSelector} from 'react-redux';
-import {modalOpen, modalOpenAndProp} from '@/Store/modalState';
+import {useSelector} from 'react-redux';
 import RepairHistorySelectHome from './RepairHistorySelectHome';
 import RepairHistorySelectReview from './RepairHistorySelectReview';
 import RepairHistorySelectQuestion from './RepairHistorySelectQuestion';
@@ -15,37 +14,22 @@ import RepairHistorySelectHistory from './RepairHistorySelectHistory';
 import {FlatList} from 'react-native-gesture-handler';
 import {useLayoutEffect} from 'react';
 import {useIsFocused} from '@react-navigation/native';
-import {getNoticeList} from '@/API/Manager/More';
 import {useEffect} from 'react';
 import {getNotificationIsRead} from '@/API/Manager/RepairHistory';
 import Loading from '@/Component/Layout/Loading';
 
 export default function RepairHistoryHome({navigation, route: {params}}) {
-  const {modal, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
 
   const [select, setSelect] = useState('홈');
 
-  const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
-  const [noticeList, setNoticeList] = useState([]);
   const [isRead, setIsRead] = useState(false);
   const [isLoading, setisLoading] = useState({
-    isNotice: true,
+    isNotice: false,
     isRead: true,
   });
-
-  const getNoticeListHandle = async () => {
-    setisLoading(prev => ({...prev, isNotice: true}));
-    const response = await getNoticeList({
-      _mt_idx: login.idx,
-    });
-
-    if (response?.data?.result === 'true') {
-      setNoticeList(response?.data?.data?.data);
-    }
-    setisLoading(prev => ({...prev, isNotice: false}));
-  };
 
   const getIsRead = async () => {
     setisLoading(prev => ({...prev, isRead: true}));
@@ -72,10 +56,9 @@ export default function RepairHistoryHome({navigation, route: {params}}) {
 
   useEffect(() => {
     if (isFocused) {
-      getNoticeListHandle();
       getIsRead();
     }
-  }, [isFocused, modal.isOpenModal]);
+  }, [isFocused]);
   return (
     <Container>
       {(isLoading.isDashboard || isLoading.isRead) && <Loading isAbsolute backgroundColor="#0000" />}
@@ -91,7 +74,7 @@ export default function RepairHistoryHome({navigation, route: {params}}) {
                 height: '29px',
               }}
               onPressImage={() => {
-                navigation.navigate('Notice', {setNoticeList: setNoticeList, noticeList: noticeList});
+                navigation.navigate('Notice');
               }}>
               <HeaderButton
                 select={select}

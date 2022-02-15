@@ -7,6 +7,7 @@ import CloseWhiteIcon from '@assets/image/close_white.png';
 import {DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getHeightPixel} from '@/Util/pixelChange';
 
 export default function Ad({info, setIsModal}) {
   const onPressClose = async type => {
@@ -21,7 +22,7 @@ export default function Ad({info, setIsModal}) {
   };
 
   return (
-    <Box height="400px" backgroundColor="#bbb8" borderRadius="15px">
+    <Box height={`${getHeightPixel(300)}px`} backgroundColor="#bbb8" borderRadius="15px">
       {info.at_close === '1' && (
         <PositionBox right="16px" top="22px" zIndex={100} backgroundColor="#0000">
           <TouchableOpacity onPress={onPressClose} style={{padding: 10, paddingTop: 0}}>
@@ -51,19 +52,19 @@ export default function Ad({info, setIsModal}) {
             onPressClose();
           }}>
           <DefaultImage
-            style={{flex: 1, borderRadius: 15}}
+            style={{borderRadius: 15, flex: 1}}
             source={{uri: imageAddress + info?.at_image}}
             width="380px"
-            height="300px"
+            height={`${getHeightPixel(300)}px`}
             resizeMode="stretch"
           />
         </TouchableOpacity>
       ) : (
         <DefaultImage
-          style={{flex: 1, borderRadius: 15}}
+          style={{borderRadius: 15, flex: 1}}
           source={{uri: imageAddress + info?.at_image}}
           width="380px"
-          height="300px"
+          height={`${getHeightPixel(300)}px`}
           resizeMode="stretch"
         />
       )}
