@@ -114,6 +114,9 @@ export default function Router() {
           dispatch(setUserInfo(res.data.data.data));
         }
       });
+      if (res.data.data?.data?.mt_level >= '5') {
+        getIsAdmin();
+      }
     } catch (error) {
       console.log(error, 'tokenError');
     } finally {
@@ -164,7 +167,7 @@ export default function Router() {
   const getIsAdmin = async () => {
     try {
       const isAdmin = await AsyncStorage.getItem('isAdmin');
-      if (isAdmin) {
+      if (isAdmin === 'true') {
         dispatch(setIsAdmin(true));
       } else {
         dispatch(setIsAdmin(false));
@@ -186,7 +189,6 @@ export default function Router() {
 
     dispatch(fetchBannerList()); // 배너
     dispatch(fetchAd()); // 광고
-    getIsAdmin();
     return () => {
       dispatch(resetUserInfo());
       unsubscribe();

@@ -68,3 +68,4 @@ buck-out/
 # APK , ZIP 파일 제거
 android/app/release/
 *.apk
+*.aab

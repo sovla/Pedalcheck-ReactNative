@@ -58,7 +58,7 @@ export default function RepairHistoryDetail({route: {params}}) {
       );
     }
   };
-
+  console.log(repair);
   const onPressReview = () => {
     if (repair?.ot_review === 'N') {
       navigation.navigate('ReviewWrite', {
