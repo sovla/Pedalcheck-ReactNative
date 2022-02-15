@@ -24,7 +24,7 @@ export default function Ad({info, setIsModal}) {
     <Box height="400px" backgroundColor="#bbb8" borderRadius="15px">
       {info.at_close === '1' && (
         <PositionBox right="16px" top="22px" zIndex={100} backgroundColor="#0000">
-          <TouchableOpacity onPress={onPressClose}>
+          <TouchableOpacity onPress={onPressClose} style={{padding: 10, paddingTop: 0}}>
             <DefaultImage source={CloseWhiteIcon} width="24px" height="24px" />
           </TouchableOpacity>
         </PositionBox>

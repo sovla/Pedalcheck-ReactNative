@@ -160,7 +160,7 @@ export default function RepairHome() {
   };
   return (
     <>
-      {isDone && <Loading isAbsolute />}
+      {isDone && <Loading isAbsolute backgroundColor="#0000" />}
       <Container>
         <FlatList
           ListHeaderComponent={

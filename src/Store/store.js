@@ -11,6 +11,7 @@ import reservationReducer from './reservationState';
 import storeInfoReducer from './storeInfoState';
 import bannerReducer from './BannerState';
 import adReducer from './AdState';
+import companyInfoReducer from './companyInfoState';
 import {composeWithDevTools} from 'redux-devtools-extension';
 
 export const store = configureStore({
@@ -28,6 +29,7 @@ export const store = configureStore({
     storeInfo: storeInfoReducer,
     banner: bannerReducer,
     ad: adReducer,
+    companyInfo: companyInfoReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

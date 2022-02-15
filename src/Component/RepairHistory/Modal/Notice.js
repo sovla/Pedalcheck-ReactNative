@@ -19,13 +19,25 @@ export default function Notice({route: {params}}) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
-  const noticeList = params?.noticeList;
+  const {noticeList, setNoticeList} = params;
 
   const readNoticeHandle = async selectIdx => {
     await readNotice({
       _mt_idx: login.idx, // storeInfo.idx,수정 필요
       nt_idx: selectIdx,
     });
+    setNoticeList(prev => [
+      prev.map(item => {
+        if (selectIdx === item.nt_idx) {
+          return {
+            ...item,
+            nt_read: 'Y',
+          };
+        } else {
+          return item;
+        }
+      }),
+    ]);
   };
 
   return (
@@ -88,8 +100,10 @@ const NoticeItem = ({
     <TouchableOpacity
       onPress={async () => {
         await readNoticeHandle(item?.nt_idx);
-        if (item?.intent) {
+        if (item?.intent === 'ReservationManagementDetail') {
           await navigation.navigate(item?.intent, {menu: item?.noticeData, od_idx: item?.noticeIdx});
+        } else if (item?.intent === 'RepairHistoryHome') {
+          await navigation.navigate(item?.intent, {menu: item?.noticeIdx});
         }
       }}>
       <Box width="380px" minHeight="95px" justifyContent="center" style={borderBottomWhiteGray}>

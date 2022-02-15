@@ -37,6 +37,7 @@ import {getFooter, getStoreInfo} from '@/API/More/More';
 import {setStoreInfo} from '@/Store/storeInfoState';
 import {getUserInformation} from '@/API/User/Login';
 import {setUserInfo} from '@/Store/loginState';
+import {setCompanyInfo} from '@/Store/companyInfoState';
 
 export default function More() {
   const {size, login, storeInfo} = useSelector(state => state);
@@ -112,7 +113,7 @@ export default function More() {
         },
       ];
   useEffect(() => {
-    if (isFocused) {
+    if (isFocused && login?.idx) {
       getStoreInfoHandle();
       setUserInformation();
     }
@@ -272,7 +273,8 @@ const MoreFooter = () => {
 };
 
 const PedalCheckInfo = () => {
-  const [companyInfo, setCompanyInfo] = useState([]);
+  const {companyInfo} = useSelector(state => state);
+  const dispatch = useDispatch();
   useEffect(() => {
     getCompanyInfo();
   }, []);
@@ -280,7 +282,7 @@ const PedalCheckInfo = () => {
   const getCompanyInfo = async () => {
     const response = await getFooter();
     if (response?.data?.result === 'true') {
-      setCompanyInfo(response?.data?.data?.data);
+      dispatch(setCompanyInfo(res.data.data.data));
     }
   };
 

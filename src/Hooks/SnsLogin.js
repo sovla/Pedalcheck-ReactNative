@@ -1,4 +1,4 @@
-import {GoogleLogin, KakaoLogin, NaverLogin} from '@/API/User/Login';
+import {AppleLogin, GoogleLogin, KakaoLogin, NaverLogin} from '@/API/User/Login';
 import {setUserInfo} from '@/Store/loginState';
 import {setSnsInfo} from '@/Store/snsLoginState';
 import {Alert} from 'react-native';
@@ -13,6 +13,8 @@ export const SnsLogin = async (id, name, email, type, dispatch, navigation, toke
     LoginApi = NaverLogin;
   } else if (type === 4) {
     LoginApi = GoogleLogin;
+  } else if (type === 5) {
+    LoginApi = AppleLogin;
   }
   const result = await LoginApi({
     sns_id: id,

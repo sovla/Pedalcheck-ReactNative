@@ -44,6 +44,14 @@ export const GoogleLogin = async args => {
     console.log(error);
   }
 };
+export const AppleLogin = async args => {
+  try {
+    const response = await API.post('member_login_apple.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const AddInformation = async args => {
   try {
