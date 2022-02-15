@@ -1,12 +1,6 @@
-import {
-  AddInformation,
-  AddInformationImage,
-  getUserInformation,
-  UpdateMember,
-  UpdateMemberImage,
-} from '@/API/User/Login';
+import {AddInformationImage, getUserInformation, UpdateMember, UpdateMemberImage} from '@/API/User/Login';
 import {BorderButton, LinkButton} from '@/assets/global/Button';
-import {Box, Container, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
+import {Box, Container, RowBox, ScrollBox} from '@/assets/global/Container';
 import {bankList} from '@/assets/global/dummy';
 import {DefaultInput} from '@/assets/global/Input';
 import {DarkText, ErrorText} from '@/assets/global/Text';
@@ -22,7 +16,7 @@ import React from 'react';
 import {useLayoutEffect} from 'react';
 import {useEffect} from 'react';
 import {useState} from 'react';
-import {Alert, StyleSheet, Text, View} from 'react-native';
+import {Alert} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import {useDispatch, useSelector} from 'react-redux';

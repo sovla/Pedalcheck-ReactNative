@@ -1,7 +1,5 @@
-import {BorderButton, FooterButton} from '@/assets/global/Button';
+import {BorderButton} from '@/assets/global/Button';
 import {BetweenBox, Box, RowBox, ScrollBox} from '@/assets/global/Container';
-import {bikeInfo, productStatus as changeItem} from '@/assets/global/dummy';
-import {DefaultInput} from '@/assets/global/Input';
 import {DarkBoldText, DarkMediumText, DarkText, MoneyText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import Badge from '@/Component/BikeManagement/Badge';
@@ -9,9 +7,7 @@ import BikeInformaitonBody from '@/Component/BikeManagement/BikeInformaitonBody'
 import BikeInformationHeader from '@/Component/BikeManagement/BikeInformationHeader';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import Header from '@/Component/Layout/Header';
-import {modalOpen} from '@/Store/modalState';
 import React from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 // rejection: item.ot_cmemo, // 수정 필요 API 값없음

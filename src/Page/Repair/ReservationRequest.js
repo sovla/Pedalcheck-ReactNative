@@ -1,20 +1,19 @@
 import {LinkButton} from '@/assets/global/Button';
-import {Box, PositionBox, RowBox} from '@/assets/global/Container';
-import {bankList} from '@/assets/global/dummy';
+import {Box, RowBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
 import DefaultLine from '@/assets/global/Line';
-import {DarkBoldText, DarkMediumText, DarkText, IndigoText} from '@/assets/global/Text';
+import {DarkBoldText, DarkText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import CheckBox, {DefaultCheckBox} from '@/Component/Home/CheckBox';
 import Header from '@/Component/Layout/Header';
-import {modalClose, modalOpen, modalOpenAndProp, setNavigator} from '@/Store/modalState';
+import {modalClose, modalOpen, modalOpenAndProp} from '@/Store/modalState';
 import {setReservationPayment} from '@/Store/reservationState';
 import {AlertButton} from '@/Util/Alert';
 import {useIsFocused} from '@react-navigation/native';
 import React from 'react';
 import {useLayoutEffect} from 'react';
 import {useState} from 'react';
-import {Alert, Modal, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import RepairReservationHeader from './RepairReservationHeader';
 

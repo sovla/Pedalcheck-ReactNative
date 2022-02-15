@@ -333,9 +333,9 @@ export const changeDropMenu = dropMenu => {
     return undefined;
   } else if (dropMenu === '예약') {
     return 1;
-  } else if (dropMenu === '승인') {
+  } else if (dropMenu === '승인완료') {
     return 3;
-  } else if (dropMenu === '승인거부') {
+  } else if (dropMenu === '승인취소') {
     return 4;
   } else if (dropMenu === '처리완료') {
     return 5;

@@ -279,7 +279,7 @@ export default function RepairHistoryDetail({route: {params}}) {
             </ScrollBox>
 
             <RowBox width="412px" pd="0px 16px 20px" justifyContent="flex-end">
-              {(repair?.ot_status === '예약' || repair?.ot_status === '승인') && (
+              {(repair?.ot_status === '예약' || repair?.ot_status === '승인완료') && (
                 <LinkWhiteButton width="185px" content="예약 취소" to={onPressReservationCancle} />
               )}
 
@@ -315,7 +315,7 @@ const RepairHistoryDetailHeader = ({
       {/* // 수정 필요 */}
       {rejectionReason !== '' && (
         <RowBox mg="0px 0px 10px">
-          <DarkMediumText width="110px">승인거절 사유</DarkMediumText>
+          <DarkMediumText width="110px">승인취소 사유</DarkMediumText>
           <DarkText width="275px">{rejectionReason}</DarkText>
         </RowBox>
       )}

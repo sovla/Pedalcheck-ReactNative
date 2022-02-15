@@ -10,7 +10,7 @@ export default function ShopRepairHistory({
     product: '상품-기본값',
     shopName: '매장-기본값',
     date: '2021-11-26',
-    status: '승인',
+    status: '승인완료',
   },
 }) {
   const {size} = useSelector(state => state);
