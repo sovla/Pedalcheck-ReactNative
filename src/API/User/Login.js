@@ -101,3 +101,12 @@ export const memberRetire = async args => {
     console.log(error);
   }
 };
+
+export const autoLoginApi = async args => {
+  try {
+    const response = await API.post('autologin.php', args);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

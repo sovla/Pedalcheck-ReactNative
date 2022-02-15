@@ -63,7 +63,7 @@ import ReservationManagementDetail from './ReservationManagement/ReservationMana
 import RepairHome from './Repair/RepairHome';
 import {BackHandler, SafeAreaView, useWindowDimensions, View} from 'react-native';
 import Theme from '@/assets/global/Theme';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import ModalBasic from '@/Component/Modal/ModalBasic';
 import {initSetting} from '@/Store/sizeState';
 import ProductDetail from './Repair/ProductDetail';
@@ -74,7 +74,7 @@ import CouponUseComplete from './More/Coupon/CouponUseComplete';
 import CouponUseDateSelect from './More/Coupon/CouponUseDateSelect';
 import messaging from '@react-native-firebase/messaging';
 import {setToken} from '@/Store/tokenState';
-import {resetUserInfo} from '@/Store/loginState';
+import {resetUserInfo, setUserInfo} from '@/Store/loginState';
 import {showPushToastMessage, showToastMessage} from '@/Util/Toast';
 import {useRef} from 'react';
 import Notice from '@/Component/RepairHistory/Modal/Notice';
@@ -83,6 +83,7 @@ import {fetchBannerList} from '@/Store/BannerState';
 import {fetchAd} from '@/Store/AdState';
 import {getStoreInfo} from '@/API/More/More';
 import {setStoreInfo} from '@/Store/storeInfoState';
+import {autoLoginApi} from '@/API/User/Login';
 
 const INIT_ROUTER_COMPONENT_NAME = 'Home';
 
@@ -100,13 +101,20 @@ export default function Router() {
 
       dispatch(setToken(token));
       console.log(token, '토큰 설정 완료');
+      autoLoginApi({
+        mt_app_token: token,
+      }).then(res => {
+        if (res.data?.result === 'true') {
+          dispatch(setUserInfo(res.data.data.data));
+          navigationRef.current.navigate('RepairHome');
+        }
+      });
     } catch (error) {
       console.log(error, 'tokenError');
     }
   };
 
   const forFade = ({current}) => {
-    console.log(current, 'forFade');
     return {
       cardStyle: {opacity: current.progress},
     };

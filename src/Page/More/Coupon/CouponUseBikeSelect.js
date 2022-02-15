@@ -74,7 +74,6 @@ export default function CouponUseBikeSelect({route: {params}}) {
     } else {
     }
   };
-  console.log(bikeList);
   const onPressSearch = () => {
     dispatch(modalOpenAndProp({modalComponent: 'searchShop', setShopInfo}));
   };

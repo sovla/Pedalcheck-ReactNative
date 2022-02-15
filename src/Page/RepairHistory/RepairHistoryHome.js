@@ -74,7 +74,7 @@ export default function RepairHistoryHome({navigation, route: {params}}) {
   }, [isFocused, modal.isOpenModal]);
   return (
     <Container>
-      {(isLoading.isDashboard || isLoading.isRead) && <Loading isAbsolute />}
+      {(isLoading.isDashboard || isLoading.isRead) && <Loading isAbsolute backgroundColor="#0000" />}
       <FlatList
         ListHeaderComponent={
           <>

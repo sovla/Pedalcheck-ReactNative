@@ -1,8 +1,7 @@
-import {BorderButton, Button} from '@/assets/global/Button';
+import {Button} from '@/assets/global/Button';
 import {DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import React from 'react';
-import {View, Text} from 'react-native';
 
 export default function Badge({badgeContent}) {
   let backgroundColor = Theme.color.skyBlue;

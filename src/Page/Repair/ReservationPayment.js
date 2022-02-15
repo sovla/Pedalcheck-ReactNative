@@ -70,7 +70,15 @@ export default function ReservationPayment({navigation, route: {params}}) {
 
   const getOrderCheckHandle = async () => {
     let result = false;
+    let i = 0;
     while (!result) {
+      if (i > 10) {
+        //  간혹가다 결제 API 실패 사례 10번까지 시도후 정비소 메인으로
+        AlertButton('결제 실패했습니다. 다시 시도해주세요.', '확인', () => {
+          navigation.navigate('RepairHome');
+        });
+        break;
+      }
       await getOrderCheck({
         ot_code: params.merchant_uid,
       })
@@ -105,6 +113,7 @@ export default function ReservationPayment({navigation, route: {params}}) {
         .catch(err => {
           console.log(err);
         });
+      i++;
     }
   };
 
