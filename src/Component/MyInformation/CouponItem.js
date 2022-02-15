@@ -48,7 +48,7 @@ const CouponItem = ({
 
             <GrayText fontSize={Theme.fontSize.fs13}>{endOfAvailability}</GrayText>
           </RowBox>
-          {badgeContent === '승인거부' && rejectionContent !== '' && (
+          {badgeContent === '승인취소' && rejectionContent !== '' && (
             <DefaultText color={Theme.color.red} fontSize={Theme.fontSize.fs13}>
               {rejectionContent}
             </DefaultText>

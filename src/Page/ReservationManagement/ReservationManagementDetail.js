@@ -223,7 +223,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
                 <DarkText mg="0px 10px 0px 0px">
                   {`${reservationInfo?.ot_pt_date} ${reservationInfo?.ot_pt_time?.substring(0, 5)}`}{' '}
                 </DarkText>
-                {(reservationInfo?.ot_status === '예약' || reservationInfo?.ot_status === '승인') && !isPrevTime && (
+                {(reservationInfo?.ot_status === '예약' || reservationInfo?.ot_status === '승인완료') && !isPrevTime && (
                   <TouchableOpacity onPress={onPressChangeDate}>
                     <BorderButton width="auto">변경</BorderButton>
                   </TouchableOpacity>
@@ -304,7 +304,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
                   multiline
                   value={memo}
                   changeFn={setMemo}
-                  disabled={reservationInfo.ot_status === '승인거부' || reservationInfo.ot_status === '처리완료'}
+                  disabled={reservationInfo.ot_status === '승인취소' || reservationInfo.ot_status === '처리완료'}
                   maxLength={500}
                 />
               </Box>
@@ -324,7 +324,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
                     <LinkWhiteButton width="175px" content="거절" to={onPressRejection} />
                   </RowBox>
                 )}
-                {reservationInfo.ot_status === '승인' && ( // 수정필요 결제 완료 여부 조건문에 추가 필요
+                {reservationInfo.ot_status === '승인완료' && ( // 수정필요 결제 완료 여부 조건문에 추가 필요
                   <RowBox justifyContent="flex-end" width="380px">
                     <LinkWhiteButton width="175px" content="처리완료" to={onPressComplete} />
                   </RowBox>
@@ -351,7 +351,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
                 <LinkWhiteButton width="175px" content="거절" to={onPressRejection} />
               </RowBox>
             )}
-            {reservationInfo.ot_status === '승인' && (
+            {reservationInfo.ot_status === '승인완료' && (
               <RowBox justifyContent="flex-end" width="380px" mg="0px 16px">
                 <LinkWhiteButton width="175px" content="처리완료" to={onPressComplete} />
               </RowBox>

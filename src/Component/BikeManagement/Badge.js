@@ -14,7 +14,7 @@ export default function Badge({badgeContent}) {
     case '환불':
       backgroundColor = Theme.color.black;
       break;
-    case '승인거부':
+    case '승인취소':
     case '결제취소':
       backgroundColor = Theme.color.red;
       break;

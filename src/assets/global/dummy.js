@@ -42,19 +42,6 @@ export const bikeInfo = {
   ],
 };
 
-export const productStatus = {
-  status: '예약',
-  productName: '정비-오버홀',
-  reservationDate: '2021-10-14 10:58',
-  request: '요청사항 영역 요청사항 영역 요청사항 영역 요청사항 영역',
-  rejection: '승인거절 사유 노출 영역 승인거절 사유노출 영역 승인거절 사유 노출 영역',
-  totalPrice: 47000,
-  customerName: '홍길동',
-  customerEmail: 'pedalee@pedalcheck.co.kr',
-  customerTel: '010-1234-1234',
-  customerLevel: '일반',
-};
-
 export const timeList = [
   '09:00',
   '09:30',
@@ -94,7 +81,7 @@ export const repairHistoryDropdownList = [
     value: '예약',
   },
   {
-    label: '승인',
+    label: '승인완료',
     value: '승인',
   },
   {

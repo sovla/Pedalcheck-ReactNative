@@ -27,10 +27,7 @@ const UseCouponItem = ({
         <Box>
           <RowBox alignItems="center">
             <DarkBoldText>{couponName}</DarkBoldText>
-            <MediumText
-              mg="0px 0px 0px 5px"
-              color={Theme.color.indigo}
-              fontSize={Theme.fontSize.fs14}>
+            <MediumText mg="0px 0px 0px 5px" color={Theme.color.indigo} fontSize={Theme.fontSize.fs14}>
               {shopName}
             </MediumText>
           </RowBox>
@@ -38,7 +35,7 @@ const UseCouponItem = ({
           <RowBox>
             <GrayText fontSize={Theme.fontSize.fs13}>{useCouponDate}</GrayText>
           </RowBox>
-          {badgeContent === '승인거부' && (
+          {badgeContent === '승인취소' && (
             <DefaultText color={Theme.color.red} fontSize={Theme.fontSize.fs13}>
               {rejectionContent}
             </DefaultText>

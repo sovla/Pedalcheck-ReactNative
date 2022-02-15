@@ -10,7 +10,7 @@ export default function RepairProduct({
   customerName = '기본값',
   reservationCancleCount = '0',
   reservationDate = new Date().toString(),
-  status = '승인',
+  status = '승인완료',
   totalPrice = 30000,
 }) {
   const {size} = useSelector(state => state);

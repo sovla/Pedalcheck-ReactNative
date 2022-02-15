@@ -1,7 +1,7 @@
 import {cancelOrder} from '@/API/More/More';
 import {FooterButton} from '@/assets/global/Button';
-import {Box, Container, RowBox} from '@/assets/global/Container';
-import {bankList, bankList1} from '@/assets/global/dummy';
+import {Box, RowBox} from '@/assets/global/Container';
+import {bankList1} from '@/assets/global/dummy';
 import {DefaultInput} from '@/assets/global/Input';
 import {DarkMediumText} from '@/assets/global/Text';
 import ModalTitleBox from '@/Component/Modal/ModalTitleBox';

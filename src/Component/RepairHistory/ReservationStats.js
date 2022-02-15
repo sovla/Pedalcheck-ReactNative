@@ -16,7 +16,7 @@ const ReservationStats = ({
         <DarkBoldText>{reservationCount}건</DarkBoldText>
       </BetweenBox>
       <BetweenBox width="348px" mg="10px 0px 0px" alignItems="center">
-        <DarkMediumText>승인</DarkMediumText>
+        <DarkMediumText>승인완료</DarkMediumText>
         <DarkBoldText>{approvalCount}건</DarkBoldText>
       </BetweenBox>
       <BetweenBox width="348px" mg="10px 0px 0px" alignItems="center">
@@ -28,7 +28,7 @@ const ReservationStats = ({
         <DarkBoldText>{reservationCancleCount}건</DarkBoldText>
       </BetweenBox>
       <BetweenBox width="348px" mg="10px 0px 0px" alignItems="center">
-        <DarkMediumText>승인거부</DarkMediumText>
+        <DarkMediumText>승인취소</DarkMediumText>
         <DarkBoldText>{rejectionCount}건</DarkBoldText>
       </BetweenBox>
     </Box>
