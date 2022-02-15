@@ -16,8 +16,6 @@ import {getPixel} from '@/Util/pixelChange';
 
 export default function Notice({route: {params}}) {
   const {login} = useSelector(state => state);
-  const isFocused = useIsFocused();
-  const dispatch = useDispatch();
 
   const {noticeList, setNoticeList} = params;
 

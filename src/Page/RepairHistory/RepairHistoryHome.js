@@ -62,6 +62,10 @@ export default function RepairHistoryHome({navigation, route: {params}}) {
 
   useLayoutEffect(() => {
     if (isFocused && params?.menu) {
+      navigation.setParams({
+        ...params,
+        menu: undefined,
+      });
       setSelect(params.menu);
     }
   }, [isFocused]);
