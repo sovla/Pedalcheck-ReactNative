@@ -1,10 +1,10 @@
 #import "AppDelegate.h"
 #import <Firebase.h>
-
+#import <RNKakaoLogins.h>
+#import <NaverThirdPartyLogin/NaverThirdPartyLoginConnection.h>
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-#import <NaverThirdPartyLogin/NaverThirdPartyLoginConnection.h>
 
 
 #ifdef FB_SONARKIT_ENABLED
@@ -66,8 +66,15 @@ static void InitializeFlipper(UIApplication *application) {
 //   return [RNGoogleSignin application:application openURL:url options:options];
 // }
 
-- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary *)options {
-   return [[NaverThirdPartyLoginConnection getSharedInstance] application:app openURL:url options:options];
+- (BOOL)application:(UIApplication *)application openURL:(nonnull NSURL *)url options:(nonnull NSDictionary<NSString *,id> *)options {
+  if([RNKakaoLogins isKakaoTalkLoginUrl:url]) {
+    return [RNKakaoLogins handleOpenUrl: url];
+  }
+  if ([url.scheme isEqualToString:@"NaverPedalcheck"]) {
+    return [[NaverThirdPartyLoginConnection getSharedInstance] application:application openURL:url options:options];
+  }
+  return NO;
+
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
