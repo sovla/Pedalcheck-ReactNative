@@ -1,24 +1,27 @@
 import {getMyReviewItem} from '@/API/Repair/Repair';
 import {LinkButton} from '@/assets/global/Button';
-import {BetweenBox, Box, Container, RowBox, ScrollBox} from '@/assets/global/Container';
+import {BetweenBox, Box, Container, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
 import Header from '@/Component/Layout/Header';
 import Review from '@/Component/Repair/Review';
-import ReviewComment from '@/Component/Repair/ReviewComment';
+import ReplyIcon from '@assets/image/ic_reply.png';
 import {useNavigation} from '@react-navigation/native';
 import moment from 'moment';
-import React from 'react';
-import {useEffect} from 'react';
-import {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Dimensions} from 'react-native';
 import {useSelector} from 'react-redux';
+import Theme from '@assets/global/Theme';
+import {DarkBoldText, DefaultText} from '@/assets/global/Text';
+import DefaultImage from '@/assets/global/Image';
 
+const {height} = Dimensions.get('window');
 export default function ReviewDetail({route: {params}}) {
   const [comment, setComment] = useState('');
   const {size, login} = useSelector(state => state);
   const isRecomment = params?.isRecomment !== undefined ? params?.isRecomment : !item?.srt_res_content;
   const [item, setItem] = useState(params?.item);
   const commentSubmit = params?.commentSubmit;
+  const isDetailPage = true;
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -54,18 +57,51 @@ export default function ReviewDetail({route: {params}}) {
         </Box>
         {isRecomment && item?.srt_res_content?.length > 0 && (
           <RowBox mg="0px 0px 40px">
-            <ReviewComment reviewDate={item.srt_adate} reviewContent={item.srt_res_content} size={size} />
+            <Container pd="10px 10px 10px 44px" backgroundColor={Theme.color.backgroundBlue} borderRadius="10px">
+              <BetweenBox backgroundColor="#0000" alignItems="center" width="326px">
+                <RowBox backgroundColor={Theme.color.backgroundBlue} alignItems="center">
+                  <DarkBoldText mg="0px 5px 0px 0px" fontSize={Theme.fontSize.fs15}>
+                    사장님
+                  </DarkBoldText>
+                  <DefaultText color={Theme.color.gray} fontSize={Theme.fontSize.fs12}>
+                    {item?.srt_adate?.slice(0, 10)}
+                  </DefaultText>
+                </RowBox>
+              </BetweenBox>
+              <RowBox backgroundColor="#0000">
+                <DefaultText
+                  numberOfLines={isDetailPage ? 50 : 3}
+                  color={Theme.color.black}
+                  width={size.designWidth - 32 - 54}
+                  fontSize={Theme.fontSize.fs15}
+                  lineHeight="22px">
+                  {item.srt_res_content}
+                </DefaultText>
+              </RowBox>
+              <PositionBox top="14px" left="13px" backgroundColor="#0000">
+                <DefaultImage source={ReplyIcon} width="20px" height="16px" />
+              </PositionBox>
+            </Container>
           </RowBox>
         )}
       </ScrollBox>
       {!isRecomment && (
-        <BetweenBox mg="0px 16px" height="64px" alignItems="center" width="380px">
+        <BetweenBox
+          mg="0px 16px"
+          height="auto"
+          alignItems="center"
+          width="380px"
+          style={{
+            maxHeight: height / 3,
+          }}>
           <DefaultInput
             value={comment}
             changeFn={text => setComment(prev => text)}
             placeHolder="댓글을 입력해주세요 (500자 이내)"
             width="310px"
-            height="44px"
+            minHeight="44px"
+            height="auto"
+            multiline
           />
           <LinkButton
             content="등록"

@@ -96,6 +96,7 @@ export default function Customer({navigation}) {
         </PositionBox>
       )}
       <FlatList
+        bounces={false}
         ListHeaderComponent={
           <>
             <GradientHeader height={76} title="고객" imageSource={CustomerCheckIcon}></GradientHeader>
