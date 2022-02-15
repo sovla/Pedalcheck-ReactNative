@@ -1,14 +1,14 @@
 import {LinkButton, LinkWhiteButton} from '@/assets/global/Button';
 import {Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
 import DefaultLine from '@/assets/global/Line';
-import {DarkBoldText, DarkText, DefaultText} from '@/assets/global/Text';
+import {DarkBoldText, DarkText, DefaultText, GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import CheckBox from '@/Component/Home/CheckBox';
 import Header from '@/Component/Layout/Header';
 import {modalOpen} from '@/Store/modalState';
 import React from 'react';
 import {useState} from 'react';
-import {Platform} from 'react-native';
+import {Platform, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 export default function Register({navigation}) {
@@ -109,9 +109,15 @@ export default function Register({navigation}) {
             // || !checkObject.location
           />
           {Platform.OS === 'android' && (
-            <Box>
-              <DarkText>다음에 입력하기</DarkText>
-            </Box>
+            <TouchableOpacity
+              style={{width: '100%'}}
+              onPress={() => {
+                navigation.reset({routes: [{name: 'RepairHome'}]});
+              }}>
+              <Box alignItems="center" justifyContent="center" width="100%" mg="20px 0px 0px">
+                <GrayText textDecoration="underline">다음에 입력하기</GrayText>
+              </Box>
+            </TouchableOpacity>
           )}
         </PositionBox>
       </Container>

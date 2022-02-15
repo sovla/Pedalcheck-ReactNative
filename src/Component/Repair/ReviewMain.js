@@ -31,7 +31,7 @@ export default function ReviewMain() {
           <TouchableOpacity
             onPress={() => {
               // 현태 비회원일 때
-              if (RequireLoginAlert(login, navigation)) {
+              if (RequireLoginAlert(login, navigation, '리뷰 작성을')) {
                 navigation.navigate('ReviewHome', {
                   mst_idx: shopInfo?.store_info?.mst_idx, // 매장 정보
                 });

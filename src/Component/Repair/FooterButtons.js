@@ -19,7 +19,7 @@ export default function FooterButtons({isRepair = false, isLike = false, onPress
       AlertButton('본인 매장에는 예약할 수 없습니다.');
       return;
     }
-    if (RequireLoginAlert(login, navigation)) {
+    if (RequireLoginAlert(login, navigation, '정비 예약을')) {
       //  로그인확인
       if (!my_bike) {
         //  api에서 받아온 내 자전거가 없는경우

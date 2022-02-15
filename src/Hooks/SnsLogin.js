@@ -33,12 +33,14 @@ export const SnsLogin = async (id, name, email, type, dispatch, navigation, toke
         mt_idx: result?.data?.data?.data?.idx,
       }),
     );
+
     if (result?.data?.data?.data?.mt_status === 'Y') {
       // 회원가입 완료
       dispatch(setUserInfo(result?.data?.data?.data));
       return navigation.reset({routes: [{name: 'RepairHome'}]});
     } else {
       // 처음 SNS 로그인
+      if (type === 5) dispatch(setUserInfo(result?.data?.data?.data));
       return navigation.navigate('Register');
     }
   } else {

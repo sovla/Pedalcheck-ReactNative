@@ -45,7 +45,7 @@ const ShopHeader = ({size}) => {
       AlertButton('본인 매장에는 문의를 남길 수 없습니다.');
       return;
     }
-    if (RequireLoginAlert(login, navigation)) {
+    if (RequireLoginAlert(login, navigation, '문의 작성을')) {
       navigation.navigate('RepairQuestion');
     }
   };

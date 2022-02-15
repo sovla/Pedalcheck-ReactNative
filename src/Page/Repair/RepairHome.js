@@ -50,7 +50,7 @@ export default function RepairHome() {
   const [apiPage, setApiPage] = useState(1); // API Page
   const [selectImage, setSelectImage] = useState(0);
   const [tag, setTag] = useState([]);
-  const [innerLocation, setInnerLocation] = useState(login.mt_addr === '' ? '전체' : login.mt_addr);
+  const [innerLocation, setInnerLocation] = useState(!login?.mt_addr ? '전체' : login.mt_addr);
   const [storeList, setStoreList] = useState([]);
   const [searchText, setSearchText] = useState(''); // 검색 텍스트
   const [isSearch, setIsSearch] = useState(false); // 검색 누를때
@@ -99,7 +99,7 @@ export default function RepairHome() {
 
       getData();
     }
-  }, []);
+  }, [isFocused]);
   // 현태 최초 실행 시 위치 상태
   useEffect(() => {
     if (isFocused && storeList?.length < 1) {
