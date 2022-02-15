@@ -100,7 +100,6 @@ export default function Router() {
       const token = await messaging().getToken();
 
       dispatch(setToken(token));
-      console.log(token, '토큰 설정 완료');
       autoLoginApi({
         mt_app_token: token,
       }).then(res => {

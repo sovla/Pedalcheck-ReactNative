@@ -47,7 +47,7 @@ function App() {
   useEffect(() => {
     setTimeout(() => {
       SplashScreen.hide();
-    }, 300);
+    }, 1500);
     requestPermissions();
   }, []);
 

@@ -276,13 +276,13 @@ const PedalCheckInfo = () => {
   const {companyInfo} = useSelector(state => state);
   const dispatch = useDispatch();
   useEffect(() => {
-    getCompanyInfo();
+    if (!companyInfo?.st_company_add) getCompanyInfo();
   }, []);
 
   const getCompanyInfo = async () => {
     const response = await getFooter();
     if (response?.data?.result === 'true') {
-      dispatch(setCompanyInfo(res.data.data.data));
+      dispatch(setCompanyInfo(response.data.data.data));
     }
   };
 
