@@ -8,23 +8,35 @@ import DefaultImage from '@/assets/global/Image';
 import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import {modalClose} from '@/Store/modalState';
-import {readNotice} from '@/API/Manager/More';
+import {getNoticeList, readNotice} from '@/API/Manager/More';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {FlatList} from 'react-native-gesture-handler';
 import Header from '@/Component/Layout/Header';
 import {getPixel} from '@/Util/pixelChange';
+import {useEffect} from 'react';
+import {useState} from 'react';
 
 export default function Notice({route: {params}}) {
   const {login} = useSelector(state => state);
 
-  const {noticeList, setNoticeList} = params;
+  const isFocused = useIsFocused();
+  const [noticeList, setNoticeList] = useState([]);
+  const [isLoading, setisLoading] = useState(true);
+
+  const getNoticeListHandle = async () => {
+    setisLoading(true);
+    const response = await getNoticeList({
+      _mt_idx: login.idx,
+    });
+
+    if (response?.data?.result === 'true') {
+      setNoticeList(response?.data?.data?.data);
+    }
+    setisLoading(false);
+  };
 
   const readNoticeHandle = async selectIdx => {
-    await readNotice({
-      _mt_idx: login.idx, // storeInfo.idx,수정 필요
-      nt_idx: selectIdx,
-    });
-    setNoticeList(prev => [
+    setNoticeList(prev =>
       prev.map(item => {
         if (selectIdx === item.nt_idx) {
           return {
@@ -35,8 +47,16 @@ export default function Notice({route: {params}}) {
           return item;
         }
       }),
-    ]);
+    );
+    await readNotice({
+      _mt_idx: login.idx, // storeInfo.idx,수정 필요
+      nt_idx: selectIdx,
+    });
   };
+
+  useEffect(() => {
+    if (isFocused) getNoticeListHandle();
+  }, [isFocused]);
 
   return (
     <>
@@ -69,20 +89,6 @@ export default function Notice({route: {params}}) {
   );
 }
 
-const ModalFullHeader = ({title}) => {
-  const dispatch = useDispatch();
-  return (
-    <RowBox style={borderBottomWhiteGray} alignItems="center" justifyContent="center" height="50px" width="412px">
-      <DarkBoldText>{title}</DarkBoldText>
-      <PositionBox right="16px" top="11px">
-        <TouchableOpacity onPress={() => dispatch(modalClose())}>
-          <DefaultImage source={CloseIcon} width="24px" height="24px" />
-        </TouchableOpacity>
-      </PositionBox>
-    </RowBox>
-  );
-};
-
 const NoticeItem = ({
   item = {
     title: '정비-기본점검 서비스 정비요청',
@@ -102,6 +108,8 @@ const NoticeItem = ({
           await navigation.navigate(item?.intent, {menu: item?.noticeData, od_idx: item?.noticeIdx});
         } else if (item?.intent === 'RepairHistoryHome') {
           await navigation.navigate(item?.intent, {menu: item?.noticeIdx});
+        } else {
+          await navigation.navigate(item?.intent, {menu: item?.noticeData, od_idx: item?.noticeIdx});
         }
       }}>
       <Box width="380px" minHeight="95px" justifyContent="center" style={borderBottomWhiteGray}>
