@@ -2,7 +2,6 @@ import {store} from '@/Store/store';
 import React, {useEffect} from 'react';
 import {Provider} from 'react-redux';
 import Router from './src/Page/Router';
-import SplashScreen from 'react-native-splash-screen';
 import {Text, View, TouchableOpacity} from 'react-native';
 import Toast from 'react-native-toast-message';
 import {DefaultText} from './src/assets/global/Text';
@@ -45,9 +44,6 @@ function App() {
   }
 
   useEffect(() => {
-    setTimeout(() => {
-      SplashScreen.hide();
-    }, 1500);
     requestPermissions();
   }, []);
 

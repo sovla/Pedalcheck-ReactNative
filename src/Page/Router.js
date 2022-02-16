@@ -89,6 +89,7 @@ import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setIsAdmin} from '@/Store/adminState';
 import Toast from 'react-native-toast-message';
+import SplashScreen from 'react-native-splash-screen';
 
 const INIT_ROUTER_COMPONENT_NAME = 'Home'; //  라우팅 초기값
 
@@ -107,19 +108,23 @@ export default function Router() {
       const token = await messaging().getToken();
 
       dispatch(setToken(token));
-      autoLoginApi({
+      const response = await autoLoginApi({
         mt_app_token: token,
       }).then(res => {
         if (res.data?.result === 'true') {
           dispatch(setUserInfo(res.data.data.data));
         }
+        return res;
       });
-      if (res.data.data?.data?.mt_level >= '5') {
-        getIsAdmin();
+      if (response.data.data?.data?.mt_level * 1 >= 5) {
+        await getIsAdmin();
       }
     } catch (error) {
       console.log(error, 'tokenError');
     } finally {
+      setTimeout(() => {
+        SplashScreen.hide();
+      }, 1000);
       setIsLoading(false);
     }
   };
@@ -169,6 +174,7 @@ export default function Router() {
   const getIsAdmin = async () => {
     try {
       const isAdmin = await AsyncStorage.getItem('isAdmin');
+      console.log(isAdmin, 'isAdmin First');
       if (isAdmin === 'true') {
         dispatch(setIsAdmin(true));
       } else {
@@ -215,6 +221,9 @@ export default function Router() {
       mesagingHandler(remoteMessage);
     });
   }, []);
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <NavigationContainer ref={navigationRef}>
