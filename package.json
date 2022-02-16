@@ -40,6 +40,7 @@
     "react-geocode": "0.2.3",
     "react-native": "0.66.3",
     "react-native-calendars": "1.1269.0",
+    "react-native-date-picker": "4.1.5",
     "react-native-debugger": "1.1.0",
     "react-native-element-dropdown": "1.4.8",
     "react-native-fast-image": "8.5.11",
