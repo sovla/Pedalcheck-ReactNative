@@ -20,7 +20,6 @@ import {Alert} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import {useDispatch, useSelector} from 'react-redux';
-import Geolocation from 'react-native-geolocation-service';
 import {useIsFocused} from '@react-navigation/native';
 import {setUserInfo} from '@/Store/loginState';
 import {phoneNumber} from '@/Util/phoneFormatter';
@@ -56,7 +55,6 @@ export default function Update({navigation}) {
 
   useEffect(() => {
     setUserInformation();
-    getGeo();
   }, [isFocused]);
 
   useLayoutEffect(() => {
@@ -146,18 +144,6 @@ export default function Update({navigation}) {
       }
     }
     return await AddInformationImage({...sendData});
-  };
-  const getGeo = () => {
-    Geolocation.getCurrentPosition(
-      position => {
-        const {latitude, longitude} = position.coords;
-        setUser(prev => ({...prev, mt_lat: latitude, mt_lng: longitude}));
-      },
-      error => {
-        console.log(error.code, error.message);
-      },
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-    );
   };
 
   const RegJoin = async () => {
