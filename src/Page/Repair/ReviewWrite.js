@@ -39,7 +39,7 @@ export default function ReviewWrite({navigation, route}) {
     }).then(res => {
       if (res.data.result === 'true') {
         if (route?.params?.navigate) {
-          navigation.navigate(`${route?.params?.navigate}`);
+          navigation.navigate(`${route?.params?.navigate}`, {});
         } else {
           navigation.goBack();
         }

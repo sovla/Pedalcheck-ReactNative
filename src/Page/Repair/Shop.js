@@ -22,12 +22,11 @@ import ReviewComment from '@/Component/Repair/ReviewComment';
 import {clearReservation} from '@/Store/reservationState';
 
 export default function Shop({route, navigation}) {
-  const mt_idx = route.params?.mt_idx ?? shopInfo?.store_info?.mt_idx;
-
   const [selectMenu, setSelectMenu] = useState('매장소개');
   const [isDone, setIsDone] = useState(true);
   const [isLike, setIsLike] = useState(false);
   const {size, login, shopInfo} = useSelector(state => state);
+  const mt_idx = route.params?.mt_idx ?? shopInfo?.store_info?.mt_idx;
   const isFocused = useIsFocused();
 
   const menu = ['매장소개', '상품보기', '리뷰'];
