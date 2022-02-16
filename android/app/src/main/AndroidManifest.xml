@@ -13,6 +13,28 @@
     <!-- 전화 -->
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <!-- 푸시 -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+	
+	  <queries>
+			<package android:name="com.sktelecom.tauth" />
+			<package android:name="com.kt.ktauth" />
+			<package android:name="com.lguplus.smartotp" />
+			<intent>
+        <action android:name="android.intent.action.VIEW" />
+        <data android:scheme="intent" />
+      </intent>
+      <intent>
+        <action android:name="android.intent.action.VIEW" />
+        <data android:scheme="tauthlink" />
+      </intent>
+      <intent>
+        <action android:name="android.intent.action.VIEW" />
+        <data android:scheme="https" />
+      </intent>
+	    <intent>
+	        <action android:name="android.intent.action.MAIN" />
+	    </intent>
+	  </queries>
 
     <application
       android:name=".MainApplication"
@@ -36,6 +58,7 @@
         <intent-filter>
               <action android:name="android.intent.action.MAIN" />
               <category android:name="android.intent.category.LAUNCHER" />
+              <data android:scheme="myapp" />
           </intent-filter>
           <intent-filter>
               <data android:host="oauth"

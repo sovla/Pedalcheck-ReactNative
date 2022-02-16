@@ -83,7 +83,7 @@ export default function Feed() {
         </Box>
         {webUri !== '' && (
           <Modal visible>
-            <SafeAreaView>
+            <SafeAreaView style={{flex: 1}}>
               <PositionBox
                 top="0px"
                 left="0px"

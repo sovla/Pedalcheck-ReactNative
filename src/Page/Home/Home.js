@@ -27,7 +27,6 @@ export default function Home({navigation}) {
   // IOS 카카오 구글 네이버 애플로그인 4가지 로 크기가 다릅니다.
   useEffect(() => {
     if (login?.idx && login?.mt_status && login?.mt_status !== 'N' && isFocused) {
-      console.log('useLayoutEffect');
       if (!isAdmin) {
         navigation.replace('RepairHome');
       } else {

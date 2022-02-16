@@ -90,6 +90,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setIsAdmin} from '@/Store/adminState';
 import Toast from 'react-native-toast-message';
 import SplashScreen from 'react-native-splash-screen';
+import IdentityVerification from './Home/IdentityVerification';
 
 const INIT_ROUTER_COMPONENT_NAME = 'Home'; //  라우팅 초기값
 
@@ -354,6 +355,10 @@ const RouterSetting = [
   {
     name: 'Home',
     component: Home,
+  },
+  {
+    name: 'IdentityVerification',
+    component: IdentityVerification,
   },
   {
     name: 'AlarmSetting',
