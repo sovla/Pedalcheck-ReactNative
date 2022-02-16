@@ -108,7 +108,7 @@ export default function Register({navigation}) {
             disabled={!checkObject.service || !checkObject.privacy}
             // || !checkObject.location
           />
-          {Platform.OS === 'android' && (
+          {Platform.OS === 'ios' && (
             <TouchableOpacity
               style={{width: '100%'}}
               onPress={() => {

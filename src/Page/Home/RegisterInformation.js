@@ -1,6 +1,6 @@
 import {MemberJoin} from '@/API/User/Login';
 import {FooterButton} from '@/assets/global/Button';
-import {Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
+import {Box, RowBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
 import DefaultLine from '@/assets/global/Line';
 import {DarkText, DefaultText} from '@/assets/global/Text';
@@ -9,11 +9,8 @@ import Header from '@/Component/Layout/Header';
 import {DeleteLocation} from '@/Store/locationState';
 import {setUserInfo} from '@/Store/loginState';
 import {modalOpen} from '@/Store/modalState';
-import {getHeightPixel} from '@/Util/pixelChange';
 import React, {useLayoutEffect, useState} from 'react';
-import {Dimensions, KeyboardAvoidingView, StatusBar} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import {useSelector} from 'react-redux';
 
