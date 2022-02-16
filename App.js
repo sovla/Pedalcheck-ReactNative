@@ -55,7 +55,7 @@ function App() {
           width: '92%',
           justifyContent: 'center',
           alignItems: 'center',
-          marginTop: Platform.OS === 'ios' ? 44 : 0,
+          marginTop: Platform.OS === 'ios' ? 0 : 0,
         }}>
         <View
           style={{
@@ -78,7 +78,7 @@ function App() {
           width: '100%',
           justifyContent: 'center',
           padding: 16,
-          marginTop: Platform.OS === 'ios' ? 44 : 0,
+          marginTop: Platform.OS === 'ios' ? 0 : 0,
           backgroundColor: '#22222290',
         }}>
         <View

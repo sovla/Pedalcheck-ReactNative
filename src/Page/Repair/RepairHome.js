@@ -71,6 +71,9 @@ export default function RepairHome() {
   const onScrollSlide = e => {
     setSelectImage(scrollSlideNumber(e, size.designWidth - 36));
   };
+  if (!isFocused && isModal) {
+    setIsModal(false);
+  }
 
   useEffect(() => {
     if (isFocused && ad.loading === 'success' && ad?.ad && Object.keys(ad?.ad)?.length > 0) {
@@ -99,7 +102,7 @@ export default function RepairHome() {
 
       getData();
     }
-  }, [isFocused]);
+  }, []);
   // 현태 최초 실행 시 위치 상태
   useEffect(() => {
     if (isFocused && storeList?.length < 1) {

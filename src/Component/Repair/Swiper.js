@@ -85,6 +85,9 @@ function SwiperComponent({imageArray, width, height, borderRadius = 'Bottom', is
     }
     return () => clearInterval(timer);
   }, [isEnd]);
+  if (imageArray?.length < 1) {
+    return null;
+  }
 
   return (
     <Box

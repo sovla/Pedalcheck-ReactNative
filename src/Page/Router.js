@@ -138,36 +138,35 @@ export default function Router() {
       }),
     );
   }, [height]);
-  console.log('isLoadingisLoadingisLoading', isLoading);
+
   const mesagingHandler = async remoteMessage => {
-    let active = false;
-    while (!active) {
-      if (!isLoading) {
-        if (remoteMessage?.data?.intent) {
-          if (remoteMessage.data.intent === 'ShopUpdate') {
-            // 업체정보수정일때
-            const response = await getStoreInfo({
-              _mt_idx: remoteMessage.data?.content_idx,
-            });
-            if (response?.data?.result === 'true') {
-              await dispatch(setStoreInfo(response?.data?.data?.data));
-            }
-            await navigationRef.current.navigate(remoteMessage?.data?.intent);
-            active = true;
-          } else {
-            await navigationRef.current.navigate(remoteMessage?.data?.intent, {
-              menu: remoteMessage?.data?.content_idx2,
-              od_idx: remoteMessage?.data?.content_idx,
-            });
-            active = true;
-          }
-          active = true;
-          return true;
-        } else {
-          active = true;
-          return false;
+    if (isLoading) {
+      await getToken();
+    }
+
+    if (remoteMessage?.data?.intent) {
+      if (remoteMessage.data.intent === 'ShopUpdate') {
+        // 업체정보수정일때
+        const response = await getStoreInfo({
+          _mt_idx: remoteMessage.data?.content_idx,
+        });
+        if (response?.data?.result === 'true') {
+          await dispatch(setStoreInfo(response?.data?.data?.data));
         }
+        await navigationRef.current.navigate(remoteMessage?.data?.intent);
+      } else if (remoteMessage.data.intent === 'RepairHistoryHome') {
+        await navigationRef.current.navigate(remoteMessage?.data?.intent, {
+          menu: remoteMessage.data.content_idx,
+        });
+      } else {
+        await navigationRef.current.navigate(remoteMessage?.data?.intent, {
+          menu: remoteMessage?.data?.content_idx2,
+          od_idx: remoteMessage?.data?.content_idx,
+        });
       }
+      return true;
+    } else {
+      return false;
     }
   };
 
@@ -186,7 +185,6 @@ export default function Router() {
   useEffect(() => {
     getToken();
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      console.log('remoteMessage::', remoteMessage);
       showPushToastMessage({
         remoteMessage: remoteMessage,
         onPress: () => {

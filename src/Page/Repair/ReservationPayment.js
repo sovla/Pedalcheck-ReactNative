@@ -19,7 +19,7 @@ import {AlertButton} from '@/Util/Alert';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import {useEffect} from 'react';
 import {BackHandler} from 'react-native';
-import {useNavigationState} from '@react-navigation/native';
+import {useIsFocused, useNavigationState} from '@react-navigation/native';
 import {clearReservation} from '@/Store/reservationState';
 
 export default function ReservationPayment({navigation, route: {params}}) {
@@ -36,6 +36,10 @@ export default function ReservationPayment({navigation, route: {params}}) {
   const [orderIdx, setOrderIdx] = useState('');
 
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
+  if (!isFocused) {
+    return null;
+  }
 
   const {
     reservationInfo,

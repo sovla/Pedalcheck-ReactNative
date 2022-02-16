@@ -10,6 +10,7 @@ export const showToastMessage = (text, time = 3000) => {
     onPress: async () => {
       await Toast.hide();
     },
+    autoHide: true,
   });
 };
 
