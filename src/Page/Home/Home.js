@@ -13,6 +13,7 @@ import Theme from '@/assets/global/Theme';
 import {useLayoutEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
+import {useEffect} from 'react';
 export default function Home({navigation}) {
   const betweenBoxWidth = Platform.OS === 'android' ? '262px' : '312px';
 
@@ -24,8 +25,9 @@ export default function Home({navigation}) {
 
   // 안드로이드 카카오 구글 네이버    3가지
   // IOS 카카오 구글 네이버 애플로그인 4가지 로 크기가 다릅니다.
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (login?.idx && login?.mt_status && login?.mt_status !== 'N' && isFocused) {
+      console.log('useLayoutEffect');
       if (!isAdmin) {
         navigation.replace('RepairHome');
       } else {

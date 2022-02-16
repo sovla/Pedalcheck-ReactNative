@@ -43,7 +43,7 @@ export const API = axios.create({
       const jsonParseData = JSON.parse(data);
       if (jsonParseData.result === 'true') {
         const jwtDecodeData = jsonParseData.data !== '' ? jwtDecode(jsonParseData.data, SECRETKEY) : jsonParseData;
-        console.log('API Result Success :::', jwtDecodeData);
+        console.log('API Result Success :::\n', jwtDecodeData?.data);
         return {
           ...jsonParseData,
           data: jwtDecodeData,
