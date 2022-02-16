@@ -9,7 +9,7 @@ import DefaultImage from '@assets/global/Image';
 import {DarkMediumText, DarkText, GrayText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import FooterButtons from '@/Component/Layout/FooterButtons';
-import {BackHandler, FlatList, Linking, Modal, TouchableOpacity, View} from 'react-native';
+import {BackHandler, FlatList, Linking, Modal, SafeAreaView, TouchableOpacity, View} from 'react-native';
 import {getFeedList} from '@/API/Feed/Feed';
 import {imageAddress} from '@assets/global/config';
 import WebView from 'react-native-webview';
@@ -83,25 +83,27 @@ export default function Feed() {
         </Box>
         {webUri !== '' && (
           <Modal visible>
-            <PositionBox
-              top="0px"
-              left="0px"
-              backgroundColor="#0004"
-              height="60px"
-              width="100%"
-              alignItems="flex-end"
-              justifyContent="center"
-              zIndex={100}>
-              <TouchableOpacity
-                style={{paddingRight: 15}}
-                onPress={() => {
-                  setWebUri('');
-                }}>
-                <DefaultImage source={CloseWhiteIcon} width="30px" height="30px" />
-              </TouchableOpacity>
-            </PositionBox>
+            <SafeAreaView>
+              <PositionBox
+                top="0px"
+                left="0px"
+                backgroundColor="#0004"
+                height="60px"
+                width="100%"
+                alignItems="flex-end"
+                justifyContent="center"
+                zIndex={100}>
+                <TouchableOpacity
+                  style={{paddingRight: 15}}
+                  onPress={() => {
+                    setWebUri('');
+                  }}>
+                  <DefaultImage source={CloseWhiteIcon} width="30px" height="30px" />
+                </TouchableOpacity>
+              </PositionBox>
 
-            <WebView ref={ref} onNavigationStateChange={setNavState} style={{flex: 1}} source={{uri: webUri}}></WebView>
+              <WebView ref={ref} onNavigationStateChange={setNavState} style={{flex: 1}} source={{uri: webUri}} />
+            </SafeAreaView>
           </Modal>
         )}
       </Container>
