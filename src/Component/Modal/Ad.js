@@ -17,9 +17,7 @@ export default function Ad({info, setIsModal}) {
     if (type === 'day') {
       try {
         await AsyncStorage.setItem('ad', `${Date.now()}`);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     }
     setIsModal(false);
   };

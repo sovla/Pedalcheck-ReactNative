@@ -4,7 +4,5 @@ export const getFeedList = async args => {
   try {
     const response = await API.post('feed.php', args);
     return response;
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };

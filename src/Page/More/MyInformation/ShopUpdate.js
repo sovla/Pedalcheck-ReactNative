@@ -70,9 +70,7 @@ export default function ShopUpdate() {
             weekendStart: numberChangeFormat(mstWorktime.split('오전 ')[2].split('시')[0]),
             weekendEnd: numberChangeFormat(mstWorktime.split('오후 ')[2].split('시')[0]),
           });
-        } catch (error) {
-          console.log(error);
-        }
+        } catch (error) {}
       }
       setSelectDay(
         changeValue.map(value => {

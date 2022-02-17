@@ -22,9 +22,7 @@ export default function KakaoImage({onPress}) {
     try {
       const token = await login();
       getProfile();
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const getProfile = async () => {
@@ -35,9 +33,7 @@ export default function KakaoImage({onPress}) {
       const {id, email, nickname} = profile;
 
       await SnsLogin(id, nickname, email, 2, dispatch, navigation, token.token);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   // const unlinkKakao = async () => {
