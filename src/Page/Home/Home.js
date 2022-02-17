@@ -16,6 +16,8 @@ import {useIsFocused} from '@react-navigation/native';
 import {useEffect} from 'react';
 export default function Home({navigation}) {
   const betweenBoxWidth = Platform.OS === 'android' ? '262px' : '312px';
+  // 안드로이드 카카오 구글 네이버    3가지
+  // IOS 카카오 구글 네이버 애플로그인 4가지 로 크기가 다릅니다.
 
   const {
     login,
@@ -23,8 +25,6 @@ export default function Home({navigation}) {
   } = useSelector(state => state);
   const isFocused = useIsFocused();
 
-  // 안드로이드 카카오 구글 네이버    3가지
-  // IOS 카카오 구글 네이버 애플로그인 4가지 로 크기가 다릅니다.
   useEffect(() => {
     if (login?.idx && login?.mt_status && login?.mt_status !== 'N' && isFocused) {
       if (!isAdmin) {
@@ -47,7 +47,6 @@ export default function Home({navigation}) {
           <KakaoImage />
           <GoogleImage />
           <NaverImage />
-
           <AppleImage />
         </BetweenBox>
       </Box>

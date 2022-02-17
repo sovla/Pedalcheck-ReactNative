@@ -44,7 +44,7 @@
       android:allowBackup="true"
       android:theme="@style/AppTheme"
       android:largeHeap="true">
-     <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBaBiTpEuWcpVeYJyy33v8OvnFzaNJz6RE"/> 
+      <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBaBiTpEuWcpVeYJyy33v8OvnFzaNJz6RE"/> 
      <!-- You will also only need to add this uses-libray tag --> 
       <uses-library android:name="org.apache.http.legacy" android:required="false"/>
       <activity
@@ -58,7 +58,6 @@
         <intent-filter>
               <action android:name="android.intent.action.MAIN" />
               <category android:name="android.intent.category.LAUNCHER" />
-              <data android:scheme="myapp" />
           </intent-filter>
           <intent-filter>
               <data android:host="oauth"

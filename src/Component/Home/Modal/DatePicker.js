@@ -40,12 +40,10 @@ export default function BirthDatePicker({birth, setBirth}) {
 
   useLayoutEffect(() => {
     if (birth) {
-      setDateDummy(new Date(`${birth.year}-${numberChangeFormat(birth.month)}-${numberChangeFormat(birth.day)}`));
-      setBirthDate({
-        year: birth.year,
-        month: birth.month,
-        day: birth.day,
-      });
+      const changeDate = new Date(`${birth.year}-${numberChangeFormat(birth.month)}-${numberChangeFormat(birth.day)}`);
+      if (changeDate instanceof Date && !isNaN(changeDate)) {
+        setDateDummy(changeDate);
+      }
     }
   }, []);
 

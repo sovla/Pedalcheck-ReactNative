@@ -49,29 +49,29 @@ export default function IdentityVerification() {
         navigation.reset({routes: [{name: 'Home'}]});
         break;
       case 'no mt_idx':
-        AlertButton('확인이 되지 않은 고객번호입니다.');
-        navigation.goBack();
+        AlertButton('확인이 되지 않은 고객번호입니다. 재 로그인 해주세요.');
+        navigation.reset({routes: [{name: 'Home'}]});
         break;
       case 'mt_idx is not exist':
-        AlertButton('고객번호가 조회되지 않습니다.');
-        navigation.goBack();
+        AlertButton('고객번호가 조회되지 않습니다. 재 로그인 해주세요.');
+        navigation.reset({routes: [{name: 'Home'}]});
         break;
       case 'mt_idx is unsign':
         AlertButton('탈퇴한 회원입니다.');
-        navigation.goBack();
+        navigation.reset({routes: [{name: 'Home'}]});
         break;
       case 'not allowed same account':
         AlertButton('탈퇴 후 재가입은 불가능합니다. 다른 아이디를 이용해주세요.');
-        navigation.goBack();
+        navigation.reset({routes: [{name: 'Home'}]});
         break;
       case 'unknown error':
-        AlertButton('알수 없는 오류 입니다.');
-        navigation.goBack();
+        AlertButton('알수 없는 오류 입니다. 재 로그인 해주세요.');
+        navigation.reset({routes: [{name: 'Home'}]});
         break;
 
       default:
-        AlertButton('알수 없는 오류 입니다.');
-        navigation.goBack();
+        AlertButton('알수 없는 오류 입니다. 재 로그인 해주세요.');
+        navigation.reset({routes: [{name: 'Home'}]});
         break;
     }
   }, [msg]);

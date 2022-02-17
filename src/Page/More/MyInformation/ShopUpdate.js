@@ -62,12 +62,13 @@ export default function ShopUpdate() {
         : [storeInfo?.mst_holiday];
       if (storeInfo?.mst_worktime && storeInfo.mst_worktime.includes('오전')) {
         const mstWorktime = storeInfo.mst_worktime;
+
         try {
           setOpeningHours({
             weekdayStart: numberChangeFormat(mstWorktime.split('오전 ')[1].split('시')[0]),
             weekdayEnd: numberChangeFormat(mstWorktime.split('오후 ')[1].split('시')[0]),
             weekendStart: numberChangeFormat(mstWorktime.split('오전 ')[2].split('시')[0]),
-            weekendEnd: numberChangeFormat(mstWorktime.split('오전 ')[2].split('시')[0]),
+            weekendEnd: numberChangeFormat(mstWorktime.split('오후 ')[2].split('시')[0]),
           });
         } catch (error) {
           console.log(error);

@@ -11,10 +11,16 @@ import {Alert} from 'react-native';
 export default function ProductPost({title = '정비 - 오버홀', price = 19000, item, onPressDelete}) {
   const navigation = useNavigation();
   return (
-    <BetweenBox width="380px" height="50px" pd="10px 5px" alignItems="center" style={borderBottomWhiteGray}>
-      <DarkMediumText>{title}</DarkMediumText>
+    <BetweenBox
+      width="380px"
+      minHeight="50px"
+      pd="10px 5px"
+      alignItems="center"
+      style={borderBottomWhiteGray}
+      flexWrap="wrap">
+      <DarkMediumText width="200px">{title}</DarkMediumText>
       <RowBox alignItems="center">
-        <MoneyText fontWeight={Theme.fontWeight.bold} money={price} color={Theme.color.black} />
+        <MoneyText width="80px" fontWeight={Theme.fontWeight.bold} money={price} color={Theme.color.black} />
         <RowBox alignItems="center" mg="0px 0px 0px 10px">
           <ModifyButton
             onPress={() =>

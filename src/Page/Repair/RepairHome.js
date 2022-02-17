@@ -131,7 +131,12 @@ export default function RepairHome() {
     await getShopList({
       _mt_idx: login?.idx,
       page: initPage ?? apiPage,
-      mst_addr: innerLocation === '전체' ? '전체' : innerLocation.includes('전체') && innerLocation.split(' 전체')[0], // 위치로 검색
+      mst_addr:
+        innerLocation === '전체'
+          ? '전체'
+          : innerLocation.includes('전체')
+          ? innerLocation.split(' 전체')[0]
+          : innerLocation, // 위치로 검색
       search_sel: selectType === '매장명' ? 'mst_name' : 'mst_brand', // 검색하는 경우 추가
       search_txt: searchText,
       mst_tag: mst_tag, //
@@ -234,7 +239,7 @@ export default function RepairHome() {
       <FooterButtons selectMenu={1} />
       {isModal && (
         <Modal visible={isModal} transparent>
-          <Box justifyContent="center" alignItems="center" flex={1} backgroundColor="#0006">
+          <Box justifyContent="center" alignItems="center" style={{flex: 1}} backgroundColor="#0006">
             <Ad info={ad.ad} setIsModal={setIsModal} />
           </Box>
         </Modal>

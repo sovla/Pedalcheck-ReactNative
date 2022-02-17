@@ -23,6 +23,7 @@ export default function QuestionItem({
   onPressItem,
   onPressUpdate,
   onPressDelete,
+  isDetail = true,
 }) {
   const {size} = useSelector(state => state);
   const color = status === '답변' ? Theme.color.skyBlue : Theme.color.red;
@@ -33,9 +34,7 @@ export default function QuestionItem({
           <Box pd="0px 0px 0px 10px" width={size.minusPadding}>
             <BetweenBox width="370px" mg="16px 0px">
               <Box>
-                {categoryName && (
-                  <IndigoText fontSize={Theme.fontSize.fs14}>{categoryName}</IndigoText>
-                )}
+                {categoryName && <IndigoText fontSize={Theme.fontSize.fs14}>{categoryName}</IndigoText>}
 
                 <DarkBoldText fontSize={Theme.fontSize.fs15}>{questionTitle}</DarkBoldText>
                 <GrayText fontSize={Theme.fontSize.fs12} letterSpacing="0px">
@@ -53,11 +52,7 @@ export default function QuestionItem({
                   {status}
                 </BorderButton>
                 <Box mg="0px 0px 0px 10px">
-                  <DefaultImage
-                    source={isSelect ? ArrowUpIcon : ArrowDownIcon}
-                    width="24px"
-                    height="24px"
-                  />
+                  <DefaultImage source={isSelect ? ArrowUpIcon : ArrowDownIcon} width="24px" height="24px" />
                 </Box>
               </RowBox>
             </BetweenBox>
@@ -85,11 +80,7 @@ export default function QuestionItem({
             )}
 
             <TouchableOpacity onPress={onPressDelete}>
-              <BorderButton
-                width="44px"
-                height="25px"
-                borderColor={Theme.borderColor.gray}
-                color={Theme.color.black}>
+              <BorderButton width="44px" height="25px" borderColor={Theme.borderColor.gray} color={Theme.color.black}>
                 <DarkMediumText fontSize={Theme.fontSize.fs13}>삭제</DarkMediumText>
               </BorderButton>
             </TouchableOpacity>
@@ -101,11 +92,7 @@ export default function QuestionItem({
                 width={size.minusPadding}
                 backgroundColor={Theme.color.backgroundBlue}
                 borderRadius="10px">
-                <RowBox
-                  width="44px"
-                  pd="0px 11px 0px 0px"
-                  justifyContent="flex-end"
-                  backgroundColor="#0000">
+                <RowBox width="44px" pd="0px 11px 0px 0px" justifyContent="flex-end" backgroundColor="#0000">
                   <DefaultImage source={ReplyIcon} width="24px" height="24px" />
                 </RowBox>
                 <Box backgroundColor="#0000">
@@ -115,20 +102,16 @@ export default function QuestionItem({
                       {adminWriteDate}
                     </GrayText>
                   </RowBox>
-                  <DarkText numberOfLines={3} width="325px">
+                  <DarkText numberOfLines={isDetail ? 3 : 1000} width="325px">
                     {adminContent}
                   </DarkText>
                 </Box>
               </RowBox>
-              <RowBox>
-                <LinkWhiteButton
-                  mg="15px 0px"
-                  content="자세히보기"
-                  width="380px"
-                  height="35px"
-                  borderRadius="3px"
-                />
-              </RowBox>
+              {isDetail && (
+                <RowBox>
+                  <LinkWhiteButton mg="15px 0px" content="자세히보기" width="380px" height="35px" borderRadius="3px" />
+                </RowBox>
+              )}
             </>
           )}
         </Box>

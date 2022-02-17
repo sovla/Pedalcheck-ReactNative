@@ -168,7 +168,7 @@ const FeedBox = ({item, size, onPressImage}) => {
             <IndigoText fontSize={Theme.fontSize.fs14} fontWeight={Theme.fontWeight.bold}>
               {item?.ft_store_name}
             </IndigoText>
-            <GrayText fontSize={Theme.fontSize.fs13}>{item?.ft_wdate}</GrayText>
+            <GrayText fontSize={Theme.fontSize.fs13}>{item?.ft_wdate.substring(0, 10)}</GrayText>
           </RowBox>
         </Box>
       </RowBox>
