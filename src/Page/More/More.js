@@ -131,14 +131,11 @@ export default function More() {
 
   const changeAdmin = async () => {
     try {
-      console.log(isAdmin, 'isAdmin Second');
       if (isAdmin) {
         //  어드민인 경우 true 값
-        console.log('true');
         await AsyncStorage.setItem('isAdmin', 'true');
       } else {
         //  어드민 아닌 경우 제거
-        console.log('false');
         await AsyncStorage.setItem('isAdmin', 'false');
       }
     } catch (error) {}

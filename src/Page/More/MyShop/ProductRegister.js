@@ -92,7 +92,6 @@ export default function ProductRegister({route: {params}}) {
         return true;
       })
       .catch(err => {
-        console.log(err);
         return false;
       });
     return result;

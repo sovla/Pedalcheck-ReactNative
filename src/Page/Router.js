@@ -121,7 +121,6 @@ export default function Router() {
         await getIsAdmin();
       }
     } catch (error) {
-      console.log(error, 'tokenError');
     } finally {
       setTimeout(() => {
         SplashScreen.hide();
@@ -174,7 +173,6 @@ export default function Router() {
   const getIsAdmin = async () => {
     try {
       const isAdmin = await AsyncStorage.getItem('isAdmin');
-      console.log(isAdmin, 'isAdmin First');
       if (isAdmin === 'true') {
         dispatch(setIsAdmin(true));
       } else {

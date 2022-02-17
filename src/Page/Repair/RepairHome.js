@@ -95,9 +95,7 @@ export default function RepairHome() {
           if (nowDay - dateDay >= 1) {
             setIsModal(true);
           }
-        } catch (err) {
-          console.log(err);
-        }
+        } catch (err) {}
       };
 
       getData();

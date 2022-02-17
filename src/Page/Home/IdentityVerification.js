@@ -25,9 +25,7 @@ export default function IdentityVerification() {
             alert('앱 실행이 실패했습니다');
           }
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .catch(err => {});
 
       return false;
     } else {
@@ -39,7 +37,6 @@ export default function IdentityVerification() {
   };
 
   useUpdateEffect(() => {
-    console.log(msg);
     switch (msg) {
       case 'success':
         navigation.navigate('RegisterInformation');

@@ -114,9 +114,7 @@ export default function ReservationPayment({navigation, route: {params}}) {
             });
           }
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .catch(err => {});
       i++;
     }
   };

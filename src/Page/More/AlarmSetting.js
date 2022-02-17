@@ -31,7 +31,7 @@ export default function AlarmSetting() {
       _mt_idx: login?.idx,
       mt_pushing: userInformation.mt_pushing === 'Y' ? 'Y' : 'N',
       mt_agree: userInformation.mt_agree === 'Y' ? 'Y' : 'N',
-    }).then(res => console.log(res));
+    }).then(res => res);
 
     dispatch(setUserInfo(userInformation));
   }, [userInformation]);

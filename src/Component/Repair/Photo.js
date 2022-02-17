@@ -51,7 +51,7 @@ const PhotoComponent = ({
           setImageArray(prev => [...prev, images]);
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => err);
   };
   const onPressDeleteHandle = async (deleteIndex, item) => {
     const result = await onPressDelete(item);

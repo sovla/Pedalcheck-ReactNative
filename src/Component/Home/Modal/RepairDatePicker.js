@@ -24,11 +24,6 @@ export default function RepairDatePicker({birth, setBirth}) {
     dispatch(modalClose());
   };
 
-  useLayoutEffect(() => {
-    if (birth) {
-      console.log(birth);
-    }
-  }, []);
   return (
     <>
       <ModalTitleBox size={size} title="날짜 선택" padding={32} />

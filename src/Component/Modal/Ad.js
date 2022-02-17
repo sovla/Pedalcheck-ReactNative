@@ -21,7 +21,6 @@ export default function Ad({info, setIsModal}) {
     }
     setIsModal(false);
   };
-  console.log(height);
   return (
     <Box height={`${height}px`} backgroundColor="#bbb0" borderRadius="15px">
       {info.at_close === '1' && (
