@@ -12,7 +12,7 @@ import {getPrivacyPolicy} from '@/API/More/More';
 import {useEffect} from 'react';
 import RenderHTML from 'react-native-render-html';
 
-export default function Service() {
+export default function Privacy() {
   const size = useSelector(state => state.size);
   const dispatch = useDispatch();
   const [content, setContent] = useState('');
@@ -20,12 +20,12 @@ export default function Service() {
   useEffect(() => {
     if (content === '')
       getPrivacyPolicy({
-        st_agree: 2,
+        st_agree: 1,
       }).then(res => setContent(res?.data?.data?.data));
   }, []);
   return (
     <>
-      <ModalTitleBox size={size} title="서비스 이용 약관" />
+      <ModalTitleBox size={size} title="페달체크 개인정보 수집 및 이용 약관" />
       <ScrollView
         style={{
           maxHeight: 370,
@@ -33,7 +33,7 @@ export default function Service() {
         }}>
         <Box pd="20px" width="100%" backgroundColor={Theme.color.backgroundBlue} borderRadius="5px">
           <DefaultText color={Theme.color.black} fontSize={Theme.fontSize.fs14} fontWeight={Theme.fontWeight.bold}>
-            페달체크 서비스 이용약관{'\n\n'}
+            페달체크 개인정보 수집 및 이용 약관{'\n\n'}
           </DefaultText>
           <RenderHTML
             contentWidth={0}

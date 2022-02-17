@@ -34,26 +34,20 @@ export default function ReservationPayment({navigation, route: {params}}) {
   });
 
   const [orderIdx, setOrderIdx] = useState('');
-
   const dispatch = useDispatch();
-  const isFocused = useIsFocused();
-  if (!isFocused) {
-    return null;
-  }
 
   const {
     reservationInfo,
     shopInfo: {store_info},
     login,
   } = useSelector(state => state);
-  const {
-    selectProduct: {selectProduct},
-    selectBike,
-    selectDate,
-    selectPayment,
-  } = reservationInfo;
 
-  const firstProduct = selectProduct[0]?.item?.pt_title;
+  const selectProduct = reservationInfo?.selectProduct?.selectProduct;
+  const selectBike = reservationInfo?.selectBike;
+  const selectDate = reservationInfo?.selectDate;
+  const selectPayment = reservationInfo?.selectPayment;
+
+  const firstProduct = selectProduct?.length > 0 ? selectProduct[0]?.item?.pt_title : '';
   const totalPrice = reduceItem(selectProduct, 'pt_dc_price');
 
   const reservationTime = `${selectDate?.date} ${selectDate?.time}`;
@@ -62,7 +56,7 @@ export default function ReservationPayment({navigation, route: {params}}) {
     {title: '매장명', content: store_info?.mst_name},
     {
       title: '정비상품',
-      content: selectProduct?.length > 1 ? `${firstProduct} 외 ${selectProduct.length - 1}건` : firstProduct,
+      content: selectProduct?.length > 1 ? `${firstProduct} 외 ${selectProduct?.length - 1}건` : firstProduct,
     },
     {title: '결제금액', content: numberFormat(totalPrice) + '원'},
     {title: '예약시간', content: reservationTime},
