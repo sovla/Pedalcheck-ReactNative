@@ -48,7 +48,6 @@ export default function Home({navigation}) {
           <KakaoImage />
           <GoogleImage />
           <NaverImage />
-
           <AppleImage />
         </BetweenBox>
       </Box>
