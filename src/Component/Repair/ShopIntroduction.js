@@ -4,12 +4,12 @@ import React from 'react';
 import LocationIcon from '@assets/image/ic_location2.png';
 import TimeIcon from '@assets/image/ic_time.png';
 import BikeIcon from '@assets/image/ic_brand.png';
-import {DarkBoldText, DarkMediumText, DarkText} from '@/assets/global/Text';
+import {DarkBoldText, DarkMediumText, DarkText, IndigoText} from '@/assets/global/Text';
 import DefaultLine from '@/assets/global/Line';
 import Theme from '@/assets/global/Theme';
 import {useSelector} from 'react-redux';
 import Dummy from '@assets/image/map.png';
-import {Dimensions, TouchableOpacity} from 'react-native';
+import {Dimensions, Linking, TouchableOpacity} from 'react-native';
 import {borderBottomWhiteGray} from '../BikeManagement/ShopRepairHistory';
 import MapView, {Marker} from 'react-native-maps';
 import {getPixel} from '@/Util/pixelChange';
@@ -147,6 +147,26 @@ export default function ShopIntroduction() {
             <DarkText lineHeight="22px" width={size.minusPadding}>
               {store_info?.mst_intro}
             </DarkText>
+          </Box>
+        </>
+      )}
+      {store_info?.mst_sns?.length > 0 && (
+        <>
+          <Box mg="20px 0px 10px">
+            <DarkBoldText>매장 링크</DarkBoldText>
+          </Box>
+          <Box width={size.minusPadding}>
+            <TouchableOpacity
+              onPress={async () => {
+                const result = await Linking.canOpenURL(store_info?.mst_sns);
+                if (result) {
+                  Linking.openURL(store_info.mst_sns);
+                }
+              }}>
+              <IndigoText lineHeight="22px" width={size.minusPadding}>
+                {store_info?.mst_sns}
+              </IndigoText>
+            </TouchableOpacity>
           </Box>
         </>
       )}

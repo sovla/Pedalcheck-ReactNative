@@ -56,6 +56,7 @@ export default function ShopUpdate() {
     weekendStart: '오전',
     weekendEnd: '오후',
   });
+  const [sns, setSns] = useState('');
 
   const dispatch = useDispatch();
   const [lastSortCount, setLastSortCount] = useState(0);
@@ -513,6 +514,22 @@ export default function ShopUpdate() {
                 }),
               );
             }}
+          />
+          <DefaultInput
+            title="매장 링크"
+            width={size.minusPadding}
+            fontSize={Theme.fontSize.fs15}
+            placeHolder="매장 링크를 입력해주세요"
+            pd="0px 0px 5px"
+            mg="20px 0px"
+            value={shopInformation?.mst_sns}
+            changeFn={text => {
+              setShopInformation(prev => ({
+                ...prev,
+                mst_sns: text,
+              }));
+            }}
+            maxLength={200}
           />
           <DefaultInput
             title="이메일 (세금계산서 발급용)"

@@ -6,7 +6,7 @@ import {Alert} from 'react-native';
 export const SnsLogin = async (id, name, email, type, dispatch, navigation, token) => {
   // 2:카카오/3:네이버/4:구글/5:애플
 
-  let LoginApi = () => {};
+  let LoginApi = async () => {};
   if (type === 2) {
     LoginApi = KakaoLogin;
   } else if (type === 3) {

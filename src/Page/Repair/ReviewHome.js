@@ -40,9 +40,13 @@ export default function ReviewHome() {
           reviewList.map(item => {
             let product = '';
             let price = '';
+
             if (item?.ot_pt_title.length && item.ot_pt_title[0] !== '' && item.ot_pt_title[0].includes(' ')) {
-              product = item.ot_pt_title[0].split(' ')[0];
-              price = item.ot_pt_title[0].split(' ')[1];
+              try {
+                const split = item.ot_pt_title[0].split('원')[0].split(' ');
+                product = split.filter((v, i) => i !== split.length - 1).reduce((p, c) => p + c);
+                price = split[split.length - 1];
+              } catch (error) {}
             }
 
             const changeItem = {

@@ -10,19 +10,13 @@ import SpannerIcon from '@assets/image/menu01_on.png';
 import LikeIcon from '@assets/image/good_b.png';
 
 const ShopCustomerStats = ({likeCustomer = 123456, customer = 7890, repairCount = 10000, likeCount = 123456}) => {
+  const date = new Date();
   return (
     <Box width="380px" pd="10px 16px 20px" borderRadius="10px" mg="26px 0px 0px">
       <BetweenBox width="348px" mg="10px 0px 0px" alignItems="center">
         <DarkBoldText fontSize={Theme.fontSize.fs15}>매장 현황 리뷰</DarkBoldText>
-        <GrayText fontSize={Theme.fontSize.fs13}>업데이트 2021-10-13</GrayText>
+        <GrayText fontSize={Theme.fontSize.fs13}>업데이트 {date.toISOString().split('T')[0]}</GrayText>
       </BetweenBox>
-      <RowBox width="348px" mg="10px 0px 0px" alignItems="center">
-        <DefaultImage source={CustomerHeartIcon} width="24px" height="24px" />
-        <DarkBoldText mg="0px 5px 0px 10px" fontSize={Theme.fontSize.fs15}>
-          {numberFormat(likeCustomer)}
-        </DarkBoldText>
-        <DarkText fontSize={Theme.fontSize.fs15}>관심매장 고객</DarkText>
-      </RowBox>
       <RowBox width="348px" mg="10px 0px 0px" alignItems="center">
         <DefaultImage source={CustomerIcon} width="24px" height="24px" />
         <DarkBoldText mg="0px 5px 0px 10px" fontSize={Theme.fontSize.fs15}>

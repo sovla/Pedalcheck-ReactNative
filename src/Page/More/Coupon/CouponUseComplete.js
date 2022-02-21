@@ -29,7 +29,7 @@ export default function CouponUseComplete({route: {params}, route}) {
     ot_hp: '010-6464-6464',
     ot_name: '신혜수',
   };
-
+  console.log(selectBike, 'selectBike');
   const [isDone, setIsDone] = useState(true);
   const [reservationInfo, setReservationInfo] = useState(dummy);
   useLayoutEffect(() => {
@@ -38,8 +38,8 @@ export default function CouponUseComplete({route: {params}, route}) {
       cst_idx: coupon.cst_idx,
       mbt_idx: selectBike?.mbt_idx,
       ot_bike_nick: selectBike?.mbt_nick,
-      ot_bike_brand: selectBike?.ot_bike_brand,
-      ot_bike_model: selectBike?.ot_bike_model,
+      ot_bike_brand: selectBike?.ot_bike_brand ?? selectBike?.mbt_brand,
+      ot_bike_model: selectBike?.ot_bike_model ?? selectBike?.mbt_model,
       mst_idx: shopInfo.mst_idx,
       ot_pt_date: selectDate.date,
       ot_pt_time: selectDate.time,

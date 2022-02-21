@@ -18,14 +18,13 @@ import {AlertButton, RequireLoginAlert} from '@/Util/Alert';
 import Loading from '@/Component/Layout/Loading';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {useIsFocused} from '@react-navigation/native';
-import ReviewComment from '@/Component/Repair/ReviewComment';
 import {clearReservation} from '@/Store/reservationState';
 
 export default function Shop({route, navigation}) {
   const [selectMenu, setSelectMenu] = useState('매장소개');
   const [isDone, setIsDone] = useState(true);
   const [isLike, setIsLike] = useState(false);
-  const {size, login, shopInfo} = useSelector(state => state);
+  const {size, login, shopInfo, test} = useSelector(state => state);
   const mt_idx = route.params?.mt_idx ?? shopInfo?.store_info?.mt_idx;
   const isFocused = useIsFocused();
 

@@ -14,7 +14,7 @@ export const showToastMessage = (text, time = 3000) => {
   });
 };
 
-export const showPushToastMessage = ({remoteMessage, onPress, props, ...rest}) => {
+export const showPushToastMessage = ({remoteMessage, onPress, props, onShow, ...rest}) => {
   Toast.show({
     type: 'pushToast',
     position: 'top',
@@ -23,7 +23,9 @@ export const showPushToastMessage = ({remoteMessage, onPress, props, ...rest}) =
     visibilityTime: 3000,
     autoHide: true,
     topOffset: 0,
-    onShow: () => {},
+    onShow: async () => {
+      await onShow();
+    },
     onHide: () => {},
     onPress: async () => {
       await Toast.hide();
