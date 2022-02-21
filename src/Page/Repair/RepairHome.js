@@ -33,6 +33,9 @@ import Dummy from '@assets/image/shop_dummy.png';
 import {imageAddress} from '@assets/global/config';
 import Ad from '@/Component/Modal/Ad';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getTagList} from '@/API/More/More';
+import {useRef} from 'react';
+import useInterval from '@/Hooks/useInterval';
 
 export default function RepairHome() {
   const {
@@ -59,6 +62,8 @@ export default function RepairHome() {
   const [isScroll, setIsScroll] = useState(false);
   const [isDone, setIsDone] = useState(true);
   const [isModal, setIsModal] = useState(false);
+
+  const [tagList, setTagList] = useState([]);
   const onPressTag = tagName => {
     // By.Junhan tag에 값이 없다면 넣어주고 있다면 제거
     if (tag.find(item => item === tagName)) {
@@ -106,6 +111,9 @@ export default function RepairHome() {
     if (isFocused && storeList?.length < 1) {
       getShopListHandle(1);
     }
+    if (isFocused) {
+      getTagListHandle();
+    }
   }, [isFocused]);
 
   useUpdateEffect(() => {
@@ -114,6 +122,14 @@ export default function RepairHome() {
     }
   }, [selectItem, sortSelectItem, tag, innerLocation, isSearch]);
   // 현태 태그 및 메뉴 선택 시 리렌더링
+
+  const getTagListHandle = async () => {
+    const response = await getTagList();
+    if (response.data?.result === 'true' && response.data?.data?.data && response.data?.data?.data?.length > 0) {
+      const data = response.data?.data?.data;
+      setTagList(data.map((v, i) => v?.st_title));
+    }
+  };
 
   const getShopListHandle = async initPage => {
     if (isLast && !initPage) {
@@ -189,6 +205,7 @@ export default function RepairHome() {
               setselectType={setselectType}
               selectType={selectType}
               bannerList={bannerList}
+              tagList={tagList}
             />
           }
           data={storeList}
@@ -264,6 +281,7 @@ const Header = ({
   selectType,
   setselectType,
   bannerList,
+  tagList,
 }) => {
   return (
     <>
@@ -400,8 +418,26 @@ const Header = ({
 
 const Event = () => {
   const [eventList, setEventList] = useState([]);
+  const [count, setCount] = useState(1);
   const isFocused = useIsFocused();
   const navigation = useNavigation();
+  const ref = useRef(null);
+
+  useInterval(
+    () => {
+      if (ref?.current) {
+        ref.current.scrollTo({
+          x: getPixel(272) * count,
+        });
+        setCount(prev => prev + 1);
+      }
+    },
+    count ? 3000 : null,
+  );
+
+  const onRemoveContactPress = () => {
+    setCount(0);
+  };
 
   useEffect(() => {
     if (isFocused && !eventList?.length) {
@@ -410,19 +446,36 @@ const Event = () => {
         board: 'event',
       })
         .then(res => res?.data?.result === 'true' && res?.data?.data?.data)
-        .then(data => setEventList(data?.board));
+        .then(data => setEventList(data?.board))
+        .then(() => {
+          getEventList({
+            view_mode: 'main',
+            board: 'notice',
+          })
+            .then(res => res?.data?.result === 'true' && res?.data?.data?.data)
+            .then(data => setEventList(prev => [...prev, ...data?.board]));
+        });
     }
   }, [isFocused]);
   return (
     <>
       <BorderBottomBox title="EVENT" height="28px" titleColor={Theme.color.skyBlue} borderColor={Theme.color.skyBlue}>
-        <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false}>
+        <ScrollView
+          ref={ref}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          onTouchStart={() => {
+            onRemoveContactPress();
+          }}>
           {eventList?.length > 0 &&
             eventList.map((item, index) => (
               <TouchableOpacity
                 key={index + 'Event'}
                 style={{marginBottom: 5}}
-                onPress={() => navigation.navigate('Post', {...item, select: '이벤트'})}>
+                onPress={() => {
+                  navigation.navigate('Post', {...item, select: '이벤트'});
+                }}>
                 <DarkText numberOfLines={1} style={{width: getPixel(272)}}>
                   {item?.bt_title}
                 </DarkText>
@@ -512,5 +565,4 @@ const sortArray1 = [
     value: '거리순',
   },
 ];
-const tagList = ['픽업', '출장수리', '피팅전문', '카본수리', '중고거래', '광고'];
-const dummyImageArray = [ShopDummyImage, ShopDummyImage, ShopDummyImage];
+// const tagList = ['픽업', '출장수리', '피팅전문', '카본수리', '중고거래', '광고'];
