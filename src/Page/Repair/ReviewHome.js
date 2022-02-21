@@ -40,9 +40,13 @@ export default function ReviewHome() {
           reviewList.map(item => {
             let product = '';
             let price = '';
+
             if (item?.ot_pt_title.length && item.ot_pt_title[0] !== '' && item.ot_pt_title[0].includes(' ')) {
-              product = item.ot_pt_title[0].split(' ')[0];
-              price = item.ot_pt_title[0].split(' ')[1];
+              try {
+                const split = item.ot_pt_title[0].split('원')[0].split(' ');
+                product = split.filter((v, i) => i !== split.length - 1).reduce((p, c) => p + c);
+                price = split[split.length - 1];
+              } catch (error) {}
             }
 
             const changeItem = {
@@ -60,7 +64,11 @@ export default function ReviewHome() {
             <Box mg="70px 0px 30px">
               <DefaultImage source={RepairLogo} width="150px" height="150px" />
             </Box>
-            <DarkText fontSize={Theme.fontSize.fs18}>정비이력이 없습니다.</DarkText>
+            <DarkText fontSize={Theme.fontSize.fs18} mg="0px 0px 20px">
+              정비이력이 없습니다.
+            </DarkText>
+            <DarkText fontSize={Theme.fontSize.fs18}>페달체크에서 정비예약한 경우에만</DarkText>
+            <DarkText fontSize={Theme.fontSize.fs18}>리뷰를 남길 수 있습니다.</DarkText>
           </Container>
         )}
       </Container>

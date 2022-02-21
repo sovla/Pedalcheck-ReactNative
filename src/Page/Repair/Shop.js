@@ -18,14 +18,13 @@ import {AlertButton, RequireLoginAlert} from '@/Util/Alert';
 import Loading from '@/Component/Layout/Loading';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {useIsFocused} from '@react-navigation/native';
-import ReviewComment from '@/Component/Repair/ReviewComment';
 import {clearReservation} from '@/Store/reservationState';
 
 export default function Shop({route, navigation}) {
   const [selectMenu, setSelectMenu] = useState('매장소개');
   const [isDone, setIsDone] = useState(true);
   const [isLike, setIsLike] = useState(false);
-  const {size, login, shopInfo} = useSelector(state => state);
+  const {size, login, shopInfo, test} = useSelector(state => state);
   const mt_idx = route.params?.mt_idx ?? shopInfo?.store_info?.mt_idx;
   const isFocused = useIsFocused();
 
@@ -74,6 +73,8 @@ export default function Shop({route, navigation}) {
     }
   };
 
+  const isPartner = shopInfo?.store_info?.mst_type === '1';
+
   const getShopDetailApi = async () => {
     setIsDone(true);
     await getShopDetail({
@@ -96,7 +97,7 @@ export default function Shop({route, navigation}) {
           ListHeaderComponent={
             <>
               <ShopHeader size={size} />
-              <MenuNav menuItem={menu} select={selectMenu} setSelect={setSelectMenu} />
+              <MenuNav menuItem={isPartner ? menu : ['매장소개']} select={selectMenu} setSelect={setSelectMenu} />
 
               {selectMenu === '매장소개' && <ShopIntroduction />}
               {selectMenu === '상품보기' && <ProductsShow />}
@@ -124,6 +125,7 @@ export default function Shop({route, navigation}) {
           isLike={isLike}
           onPressLike={onPressLike}
           my_bike={shopInfo?.my_bike}
+          isPartner={isPartner}
         />
       </Container>
     </>

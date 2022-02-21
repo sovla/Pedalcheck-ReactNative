@@ -47,12 +47,15 @@ export default function ReviewRecord({itemArray, isSelect = true, pd = '20px 10p
             <IndigoText fontSize={Theme.fontSize.fs15} fontWeight={Theme.fontWeight.bold} mg="0px 10px 0px 0px">
               {showItem.product}
             </IndigoText>
-            <MoneyText
-              money={showItem.price}
-              fontWeight={Theme.fontWeight.medium}
-              color={Theme.color.black}
-              mg="0px 7px 0px 0px"
-            />
+            {showItem?.price?.length > 0 && (
+              <MoneyText
+                money={showItem.price}
+                fontWeight={Theme.fontWeight.medium}
+                color={Theme.color.black}
+                mg="0px 7px 0px 0px"
+              />
+            )}
+
             {itemArrayLength > 1 && <DefaultText color={Theme.color.gray}>{`외 ${itemArrayLength - 1}건`}</DefaultText>}
           </RowBox>
         </Box>

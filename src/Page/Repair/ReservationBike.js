@@ -1,4 +1,3 @@
-import {getMyBikeList} from '@/API/Shop/Shop';
 import {Box} from '@/assets/global/Container';
 import DefaultLine from '@/assets/global/Line';
 import Theme from '@/assets/global/Theme';

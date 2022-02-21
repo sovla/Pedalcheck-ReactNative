@@ -143,7 +143,7 @@ export default function BikeDetail({navigation, route}) {
           },
           {
             title: '사이즈',
-            value: bike.mbt_wheel,
+            value: bike?.mbt_size,
           },
           {
             title: '컬러',

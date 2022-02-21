@@ -1,6 +1,14 @@
 import {Button} from '@/assets/global/Button';
-import {Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
-import {DarkMediumText, DefaultText, IndigoText} from '@/assets/global/Text';
+import {BetweenBox, Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
+import {
+  DarkBoldText,
+  DarkMediumText,
+  DarkText,
+  DefaultText,
+  GrayText,
+  IndigoText,
+  MediumText,
+} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import MenuNav from '@/Component/Layout/MenuNav';
@@ -18,8 +26,10 @@ import UseCouponItem from '@/Component/MyInformation/UseCouponItem';
 import {useLayoutEffect} from 'react';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import Loading from '@/Component/Layout/Loading';
-import {getHeightPixel} from '@/Util/pixelChange';
+import {getHeightPixel, getPixel} from '@/Util/pixelChange';
 import {getCouponCategoryNumber} from '@/Util/changeCategory';
+import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
+import Badge from '@/Component/BikeManagement/Badge';
 
 export default function CouponManagement({navigation, route: {params}}) {
   const [selectMenu, setSelectMenu] = useState('쿠폰함');
@@ -130,9 +140,9 @@ export default function CouponManagement({navigation, route: {params}}) {
       await setUsagePage(1);
       await setIsLastPage(prev => ({...prev, usage: false}));
     }
-    await getCouponUsageStateList({
+    await getCouponList({
       _mt_idx: login.idx,
-      ot_status: getCouponCategoryNumber(dropMenu),
+      cst_status: 2,
       page: page ?? usagePage,
     })
       .then(async res => {
@@ -179,15 +189,15 @@ export default function CouponManagement({navigation, route: {params}}) {
       {isDone && <Loading isAbsolute />}
       <Header title="쿠폰 관리" />
       <MenuNav menuItem={menu} select={selectMenu} setSelect={setSelectMenu} />
-      {selectMenu === '쿠폰함' && <CouponBox selectSubMenu={selectSubMenu} setSelectSubMenu={setSelectSubMenu} />}
-      {selectMenu === '쿠폰 사용 현황' && <CouponUsageStatus setDropMenu={setDropMenu} dropMenu={dropMenu} />}
+      {/* {selectMenu === '쿠폰함' && <CouponBox selectSubMenu={selectSubMenu} setSelectSubMenu={setSelectSubMenu} />} */}
+      {/* {selectMenu === '쿠폰 사용 현황' && <CouponUsageStatus setDropMenu={setDropMenu} dropMenu={dropMenu} />} */}
       <FlatList
         data={data}
         renderItem={({item, index}) => {
           return (
             <>
               {selectMenu === '쿠폰함' && selectSubMenu === '보유' && (
-                <CouponItem
+                <CouponBox
                   couponName={item?.ct_title}
                   shopName={item?.mst_name}
                   issueDate={item?.cst_wdate?.substr(0, 16)}
@@ -219,12 +229,26 @@ export default function CouponManagement({navigation, route: {params}}) {
                   onPress={() => {
                     navigation.navigate('RepairHistoryDetail', {item});
                   }}>
+                  {/* cst_edate: "2023-12-31 00:00:00"
+                    cst_idx: "344"
+                    cst_sdate: "2021-11-01 00:00:00"
+                    cst_status: "예약"
+                    cst_udate: null
+                    cst_wdate: "2022-02-21 11:41:24"
+                    ct_code: "CP415900"
+                    ct_idx: "2"
+                    ct_title: "체인 무료 교체"
+                    mst_idx: "1"
+                    mst_name: "페달체크"
+                    od_idx: "209" */}
                   <UseCouponItem
                     couponName={item?.ct_title}
                     shopName={item?.mst_name}
                     bikeNickName={item?.ot_bike_nick}
-                    useCouponDate={item?.ot_pt_date + ' ' + item?.ot_pt_time.substr(0, 5)}
-                    badgeContent={item?.ot_status}
+                    couponDate={item?.cst_sdate?.substring(0, 10) + ' ~ ' + item?.cst_edate?.substring(0, 10)}
+                    useCouponDate={item?.od_pt_datetime}
+                    badgeContent={item?.cst_status}
+                    useCouponShopName={item?.od_mst_name}
                     // rejectionContent={item?.cst_edate}
                   />
                 </TouchableOpacity>
@@ -263,68 +287,52 @@ export default function CouponManagement({navigation, route: {params}}) {
   );
 }
 
-const CouponUsageStatus = ({dropMenu, setDropMenu}) => {
+const CouponBox = ({
+  couponName = '쿠폰이름',
+  shopName = '매장명',
+  issueDate = '발급날',
+  startOfAvailability = '사용 기간 시작날',
+  endOfAvailability = '사용 기간 끝날',
+  status = '사용',
+  badgeContent,
+  rejectionContent = '거절사유가 입력됩니다. 거절사유가 입력됩니다.',
+  onPressCouponUse = () => {},
+  isAdmin,
+}) => {
+  const height = badgeContent === '미사용' ? (isAdmin ? '100px' : '120px') : '100px';
   return (
-    <Box mg="20px 16px 0px">
-      <DefaultInput value={dropMenu} changeFn={setDropMenu} isDropdown dropdownItem={couponDropdownList} />
-    </Box>
-  );
-};
+    <TouchableOpacity
+      onPress={onPressCouponUse}
+      style={[borderBottomWhiteGray, {width: getPixel(380), marginHorizontal: getPixel(16)}]}>
+      <BetweenBox alignItems="center" pd="16px 10px" width="100%" height={height}>
+        <Box>
+          <DarkBoldText fontSize={Theme.fontSize.fs16} mg="0px 0px 3px">
+            {couponName}
+          </DarkBoldText>
+          <RowBox>
+            <DarkText fontSize={Theme.fontSize.fs14} mg="0px 5px 0px 0px">
+              발행
+            </DarkText>
+            <MediumText color={Theme.color.indigo} fontSize={Theme.fontSize.fs14}>
+              {shopName}
+            </MediumText>
+          </RowBox>
+          <RowBox>
+            <GrayText mg="0px 5px 0px 0px" fontSize={Theme.fontSize.fs13}>
+              쿠폰 유효기간
+            </GrayText>
+            <GrayText fontSize={Theme.fontSize.fs13}>{startOfAvailability} ~ </GrayText>
 
-const CouponBox = ({setSelectSubMenu, selectSubMenu}) => {
-  const {size} = useSelector(state => state);
-
-  const colorSelector = (type, item) => {
-    if (type === 'text') {
-      return item ? Theme.color.indigo : Theme.color.gray;
-    } else {
-      return item ? Theme.color.indigo : Theme.borderColor.gray;
-    }
-  };
-
-  return (
-    <Box>
-      <RowBox mg="15px 16px">
-        <TouchableOpacity onPress={() => setSelectSubMenu('보유')}>
-          <Button
-            width="185px"
-            height="35px"
-            backgroundColor={Theme.color.white}
-            borderColor={colorSelector('border', selectSubMenu === '보유')}
-            borderRadius="3px"
-            mg="0px 10px 0px 0px">
-            <DefaultText
-              fontSize={Theme.fontSize.fs13}
-              color={colorSelector('text', selectSubMenu === '보유')}
-              fontWeight={Theme.fontWeight.bold}>
-              보유
+            <GrayText fontSize={Theme.fontSize.fs13}>{endOfAvailability}</GrayText>
+          </RowBox>
+          {badgeContent === '승인취소' && rejectionContent !== '' && (
+            <DefaultText color={Theme.color.red} fontSize={Theme.fontSize.fs13}>
+              {rejectionContent}
             </DefaultText>
-          </Button>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setSelectSubMenu('완료 · 만료')}>
-          <Button
-            width="185px"
-            height="35px"
-            backgroundColor={Theme.color.white}
-            borderColor={colorSelector('border', selectSubMenu === '완료 · 만료')}
-            borderRadius="3px">
-            <DefaultText
-              fontSize={Theme.fontSize.fs13}
-              fontWeight={Theme.fontWeight.bold}
-              color={colorSelector('text', selectSubMenu === '완료 · 만료')}>
-              완료 · 만료
-            </DefaultText>
-          </Button>
-        </TouchableOpacity>
-      </RowBox>
-      {/* {selectSubMenu === '보유' && (
-        <Box width={size.designWidth} alignItems="center">
-          <IndigoText fontSize={Theme.fontSize.fs14}>
-            쿠폰은 발행매장에서만 사용가능합니다.
-          </IndigoText>
+          )}
         </Box>
-      )} */}
-    </Box>
+      </BetweenBox>
+    </TouchableOpacity>
   );
 };
 

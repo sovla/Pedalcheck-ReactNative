@@ -22,7 +22,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {imageAddress} from '@assets/global/config';
 import {setStoreInfo} from '@/Store/storeInfoState';
 import Loading from '@/Component/Layout/Loading';
-import pixelChange from '@/Util/pixelChange';
+import pixelChange, {getPixel} from '@/Util/pixelChange';
 import {openTimehalfList, openTimePmList} from '@/assets/global/dummy';
 import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
 import {numberChangeFormat} from '@/Util/numberFormat';
@@ -50,6 +50,14 @@ export default function ShopUpdate() {
     mst_email: '',
   });
 
+  const [openingSelect, setOpeningSelect] = useState({
+    weekdayStart: '오전',
+    weekdayEnd: '오후',
+    weekendStart: '오전',
+    weekendEnd: '오후',
+  });
+  const [sns, setSns] = useState('');
+
   const dispatch = useDispatch();
   const [lastSortCount, setLastSortCount] = useState(0);
 
@@ -60,17 +68,34 @@ export default function ShopUpdate() {
       const changeValue = storeInfo?.mst_holiday?.includes(',')
         ? storeInfo?.mst_holiday?.split(',')
         : [storeInfo?.mst_holiday];
-      if (storeInfo?.mst_worktime && storeInfo.mst_worktime.includes('오전')) {
+      if (storeInfo?.mst_worktime) {
         const mstWorktime = storeInfo.mst_worktime;
 
         try {
+          const weekdayStart = mstWorktime.split('주말')[0].split(' ')[2];
+          const weekdayEnd = mstWorktime.split('주말')[0].split(' ')[5];
+          const weekendStart = mstWorktime.split('주말')[1].split(' ')[2];
+          const weekendEnd = mstWorktime.split('주말')[1].split(' ')[5];
+
+          const getTime = timeString => {
+            return numberChangeFormat(timeString.substring(0, timeString.length));
+          };
+
           setOpeningHours({
-            weekdayStart: numberChangeFormat(mstWorktime.split('오전 ')[1].split('시')[0]),
-            weekdayEnd: numberChangeFormat(mstWorktime.split('오후 ')[1].split('시')[0]),
-            weekendStart: numberChangeFormat(mstWorktime.split('오전 ')[2].split('시')[0]),
-            weekendEnd: numberChangeFormat(mstWorktime.split('오후 ')[2].split('시')[0]),
+            weekdayStart: getTime(weekdayStart),
+            weekdayEnd: getTime(weekdayEnd),
+            weekendStart: getTime(weekendStart),
+            weekendEnd: getTime(weekendEnd),
           });
-        } catch (error) {}
+          setOpeningSelect({
+            weekdayStart: mstWorktime.split('주말')[0].split(' ')[1],
+            weekdayEnd: mstWorktime.split('주말')[0].split(' ')[4],
+            weekendStart: mstWorktime.split('주말')[1].split(' ')[1],
+            weekendEnd: mstWorktime.split('주말')[1].split(' ')[4],
+          });
+        } catch (error) {
+          console.log(error);
+        }
       }
       setSelectDay(
         changeValue.map(value => {
@@ -141,7 +166,7 @@ export default function ShopUpdate() {
       const localImageArray = imageArray.filter(item => !item?.sort);
       response = await updateStoreImage({
         ...shopInformation,
-        mst_worktime: `평일 오전 ${+openingHours.weekdayStart}시 ~ 오후 ${+openingHours.weekdayEnd}시\n주말 오전 ${+openingHours.weekendStart}시 ~ 오후 ${+openingHours.weekendEnd}시`,
+        mst_worktime: setWorkTime(openingHours, openingSelect),
         mst_holiday: selectDay
           .map(v => v - 1)
           .sort()
@@ -160,7 +185,7 @@ export default function ShopUpdate() {
           .sort()
           .join(),
         _mt_idx: login.idx,
-        mst_worktime: `평일 오전 ${+openingHours.weekdayStart}시 ~ 오후 ${+openingHours.weekdayEnd}시\n주말 오전 ${+openingHours.weekendStart}시 ~ 오후 ${+openingHours.weekendEnd}시`,
+        mst_worktime: setWorkTime(openingHours, openingSelect),
       });
     }
 
@@ -348,8 +373,13 @@ export default function ShopUpdate() {
           <Box width="380px">
             <DarkBoldText fontSize={Theme.fontSize.fs15}>영업시간</DarkBoldText>
             <RowBox alignItems="center">
-              <DarkText>평일</DarkText>
-              <DarkText mg="0px 0px 0px 10px">오전</DarkText>
+              <DarkText mg="0px 10px 0px 0px">평일</DarkText>
+              <DefaultDropdown
+                pdLeft={10}
+                data={ampm}
+                value={openingSelect.weekdayStart}
+                setValue={value => setOpeningSelect(prev => ({...prev, weekdayStart: value}))}
+              />
               <Box width="10px" />
               <DefaultDropdown
                 data={openTimehalfList}
@@ -357,7 +387,13 @@ export default function ShopUpdate() {
                 setValue={value => onChangeDate(value, 'weekdayStart')}
               />
               <DarkText mg="0px 10px">~</DarkText>
-              <DarkText mg="0px 10px 0px 0px">오후</DarkText>
+              <DefaultDropdown
+                pdLeft={10}
+                data={ampm}
+                value={openingSelect.weekdayEnd}
+                setValue={value => setOpeningSelect(prev => ({...prev, weekdayEnd: value}))}
+              />
+              <Box width="10px" />
               <DefaultDropdown
                 data={openTimePmList}
                 value={openingHours.weekdayEnd}
@@ -365,8 +401,13 @@ export default function ShopUpdate() {
               />
             </RowBox>
             <RowBox alignItems="center" mg="10px 0px 0px">
-              <DarkText>주말</DarkText>
-              <DarkText mg="0px 0px 0px 10px">오전</DarkText>
+              <DarkText mg="0px 10px 0px 0px">주말</DarkText>
+              <DefaultDropdown
+                pdLeft={10}
+                data={ampm}
+                value={openingSelect.weekendStart}
+                setValue={value => setOpeningSelect(prev => ({...prev, weekendStart: value}))}
+              />
               <Box width="10px" />
               <DefaultDropdown
                 data={openTimehalfList}
@@ -374,7 +415,14 @@ export default function ShopUpdate() {
                 setValue={value => onChangeDate(value, 'weekendStart')}
               />
               <DarkText mg="0px 10px">~</DarkText>
-              <DarkText mg="0px 10px 0px 0px">오후</DarkText>
+              <DefaultDropdown
+                width={65}
+                pdLeft={10}
+                data={ampm}
+                value={openingSelect.weekendEnd}
+                setValue={value => setOpeningSelect(prev => ({...prev, weekdayEnd: value}))}
+              />
+              <Box width="10px" />
               <DefaultDropdown
                 data={openTimePmList}
                 value={openingHours.weekendEnd}
@@ -468,6 +516,22 @@ export default function ShopUpdate() {
             }}
           />
           <DefaultInput
+            title="매장 링크"
+            width={size.minusPadding}
+            fontSize={Theme.fontSize.fs15}
+            placeHolder="매장 링크를 입력해주세요"
+            pd="0px 0px 5px"
+            mg="20px 0px"
+            value={shopInformation?.mst_sns}
+            changeFn={text => {
+              setShopInformation(prev => ({
+                ...prev,
+                mst_sns: text,
+              }));
+            }}
+            maxLength={200}
+          />
+          <DefaultInput
             title="이메일 (세금계산서 발급용)"
             width={size.minusPadding}
             fontSize={Theme.fontSize.fs15}
@@ -508,3 +572,21 @@ export default function ShopUpdate() {
 }
 
 const dayList = ['일', '월', '화', '수', '목', '금', '토'];
+const ampm = [
+  {
+    label: '오전',
+    value: '오전',
+  },
+  {
+    label: '오후',
+    value: '오후',
+  },
+];
+
+const setWorkTime = (time, ampmSelect) => {
+  return `평일 ${ampmSelect.weekdayStart} ${+time.weekdayStart}시 ~ ${
+    ampmSelect.weekdayEnd
+  } ${+time.weekdayEnd}시\n주말 ${ampmSelect.weekendStart} ${+time.weekendStart}시 ~ ${
+    ampmSelect.weekendEnd
+  } ${+time.weekendEnd}시`;
+};

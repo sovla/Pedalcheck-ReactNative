@@ -231,6 +231,7 @@ export default function RepairHistorySelectHistory() {
               price={item?.ot_price}
               couponUse={item?.ot_use_coupon !== '0'}
               onPress={() => onPressProduct(item)}
+              badgeContent={item?.ot_status}
             />
           );
         }}
@@ -261,7 +262,15 @@ export default function RepairHistorySelectHistory() {
   );
 }
 
-const ReceiptProduct = ({productName = '', name = '', date = '', price = 0, couponUse = false, onPress}) => {
+const ReceiptProduct = ({
+  productName = '',
+  name = '',
+  date = '',
+  price = 0,
+  couponUse = false,
+  onPress,
+  badgeContent,
+}) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <BetweenBox width="380px" pd="0px 10px" height="92px" alignItems="center" style={borderBottomWhiteGray}>
@@ -271,7 +280,8 @@ const ReceiptProduct = ({productName = '', name = '', date = '', price = 0, coup
           <GrayText fontSize={Theme.fontSize.fs12}>{date}</GrayText>
         </Box>
         <Box>
-          <RowBox alignItems="center">
+          {badgeContent?.length > 0 && <Badge badgeContent={badgeContent} />}
+          <RowBox alignItems="center" mg="10px 0px 0px">
             {couponUse ? (
               <Badge badgeContent="쿠폰" />
             ) : (

@@ -15,6 +15,8 @@ import {imageAddress} from '@assets/global/config';
 import WebView from 'react-native-webview';
 import CloseWhiteIcon from '@assets/image/close_white.png';
 import {useRef} from 'react';
+import AutoHeightImage from 'react-native-auto-height-image';
+import {getPixel} from '@/Util/pixelChange';
 
 export default function Feed() {
   const {size} = useSelector(state => state);
@@ -134,24 +136,22 @@ const FeedBox = ({item, size, onPressImage}) => {
       pd="0px 0px 20px"
       alignItems="center"
       style={{
-        borderRadius: 15,
+        borderRadius: getPixel(15),
       }}>
       {item?.ft_thumb && (
         <TouchableOpacity onPress={() => onPressImage(item?.ft_link)}>
-          <DefaultImage
+          <AutoHeightImage
             style={{
-              borderTopLeftRadius: 15,
-              borderTopRightRadius: 15,
+              borderTopLeftRadius: getPixel(15),
+              borderTopRightRadius: getPixel(15),
             }}
-            resizeMode="stretch"
             source={thumbImage}
-            width="380px"
-            height="200px"
+            width={getPixel(380)}
           />
         </TouchableOpacity>
       )}
 
-      <RowBox mg="15px 15px 0px" justifyContent="space-between">
+      <RowBox mg="15px 15px 0px 8px" justifyContent="space-between">
         <Box width="75px" alignItems="center">
           <DefaultImage source={image} width="45px" height="45px" borderRadius="100px" />
         </Box>

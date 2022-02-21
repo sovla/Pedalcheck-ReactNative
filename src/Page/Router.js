@@ -158,6 +158,8 @@ export default function Router() {
         await navigationRef.current.navigate(remoteMessage?.data?.intent, {
           menu: remoteMessage.data.content_idx,
         });
+      } else if (remoteMessage.data.intent === 'logout') {
+        //로그아웃일때
       } else {
         await navigationRef.current.navigate(remoteMessage?.data?.intent, {
           menu: remoteMessage?.data?.content_idx2,
@@ -173,6 +175,7 @@ export default function Router() {
   const getIsAdmin = async () => {
     try {
       const isAdmin = await AsyncStorage.getItem('isAdmin');
+
       if (isAdmin === 'true') {
         dispatch(setIsAdmin(true));
       } else {
@@ -186,6 +189,11 @@ export default function Router() {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       showPushToastMessage({
         remoteMessage: remoteMessage,
+        onShow: () => {
+          if (remoteMessage?.data?.intent === 'logout') {
+            mesagingHandler(remoteMessage);
+          }
+        },
         onPress: () => {
           mesagingHandler(remoteMessage);
           Toast.hide();

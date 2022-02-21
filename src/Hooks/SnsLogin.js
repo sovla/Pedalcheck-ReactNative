@@ -6,7 +6,7 @@ import {Alert} from 'react-native';
 export const SnsLogin = async (id, name, email, type, dispatch, navigation, token) => {
   // 2:카카오/3:네이버/4:구글/5:애플
 
-  let LoginApi = () => {};
+  let LoginApi = async () => {};
   if (type === 2) {
     LoginApi = KakaoLogin;
   } else if (type === 3) {
@@ -33,6 +33,10 @@ export const SnsLogin = async (id, name, email, type, dispatch, navigation, toke
         mt_idx: result?.data?.data?.data?.idx,
       }),
     );
+    if (type === 5) {
+      dispatch(setUserInfo(result?.data?.data?.data));
+      return navigation.reset({routes: [{name: 'RepairHome'}]});
+    }
 
     if (result?.data?.data?.data?.mt_status === 'Y') {
       // 회원가입 완료
@@ -40,10 +44,7 @@ export const SnsLogin = async (id, name, email, type, dispatch, navigation, toke
       return navigation.reset({routes: [{name: 'RepairHome'}]});
     } else {
       // 처음 SNS 로그인
-      if (type === 5) {
-        dispatch(setUserInfo(result?.data?.data?.data));
-        return navigation.reset({routes: [{name: 'RepairHome'}]});
-      }
+
       return navigation.navigate('Register');
     }
   } else {

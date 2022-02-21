@@ -13,6 +13,7 @@ import {imageAddress} from '@assets/global/config';
 import {useState} from 'react';
 import ReviewComment from './ReviewComment';
 import {useLayoutEffect} from 'react';
+import SwiperAutoHeight from './SwiperAutoHeight';
 
 export default function Review({
   isDetail = false,
@@ -101,7 +102,7 @@ export default function Review({
       </RowBox>
       <Box mg="15px 0px 0px" borderRadius="10px">
         {isDetailPage ? (
-          <Swiper width={size.minusPadding} height={200} imageArray={imageArray} borderRadius="All" isRolling={false} />
+          <Swiper width={size.minusPadding} imageArray={imageArray} borderRadius="All" isRolling={false} />
         ) : (
           imageArray?.length > 0 && (
             <Box>

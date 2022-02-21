@@ -82,6 +82,7 @@ export default function CouponUseBikeSelect({route: {params}}) {
     if (isFocused) {
       getMyBikeList({
         _mt_idx: login?.idx,
+        mbt_flag: 'Y',
       })
         .then(res => res.data?.result === 'true' && res.data.data.data)
         .then(data => setBikeList(data));
@@ -92,6 +93,7 @@ export default function CouponUseBikeSelect({route: {params}}) {
       });
     }
   }, [isFocused]);
+  console.log(bikeList);
 
   return (
     <>
