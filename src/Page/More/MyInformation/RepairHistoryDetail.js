@@ -129,7 +129,7 @@ export default function RepairHistoryDetail({route: {params}}) {
               <RepairHistoryDetailHeader
                 status={repair?.ot_status}
                 productName={[repair?.pt_title]}
-                shopName={repair?.mst_name}
+                shopName=""
                 rejectionReason={repair?.ot_cmemo ? repair?.ot_cmemo : ''}
                 completeDate={repair?.ot_status === '처리완료' ? repair?.ot_cdate?.slice(0, 16) : ''}
                 // 수정 필요
@@ -159,31 +159,32 @@ export default function RepairHistoryDetail({route: {params}}) {
                 <RowBox>
                   <DarkBoldText>정비요청 정보</DarkBoldText>
                 </RowBox>
+                <RowBox mg="10px 0px 0px">
+                  <DarkMediumText width="110px" fontSize={Theme.fontSize.fs15}>
+                    사용매장
+                  </DarkMediumText>
+                  <DarkText style={{flex: 1}} fontSize={Theme.fontSize.fs15}>
+                    {repair?.mst_name}
+                  </DarkText>
+                </RowBox>
+                <RowBox alignItems="center" mg="10px 0px 0px">
+                  <DarkMediumText width="110px" fontSize={Theme.fontSize.fs15}>
+                    예약시간
+                  </DarkMediumText>
+                  <DarkText style={{flex: 1}} fontSize={Theme.fontSize.fs15}>
+                    {repair?.ot_pt_date}&nbsp;{repair?.ot_pt_time?.slice(0, 5)}
+                  </DarkText>
+                </RowBox>
                 <RowBox mg="10px 0px">
                   <DarkMediumText width="110px" fontSize={Theme.fontSize.fs15}>
                     정비 자전거
                   </DarkMediumText>
                   <DarkText style={{flex: 1}} fontSize={Theme.fontSize.fs15}>
                     {repair?.ot_bike_nick}
-                  </DarkText>
-                </RowBox>
-                {repair?.ot_bike_brand?.length > 0 && repair?.ot_bike_model?.length > 0 && (
-                  <RowBox mg="0px 0px 10px">
-                    <DarkMediumText width="110px" fontSize={Theme.fontSize.fs15}>
-                      브랜드 / 모델
-                    </DarkMediumText>
-                    <DarkText style={{flex: 1}} fontSize={Theme.fontSize.fs15}>
-                      {repair?.ot_bike_brand} / {repair?.ot_bike_model}
-                    </DarkText>
-                  </RowBox>
-                )}
-
-                <RowBox>
-                  <DarkMediumText width="110px" fontSize={Theme.fontSize.fs15}>
-                    예약시간
-                  </DarkMediumText>
-                  <DarkText style={{flex: 1}} fontSize={Theme.fontSize.fs15}>
-                    {repair?.ot_pt_date}&nbsp;{repair?.ot_pt_time?.slice(0, 5)}
+                    {`\n`}
+                    {repair?.ot_bike_brand?.length > 0 &&
+                      repair?.ot_bike_model?.length > 0 &&
+                      `${repair?.ot_bike_brand} / ${repair?.ot_bike_model}`}
                   </DarkText>
                 </RowBox>
 

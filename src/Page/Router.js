@@ -173,6 +173,7 @@ export default function Router() {
   const getIsAdmin = async () => {
     try {
       const isAdmin = await AsyncStorage.getItem('isAdmin');
+
       if (isAdmin === 'true') {
         dispatch(setIsAdmin(true));
       } else {

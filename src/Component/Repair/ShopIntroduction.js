@@ -112,9 +112,7 @@ export default function ShopIntroduction() {
                   <Box width="252px">
                     {item?.content?.includes('평일') &&
                     item?.content?.includes('주말') &&
-                    item?.content?.includes('오전') &&
                     item?.content?.includes('\n') &&
-                    item?.content?.includes('오후') &&
                     item?.content?.includes('시') ? (
                       item.content.split('\n').map((mapItem, index) => (
                         <RowBox width="252px" key={index} mg={index !== 2 ? '0px 0px 3px' : '0px'}>
