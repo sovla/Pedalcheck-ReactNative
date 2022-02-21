@@ -20,6 +20,8 @@ import {getBikeList} from '@/API/Bike/Bike';
 import {ResetShopInfo} from '@/Store/shopInfoState';
 import {ResetStoreInfo} from '@/Store/storeInfoState';
 import {logOut} from '@/API/More/More';
+import {setIsAdmin} from '@/Store/adminState';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Information({route: {params}}) {
   const {size, login} = useSelector(state => state);
@@ -101,6 +103,8 @@ export default function Information({route: {params}}) {
               dispatch(resetSnsInfo());
               dispatch(resetUserInfo());
               dispatch(ResetStoreInfo());
+              dispatch(setIsAdmin(false));
+              await AsyncStorage.removeItem('isAdmin');
               navigation.reset({routes: [{name: 'Home'}]});
             }}>
             <RowBox backgroundColor="#0000" style={borderBottomWhiteGray} width={size.minusPadding}>
