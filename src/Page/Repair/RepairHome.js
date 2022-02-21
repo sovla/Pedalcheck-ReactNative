@@ -470,14 +470,22 @@ const Event = () => {
         board: 'event',
       })
         .then(res => res?.data?.result === 'true' && res?.data?.data?.data)
-        .then(data => setEventList(data?.board))
+        .then(data => {
+          if (data?.board?.length > 0) {
+            setEventList(data?.board?.map(v => ({...v, select: '이벤트'})));
+          }
+        })
         .then(() => {
           getEventList({
             view_mode: 'main',
             board: 'notice',
           })
             .then(res => res?.data?.result === 'true' && res?.data?.data?.data)
-            .then(data => setEventList(prev => [...prev, ...data?.board]));
+            .then(data => {
+              if (data?.board?.length > 0) {
+                setEventList(prev => [...prev, ...data?.board?.map(v => ({...v, select: '공지'}))]);
+              }
+            });
         });
     }
   }, [isFocused]);
@@ -498,7 +506,7 @@ const Event = () => {
                 key={index + 'Event'}
                 style={{marginBottom: 5}}
                 onPress={() => {
-                  navigation.navigate('Post', {...item, select: '이벤트'});
+                  navigation.navigate('Post', {...item, select: item?.select ?? '이벤트'});
                 }}>
                 <DarkText numberOfLines={1} style={{width: getPixel(272)}}>
                   {item?.bt_title}
