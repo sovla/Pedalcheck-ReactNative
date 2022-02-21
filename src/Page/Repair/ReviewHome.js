@@ -60,7 +60,11 @@ export default function ReviewHome() {
             <Box mg="70px 0px 30px">
               <DefaultImage source={RepairLogo} width="150px" height="150px" />
             </Box>
-            <DarkText fontSize={Theme.fontSize.fs18}>정비이력이 없습니다.</DarkText>
+            <DarkText fontSize={Theme.fontSize.fs18} mg="0px 0px 20px">
+              정비이력이 없습니다.
+            </DarkText>
+            <DarkText fontSize={Theme.fontSize.fs18}>페달체크에서 정비예약한 경우에만</DarkText>
+            <DarkText fontSize={Theme.fontSize.fs18}>리뷰를 남길 수 있습니다.</DarkText>
           </Container>
         )}
       </Container>

@@ -190,7 +190,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
     },
     {
       title: '사이즈',
-      value: reservationInfo?.mbt_size ? reservationInfo?.mbt_size + 'cm' : '',
+      value: reservationInfo?.mbt_size ?? '',
     },
     {
       title: '컬러',
@@ -201,7 +201,6 @@ export default function ReservationManagementDetail({navigation, route: {params}
       value: reservationInfo?.mbt_model_detail,
     },
   ];
-
   const reservationTime = new Date(reservationInfo.ot_pt_date + ' ' + reservationInfo.ot_pt_time);
   const now = new Date();
   // 예약시간 <= 현재시간 인경우 true

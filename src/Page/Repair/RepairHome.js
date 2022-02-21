@@ -298,7 +298,7 @@ const Header = ({
         setSelectImage(prev => prev + 1);
       }
     },
-    count ? 3000 : null,
+    count !== 0 && count < bannerList?.length ? 3000 : null,
   );
 
   const onRemoveContactPress = () => {
@@ -449,14 +449,16 @@ const Event = () => {
 
   useInterval(
     () => {
-      if (ref?.current) {
+      if (ref?.current && count < eventList?.length) {
         ref.current.scrollTo({
           x: getPixel(272) * count,
         });
         setCount(prev => prev + 1);
+      } else {
+        return;
       }
     },
-    count ? 3000 : null,
+    count !== 0 && count < eventList?.length ? 3000 : null,
   );
 
   const onRemoveContactPress = () => {
