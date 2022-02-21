@@ -90,6 +90,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setIsAdmin} from '@/Store/adminState';
 import Toast from 'react-native-toast-message';
 import SplashScreen from 'react-native-splash-screen';
+import IdentityVerification from './Home/IdentityVerification';
 
 const INIT_ROUTER_COMPONENT_NAME = 'Home'; //  라우팅 초기값
 
@@ -120,7 +121,6 @@ export default function Router() {
         await getIsAdmin();
       }
     } catch (error) {
-      console.log(error, 'tokenError');
     } finally {
       setTimeout(() => {
         SplashScreen.hide();
@@ -173,7 +173,6 @@ export default function Router() {
   const getIsAdmin = async () => {
     try {
       const isAdmin = await AsyncStorage.getItem('isAdmin');
-      console.log(isAdmin, 'isAdmin First');
       if (isAdmin === 'true') {
         dispatch(setIsAdmin(true));
       } else {
@@ -354,6 +353,10 @@ const RouterSetting = [
   {
     name: 'Home',
     component: Home,
+  },
+  {
+    name: 'IdentityVerification',
+    component: IdentityVerification,
   },
   {
     name: 'AlarmSetting',

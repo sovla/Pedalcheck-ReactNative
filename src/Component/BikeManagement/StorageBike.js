@@ -38,7 +38,7 @@ export default function StorageBike({size, item, getBikeListHandle}) {
             brandName: item.mbt_brand,
             modelName: item.mbt_model,
             bikeName: item.mbt_nick,
-            date: item.mbt_wdate,
+            date: item.mbt_wdate.substring(0, 10),
             repairCount: item.mbt_orders,
           };
 

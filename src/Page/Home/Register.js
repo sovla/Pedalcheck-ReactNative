@@ -102,7 +102,7 @@ export default function Register({navigation}) {
           <LinkButton
             width={size.minusPadding}
             to={() => {
-              navigation.navigate('RegisterInformation');
+              navigation.navigate('IdentityVerification');
             }}
             content="다음"
             disabled={!checkObject.service || !checkObject.privacy}

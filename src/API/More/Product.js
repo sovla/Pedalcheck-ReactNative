@@ -13,18 +13,14 @@ export const getProductInfoList = async args => {
   try {
     const response = await API.post('mng/product_info.php', args);
     return response;
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 export const sendProductInfo = async args => {
   try {
     const response = await ImageAPI(args, 'pt_image', 'mng/product_add.php', false, true);
     return response;
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 export const editProductInfo = async args => {
@@ -60,25 +56,19 @@ export const editProductInfo = async args => {
 
     const response = await axios.post(baseURL + 'mng/product_edit.php', formData);
     return response;
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 export const getProductCategoryList = async args => {
   try {
     const response = await API.post('mng/get_product_cate.php', args);
     return response;
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 export const deleteProduct = async args => {
   try {
     const response = await API.post('mng/product_del.php', args);
     return response;
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };

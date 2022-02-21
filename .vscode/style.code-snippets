@@ -104,7 +104,7 @@
       "       const response = await API.post('$1', args);",
       "       return response;",
       "   } catch (error) {",
-      "       console.log(error);",
+      "         ",
       "   }",
       "};"
     ]

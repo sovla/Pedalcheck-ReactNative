@@ -83,22 +83,22 @@ export default function Feed() {
         </Box>
         {webUri !== '' && (
           <Modal visible>
-            <SafeAreaView>
+            <SafeAreaView style={{flex: 1}}>
               <PositionBox
-                top="0px"
-                left="0px"
-                backgroundColor="#0004"
-                height="60px"
-                width="100%"
-                alignItems="flex-end"
+                backgroundColor="#0006"
+                top="30px"
+                right="30px"
+                alignItems="center"
                 justifyContent="center"
+                width="40px"
+                height="40px"
                 zIndex={100}>
                 <TouchableOpacity
-                  style={{paddingRight: 15}}
+                  style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
                   onPress={() => {
                     setWebUri('');
                   }}>
-                  <DefaultImage source={CloseWhiteIcon} width="30px" height="30px" />
+                  <DefaultImage source={CloseWhiteIcon} width="20px" height="20px" />
                 </TouchableOpacity>
               </PositionBox>
 
@@ -168,7 +168,7 @@ const FeedBox = ({item, size, onPressImage}) => {
             <IndigoText fontSize={Theme.fontSize.fs14} fontWeight={Theme.fontWeight.bold}>
               {item?.ft_store_name}
             </IndigoText>
-            <GrayText fontSize={Theme.fontSize.fs13}>{item?.ft_wdate}</GrayText>
+            <GrayText fontSize={Theme.fontSize.fs13}>{item?.ft_wdate.substring(0, 10)}</GrayText>
           </RowBox>
         </Box>
       </RowBox>

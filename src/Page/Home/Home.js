@@ -11,23 +11,23 @@ import {Platform, TouchableOpacity} from 'react-native';
 import {GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {useLayoutEffect} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
 import {useEffect} from 'react';
+import {LinkButton} from '@/assets/global/Button';
+import {modalOpen} from '@/Store/modalState';
 export default function Home({navigation}) {
   const betweenBoxWidth = Platform.OS === 'android' ? '262px' : '312px';
-
+  // 안드로이드 카카오 구글 네이버    3가지
+  // IOS 카카오 구글 네이버 애플로그인 4가지 로 크기가 다릅니다.
   const {
     login,
     admin: {isAdmin},
   } = useSelector(state => state);
   const isFocused = useIsFocused();
 
-  // 안드로이드 카카오 구글 네이버    3가지
-  // IOS 카카오 구글 네이버 애플로그인 4가지 로 크기가 다릅니다.
   useEffect(() => {
     if (login?.idx && login?.mt_status && login?.mt_status !== 'N' && isFocused) {
-      console.log('useLayoutEffect');
       if (!isAdmin) {
         navigation.replace('RepairHome');
       } else {
@@ -51,7 +51,6 @@ export default function Home({navigation}) {
           <AppleImage />
         </BetweenBox>
       </Box>
-
       <HomeFooter navigation={navigation} isShowLogin={false} />
     </>
   );

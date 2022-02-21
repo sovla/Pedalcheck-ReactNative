@@ -211,8 +211,6 @@ export default function BikeDetail({navigation, route}) {
     );
   };
 
-  console.log(order);
-
   return (
     <>
       <Header title="자전거 상세" RightComponent={RightComponent} />

@@ -203,6 +203,7 @@ export default function Question({route: {params}}) {
                 onPressItem={() => onPressItem(item?.qt_idx)}
                 onPressDelete={() => onPressDelete(item?.qt_idx)}
                 onPressUpdate={() => onPressUpdate(item)}
+                isDetail={false}
               />
             </Box>
           );

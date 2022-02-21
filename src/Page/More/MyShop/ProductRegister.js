@@ -24,9 +24,11 @@ import {useSelector} from 'react-redux';
 import {imageAddress} from '@assets/global/config';
 import {deleteImage} from '@/API/More/More';
 import {useEffect} from 'react';
+import {useRef} from 'react';
 
 export default function ProductRegister({route: {params}}) {
   const {login} = useSelector(state => state);
+  const ref = useRef(null);
 
   const [product, setProduct] = useState(initProductInfo);
 
@@ -35,6 +37,7 @@ export default function ProductRegister({route: {params}}) {
     pt_price: '',
     pt_time: '',
     pt_weeken_time: '',
+    pt_weekend: '',
   });
 
   const [mainCategory, setMainCategory] = useState([]);
@@ -67,6 +70,10 @@ export default function ProductRegister({route: {params}}) {
       setErrorMessage(prev => ({...prev, pt_weeken_time: '주말 종료시간은 주말 시작시간 이후여야 합니다.'}));
       result = true;
     }
+    if (product.pt_weekend === 'N' && product.pt_weekend_time === 'N') {
+      setErrorMessage(prev => ({...prev, pt_weekend: '주말 예약 가능 여부를 선택해주세요.'}));
+      result = true;
+    }
 
     return result;
   };
@@ -85,13 +92,15 @@ export default function ProductRegister({route: {params}}) {
         return true;
       })
       .catch(err => {
-        console.log(err);
         return false;
       });
     return result;
   };
   const onPressSubmit = () => {
     if (regJoin()) {
+      ref.current.scrollTo({
+        y: 0,
+      });
       return null;
     }
 
@@ -174,7 +183,7 @@ export default function ProductRegister({route: {params}}) {
   return (
     <>
       <Header title={`정비상품 ${isItem ? '수정' : '등록'}`} />
-      <ScrollBox pd="0px 16px">
+      <ScrollBox pd="0px 16px" ref={ref}>
         <RowBox pd="20px 0px" style={borderBottomWhiteGray}>
           <RequireFieldText />
         </RowBox>
@@ -275,6 +284,7 @@ export default function ProductRegister({route: {params}}) {
             </RowBox>
           </TouchableOpacity>
         )}
+        {errorMessage.pt_weekend.length > 0 && <ErrorText>{errorMessage.pt_weekend}</ErrorText>}
 
         {product.pt_weekend !== 'Y' && product.pt_weekend_time === 'Y' && (
           <RowBox mg="10px 0px 0px">

@@ -48,7 +48,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
       .then(images => {
         setImage(images);
       })
-      .catch(err => console.log(err));
+      .catch(err => err);
   };
 
   const addBikeHandle = async () => {

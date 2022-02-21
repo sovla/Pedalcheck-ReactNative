@@ -30,6 +30,7 @@ import SearchId from '../More/Modal/SearchId';
 import BikeBrand from '../BikeManagement/Modal/BikeBrand';
 import RepairDatePicker from '../Home/Modal/RepairDatePicker';
 import Ad from './Ad';
+import Privacy from '../Home/Modal/Privacy';
 
 // 2022-01-04 08:31:15
 // Junhan
@@ -52,7 +53,7 @@ export default function ModalBasic() {
       case 'service':
         return Service;
       case 'privacy':
-        return Service;
+        return Privacy;
       case 'location':
         return Service;
       case 'thirdParty':
