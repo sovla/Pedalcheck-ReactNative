@@ -195,6 +195,7 @@ export default function RepairHome() {
               setSortSelectItem={setSortSelectItem}
               innerLocation={innerLocation}
               selectImage={selectImage}
+              setSelectImage={setSelectImage}
               onScrollSlide={onScrollSlide}
               onPressTag={onPressTag}
               searchText={searchText}
@@ -271,6 +272,7 @@ const Header = ({
   setSortSelectItem,
   innerLocation,
   selectImage,
+  setSelectImage,
   onScrollSlide,
   onPressTag,
   dispatch,
@@ -283,6 +285,26 @@ const Header = ({
   bannerList,
   tagList,
 }) => {
+  const [count, setCount] = useState(1);
+  const ref = useRef(null);
+
+  useInterval(
+    () => {
+      if (ref?.current && count < bannerList.length) {
+        ref.current.scrollTo({
+          x: getPixel(380) * count,
+        });
+        setCount(prev => prev + 1);
+        setSelectImage(prev => prev + 1);
+      }
+    },
+    count ? 3000 : null,
+  );
+
+  const onRemoveContactPress = () => {
+    setCount(0);
+  };
+
   return (
     <>
       <GradientHeader title="정비소" imageSource={WhiteSpannerIcon}>
@@ -386,6 +408,8 @@ const Header = ({
         <Box>
           <Box height="200px">
             <ScrollView
+              ref={ref}
+              onTouchStart={onRemoveContactPress}
               horizontal
               pagingEnabled
               showsHorizontalScrollIndicator={false}
@@ -513,6 +537,7 @@ export const numberCheck = number => {
 const RecommenderShop = ({totalCount, count}) => {
   const totalCountText = numberCheck(totalCount);
   const countText = numberCheck(count);
+
   return (
     <BorderBottomBox
       fontSize={Theme.fontSize.fs18}
