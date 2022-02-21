@@ -246,8 +246,9 @@ export default function CouponManagement({navigation, route: {params}}) {
                     shopName={item?.mst_name}
                     bikeNickName={item?.ot_bike_nick}
                     couponDate={item?.cst_sdate?.substring(0, 10) + ' ~ ' + item?.cst_edate?.substring(0, 10)}
-                    useCouponDate={item?.cst_wdate}
+                    useCouponDate={item?.od_pt_datetime}
                     badgeContent={item?.cst_status}
+                    useCouponShopName={item?.od_mst_name}
                     // rejectionContent={item?.cst_edate}
                   />
                 </TouchableOpacity>

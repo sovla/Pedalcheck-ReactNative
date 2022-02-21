@@ -163,3 +163,10 @@ export const getFooter = async args => {
     return response;
   } catch (error) {}
 };
+
+export const logOut = async args => {
+  try {
+    const response = await API.post('logout.php', args);
+    return response;
+  } catch (error) {}
+};

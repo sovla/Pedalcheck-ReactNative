@@ -19,6 +19,7 @@ import {useState} from 'react';
 import {getBikeList} from '@/API/Bike/Bike';
 import {ResetShopInfo} from '@/Store/shopInfoState';
 import {ResetStoreInfo} from '@/Store/storeInfoState';
+import {logOut} from '@/API/More/More';
 
 export default function Information({route: {params}}) {
   const {size, login} = useSelector(state => state);
@@ -93,7 +94,10 @@ export default function Information({route: {params}}) {
             </RowBox>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => {
+            onPress={async () => {
+              await logOut({
+                _mt_idx: login.idx,
+              });
               dispatch(resetSnsInfo());
               dispatch(resetUserInfo());
               dispatch(ResetStoreInfo());

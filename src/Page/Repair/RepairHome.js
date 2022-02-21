@@ -3,7 +3,7 @@ import DefaultImage from '@/assets/global/Image';
 import {DarkBoldText, DarkMediumText, DarkText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import React, {useState} from 'react';
-import {ScrollView, TouchableOpacity, FlatList, Modal} from 'react-native';
+import {ScrollView, TouchableOpacity, FlatList, Modal, Linking} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import WhiteSpannerIcon from '@assets/image/menu01_top.png';
 import {WhiteInput} from '@assets/global/Input';
@@ -415,12 +415,18 @@ const Header = ({
               showsHorizontalScrollIndicator={false}
               onMomentumScrollEnd={onScrollSlide}>
               {bannerList.map((item, index) => (
-                <DefaultImage
+                <TouchableOpacity
                   key={`image_${index}`}
-                  resizeMode="stretch"
-                  source={{uri: imageAddress + item?.bt_image}}
-                  width={size.minusPadding}
-                />
+                  onPress={async () => {
+                    const result = await Linking.canOpenURL(item?.bt_link);
+                    if (result) Linking.openURL(item?.bt_link);
+                  }}>
+                  <DefaultImage
+                    resizeMode="stretch"
+                    source={{uri: imageAddress + item?.bt_image}}
+                    width={size.minusPadding}
+                  />
+                </TouchableOpacity>
               ))}
             </ScrollView>
             <PositionBox style={{flexDirection: 'row'}} right="20px" top="20px" backgroundColor="rgba(0,0,0,0)">

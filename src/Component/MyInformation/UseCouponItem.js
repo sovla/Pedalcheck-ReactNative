@@ -17,7 +17,7 @@ const UseCouponItem = ({
   useCouponDate = '',
   badgeContent,
   rejectionContent = '',
-  onPressCouponUse = () => {},
+  useCouponShopName,
   couponDate,
 }) => {
   const {size} = useSelector(state => state);
@@ -48,7 +48,7 @@ const UseCouponItem = ({
               사용
             </DarkText>
             <MediumText mg="0px 0px 0px 5px" color={Theme.color.indigo} fontSize={Theme.fontSize.fs14}>
-              {shopName}
+              {useCouponShopName}
             </MediumText>
           </RowBox>
 

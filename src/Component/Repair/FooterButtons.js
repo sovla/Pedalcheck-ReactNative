@@ -11,7 +11,7 @@ import UnLikeIcon from '@assets/image/good_b.png';
 import {useNavigation} from '@react-navigation/core';
 import {AlertButton, AlertButtons, RequireLoginAlert} from '@/Util/Alert';
 
-export default function FooterButtons({isRepair = false, isLike = false, onPressLike = () => {}, my_bike}) {
+export default function FooterButtons({isRepair = false, isLike = false, onPressLike = () => {}, my_bike, isPartner}) {
   const {login, shopInfo} = useSelector(state => state);
   const navigation = useNavigation();
   const onPressRepair = () => {
@@ -40,32 +40,34 @@ export default function FooterButtons({isRepair = false, isLike = false, onPress
   return (
     <PositionBox bottom="0px">
       <RowBox width="412px" height="50px" style={[styles.borderRight, styles.borderLeft]}>
-        <TouchableOpacity disabled={isRepair ? false : true} style={styles.touchBox} onPress={onPressRepair}>
-          {isRepair ? ( // 정비예약 가능
-            <RowBox
-              width="100%"
-              height="100%"
-              justifyContent="center"
-              alignItems="center"
-              style={styles.borderLeft}
-              backgroundColor={Theme.color.skyBlue}>
-              <DefaultImage source={RepairReservationIcon} width="20px" height="20px" />
-              <DefaultText pd="0px 0px 0px 7px">정비예약</DefaultText>
-            </RowBox>
-          ) : (
-            // 정비예약 불가능
-            <RowBox
-              width="100%"
-              height="100%"
-              justifyContent="center"
-              alignItems="center"
-              style={styles.borderLeft}
-              backgroundColor={Theme.color.gray}>
-              <DefaultImage source={RepairReservationIcon} width="20px" height="20px" />
-              <DefaultText pd="0px 0px 0px 7px">정비예약</DefaultText>
-            </RowBox>
-          )}
-        </TouchableOpacity>
+        {isPartner && (
+          <TouchableOpacity disabled={isRepair ? false : true} style={styles.touchBox} onPress={onPressRepair}>
+            {isRepair ? ( // 정비예약 가능
+              <RowBox
+                width="100%"
+                height="100%"
+                justifyContent="center"
+                alignItems="center"
+                style={styles.borderLeft}
+                backgroundColor={Theme.color.skyBlue}>
+                <DefaultImage source={RepairReservationIcon} width="20px" height="20px" />
+                <DefaultText pd="0px 0px 0px 7px">정비예약</DefaultText>
+              </RowBox>
+            ) : (
+              // 정비예약 불가능
+              <RowBox
+                width="100%"
+                height="100%"
+                justifyContent="center"
+                alignItems="center"
+                style={styles.borderLeft}
+                backgroundColor={Theme.color.gray}>
+                <DefaultImage source={RepairReservationIcon} width="20px" height="20px" />
+                <DefaultText pd="0px 0px 0px 7px">정비예약</DefaultText>
+              </RowBox>
+            )}
+          </TouchableOpacity>
+        )}
         <TouchableOpacity style={styles.touchBox} onPress={onPressLike}>
           {isLike ? (
             // 좋아요 누른 후
