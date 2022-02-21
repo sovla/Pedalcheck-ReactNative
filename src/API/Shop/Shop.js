@@ -49,7 +49,7 @@ export const sendReview = async args => {
 
 export const getMyBikeList = async args => {
   try {
-    const response = await API.post('get_my_bike.php', args);
+    const response = await API.post('bike_list.php', args);
     return response;
   } catch (error) {}
 };
