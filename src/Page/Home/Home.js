@@ -16,6 +16,8 @@ import {useIsFocused} from '@react-navigation/native';
 import {useEffect} from 'react';
 import {LinkButton} from '@/assets/global/Button';
 import {modalOpen} from '@/Store/modalState';
+import {getStoreInfo} from '@/API/More/More';
+import {setStoreInfo} from '@/Store/storeInfoState';
 export default function Home({navigation}) {
   const betweenBoxWidth = Platform.OS === 'android' ? '262px' : '312px';
   // 안드로이드 카카오 구글 네이버    3가지
@@ -25,13 +27,20 @@ export default function Home({navigation}) {
     admin: {isAdmin},
   } = useSelector(state => state);
   const isFocused = useIsFocused();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (login?.idx && login?.mt_status && login?.mt_status !== 'N' && isFocused) {
       if (!isAdmin) {
         navigation.replace('RepairHome');
       } else {
-        navigation.replace('RepairHistoryHome');
+        getStoreInfo({
+          _mt_idx: login.idx,
+        }).then(res => {
+          if (res?.data?.result === 'true') dispatch(setStoreInfo(res?.data?.data?.data));
+        });
+
+        navigation.reset({routes: [{name: 'RepairHome'}, {name: 'More'}, {name: 'RepairHistoryHome'}]});
       }
     }
   }, [isFocused, login]);
