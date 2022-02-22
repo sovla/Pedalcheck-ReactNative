@@ -42,9 +42,9 @@ const PhotoComponent = ({
       height: imageHeight,
       cropping: true, // 자르기 활성화
       multiple: isMulti,
-      compressImageQuality: 0.8,
-      compressImageMaxWidth: 375 * 3,
-      compressImageMaxHeight: 275 * 3,
+      compressImageQuality: 0.9,
+      compressImageMaxWidth: 1000,
+      compressImageMaxHeight: 1000,
       forceJpg: true,
     })
       .then(images => {

@@ -2,7 +2,7 @@ import {ButtonTouch, LinkButton} from '@/assets/global/Button';
 import {BetweenBox, Box, RowBox, ScrollBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import {DefaultInput} from '@/assets/global/Input';
-import {DarkMediumText, DefaultText, GrayText, IndigoText} from '@/assets/global/Text';
+import {DarkMediumText, DarkText, DefaultText, GrayText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import {modalOpen} from '@/Store/modalState';
@@ -85,13 +85,14 @@ export default function BikeExportList() {
             onPressDelete={() => {
               onPressDelete(item);
             }}
+            date={item?.sbt_wdate?.substring(0, 16)}
           />
         )}></FlatList>
     </>
   );
 }
 
-const BikeListItem = ({brandName, modelName, vehicleNumber, year, onPressModify, onPressDelete}) => {
+const BikeListItem = ({brandName, modelName, vehicleNumber, year, onPressModify, onPressDelete, date}) => {
   return (
     <BetweenBox height="100px" width="380px" mg="0px 16px" pd="16px 10px 0px" style={borderBottomWhiteGray}>
       <Box>
@@ -103,6 +104,12 @@ const BikeListItem = ({brandName, modelName, vehicleNumber, year, onPressModify,
         </RowBox>
         <IndigoText fontSize={Theme.fontSize.fs13}>{vehicleNumber}</IndigoText>
         <GrayText fontSize={Theme.fontSize.fs13}>{year}</GrayText>
+        <RowBox>
+          <DarkText fontSize={Theme.fontSize.fs13} mg="0px 5px 0px 0px">
+            등록일
+          </DarkText>
+          <GrayText fontSize={Theme.fontSize.fs13}>{date}</GrayText>
+        </RowBox>
       </Box>
       <BetweenBox width="65px">
         <ModifyButton onPress={onPressModify} />
