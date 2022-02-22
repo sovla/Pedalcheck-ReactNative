@@ -368,6 +368,7 @@ export default function ShopUpdate() {
               imageArray={imageArray}
               setImageArray={setImageArray}
               onPressDelete={deleteImageHandle}
+              isMulti
             />
           </Box>
           <Box width="380px">

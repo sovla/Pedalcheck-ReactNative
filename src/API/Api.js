@@ -63,8 +63,10 @@ export const API = axios.create({
 export const ImageAPI = async (data, field, url, isIndex = false, isArray = true) => {
   // 이미지 API 2022-01-05 16:40:31 Junhan
   //  data = args , field 이미지가 들어갈 이름
+
   try {
     console.log('data :::', data);
+
     let cloneData = Object.assign({}, data);
     //  객체복사
     delete cloneData[field];
