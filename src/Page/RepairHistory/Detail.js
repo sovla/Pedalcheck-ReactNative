@@ -1,5 +1,6 @@
 import {BorderButton} from '@/assets/global/Button';
 import {BetweenBox, Box, RowBox, ScrollBox} from '@/assets/global/Container';
+import {initCheckList} from '@/assets/global/dummy';
 import {DarkBoldText, DarkMediumText, DarkText, MoneyText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import Badge from '@/Component/BikeManagement/Badge';
@@ -7,32 +8,29 @@ import BikeInformaitonBody from '@/Component/BikeManagement/BikeInformaitonBody'
 import BikeInformationHeader from '@/Component/BikeManagement/BikeInformationHeader';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import Header from '@/Component/Layout/Header';
+import Photo from '@/Component/Repair/Photo';
+import CheckList from '@/Component/ReservationManagement/CheckList';
 import React from 'react';
+import {useEffect} from 'react';
+import {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import {imageAddress} from '@assets/global/config';
 
 // rejection: item.ot_cmemo, // 수정 필요 API 값없음
 
 export default function Detail({navigation, route}) {
   const {size} = useSelector(state => state);
   const dispatch = useDispatch();
-  // const onPressApprove = () => {
-  //   // 승인 누를시
-  //   navigation.navigate('Approval');
-  // };
-  // const onPressRejection = () => {
-  //   // 거절 누를시
-  //   dispatch(modalOpen('repairRejection'));
-  // };
-  // const onPressChangeDate = () => {
-  //   // 예약 시간 옆 변경 누를시
-  //   navigation.navigate('DateChange');
-  // };
+  const [checkList, setCheckList] = useState(initCheckList);
+  const [isCheckListShow, setIsCheckListShow] = useState(true);
+  const [isShow, setIsShow] = useState(false);
   const item = route?.params?.item;
+  console.log(item, 'item.mt_email,');
   const changeItem = {
     status: item.ot_status,
     productName: item.ot_title,
-    reservationDate: item.ot_pt_date,
-    request: item.ot_meme,
+    reservationDate: item.ot_pt_date + ' ' + item.ot_pt_time.substring(0, 5),
+    request: item.ot_memo,
     rejection: item.ot_cmemo, // 수정 필요 API 값없음
     totalPrice: item.ot_price,
     salePrice: item.ot_sprice,
@@ -77,6 +75,38 @@ export default function Detail({navigation, route}) {
       },
     ],
   };
+  const setCheckListHandle = () => {
+    try {
+      const data = item?.ot_proc;
+      let notNullCount = 0;
+      setCheckList(prev =>
+        prev.map((firstValue, firstIndex) => {
+          let tmpValue = firstValue.item.map((secondValue, secondIndex) => {
+            try {
+              if (data[secondValue.indexName] === '1') {
+                notNullCount++;
+                return {...secondValue, select: '양호'};
+              } else if (data[secondValue.indexName] === '2') {
+                notNullCount++;
+                return {...secondValue, select: '정비 요망'};
+              } else {
+                return {...secondValue};
+              }
+            } catch (error) {}
+          });
+          return {...firstValue, item: tmpValue};
+        }),
+      );
+      if (notNullCount === 0) {
+        setIsCheckListShow(false);
+      } else {
+        setIsCheckListShow(true);
+      }
+    } catch (error) {}
+  };
+  useEffect(() => {
+    setCheckListHandle();
+  }, []);
 
   return (
     <>
@@ -94,16 +124,16 @@ export default function Detail({navigation, route}) {
                 <DarkText mg="0px 10px 0px 0px">{changeItem.reservationDate} </DarkText>
               </RowBox>
             </RowBox>
-            {changeItem.request && (
+            {changeItem?.request?.length > 0 && (
               <RowBox mg="0px 0px 10px">
                 <DarkMediumText width="110px">요청사항</DarkMediumText>
                 <DarkText width="270px">{changeItem.request}</DarkText>
               </RowBox>
             )}
-            {item?.ot_cdate?.length > 0 && (
+            {item?.ot_proc?.ot_cdate?.length > 0 && (
               <RowBox>
                 <DarkMediumText width="110px">완료시간</DarkMediumText>
-                <DarkText width="270px">{item?.ot_cdate}</DarkText>
+                <DarkText width="270px">{item?.ot_proc?.ot_cdate?.substring(0, 16)}</DarkText>
               </RowBox>
             )}
           </Box>
@@ -112,6 +142,25 @@ export default function Detail({navigation, route}) {
             <BikeInformationHeader item={changeBikeItem} mg="10px 0px" />
             <BikeInformaitonBody bikeInfoDetail={changeBikeItem.detail} />
           </Box>
+          {item?.ot_proc?.opt_img?.length > 0 && (
+            <Box>
+              <DarkBoldText>정비 사진</DarkBoldText>
+              <Box height="10px" />
+              <Photo imageArray={item?.ot_proc?.opt_img.map(v => ({uri: imageAddress + v}))} isView isTouch />
+            </Box>
+          )}
+          {item?.ot_proc?.ot_note?.length > 0 && (
+            <Box>
+              <DarkBoldText>정비 노트</DarkBoldText>
+              <Box height="10px" />
+              <DarkText>{item?.ot_proc?.ot_note}</DarkText>
+            </Box>
+          )}
+          {isCheckListShow && (
+            <Box>
+              <CheckList disabled checkList={checkList} isShow={isShow} setIsShow={setIsShow} />
+            </Box>
+          )}
           {item.ot_use_coupon !== '0' ? (
             <>
               <Box mg="10px 0px 0px" style={borderBottomWhiteGray}>
@@ -146,17 +195,6 @@ export default function Detail({navigation, route}) {
                   </RowBox>
                 </BetweenBox>
                 <BetweenBox mg="10px 0px 0px" width={size.minusPadding}>
-                  <DarkMediumText fontSize={Theme.fontSize.fs15}>결제</DarkMediumText>
-                  <RowBox alignItems="center">
-                    <MoneyText
-                      mg="0px 0px 0px 10px"
-                      fontSize={Theme.fontSize.fs15}
-                      color={Theme.color.black}
-                      money={changeItem.totalPrice}
-                    />
-                  </RowBox>
-                </BetweenBox>
-                <BetweenBox mg="10px 0px 0px" width={size.minusPadding}>
                   <DarkMediumText fontSize={Theme.fontSize.fs15}>할인</DarkMediumText>
                   <RowBox alignItems="center">
                     <MoneyText
@@ -164,8 +202,8 @@ export default function Detail({navigation, route}) {
                       fontSize={Theme.fontSize.fs15}
                       color={Theme.color.black}
                       money={
-                        changeItem.salePrice * 1 - changeItem.totalPrice * 1 > 0
-                          ? changeItem.salePrice * 1 - changeItem.totalPrice * 1
+                        +changeItem.salePrice - +changeItem.totalPrice > 0
+                          ? (+changeItem.salePrice - +changeItem.totalPrice) * -1
                           : 0
                       }
                     />
@@ -174,7 +212,7 @@ export default function Detail({navigation, route}) {
                 <RowBox mg="10px 0px" width="380px" justifyContent="flex-end"></RowBox>
               </Box>
               <BetweenBox style={borderBottomWhiteGray} width="380px" height="55px" alignItems="center">
-                <DarkBoldText fontSize={Theme.fontSize.fs15}>합계</DarkBoldText>
+                <DarkBoldText fontSize={Theme.fontSize.fs15}>결제 금액</DarkBoldText>
                 <MoneyText
                   money={changeItem.totalPrice}
                   color={Theme.color.black}
@@ -203,7 +241,6 @@ export default function Detail({navigation, route}) {
               </RowBox>
               <RowBox mg="10px 0px 0px">
                 <DarkMediumText width="65px">이메일</DarkMediumText>
-
                 <DarkText mg="0px 10px 0px 0px">{changeItem.customerEmail}</DarkText>
               </RowBox>
               <RowBox mg="10px 0px 20px">

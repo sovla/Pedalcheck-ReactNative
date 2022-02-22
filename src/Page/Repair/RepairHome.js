@@ -420,7 +420,8 @@ const Header = ({
                   onPress={async () => {
                     const result = await Linking.canOpenURL(item?.bt_link);
                     if (result) Linking.openURL(item?.bt_link);
-                  }}>
+                  }}
+                  activeOpacity={0.6}>
                   <DefaultImage
                     resizeMode="stretch"
                     source={{uri: imageAddress + item?.bt_image}}

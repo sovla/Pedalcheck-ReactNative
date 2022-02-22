@@ -13,6 +13,7 @@ import React, {useLayoutEffect, useState} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch} from 'react-redux';
 import {useSelector} from 'react-redux';
+import {Platform} from 'react-native';
 
 export default function RegisterInformation({navigation}) {
   const [information, setInformaition] = useState(informationInit);
@@ -104,15 +105,18 @@ export default function RegisterInformation({navigation}) {
             mg={errorMessage.nickName === '' && '0px 0px 20px'}
             maxLength={10}
           />
-          <DefaultInput
-            title="이메일"
-            width={size.minusPadding}
-            fontSize={Theme.fontSize.fs15}
-            value={information.email}
-            disabled
-            pd="0px 0px 5px"
-            mg="0px 0px 20px"
-          />
+          {Platform.OS === 'android' && (
+            <DefaultInput
+              title="이메일"
+              width={size.minusPadding}
+              fontSize={Theme.fontSize.fs15}
+              value={information.email}
+              disabled
+              pd="0px 0px 5px"
+              mg="0px 0px 20px"
+            />
+          )}
+
           <DefaultInput
             title="전화번호"
             width={size.minusPadding}

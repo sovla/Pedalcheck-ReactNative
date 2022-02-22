@@ -82,7 +82,7 @@ import ReservationManagementAll from './ReservationManagement/ReservationManagem
 import {fetchBannerList} from '@/Store/BannerState';
 import {fetchAd} from '@/Store/AdState';
 import {getStoreInfo} from '@/API/More/More';
-import {setStoreInfo} from '@/Store/storeInfoState';
+import {ResetStoreInfo, setStoreInfo} from '@/Store/storeInfoState';
 import {autoLoginApi} from '@/API/User/Login';
 import {useState} from 'react';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
@@ -91,6 +91,8 @@ import {setIsAdmin} from '@/Store/adminState';
 import Toast from 'react-native-toast-message';
 import SplashScreen from 'react-native-splash-screen';
 import IdentityVerification from './Home/IdentityVerification';
+import {resetSnsInfo} from '@/Store/snsLoginState';
+import {AlertButton} from '@/Util/Alert';
 
 const INIT_ROUTER_COMPONENT_NAME = 'Home'; //  라우팅 초기값
 
@@ -117,7 +119,7 @@ export default function Router() {
         }
         return res;
       });
-      if (response.data.data?.data?.mt_level * 1 >= 5) {
+      if (+response.data.data?.data?.mt_level >= 5) {
         await getIsAdmin();
       }
     } catch (error) {
@@ -147,6 +149,7 @@ export default function Router() {
     if (remoteMessage?.data?.intent) {
       if (remoteMessage.data.intent === 'ShopUpdate') {
         // 업체정보수정일때
+        await getToken();
         const response = await getStoreInfo({
           _mt_idx: remoteMessage.data?.content_idx,
         });
@@ -160,6 +163,12 @@ export default function Router() {
         });
       } else if (remoteMessage.data.intent === 'logout') {
         //로그아웃일때
+        // dispatch(resetSnsInfo());
+        // dispatch(resetUserInfo());
+        // dispatch(ResetStoreInfo());
+        // dispatch(setIsAdmin(false));
+        // await AsyncStorage.removeItem('isAdmin');
+        // navigationRef.current.reset({routes: [{name: 'Home'}]});
       } else {
         await navigationRef.current.navigate(remoteMessage?.data?.intent, {
           menu: remoteMessage?.data?.content_idx2,
@@ -191,7 +200,9 @@ export default function Router() {
         remoteMessage: remoteMessage,
         onShow: () => {
           if (remoteMessage?.data?.intent === 'logout') {
-            mesagingHandler(remoteMessage);
+            getToken();
+          } else if (remoteMessage?.data?.intent === 'ShopUpdate') {
+            getToken();
           }
         },
         onPress: () => {

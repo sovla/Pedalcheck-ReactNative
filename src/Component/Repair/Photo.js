@@ -2,17 +2,21 @@ import {Box, PositionBox, RowBox} from '@/assets/global/Container';
 import {DarkText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import React from 'react';
-import {Alert, TouchableOpacity} from 'react-native';
+import {ActivityIndicator, Alert, Image, Modal, TouchableOpacity, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import DefaultImage from '@assets/global/Image';
 import withNthMap from '@/Util/nthMap';
 import CloseIcon from '@assets/image/ic_pic_del.png';
 import {Button} from '@/assets/global/Button';
-import {useCallback} from 'react';
+import ImageViewer from 'react-native-image-zoom-viewer';
 import CameraIcon from '@assets/image/ic_cam.png';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import {getPixel} from '@/Util/pixelChange';
 import FastImage from 'react-native-fast-image';
+import {useState} from 'react';
+import AutoHeightImage from 'react-native-auto-height-image';
+import CloseWhiteIcon from '@assets/image/close_white.png';
+
 const PhotoComponent = ({
   imageArray,
   setImageArray,
@@ -24,9 +28,11 @@ const PhotoComponent = ({
   isMulti = false,
   imageWidth,
   imageHeight,
+  isTouch = false,
 }) => {
   const {size} = useSelector(state => state);
-
+  const [isModal, setIsModal] = useState(false);
+  const [ViewItem, setViewItem] = useState('');
   const onPressAddPhoto = async () => {
     if (checkImageCount()) {
       return;
@@ -68,7 +74,6 @@ const PhotoComponent = ({
       return true;
     }
   };
-
   return (
     <RowBox width={size.minusPadding} flexWrap="wrap">
       {imageArray.map((item, index) => {
@@ -81,6 +86,11 @@ const PhotoComponent = ({
             item={item}
             onPressDelete={onPressDeleteHandle}
             isView={isView}
+            isTouch={isTouch}
+            onPress={() => {
+              setIsModal(true);
+              setViewItem(index);
+            }}
           />
         );
       })}
@@ -99,6 +109,28 @@ const PhotoComponent = ({
           </Button>
         </TouchableOpacity>
       )}
+      <Modal
+        visible={isModal}
+        onRequestClose={() => {
+          setIsModal(false);
+        }}>
+        <PositionBox top="30px" right="30px" zIndex={200} backgroundColor="#0000">
+          <TouchableOpacity
+            hitSlop={{top: 15, bottom: 15, right: 15, left: 15}}
+            onPress={() => {
+              setIsModal(false);
+            }}>
+            <AutoHeightImage source={CloseWhiteIcon} width={20} />
+          </TouchableOpacity>
+        </PositionBox>
+        <ImageViewer
+          index={ViewItem}
+          imageUrls={imageArray.map((v, i) => ({url: v?.uri ?? v?.path}))}
+          loadingRender={() => <ActivityIndicator color="#9BA57E" size={'large'} />}
+          useNativeDriver
+          pageAnimateTime={20}
+        />
+      </Modal>
     </RowBox>
   );
 };
@@ -107,30 +139,32 @@ const Photo = React.memo(PhotoComponent);
 
 export default Photo;
 
-const MapInnerItem = ({index, mg, item, onPressDelete, isView}) => {
+const MapInnerItem = ({index, mg, item, onPressDelete, isView, isTouch, onPress}) => {
   return (
-    <Box width="120px" height="80px" mg={mg} style={{borderRadius: 5}}>
-      <FastImage
-        source={
-          item?.path !== undefined
-            ? {uri: item?.path, cache: FastImage.cacheControl.web, priority: FastImage.priority.high}
-            : item
-        }
-        resizeMode={FastImage.resizeMode.stretch}
-        style={{
-          width: getPixel(120),
-          height: 80,
-          borderRadius: 5,
-        }}
-      />
-      {!isView && (
-        <PositionBox top="5px" right="5px" width="24px" height="24px" borderRadius="100px" backgroundColor="#0000">
-          <TouchableOpacity onPress={() => onPressDelete(index, item)}>
-            <DefaultImage source={CloseIcon} width="24px" height="24px" />
-          </TouchableOpacity>
-        </PositionBox>
-      )}
-    </Box>
+    <TouchableOpacity disabled={!isTouch} onPress={onPress}>
+      <Box width="120px" height="80px" mg={mg} style={{borderRadius: 5}}>
+        <FastImage
+          source={
+            item?.path !== undefined
+              ? {uri: item?.path, cache: FastImage.cacheControl.web, priority: FastImage.priority.high}
+              : item
+          }
+          resizeMode={FastImage.resizeMode.stretch}
+          style={{
+            width: getPixel(120),
+            height: 80,
+            borderRadius: 5,
+          }}
+        />
+        {!isView && (
+          <PositionBox top="5px" right="5px" width="24px" height="24px" borderRadius="100px" backgroundColor="#0000">
+            <TouchableOpacity onPress={() => onPressDelete(index, item)}>
+              <DefaultImage source={CloseIcon} width="24px" height="24px" />
+            </TouchableOpacity>
+          </PositionBox>
+        )}
+      </Box>
+    </TouchableOpacity>
   );
 };
 

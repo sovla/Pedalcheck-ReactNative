@@ -139,7 +139,7 @@ export default function RepairHistoryDetail({route: {params}}) {
                 <Box mg="0px 16px 20px">
                   <DarkBoldText>정비사진</DarkBoldText>
                   <Box height="10px" />
-                  <Photo imageArray={repair?.opt_img.map(item => ({path: imageAddress + item}))} isView />
+                  <Photo imageArray={repair?.opt_img.map(item => ({path: imageAddress + item}))} isView isTouch />
                 </Box>
               )}
               {repair?.ot_note && (

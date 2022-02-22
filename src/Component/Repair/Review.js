@@ -14,6 +14,7 @@ import {useState} from 'react';
 import ReviewComment from './ReviewComment';
 import {useLayoutEffect} from 'react';
 import SwiperAutoHeight from './SwiperAutoHeight';
+import Photo from './Photo';
 
 export default function Review({
   isDetail = false,
@@ -67,7 +68,7 @@ export default function Review({
           width="50px"
           height="50px"
         />
-        <Box mg="0px 0px 0px 5px" justifyContent="center" height="50px">
+        <Box mg="0px 0px 0px 10px" justifyContent="center" height="50px">
           <RowBox>
             <DarkBoldText fontSize={Theme.fontSize.fs15} mg="0px 10px 0px 0px">
               {item?.mt_nickname}
@@ -102,8 +103,9 @@ export default function Review({
       </RowBox>
       <Box mg="15px 0px 0px" borderRadius="10px">
         {isDetailPage ? (
-          <Swiper width={size.minusPadding} imageArray={imageArray} borderRadius="All" isRolling={false} />
+          <Photo imageArray={imageArray} isView isTouch />
         ) : (
+          // <Swiper width={size.minusPadding} height={200} imageArray={imageArray} borderRadius="All" isRolling={false} />
           imageArray?.length > 0 && (
             <Box>
               <DefaultImage
