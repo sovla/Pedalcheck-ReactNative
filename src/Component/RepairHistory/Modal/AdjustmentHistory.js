@@ -7,7 +7,6 @@ import React from 'react';
 import {View, Text} from 'react-native';
 
 export default function AdjustmentHistory({item}) {
-  console.log('item ::: ', item);
   return (
     <>
       <ModalTitleBox title="정산내역" />

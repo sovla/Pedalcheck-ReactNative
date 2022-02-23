@@ -293,7 +293,6 @@ const Header = ({
   const [count, setCount] = useState(1);
 
   const onPressArrow = type => {
-    console.log(selectImage * 380);
     if (type === 'prev' && selectImage > 0) {
       ref.current.scrollTo({
         x: getPixel(380) * (selectImage - 1),

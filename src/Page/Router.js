@@ -1,5 +1,5 @@
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator, CardStyleInterpolators} from '@react-navigation/stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import React, {useEffect} from 'react';
 import BikeDetail from './BikeManagement/BikeDetail';
 import BikeManagement from './BikeManagement/BikeManagement';
@@ -63,7 +63,7 @@ import ReservationManagementDetail from './ReservationManagement/ReservationMana
 import RepairHome from './Repair/RepairHome';
 import {BackHandler, SafeAreaView, useWindowDimensions, View} from 'react-native';
 import Theme from '@/assets/global/Theme';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import ModalBasic from '@/Component/Modal/ModalBasic';
 import {initSetting} from '@/Store/sizeState';
 import ProductDetail from './Repair/ProductDetail';
@@ -82,10 +82,9 @@ import ReservationManagementAll from './ReservationManagement/ReservationManagem
 import {fetchBannerList} from '@/Store/BannerState';
 import {fetchAd} from '@/Store/AdState';
 import {getStoreInfo} from '@/API/More/More';
-import {ResetStoreInfo, setStoreInfo} from '@/Store/storeInfoState';
+import {setStoreInfo} from '@/Store/storeInfoState';
 import {autoLoginApi} from '@/API/User/Login';
 import {useState} from 'react';
-import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setIsAdmin} from '@/Store/adminState';
 import Toast from 'react-native-toast-message';
@@ -101,6 +100,7 @@ const Stack = createStackNavigator();
 
 export default function Router() {
   const dispatch = useDispatch();
+
   const {height, width} = useWindowDimensions();
   const navigationRef = useRef(null);
 
@@ -125,7 +125,7 @@ export default function Router() {
     } finally {
       setTimeout(() => {
         SplashScreen.hide();
-      }, 1000);
+      }, 500);
       setIsLoading(false);
     }
   };
@@ -214,7 +214,7 @@ export default function Router() {
             });
           }
         }
-
+        //  다이나믹 링크 확인용
         console.log(link.url, '\n', queryString, '\n', items);
         navigationRef.current.navigate(intent, items);
         return;
