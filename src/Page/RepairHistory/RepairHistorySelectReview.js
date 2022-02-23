@@ -2,7 +2,15 @@ import {BetweenBox, Box, Container, PositionBox, RowBox, ScrollBox} from '@/asse
 import React from 'react';
 import {useState} from 'react';
 import DefaultImage from '@/assets/global/Image';
-import {DarkBoldText, DarkMediumText, DarkText, GrayText, IndigoText, MoneyText} from '@/assets/global/Text';
+import {
+  DarkBoldText,
+  DarkMediumText,
+  DarkText,
+  DefaultText,
+  GrayText,
+  IndigoText,
+  MoneyText,
+} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import numberFormat from '@/Util/numberFormat';
 import {useDispatch, useSelector} from 'react-redux';
@@ -197,7 +205,7 @@ const ReviewRecomment = ({item, size, commentSubmit, deleteHandle}) => {
   const deletePress = async srt_idx => {
     AlertButtons('댓글을 삭제하시겠습니까? 삭제하면 복구할 수 없습니다.', '확인', '취소', () => deleteHandle(srt_idx));
   };
-
+  const imageArray = item?.srt_image ?? [];
   return (
     <Box mg="20px 0px 0px">
       <RowBox>
@@ -229,6 +237,31 @@ const ReviewRecomment = ({item, size, commentSubmit, deleteHandle}) => {
           color={Theme.color.black}
         />
       </RowBox>
+      {imageArray?.length > 0 && (
+        <Box mg="15px 0px 0px" borderRadius="10px">
+          <Box>
+            <DefaultImage
+              source={{uri: imageAddress + imageArray[0]}}
+              borderRadius="10px"
+              width="380px"
+              height={`150px`}
+              resizeMode="cover"
+            />
+            {imageArray?.length > 1 && (
+              <PositionBox
+                right="10px"
+                bottom="10px"
+                width="44px"
+                height="24px"
+                borderRadius="12px"
+                alignItems="center"
+                backgroundColor="#3336">
+                <DefaultText>+{imageArray?.length - 1}</DefaultText>
+              </PositionBox>
+            )}
+          </Box>
+        </Box>
+      )}
       <DarkText mg="10px 0px 0px" fontSize={Theme.fontSize.fs15}>
         {item.srt_content}
       </DarkText>
