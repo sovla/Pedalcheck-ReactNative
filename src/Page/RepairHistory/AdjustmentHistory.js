@@ -11,11 +11,32 @@ import React from 'react';
 import {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, TouchableOpacityBase, View} from 'react-native';
 import MoneyIcon from '@assets/image/ic_money.png';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {modalOpen} from '@/Store/modalState';
+import {useLayoutEffect} from 'react';
+import {getAdjustmentHistory} from '@/API/Manager/RepairHistory';
 
 export default function AdjustmentHistory() {
+  const [history, setHistory] = useState([]);
+  const [totalPrice, setTotalPrice] = useState('0');
   const [year, setYear] = useState(2021);
+  const {storeInfo, login} = useSelector(state => state);
+
+  const mst_wdate = storeInfo?.mst_wdate ? new Date(storeInfo.mst_wdate) : new Date();
+  console.log(mst_wdate.getFullYear());
+  const nowFullYear = new Date().getFullYear();
+  useLayoutEffect(() => {
+    getAdjustmentHistory({
+      _mt_idx: login.idx,
+      year,
+    }).then(res => {
+      if (res.data?.result === 'true') {
+        const data = res.data?.data?.data;
+        setHistory(data?.history ?? []);
+        setTotalPrice(data?.tot_price ?? '0');
+      }
+    });
+  }, []);
   return (
     <>
       <Header title="정산 히스토리" />
@@ -33,11 +54,7 @@ export default function AdjustmentHistory() {
             <DefaultImage source={MoneyIcon} width="24px" height="24px" />
             <DarkBoldText>실수령 총 합계</DarkBoldText>
           </RowBox>
-          <MoneyText
-            money={12345000}
-            color={Theme.color.indigo}
-            fontWeight={Theme.fontWeight.bold}
-          />
+          <MoneyText money={12345000} color={Theme.color.indigo} fontWeight={Theme.fontWeight.bold} />
         </BetweenBox>
         <Box mg="10px 0px 0px">
           <DefaultInput isDropdown value={year} changeFn={setYear} dropdownItem={shopDateHistory} />
@@ -46,10 +63,9 @@ export default function AdjustmentHistory() {
           <DarkBoldText mg="20px 0px 0px" fontSize={Theme.fontSize.fs18}>
             정산 내역
           </DarkBoldText>
-          <IncomeItem index={0} />
-          <IncomeItem index={1} />
-          <IncomeItem index={2} />
-          <IncomeItem index={3} />
+          {history.map((item, index) => {
+            return <IncomeItem index={index} item={item} />;
+          })}
         </Box>
       </Container>
     </>

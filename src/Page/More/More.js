@@ -288,7 +288,7 @@ const MoreFooter = () => {
           버전 정보
         </GrayText>
         <BoldText fontSize={Theme.fontSize.fs13} color={Theme.color.gray}>
-          1.5
+          1.5.0
         </BoldText>
       </RowBox>
     </Box>

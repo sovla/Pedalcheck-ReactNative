@@ -63,3 +63,10 @@ export const getNotificationIsRead = async args => {
     return response;
   } catch (error) {}
 };
+
+export const getAdjustmentHistory = async args => {
+  try {
+    const response = await API.post('mng/calculator.php', args);
+    return response;
+  } catch (error) {}
+};

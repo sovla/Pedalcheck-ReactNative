@@ -91,8 +91,7 @@ import {setIsAdmin} from '@/Store/adminState';
 import Toast from 'react-native-toast-message';
 import SplashScreen from 'react-native-splash-screen';
 import IdentityVerification from './Home/IdentityVerification';
-import {resetSnsInfo} from '@/Store/snsLoginState';
-import {AlertButton} from '@/Util/Alert';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
 
 const INIT_ROUTER_COMPONENT_NAME = 'Home'; //  라우팅 초기값
 
@@ -192,6 +191,13 @@ export default function Router() {
       }
     } catch (error) {}
   };
+  const handleDynamicLink = link => {
+    // Handle dynamic link inside your own application
+    console.log('DynamicLink :::', link);
+    if (link.url === 'https://invertase.io/offer') {
+      // ...navigate to your offers screen
+    }
+  };
 
   useEffect(() => {
     getToken();
@@ -237,6 +243,15 @@ export default function Router() {
       mesagingHandler(remoteMessage);
     });
   }, []);
+
+  useEffect(() => {
+    //다이나믹 링크용
+    const unsubscribe = dynamicLinks().onLink(handleDynamicLink); // 포그라운드 열려있을때
+
+    dynamicLinks().getInitialLink().then(handleDynamicLink); // 백그라운드 일때
+    return () => unsubscribe();
+  }, []);
+
   if (isLoading) {
     return null;
   }
