@@ -2,7 +2,7 @@ import {deleteImage, getStoreInfo, updateStore, updateStoreImage} from '@/API/Mo
 import {BorderButton, Button, LinkButton} from '@/assets/global/Button';
 import {BetweenBox, Box, Container, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
-import {DarkBoldText, DarkMediumText, DarkText, ErrorText, IndigoText} from '@/assets/global/Text';
+import {DarkBoldText, DarkMediumText, DarkText, DefaultText, ErrorText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import Header from '@/Component/Layout/Header';
@@ -461,16 +461,21 @@ export default function ShopUpdate() {
                 const color = isSelect ? Theme.color.white : Theme.color.gray;
 
                 return (
-                  <TouchableOpacity onPress={() => onPressDay(Index)} key={item}>
-                    <BorderButton
-                      borderColor={backgroundColor}
-                      backgroundColor={backgroundColor}
-                      width="44px"
-                      borderRadius="10px"
-                      height="44px"
+                  <TouchableOpacity
+                  style={{
+                    backgroundColor:backgroundColor,
+                    borderColor:backgroundColor,
+                    borderRadius:10,
+                    justifyContent:"center",
+                    alignItems:"center",
+                    width:getPixel(44),
+                    height:getPixel(44),
+                  }}
+                  onPress={() => onPressDay(Index)} key={item}>
+                    <DefaultText
                       color={color}>
                       {item}
-                    </BorderButton>
+                    </DefaultText>
                   </TouchableOpacity>
                 );
               })}

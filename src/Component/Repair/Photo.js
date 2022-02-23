@@ -16,6 +16,7 @@ import FastImage from 'react-native-fast-image';
 import {useState} from 'react';
 import AutoHeightImage from 'react-native-auto-height-image';
 import CloseWhiteIcon from '@assets/image/close_white.png';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const PhotoComponent = ({
   imageArray,
@@ -114,6 +115,8 @@ const PhotoComponent = ({
         onRequestClose={() => {
           setIsModal(false);
         }}>
+          <SafeAreaView style={{flex:0}}></SafeAreaView>
+          <SafeAreaView style={{flex:1}}>
         <PositionBox top="30px" right="30px" zIndex={200} backgroundColor="#0000">
           <TouchableOpacity
             hitSlop={{top: 15, bottom: 15, right: 15, left: 15}}
@@ -130,6 +133,8 @@ const PhotoComponent = ({
           useNativeDriver
           pageAnimateTime={20}
         />
+        </SafeAreaView>
+        <SafeAreaView style={{flex:0}}></SafeAreaView>
       </Modal>
     </RowBox>
   );

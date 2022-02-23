@@ -43,7 +43,6 @@ export default function NaverImage({onPress}) {
   const {token} = useSelector(state => state);
   const navigation = useNavigation();
 
-  const [naverToken, setNaverToken] = useState();
 
   const naverLogin = props => {
     return new Promise((resolve, reject) => {
@@ -66,6 +65,8 @@ export default function NaverImage({onPress}) {
     }
     const {id, name, email} = await profileResult.response;
     await SnsLogin(id, name, email, 3, dispatch, navigation, token.token);
+    
+    NaverLogin.logout();
   };
 
   return (
