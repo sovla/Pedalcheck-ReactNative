@@ -36,6 +36,8 @@ export default function RepairQuestion({route: {params}}) {
   const item = params?.item;
   const isUpdate = item?.qt_idx ? true : false;
 
+  // 2022-02-23 11:17:37 알림톡용 추가
+
   const [errorMessage, setErrorMessage] = useState({
     title: '',
     content: '',
@@ -68,8 +70,8 @@ export default function RepairQuestion({route: {params}}) {
     if (checkContents()) {
       sendShopQuestion({
         _mt_idx: login.idx,
-        mst_idx: store_info?.mt_idx,
-        mst_name: store_info?.mst_name,
+        mst_idx: store_info?.mt_idx ?? params?.mt_idx,
+        mst_name: store_info?.mst_name ?? params?.mst_name,
         qt_title: title,
         qt_content: content,
       }).then(res => {
@@ -129,7 +131,7 @@ export default function RepairQuestion({route: {params}}) {
             title="업체명"
             pd="0px 0px 10px"
             disabled
-            value={item?.mst_name ?? store_info?.mst_name}
+            value={item?.mst_name ?? store_info?.mst_name ?? params?.mst_name}
             width="380px"
           />
 
