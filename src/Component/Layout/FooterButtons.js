@@ -21,7 +21,7 @@ import {DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {Alert, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
-import {AlertButton, AlertButtons, RequireLoginAlert} from '@/Util/Alert';
+import {AlertButton, AlertButtons, RequireApple, RequireLogin, RequireLoginAlert} from '@/Util/Alert';
 
 export default function FooterButtons({selectMenu, isAdmin}) {
   const navigation = useNavigation();
@@ -81,13 +81,23 @@ export default function FooterButtons({selectMenu, isAdmin}) {
         },
       ];
   const onPressMenu = item => {
-    if (!(item.content === '정비소' || item.content === '피드')) {
-      if (RequireLoginAlert(login, navigation, item.content === '내 자전거' ? '자전거 등록을' : '더보기 기능을')) {
-        navigation.navigate(item?.navigate);
+    let result = true;
+    if (item.content === '내 자전거' || item.content === '더보기' ) {
+      if (login.idx === '') {
+        AlertButtons('로그인이 필요한 기능입니다.', '확인', '취소', () => navigation.navigate('Home'));
+        return;
+      } 
+    } 
+    if(item.content === "내 자전거"){
+      if (login.apple_id && login?.mt_status === 'N' ) {
+        AlertButtons(`내 자전거 등록을 계속하려면 추가정보\n입력이 필요합니다.\n추가정보 입력 하시겠습니까?`, '확인', '취소', () => {
+          navigation.navigate('Register');
+        });
       }
-    } else {
-      navigation.navigate(item?.navigate);
-    }
+      }
+    
+
+    navigation.navigate(item?.navigate);
   };
   return (
     <RowBox

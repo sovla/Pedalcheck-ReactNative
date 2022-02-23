@@ -54,17 +54,29 @@ export default function More() {
   const dispatch = useDispatch();
 
   const onPressMenu = item => {
+    
     switch (item) {
       case '내 정보':
+        
         return navigation.navigate('Information', {isAdmin: isAdmin});
       case '공지 및 이벤트':
         return navigation.navigate('Post');
       case '자주하는 질문':
         return navigation.navigate('FAQ');
       case '1:1 문의':
-        return navigation.navigate('Question');
+        if(RequireApple(login,navigation,"1:1문의를")){
+          return navigation.navigate('Question');
+        }else{
+          return null;
+        }
+        
       case '알림설정':
-        return navigation.navigate('AlarmSetting');
+        if(RequireApple(login,navigation,"알림설정을")){
+          return navigation.navigate('AlarmSetting');
+        }else{
+          return null;
+        }
+        
       // 어드민설정시
       case '상품 관리':
         return navigation.navigate('ProductManagement');

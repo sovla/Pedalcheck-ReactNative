@@ -35,6 +35,7 @@ export default function GoogleImage() {
       const {id, email, name} = userInfo.user;
 
       SnsLogin(id, name, email, 4, dispatch, navigation, token.token);
+      GoogleSignin.signOut();
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow

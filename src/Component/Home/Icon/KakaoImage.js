@@ -8,7 +8,7 @@ import {useNavigation} from '@react-navigation/native';
 import {setSnsInfo} from '@/Store/snsLoginState';
 import {useState} from 'react';
 
-import {getProfile as getKakaoProfile, login} from '@react-native-seoul/kakao-login';
+import {getProfile as getKakaoProfile, login,logout} from '@react-native-seoul/kakao-login';
 
 import {SnsLogin} from '../../../Hooks/SnsLogin';
 
@@ -33,6 +33,7 @@ export default function KakaoImage({onPress}) {
       const {id, email, nickname} = profile;
 
       await SnsLogin(id, nickname, email, 2, dispatch, navigation, token.token);
+      logout();
     } catch (error) {}
   };
 

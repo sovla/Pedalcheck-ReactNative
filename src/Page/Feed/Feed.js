@@ -84,6 +84,7 @@ export default function Feed() {
         </Box>
         {webUri !== '' && (
           <Modal visible>
+            <SafeAreaView style={{flex:0}} />
             <SafeAreaView style={{flex: 1}}>
               <PositionBox
                 backgroundColor="#0006"
@@ -105,6 +106,7 @@ export default function Feed() {
 
               <WebView ref={ref} onNavigationStateChange={setNavState} style={{flex: 1}} source={{uri: webUri}} />
             </SafeAreaView>
+            <SafeAreaView style={{flex:0}} />
           </Modal>
         )}
       </Container>
