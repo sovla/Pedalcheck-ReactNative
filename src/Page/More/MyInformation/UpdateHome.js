@@ -4,6 +4,7 @@ import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import Header from '@/Component/Layout/Header';
 import {modalOpen} from '@/Store/modalState';
+import isAdminCheck from '@/Util/isAdminCheck';
 import {useNavigation} from '@react-navigation/core';
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
@@ -24,7 +25,7 @@ export default function UpdateHome() {
             </DarkMediumText>
           </Box>
         </TouchableOpacity>
-        {login.mt_level >= 5 && (
+        {isAdminCheck(login) && (
           <TouchableOpacity onPress={() => navigation.navigate('ShopUpdate')}>
             <Box backgroundColor="#0000" width={size.minusPadding} style={borderBottomWhiteGray}>
               <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>

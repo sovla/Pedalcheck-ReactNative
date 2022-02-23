@@ -4,12 +4,11 @@ import React, {useEffect, useState} from 'react';
 import MenuIcon from '@assets/image/menu03_top.png';
 import {useSelector} from 'react-redux';
 import DummyImage from '@assets/image/bicycle_default.png';
-import DummyProfileImage from '@assets/image/dummy.png';
 import DefaultImage from '@assets/global/Image';
-import {DarkMediumText, DarkText, GrayText, IndigoText} from '@/assets/global/Text';
+import {DarkText, GrayText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import FooterButtons from '@/Component/Layout/FooterButtons';
-import {BackHandler, FlatList, Linking, Modal, SafeAreaView, TouchableOpacity, View} from 'react-native';
+import {FlatList, Linking, Modal, SafeAreaView, TouchableOpacity} from 'react-native';
 import {getFeedList} from '@/API/Feed/Feed';
 import {imageAddress} from '@assets/global/config';
 import WebView from 'react-native-webview';
@@ -139,7 +138,13 @@ const FeedBox = ({item, size, onPressImage}) => {
         borderRadius: getPixel(15),
       }}>
       {item?.ft_thumb && (
-        <TouchableOpacity onPress={() => onPressImage(item?.ft_link)}>
+        <TouchableOpacity
+          onPress={async () => {
+            const result = await Linking.canOpenURL(item?.ft_link);
+            if (result) {
+              onPressImage(item?.ft_link);
+            }
+          }}>
           <AutoHeightImage
             style={{
               borderTopLeftRadius: getPixel(15),

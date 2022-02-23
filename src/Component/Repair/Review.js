@@ -15,6 +15,7 @@ import ReviewComment from './ReviewComment';
 import {useLayoutEffect} from 'react';
 import SwiperAutoHeight from './SwiperAutoHeight';
 import Photo from './Photo';
+import {getPixel} from '@/Util/pixelChange';
 
 export default function Review({
   isDetail = false,
@@ -112,8 +113,8 @@ export default function Review({
                 source={imageArray[0]}
                 borderRadius="10px"
                 width={size.minusPadding}
-                height="150px"
-                resizeMode="stretch"
+                height={`150px`}
+                resizeMode="cover"
               />
               {imageArray?.length > 1 && (
                 <PositionBox

@@ -8,6 +8,8 @@ import DefaultImage from '@/assets/global/Image';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import {TouchableOpacity} from 'react-native';
 import {imageAddress} from '@assets/global/config';
+import AutoHeightImage from 'react-native-auto-height-image';
+import {getPixel} from '@/Util/pixelChange';
 
 export default function PostItem({item, index, selectPost, setSelectPost, isImage = true}) {
   const {size} = useSelector(state => state);
@@ -46,11 +48,10 @@ export default function PostItem({item, index, selectPost, setSelectPost, isImag
         <>
           {item?.image && isImage && (
             <Box mg="15px 0px 0px">
-              <DefaultImage
+              <AutoHeightImage
                 style={{borderRadius: 15}}
                 source={{uri: imageAddress + item.image}}
-                width="360px"
-                height="150px"
+                width={getPixel(380)}
               />
             </Box>
           )}

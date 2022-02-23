@@ -8,6 +8,8 @@ import Theme from '@/assets/global/Theme';
 import {useSelector} from 'react-redux';
 import Icon from '@assets/image/ic_lightning.png';
 import {useNavigation} from '@react-navigation/core';
+import AutoHeightImage from 'react-native-auto-height-image';
+import {getPixel} from '@/Util/pixelChange';
 
 export default function ProductsShow() {
   const {
@@ -30,7 +32,7 @@ export default function ProductsShow() {
 export const Product = ({item}) => {
   const navigation = useNavigation();
   return (
-    <BetweenBox width="380px" mg="0px 0px 15px">
+    <BetweenBox width="380px" mg="0px 0px 10px">
       <Box>
         <RowBox alignItems="center">
           <DarkBoldText mg="0px 7px 0px 0px">{item?.pt_title}</DarkBoldText>
@@ -43,9 +45,9 @@ export const Product = ({item}) => {
             <DefaultImage source={QuestionIcon} width="20px" height="20px" />
           </TouchableOpacity>
         </RowBox>
-        {item?.isCargo && (
+        {item?.pt_type === '1' && (
           <RowBox alignItems="center">
-            <DefaultImage source={Icon} width="15px" height="15px" />
+            <AutoHeightImage source={Icon} width={getPixel(15)} />
             <DefaultText fontSize={Theme.fontSize.fs13} color={Theme.color.skyBlue} mg="0px 7px 0px 0px">
               입고수리 필요
             </DefaultText>

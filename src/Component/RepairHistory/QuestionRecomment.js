@@ -23,6 +23,7 @@ export default function QuestionRecomment({
   onPressItem,
   onPressUpdate,
   onPressSubmit,
+  writeName,
 }) {
   const size = useSelector(state => state.size);
   const color = status === '답변완료' ? Theme.color.skyBlue : Theme.color.red;
@@ -33,13 +34,13 @@ export default function QuestionRecomment({
         <Box pd="0px 0px 0px 10px" style={borderBottomWhiteGray} width={size.minusPadding}>
           <BetweenBox width="370px" mg="16px 0px">
             <Box>
-              {categoryName !== '' && (
-                <IndigoText fontSize={Theme.fontSize.fs14}>{categoryName}</IndigoText>
-              )}
+              {categoryName !== '' && <IndigoText fontSize={Theme.fontSize.fs14}>{categoryName}</IndigoText>}
               <DarkBoldText fontSize={Theme.fontSize.fs15}>{questionTitle}</DarkBoldText>
+
+              <DarkText>{writeName}</DarkText>
+
               <GrayText fontSize={Theme.fontSize.fs12} letterSpacing="0px">
-                {' '}
-                {writeDate}
+                {writeDate.substring(0, 16)}
               </GrayText>
             </Box>
             <RowBox>
@@ -53,11 +54,7 @@ export default function QuestionRecomment({
                 {status}
               </BorderButton>
               <Box mg="0px 0px 0px 10px">
-                <DefaultImage
-                  source={isSelect ? ArrowUpIcon : ArrowDownIcon}
-                  width="24px"
-                  height="24px"
-                />
+                <DefaultImage source={isSelect ? ArrowUpIcon : ArrowDownIcon} width="24px" height="24px" />
               </Box>
             </RowBox>
           </BetweenBox>
@@ -75,11 +72,7 @@ export default function QuestionRecomment({
               width={size.minusPadding}
               backgroundColor={Theme.color.backgroundBlue}
               borderRadius="10px">
-              <RowBox
-                width="44px"
-                pd="0px 11px 0px 0px"
-                justifyContent="flex-end"
-                backgroundColor="#0000">
+              <RowBox width="44px" pd="0px 11px 0px 0px" justifyContent="flex-end" backgroundColor="#0000">
                 <DefaultImage source={ReplyIcon} width="24px" height="24px" />
               </RowBox>
               <Box backgroundColor="#0000">

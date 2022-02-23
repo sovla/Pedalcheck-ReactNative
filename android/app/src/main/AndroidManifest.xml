@@ -58,11 +58,20 @@
         <intent-filter>
               <action android:name="android.intent.action.MAIN" />
               <category android:name="android.intent.category.LAUNCHER" />
+              
           </intent-filter>
           <intent-filter>
               <data android:host="oauth"
                   android:scheme="kakaoc5c4f79c76267d1389a50dc49dd52020" />
+                  <data
+        android:host="pedalcheck.com"
+        android:scheme="https"/>
           </intent-filter>
+          <!-- <intent-filter>
+<data
+        android:host="pedalcheck.com"
+        android:scheme="https"/>
+          </intent-filter> -->
         <!-- <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />

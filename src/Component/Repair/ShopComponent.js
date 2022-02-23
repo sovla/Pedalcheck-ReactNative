@@ -92,7 +92,9 @@ export default function ShopComponent({
                 })}
               </RowBox>
             </Box>
-            <Box>{isImage && <DefaultImage source={image} width="74px" height="74px" />}</Box>
+            <Box borderRadius="10px">
+              {isImage && <DefaultImage style={{borderRadius: 10}} source={image} width="74px" height="74px" />}
+            </Box>
           </RowBox>
         </TouchableOpacity>
       </RowBox>

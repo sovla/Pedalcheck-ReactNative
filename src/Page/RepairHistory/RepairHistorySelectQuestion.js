@@ -116,6 +116,7 @@ export default function RepairHistorySelectQuestion() {
                 content={item?.qt_content}
                 adminContent={item?.qt_answer}
                 adminWriteDate={item?.qt_adate}
+                writeName={item?.mt_name}
               />
             </>
           );

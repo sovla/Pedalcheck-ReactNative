@@ -7,6 +7,8 @@ const SECRETKEY = '3B9027B713FABE0C75AD3A1F9F7646CB1514DE99';
 
 const baseURL = 'https://dmonster1744.cafe24.com/api/';
 
+const LOGON = true;
+
 export const API = axios.create({
   baseURL: baseURL,
   timeout: 3000,
@@ -17,7 +19,7 @@ export const API = axios.create({
   processData: false,
   contentType: false,
   transformRequest: (data, headers) => {
-    console.log('formData :::', data);
+    if (LOGON) console.log('formData :::', data);
     const jwt_data = jwt_encode(data, SECRETKEY);
     const result = formFormatter(
       data
@@ -43,18 +45,21 @@ export const API = axios.create({
       const jsonParseData = JSON.parse(data);
       if (jsonParseData.result === 'true') {
         const jwtDecodeData = jsonParseData.data !== '' ? jwtDecode(jsonParseData.data, SECRETKEY) : jsonParseData;
-        console.log('API Result Success :::\n', jwtDecodeData?.data);
+        if (LOGON) console.log('API Result Success :::\n', jwtDecodeData?.data);
         return {
           ...jsonParseData,
           data: jwtDecodeData,
         };
       } else {
-        console.log('API Result Failed :::', jsonParseData);
+        if (LOGON) console.log('API Result Failed :::', jsonParseData);
         return jsonParseData;
       }
     } catch (error) {
-      console.log('API Error :::', error);
-      console.log('API ErrorData :::', data);
+      if (LOGON) {
+        console.log('API Error :::', error);
+        console.log('API ErrorData :::', data);
+      }
+
       return jsonParseData;
     }
   },
@@ -63,8 +68,10 @@ export const API = axios.create({
 export const ImageAPI = async (data, field, url, isIndex = false, isArray = true) => {
   // 이미지 API 2022-01-05 16:40:31 Junhan
   //  data = args , field 이미지가 들어갈 이름
+
   try {
-    console.log('data :::', data);
+    if (LOGON) console.log('data :::', data);
+
     let cloneData = Object.assign({}, data);
     //  객체복사
     delete cloneData[field];
@@ -129,14 +136,14 @@ export const ImageAPI = async (data, field, url, isIndex = false, isArray = true
           secretKey: SECRETKEY,
           ...imageResultObject,
         });
-    console.log('formData:::', formData);
+    if (LOGON) console.log('formData:::', formData);
     const response = await axios.post(`${baseURL}${url}`, formData, {
       'Content-Type': 'application/x-www-form-urlencoded',
     });
-    console.log('response:::', response);
+    if (LOGON) console.log('response:::', response);
 
     return response;
   } catch (error) {
-    console.log('API Error :::', error);
+    if (LOGON) console.log('API Error :::', error);
   }
 };
