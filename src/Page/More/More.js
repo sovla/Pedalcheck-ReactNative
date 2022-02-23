@@ -205,7 +205,7 @@ export default function More() {
         ) : (
           <Box height="20px" />
         )}
-        {!isAdmin && <UserButton />}
+        {!isAdmin && <UserButton login={login} />}
         <Box pd="10px 16px 0px">
           {menuItem.map((item, index) => (
             <Box
@@ -236,11 +236,16 @@ export default function More() {
   );
 }
 
-const UserButton = () => {
+const UserButton = ({login}) => {
   const navigation = useNavigation();
   return (
     <BetweenBox pd="0px 16px">
-      <TouchableOpacity onPress={() => navigation.navigate('RepairHistory')}>
+      <TouchableOpacity
+        onPress={() => {
+          if (RequireApple(login, navigation, '정비이력을')) {
+            navigation.navigate('RepairHistory');
+          }
+        }}>
         <Box
           width="185px"
           height="43px"
@@ -258,7 +263,12 @@ const UserButton = () => {
         </Box>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('LikeShop')}>
+      <TouchableOpacity
+        onPress={() => {
+          if (RequireApple(login, navigation, '정비이력을')) {
+            navigation.navigate('LikeShop');
+          }
+        }}>
         <Box
           width="185px"
           height="43px"
