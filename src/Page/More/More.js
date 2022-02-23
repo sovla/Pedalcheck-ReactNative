@@ -41,6 +41,7 @@ import {setCompanyInfo} from '@/Store/companyInfoState';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setIsAdmin} from '@/Store/adminState';
+import isAdminCheck from '@/Util/isAdminCheck';
 
 export default function More() {
   const {
@@ -183,7 +184,7 @@ export default function More() {
           정비소 회원일 경우만 노출
           2022-01-12 16:45:15
         */}
-        {+login.mt_seller === 2 ? (
+        {isAdminCheck(login) ? (
           <BetweenBox width={size.designWidth} pd="20px 16px 10px 16px" alignItems="center">
             <DarkBoldText>정비소 관리자 화면으로 전환</DarkBoldText>
             <TouchableOpacity onPress={() => dispatch(setIsAdmin(!isAdmin))}>
@@ -287,7 +288,7 @@ const MoreFooter = () => {
           버전 정보
         </GrayText>
         <BoldText fontSize={Theme.fontSize.fs13} color={Theme.color.gray}>
-          0.0.00
+          1.5
         </BoldText>
       </RowBox>
     </Box>

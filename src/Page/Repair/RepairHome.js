@@ -433,10 +433,12 @@ const Header = ({
               onTouchStart={onRemoveContactPress}
               horizontal
               pagingEnabled
+              style={{borderRadius: 10}}
               showsHorizontalScrollIndicator={false}
               onMomentumScrollEnd={onScrollSlide}>
               {bannerList.map((item, index) => (
                 <TouchableOpacity
+                  style={{borderRadius: 10}}
                   key={`image_${index}`}
                   onPress={async () => {
                     const result = await Linking.canOpenURL(item?.bt_link);
@@ -444,46 +446,15 @@ const Header = ({
                   }}
                   activeOpacity={0.6}>
                   <DefaultImage
+                    style={{borderRadius: 10}}
                     resizeMode="stretch"
                     source={{uri: imageAddress + item?.bt_image}}
                     width={size.minusPadding}
                   />
                 </TouchableOpacity>
               ))}
+              <SwiperCount count={selectImage} length={bannerList?.length} onPressArrow={onPressArrow} />
             </ScrollView>
-            <PositionBox
-              right="16px"
-              bottom="18px"
-              width="128px"
-              height="24px"
-              borderRadius="50px"
-              backgroundColor="rgba(33,33,33,0.6)"
-              justifyContent="space-between"
-              alignItems="center"
-              style={{flexDirection: 'row'}}>
-              <TouchableOpacity
-                disabled={selectImage === 0}
-                onPress={() => {
-                  onPressArrow('prev');
-                }}>
-                <DefaultImage source={selectImage === 0 ? ArrowLeftDisabled : ArrowLeft} width="24px" height="24px" />
-              </TouchableOpacity>
-              <DefaultText fontSize={Theme.fontSize.fs12}>
-                {numberCheck(selectImage + 1)}{' '}
-                <GrayText fontSize={Theme.fontSize.fs12}> / {numberCheck(bannerList?.length)}</GrayText>
-              </DefaultText>
-              <TouchableOpacity
-                disabled={bannerList.length - 1 === selectImage}
-                onPress={() => {
-                  onPressArrow('next');
-                }}>
-                <DefaultImage
-                  source={bannerList.length - 1 === selectImage ? ArrowRightDisable : ArrowRight}
-                  width="24px"
-                  height="24px"
-                />
-              </TouchableOpacity>
-            </PositionBox>
           </Box>
         </Box>
       </Box>
@@ -595,24 +566,36 @@ export const numberCheck = number => {
     return '' + number;
   }
 };
-const RecommenderShop = ({totalCount, count}) => {
-  const totalCountText = numberCheck(totalCount);
-  const countText = numberCheck(count);
-
+const SwiperCount = ({count, length, onPressArrow}) => {
   return (
-    <BorderBottomBox
-      fontSize={Theme.fontSize.fs18}
-      title=""
-      height="32px"
-      leftWidth={25}
-      titleColor={Theme.color.indigo}
-      borderColor={Theme.color.indigo}>
-      <PositionBox right="10px">
-        <DarkText>
-          <DarkText fontWeight={Theme.fontWeight.bold}>{countText}</DarkText> / {totalCountText}
-        </DarkText>
-      </PositionBox>
-    </BorderBottomBox>
+    <PositionBox
+      right="16px"
+      bottom="18px"
+      width="128px"
+      height="24px"
+      borderRadius="50px"
+      backgroundColor="rgba(33,33,33,0.6)"
+      justifyContent="space-between"
+      alignItems="center"
+      style={{flexDirection: 'row'}}>
+      <TouchableOpacity
+        disabled={count === 0}
+        onPress={() => {
+          onPressArrow('prev');
+        }}>
+        <DefaultImage source={count === 0 ? ArrowLeftDisabled : ArrowLeft} width="24px" height="24px" />
+      </TouchableOpacity>
+      <DefaultText fontSize={Theme.fontSize.fs12}>
+        {numberCheck(count + 1)} <GrayText fontSize={Theme.fontSize.fs12}> / {numberCheck(length)}</GrayText>
+      </DefaultText>
+      <TouchableOpacity
+        disabled={length - 1 === count}
+        onPress={() => {
+          onPressArrow('next');
+        }}>
+        <DefaultImage source={length - 1 === count ? ArrowRightDisable : ArrowRight} width="24px" height="24px" />
+      </TouchableOpacity>
+    </PositionBox>
   );
 };
 

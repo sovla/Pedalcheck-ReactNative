@@ -119,7 +119,7 @@ export default function Router() {
         }
         return res;
       });
-      if (+response.data.data?.data?.mt_level >= 5) {
+      if (+response.data.data?.data?.mt_level === 5 && +response.data.data?.data?.mt_seller === 2) {
         await getIsAdmin();
       }
     } catch (error) {

@@ -23,6 +23,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
 import {setUserInfo} from '@/Store/loginState';
 import {phoneNumber} from '@/Util/phoneFormatter';
+import isAdminCheck from '@/Util/isAdminCheck';
 
 export default function Update({navigation}) {
   const isFocused = useIsFocused();
@@ -177,7 +178,7 @@ export default function Update({navigation}) {
       result = true;
     }
 
-    if (login.mt_level >= 5) {
+    if (isAdminCheck(login)) {
       if (emptyData(user.mt_account)) {
         setErrorMessage(prev => ({
           ...prev,
@@ -341,7 +342,7 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
             pd="0px 0px 3px"
           />
         </Box>
-        {login.mt_level >= 5 && (
+        {isAdminCheck(login) && (
           <>
             <Box>
               <DefaultInput
