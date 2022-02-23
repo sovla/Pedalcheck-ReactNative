@@ -143,7 +143,7 @@ export default function RepairHistorySelectHome() {
         itemList={dataToItemList(Object.values(homeInfo.bike_type.data), 'bike')}
         title="자전거 종류별 통계"
         onPressMore={
-          Object.values(homeInfo.bike_type.data).length >= 3 &&
+          Object.values(homeInfo?.bike_type?.data)?.length >= 3 &&
           (() =>
             navigation.navigate('BikeStats', {
               itemList: dataToItemList(Object.values(homeInfo.bike_type.data), 'bike'),
@@ -155,7 +155,7 @@ export default function RepairHistorySelectHome() {
         title="브랜드별 통계"
         itemList={dataToItemList(homeInfo.brand.data, 'brand')}
         onPressMore={
-          Object.values(homeInfo.bike_type.data).length >= 3 &&
+          Object.values(homeInfo?.bike_type?.data)?.length >= 3 &&
           (() =>
             navigation.navigate('BikeStats', {
               itemList: dataToItemList(homeInfo.brand.data, 'brand'),
