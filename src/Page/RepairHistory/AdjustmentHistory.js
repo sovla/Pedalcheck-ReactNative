@@ -9,26 +9,31 @@ import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistor
 import Header from '@/Component/Layout/Header';
 import React from 'react';
 import {useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, TouchableOpacityBase, View} from 'react-native';
+import {Modal, StyleSheet, Text, TouchableOpacity, TouchableOpacityBase, View} from 'react-native';
 import MoneyIcon from '@assets/image/ic_money.png';
 import {useDispatch, useSelector} from 'react-redux';
-import {modalOpen} from '@/Store/modalState';
+import {modalOpen, modalOpenAndProp} from '@/Store/modalState';
 import {useLayoutEffect} from 'react';
 import {getAdjustmentHistory} from '@/API/Manager/RepairHistory';
 
 export default function AdjustmentHistory() {
+  const mst_wdate = storeInfo?.mst_wdate ? new Date(storeInfo.mst_wdate.slice(0, 10)) : new Date();
+  const nowFullYear = new Date().getFullYear();
+
   const [history, setHistory] = useState([]);
   const [totalPrice, setTotalPrice] = useState('0');
-  const [year, setYear] = useState(2021);
-  const {storeInfo, login} = useSelector(state => state);
+  const [year, setYear] = useState(nowFullYear);
+  const {storeInfo, login, size} = useSelector(state => state);
 
-  const mst_wdate = storeInfo?.mst_wdate ? new Date(storeInfo.mst_wdate) : new Date();
-  console.log(mst_wdate.getFullYear());
-  const nowFullYear = new Date().getFullYear();
+  const shopDateHistory = [...Array(nowFullYear - mst_wdate.getFullYear() + 1).keys()].map(mapValue => {
+    return {value: mapValue + mst_wdate.getFullYear(), label: `${mapValue + mst_wdate.getFullYear()}년`};
+  });
+  // 생성일부터 현재까지 연도 배열
+
   useLayoutEffect(() => {
     getAdjustmentHistory({
-      _mt_idx: login.idx,
-      year,
+      _mt_idx: 22, //login.idx,
+      year: year,
     }).then(res => {
       if (res.data?.result === 'true') {
         const data = res.data?.data?.data;
@@ -37,6 +42,7 @@ export default function AdjustmentHistory() {
       }
     });
   }, []);
+
   return (
     <>
       <Header title="정산 히스토리" />
@@ -54,7 +60,7 @@ export default function AdjustmentHistory() {
             <DefaultImage source={MoneyIcon} width="24px" height="24px" />
             <DarkBoldText>실수령 총 합계</DarkBoldText>
           </RowBox>
-          <MoneyText money={12345000} color={Theme.color.indigo} fontWeight={Theme.fontWeight.bold} />
+          <MoneyText money={totalPrice} color={Theme.color.indigo} fontWeight={Theme.fontWeight.bold} />
         </BetweenBox>
         <Box mg="10px 0px 0px">
           <DefaultInput isDropdown value={year} changeFn={setYear} dropdownItem={shopDateHistory} />
@@ -64,7 +70,15 @@ export default function AdjustmentHistory() {
             정산 내역
           </DarkBoldText>
           {history.map((item, index) => {
-            return <IncomeItem index={index} item={item} />;
+            return (
+              <IncomeItem
+                size={size}
+                index={index}
+                price={item.clt_price}
+                date={item.clt_wdate.slice(0, 16)}
+                item={item}
+              />
+            );
           })}
         </Box>
       </Container>
@@ -72,8 +86,10 @@ export default function AdjustmentHistory() {
   );
 }
 
-const IncomeItem = ({price = 168400, date = '2021-10-13 02:03', index = 1}) => {
+const IncomeItem = ({price = 168400, date = '2021-10-13 02:03', index = 1, item, size}) => {
   const dispatch = useDispatch();
+  const [isShow, setIsShow] = useState(false);
+
   return (
     <BetweenBox width="380px" alignItems="center" minHeight="88px" style={borderBottomWhiteGray}>
       <RowBox>
@@ -98,7 +114,15 @@ const IncomeItem = ({price = 168400, date = '2021-10-13 02:03', index = 1}) => {
         </Box>
       </RowBox>
       <Box flex={1} alignItems="flex-end" justifyContent="center">
-        <TouchableOpacity onPress={() => dispatch(modalOpen('adjustmentHistory'))}>
+        <TouchableOpacity
+          onPress={() =>
+            dispatch(
+              modalOpenAndProp({
+                modalComponent: 'adjustmentHistory',
+                item: item,
+              }),
+            )
+          }>
           <BorderButton width="auto">정산내역 보기</BorderButton>
         </TouchableOpacity>
       </Box>

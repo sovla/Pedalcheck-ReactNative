@@ -441,29 +441,6 @@ export const bikeStats = [
   },
 ];
 
-export const shopDateHistory = [
-  {
-    label: '2017년',
-    value: 2017,
-  },
-  {
-    label: '2018년',
-    value: 2018,
-  },
-  {
-    label: '2019년',
-    value: 2019,
-  },
-  {
-    label: '2020년',
-    value: 2020,
-  },
-  {
-    label: '2021년',
-    value: 2021,
-  },
-];
-
 export const loginType = ['', '', '카카오', '네이버', '구글', '애플'];
 // const dummyItem = {
 //   title: '체인 윤활 주기',
