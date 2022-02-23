@@ -29,7 +29,6 @@ export default function CouponUseComplete({route: {params}, route}) {
     ot_hp: '010-6464-6464',
     ot_name: '신혜수',
   };
-  console.log(selectBike, 'selectBike');
   const [isDone, setIsDone] = useState(true);
   const [reservationInfo, setReservationInfo] = useState(dummy);
   useLayoutEffect(() => {

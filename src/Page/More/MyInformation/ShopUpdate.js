@@ -93,9 +93,7 @@ export default function ShopUpdate() {
             weekendStart: mstWorktime.split('주말')[1].split(' ')[1],
             weekendEnd: mstWorktime.split('주말')[1].split(' ')[4],
           });
-        } catch (error) {
-          console.log(error);
-        }
+        } catch (error) {}
       }
       setSelectDay(
         changeValue.map(value => {

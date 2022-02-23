@@ -93,7 +93,6 @@ export default function CouponUseBikeSelect({route: {params}}) {
       });
     }
   }, [isFocused]);
-  console.log(bikeList);
 
   return (
     <>
