@@ -42,6 +42,7 @@ import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setIsAdmin} from '@/Store/adminState';
 import isAdminCheck from '@/Util/isAdminCheck';
+import {RequireApple} from '@/Util/Alert';
 
 export default function More() {
   const {
@@ -54,29 +55,27 @@ export default function More() {
   const dispatch = useDispatch();
 
   const onPressMenu = item => {
-    
     switch (item) {
       case '내 정보':
-        
         return navigation.navigate('Information', {isAdmin: isAdmin});
       case '공지 및 이벤트':
         return navigation.navigate('Post');
       case '자주하는 질문':
         return navigation.navigate('FAQ');
       case '1:1 문의':
-        if(RequireApple(login,navigation,"1:1문의를")){
+        if (RequireApple(login, navigation, '1:1문의를')) {
           return navigation.navigate('Question');
-        }else{
+        } else {
           return null;
         }
-        
+
       case '알림설정':
-        if(RequireApple(login,navigation,"알림설정을")){
+        if (RequireApple(login, navigation, '알림설정을')) {
           return navigation.navigate('AlarmSetting');
-        }else{
+        } else {
           return null;
         }
-        
+
       // 어드민설정시
       case '상품 관리':
         return navigation.navigate('ProductManagement');

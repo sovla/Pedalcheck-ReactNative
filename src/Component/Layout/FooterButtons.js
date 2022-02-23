@@ -82,20 +82,24 @@ export default function FooterButtons({selectMenu, isAdmin}) {
       ];
   const onPressMenu = item => {
     let result = true;
-    if (item.content === '내 자전거' || item.content === '더보기' ) {
+    if (item.content === '내 자전거' || item.content === '더보기') {
       if (login.idx === '') {
         AlertButtons('로그인이 필요한 기능입니다.', '확인', '취소', () => navigation.navigate('Home'));
         return;
-      } 
-    } 
-    if(item.content === "내 자전거"){
-      if (login.apple_id && login?.mt_status === 'N' ) {
-        AlertButtons(`내 자전거 등록을 계속하려면 추가정보\n입력이 필요합니다.\n추가정보 입력 하시겠습니까?`, '확인', '취소', () => {
-          navigation.navigate('Register');
-        });
       }
+    }
+    if (item.content === '내 자전거') {
+      if (login.apple_id && login?.mt_status === 'N') {
+        AlertButtons(
+          `내 자전거 등록을 계속하려면 추가정보\n입력이 필요합니다.\n추가정보 입력 하시겠습니까?`,
+          '확인',
+          '취소',
+          () => {
+            navigation.navigate('Register');
+          },
+        );
       }
-    
+    }
 
     navigation.navigate(item?.navigate);
   };
