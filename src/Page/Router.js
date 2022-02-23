@@ -191,9 +191,35 @@ export default function Router() {
       }
     } catch (error) {}
   };
-  const handleDynamicLink = link => {
-    // Handle dynamic link inside your own application
-    console.log('DynamicLink :::', link);
+  const handleDynamicLink = async link => {
+    await getToken();
+    //  다이나믹 링크 실행 함수
+    //  알림톡으로 들어오는 경우는 3가지 매장에 1:1문의, 예약 정보 확인사용자 , 예약 정보 확인 관리자
+    //
+    if (link?.url) {
+      try {
+        const queryString = link?.url.split('https://pedalcheck.com/')[1].split('&');
+        const intent = queryString[0].split('=')[1];
+        let items = {};
+        for (const item of queryString) {
+          if (
+            item.includes('od_idx') ||
+            item.includes('mt_idx') ||
+            item.includes('mst_name') ||
+            item.includes('type')
+          ) {
+            const [key, value] = item.split('=');
+            Object.assign(items, {
+              [key]: value,
+            });
+          }
+        }
+
+        console.log(link.url, '\n', queryString, '\n', items);
+        navigationRef.current.navigate(intent, items);
+        return;
+      } catch (error) {}
+    }
     if (link.url === 'https://invertase.io/offer') {
       // ...navigate to your offers screen
     }

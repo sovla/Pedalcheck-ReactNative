@@ -453,8 +453,8 @@ const Header = ({
                   />
                 </TouchableOpacity>
               ))}
-              <SwiperCount count={selectImage} length={bannerList?.length} onPressArrow={onPressArrow} />
             </ScrollView>
+            <SwiperCount count={selectImage} length={bannerList?.length} onPressArrow={onPressArrow} />
           </Box>
         </Box>
       </Box>

@@ -20,12 +20,10 @@ import {imageAddress} from '@assets/global/config';
 
 export default function Detail({navigation, route}) {
   const {size} = useSelector(state => state);
-  const dispatch = useDispatch();
   const [checkList, setCheckList] = useState(initCheckList);
   const [isCheckListShow, setIsCheckListShow] = useState(true);
   const [isShow, setIsShow] = useState(false);
   const item = route?.params?.item;
-  console.log(item, 'item.mt_email,');
   const changeItem = {
     status: item.ot_status,
     productName: item.ot_title,
