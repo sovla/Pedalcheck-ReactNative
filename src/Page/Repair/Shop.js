@@ -92,7 +92,7 @@ export default function Shop({route, navigation}) {
   return (
     <>
       <Container>
-        {isDone && <Loading isAbsolute backgroundColor="#0000" />}
+        {/* {isDone && <Loading isAbsolute backgroundColor="#0000" />} */}
         <FlatList
           ListHeaderComponent={
             <>

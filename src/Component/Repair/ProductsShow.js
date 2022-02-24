@@ -32,36 +32,39 @@ export default function ProductsShow() {
 export const Product = ({item}) => {
   const navigation = useNavigation();
   return (
-    <BetweenBox width="380px" mg="0px 0px 10px" height="50px">
-      <Box>
-        <RowBox alignItems="center">
-          <DarkBoldText fontSize={Theme.fontSize.fs15} mg="0px 7px 0px 0px">
-            {item?.pt_title}
-          </DarkBoldText>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('ProductDetail', {
-                item: item,
-              })
-            }>
-            <DefaultImage source={QuestionIcon} width="20px" height="20px" />
-          </TouchableOpacity>
-        </RowBox>
-        {item?.pt_type === '1' && (
-          <RowBox alignItems="center" mg="3px 0px 0px">
-            <AutoHeightImage source={Icon} width={getPixel(15)} />
-            <DefaultText fontSize={Theme.fontSize.fs12} color={Theme.color.skyBlue} mg="0px 7px 0px 0px">
-              입고수리 필요
-            </DefaultText>
+    <>
+      <BetweenBox width="380px">
+        <Box>
+          <RowBox alignItems="center">
+            <DarkBoldText fontSize={Theme.fontSize.fs15} mg="0px 7px 0px 0px">
+              {item?.pt_title}
+            </DarkBoldText>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('ProductDetail', {
+                  item: item,
+                })
+              }>
+              <DefaultImage source={QuestionIcon} width="20px" height="20px" />
+            </TouchableOpacity>
           </RowBox>
-        )}
-      </Box>
-      <Box alignItems="flex-end">
-        <MoneyText color={Theme.color.black} money={parseInt(item?.pt_dc_price)} />
-        {item.pt_dc_price !== '' && item.pt_discount_per !== '0' && (
-          <MoneyText money={parseInt(item?.pt_price)} disabled mg="0px 0px 0px" pd="0px" width="auto" />
-        )}
-      </Box>
-    </BetweenBox>
+          {item?.pt_type === '1' && (
+            <RowBox alignItems="center" mg="3px 0px 0px">
+              <AutoHeightImage source={Icon} width={getPixel(15)} />
+              <DefaultText fontSize={Theme.fontSize.fs12} color={Theme.color.skyBlue} mg="0px 7px 0px 0px">
+                입고수리 필요
+              </DefaultText>
+            </RowBox>
+          )}
+        </Box>
+        <Box alignItems="flex-end">
+          <MoneyText color={Theme.color.black} money={parseInt(item?.pt_dc_price)} />
+          {item.pt_dc_price !== '' && item.pt_discount_per !== '0' && (
+            <MoneyText money={parseInt(item?.pt_price)} disabled mg="0px 0px 0px" pd="0px" width="auto" />
+          )}
+        </Box>
+      </BetweenBox>
+      <Box height="10px" />
+    </>
   );
 };

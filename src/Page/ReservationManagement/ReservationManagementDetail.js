@@ -74,19 +74,17 @@ export default function ReservationManagementDetail({navigation, route: {params}
 
   const onPressApprove = async () => {
     // 승인 누를시
-    if (payState(reservationInfo?.ot_pay_status) === '결제대기') {
-      AlertButton('결제되지 않은 예약건입니다.');
-      return;
-    }
-    setIsLoading(true);
-    const result = await editApiHandle(3);
+    if (payState(reservationInfo?.ot_pay_status) === '결제완료') {
+      setIsLoading(true);
+      const result = await editApiHandle(3);
 
-    if (result) {
-      // 승인 완료시 푸시 알림  정비요청이 승인되었습니다 전송 API 추가
-      showToastMessage('정비요청이 승인되었습니다.');
-    } else {
+      if (result) {
+        // 승인 완료시 푸시 알림  정비요청이 승인되었습니다 전송 API 추가
+        showToastMessage('정비요청이 승인되었습니다.');
+      } else {
+      }
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
   const onPressRejection = async () => {
     // 거절 누를시

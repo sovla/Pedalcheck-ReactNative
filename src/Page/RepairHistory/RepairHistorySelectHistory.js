@@ -205,7 +205,7 @@ export default function RepairHistorySelectHistory() {
               <DefaultInput
                 backgroundColor={Theme.color.white}
                 borderColor={Theme.borderColor.gray}
-                placeHolder="정비 상품을 검색하세요"
+                placeHolder="고객명을 검색하세요."
                 width="380px"
                 changeFn={text => setSearchText(text)}
                 value={searchText}
