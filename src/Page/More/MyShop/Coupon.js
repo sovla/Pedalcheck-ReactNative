@@ -7,7 +7,6 @@ import React from 'react';
 import PlusIcon from '@assets/image/ic_plus_w.png';
 import Theme from '@/assets/global/Theme';
 import {DefaultInput} from '@/assets/global/Input';
-import {couponDropdownList, repairHistoryDropdownList} from '@/assets/global/dummy';
 import CouponItem from '@/Component/MyInformation/CouponItem';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {FlatList, TouchableOpacity} from 'react-native';
@@ -90,7 +89,7 @@ export default function Coupon() {
     setIsLoading(true);
     const data = await getCouponList({
       _mt_idx: login.idx,
-      keyword: content,
+      mt_text: content,
       cst_status: getCouponCategoryNumber(dropMenu),
       cst_s_wdate: selectDate.start ?? '',
       cst_e_wdate: selectDate.end ?? '',
@@ -196,3 +195,22 @@ export default function Coupon() {
     </>
   );
 }
+
+const couponDropdownList = [
+  {
+    label: '전체',
+    value: '전체',
+  },
+  {
+    label: '미사용',
+    value: '미사용',
+  },
+  {
+    label: '사용완료',
+    value: '사용완료',
+  },
+  {
+    label: '기간만료',
+    value: '기간만료',
+  },
+];

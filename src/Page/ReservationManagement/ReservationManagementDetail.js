@@ -29,6 +29,7 @@ import {useIsFocused} from '@react-navigation/native';
 import {payState} from '../More/MyInformation/RepairHistoryDetail';
 import Loading from '@/Component/Layout/Loading';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {AlertButton, AlertButtons} from '@/Util/Alert';
 
 export default function ReservationManagementDetail({navigation, route: {params}}) {
   const type = params?.type;
@@ -73,6 +74,10 @@ export default function ReservationManagementDetail({navigation, route: {params}
 
   const onPressApprove = async () => {
     // 승인 누를시
+    if (payState(reservationInfo?.ot_pay_status) === '결제대기') {
+      AlertButton('결제되지 않은 예약건입니다.');
+      return;
+    }
     setIsLoading(true);
     const result = await editApiHandle(3);
 

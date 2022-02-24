@@ -423,39 +423,36 @@ const Header = ({
           </TouchableOpacity>
         </RowBox>
       </Box>
-      <Box mg="20px 16px 0px">
-        {/* <RecommenderShop totalCount={bannerList?.length} count={selectImage + 1} /> */}
-        <Box>
-          <Box height="200px">
-            <ScrollView
-              ref={ref}
-              onTouchStart={onRemoveContactPress}
-              horizontal
-              pagingEnabled
+      {/* <RecommenderShop totalCount={bannerList?.length} count={selectImage + 1} /> */}
+      <Box height="200px" mg="20px 16px 0px">
+        <ScrollView
+          ref={ref}
+          onTouchStart={onRemoveContactPress}
+          horizontal
+          pagingEnabled
+          style={{borderRadius: 10}}
+          showsHorizontalScrollIndicator={false}
+          onMomentumScrollEnd={onScrollSlide}>
+          {bannerList.map((item, index) => (
+            <TouchableOpacity
               style={{borderRadius: 10}}
-              showsHorizontalScrollIndicator={false}
-              onMomentumScrollEnd={onScrollSlide}>
-              {bannerList.map((item, index) => (
-                <TouchableOpacity
-                  style={{borderRadius: 10}}
-                  key={`image_${index}`}
-                  onPress={async () => {
-                    const result = await Linking.canOpenURL(item?.bt_link);
-                    if (result) Linking.openURL(item?.bt_link);
-                  }}
-                  activeOpacity={0.6}>
-                  <DefaultImage
-                    style={{borderRadius: 10}}
-                    resizeMode="stretch"
-                    source={{uri: imageAddress + item?.bt_image}}
-                    width={size.minusPadding}
-                  />
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-            <SwiperCount count={selectImage} length={bannerList?.length} onPressArrow={onPressArrow} />
-          </Box>
-        </Box>
+              key={`image_${index}`}
+              onPress={async () => {
+                const result = await Linking.canOpenURL(item?.bt_link);
+                if (result) Linking.openURL(item?.bt_link);
+              }}
+              activeOpacity={0.6}>
+              <DefaultImage
+                style={{borderRadius: 10}}
+                resizeMode="stretch"
+                source={{uri: imageAddress + item?.bt_image}}
+                width={size.minusPadding}
+                height="200px"
+              />
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+        <SwiperCount count={selectImage} length={bannerList?.length} onPressArrow={onPressArrow} />
       </Box>
     </>
   );
@@ -569,7 +566,7 @@ const SwiperCount = ({count, length, onPressArrow}) => {
   return (
     <PositionBox
       right="16px"
-      bottom="18px"
+      bottom="40px"
       width="128px"
       height="24px"
       borderRadius="50px"

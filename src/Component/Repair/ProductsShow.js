@@ -32,10 +32,12 @@ export default function ProductsShow() {
 export const Product = ({item}) => {
   const navigation = useNavigation();
   return (
-    <BetweenBox width="380px" mg="0px 0px 10px">
+    <BetweenBox width="380px" mg="0px 0px 10px" height="50px">
       <Box>
         <RowBox alignItems="center">
-          <DarkBoldText mg="0px 7px 0px 0px">{item?.pt_title}</DarkBoldText>
+          <DarkBoldText fontSize={Theme.fontSize.fs15} mg="0px 7px 0px 0px">
+            {item?.pt_title}
+          </DarkBoldText>
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('ProductDetail', {
@@ -46,21 +48,20 @@ export const Product = ({item}) => {
           </TouchableOpacity>
         </RowBox>
         {item?.pt_type === '1' && (
-          <RowBox alignItems="center">
+          <RowBox alignItems="center" mg="3px 0px 0px">
             <AutoHeightImage source={Icon} width={getPixel(15)} />
-            <DefaultText fontSize={Theme.fontSize.fs13} color={Theme.color.skyBlue} mg="0px 7px 0px 0px">
+            <DefaultText fontSize={Theme.fontSize.fs12} color={Theme.color.skyBlue} mg="0px 7px 0px 0px">
               입고수리 필요
             </DefaultText>
           </RowBox>
         )}
       </Box>
-      <RowBox alignItems="center">
-        {item.pt_dc_price !== '' && item.pt_discount_per !== '0' && (
-          <MoneyText money={parseInt(item?.pt_price)} disabled mg="0px 8px 0px 0px" />
-        )}
-
+      <Box alignItems="flex-end">
         <MoneyText color={Theme.color.black} money={parseInt(item?.pt_dc_price)} />
-      </RowBox>
+        {item.pt_dc_price !== '' && item.pt_discount_per !== '0' && (
+          <MoneyText money={parseInt(item?.pt_price)} disabled mg="0px 0px 0px" pd="0px" width="auto" />
+        )}
+      </Box>
     </BetweenBox>
   );
 };

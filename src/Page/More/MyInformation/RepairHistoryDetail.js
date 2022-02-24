@@ -18,6 +18,7 @@ import {useLayoutEffect} from 'react';
 import {AlertButtons} from '@/Util/Alert';
 import {showToastMessage} from '@/Util/Toast';
 import {imageAddress} from '@assets/global/config';
+import {VirtualAccountItem} from '@/Page/Repair/ReservationPayment';
 
 /**
  * 2022-02-09 15:51:54
@@ -218,6 +219,7 @@ export default function RepairHistoryDetail({route: {params}}) {
                   </BetweenBox>
                 </Box>
               )}
+
               <Box mg="10px 16px 0px" style={borderBottomWhiteGray}>
                 <RowBox>
                   <DarkBoldText>결제정보</DarkBoldText>
@@ -236,6 +238,7 @@ export default function RepairHistoryDetail({route: {params}}) {
                       : '쿠폰 예약'}
                   </DarkText>
                 </BetweenBox>
+
                 {repair?.ot_use_coupon === '0' && (
                   <>
                     <BetweenBox width={size.minusPadding}>
@@ -258,6 +261,19 @@ export default function RepairHistoryDetail({route: {params}}) {
                   </>
                 )}
               </Box>
+              {repair?.ot_pay_type === 'vbank' && repair?.ot_pay_status === 'ready' && (
+                <Box pd="10px 16px">
+                  <DarkBoldText mg="0px 0px 10px">가상 계좌 정보</DarkBoldText>
+                  <VirtualAccountItem
+                    ot_vbank={repair?.ot_vbank}
+                    ot_vbank_date={repair?.ot_vbank_date}
+                    ot_vbank_name={repair?.ot_vbank_name}
+                    ot_vbank_num={repair?.ot_vbank_num}
+                    isDetail
+                  />
+                </Box>
+              )}
+
               {repair?.ot_use_coupon === '0' && (
                 <Box mg="0px 16px" style={borderBottomWhiteGray}>
                   <BetweenBox mg="20px 0px" width={size.minusPadding}>

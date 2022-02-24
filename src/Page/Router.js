@@ -105,6 +105,7 @@ export default function Router() {
   const navigationRef = useRef(null);
 
   const [isLoading, setIsLoading] = useState(true);
+
   const getToken = async () => {
     try {
       const token = await messaging().getToken();
@@ -198,7 +199,7 @@ export default function Router() {
     //
     if (link?.url) {
       try {
-        const queryString = link?.url.split('https://pedalcheck.com/')[1].split('&');
+        const queryString = link?.url.split('https://pedalcheck/')[1].split('&');
         const intent = queryString[0].split('=')[1];
         let items = {};
         for (const item of queryString) {
@@ -228,7 +229,7 @@ export default function Router() {
   useEffect(() => {
     getToken();
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      console.log(remoteMessage,"remoteMessageremoteMessageremoteMessageremoteMessageremoteMessage")
+      console.log(remoteMessage, 'remoteMessageremoteMessageremoteMessageremoteMessageremoteMessage');
       showPushToastMessage({
         remoteMessage: remoteMessage,
         onShow: () => {
