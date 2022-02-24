@@ -34,7 +34,7 @@ export default function ReservationDate({navigation, route: {params}}) {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  useUpdateEffect(() => {
+  useEffect(() => {
     setDisabledTimeList([]);
     setTimeList([]);
     setSelectItem('');

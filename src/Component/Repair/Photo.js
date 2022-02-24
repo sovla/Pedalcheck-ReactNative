@@ -16,7 +16,7 @@ import FastImage from 'react-native-fast-image';
 import {useState} from 'react';
 import AutoHeightImage from 'react-native-auto-height-image';
 import CloseWhiteIcon from '@assets/image/close_white.png';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const PhotoComponent = ({
   imageArray,
@@ -115,26 +115,27 @@ const PhotoComponent = ({
         onRequestClose={() => {
           setIsModal(false);
         }}>
-          <SafeAreaView style={{flex:0}}></SafeAreaView>
-          <SafeAreaView style={{flex:1}}>
-        <PositionBox top="30px" right="30px" zIndex={200} backgroundColor="#0000">
-          <TouchableOpacity
-            hitSlop={{top: 15, bottom: 15, right: 15, left: 15}}
-            onPress={() => {
-              setIsModal(false);
-            }}>
-            <AutoHeightImage source={CloseWhiteIcon} width={20} />
-          </TouchableOpacity>
-        </PositionBox>
-        <ImageViewer
-          index={ViewItem}
-          imageUrls={imageArray.map((v, i) => ({url: v?.uri ?? v?.path}))}
-          loadingRender={() => <ActivityIndicator color="#9BA57E" size={'large'} />}
-          useNativeDriver
-          pageAnimateTime={20}
-        />
+        <SafeAreaView style={{flex: 0}}></SafeAreaView>
+        <SafeAreaView style={{flex: 1}}>
+          <PositionBox top="30px" right="30px" zIndex={200} backgroundColor="#0000">
+            <TouchableOpacity
+              hitSlop={{top: 15, bottom: 15, right: 15, left: 15}}
+              onPress={() => {
+                setIsModal(false);
+              }}>
+              <AutoHeightImage source={CloseWhiteIcon} width={20} />
+            </TouchableOpacity>
+          </PositionBox>
+          <ImageViewer
+            saveToLocalByLongPress={false}
+            index={ViewItem}
+            imageUrls={imageArray.map((v, i) => ({url: v?.uri ?? v?.path}))}
+            loadingRender={() => <ActivityIndicator color="#9BA57E" size={'large'} />}
+            useNativeDriver
+            pageAnimateTime={20}
+          />
         </SafeAreaView>
-        <SafeAreaView style={{flex:0}}></SafeAreaView>
+        <SafeAreaView style={{flex: 0}}></SafeAreaView>
       </Modal>
     </RowBox>
   );

@@ -22,6 +22,7 @@ import {ResetStoreInfo} from '@/Store/storeInfoState';
 import {logOut} from '@/API/More/More';
 import {setIsAdmin} from '@/Store/adminState';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {RequireApple} from '@/Util/Alert';
 
 export default function Information({route: {params}}) {
   const {size, login} = useSelector(state => state);
@@ -66,7 +67,12 @@ export default function Information({route: {params}}) {
         <Box pd="10px 16px 0px">
           {!isAdmin && (
             <>
-              <TouchableOpacity onPress={() => navigation.navigate('BikeManagement')}>
+              <TouchableOpacity
+                onPress={() => {
+                  if (RequireApple(login, navigation, '자전거 관리를')) {
+                    navigation.navigate('BikeManagement');
+                  }
+                }}>
                 <RowBox
                   style={borderBottomWhiteGray}
                   alignItems="center"
@@ -79,7 +85,12 @@ export default function Information({route: {params}}) {
                   <DarkText fontSize={Theme.fontSize.fs15}>{bikeNumber ? bikeNumber : 0}/5</DarkText>
                 </RowBox>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate('CouponManagement')}>
+              <TouchableOpacity
+                onPress={() => {
+                  if (RequireApple(login, navigation, '쿠폰 관리를')) {
+                    navigation.navigate('CouponManagement');
+                  }
+                }}>
                 <RowBox backgroundColor="#0000" style={borderBottomWhiteGray} width={size.minusPadding}>
                   <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
                     쿠폰 관리
@@ -88,7 +99,12 @@ export default function Information({route: {params}}) {
               </TouchableOpacity>
             </>
           )}
-          <TouchableOpacity onPress={() => navigation.navigate('UpdateHome')}>
+          <TouchableOpacity
+            onPress={() => {
+              if (RequireApple(login, navigation, '내 정보 수정을')) {
+                navigation.navigate('UpdateHome');
+              }
+            }}>
             <RowBox backgroundColor="#0000" style={borderBottomWhiteGray} width={size.minusPadding}>
               <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
                 내 정보 수정

@@ -60,7 +60,7 @@ export default function CouponReservation() {
           productName={['정비-오버홀']}
           customerName="홍길동"
           reservationDate="2021-10-07 16:00"
-          status="승인거부"
+          status="승인취소"
           totalPrice={24000}
         />
         <RepairProduct

@@ -53,6 +53,8 @@ export default function RepairReservation({type}) {
   }); // 로딩여부
 
   const onPressAllApprove = async () => {
+    console.log(list);
+    return;
     AlertButtons('예약 건 전체를 승인 처리하시겠습니까?', '확인', '취소', () => {
       setIsLoading(prev => ({...prev, isSave: true}));
       sendAllApprove({

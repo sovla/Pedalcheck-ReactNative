@@ -185,23 +185,24 @@ export default function ReservationPayment({navigation, route: {params}}) {
   );
 }
 
-const VirtualAccountItem = ({ot_vbank, ot_vbank_date, ot_vbank_name, ot_vbank_num}) => {
+export const VirtualAccountItem = ({ot_vbank, ot_vbank_date, ot_vbank_name, ot_vbank_num, isDetail}) => {
   return (
     <Box width="380px" mg="0px 0px 15px" style={borderBottomWhiteGray}>
       <RowBox justifyContent="space-between" mg="0px 0px 10px">
-        <DarkBoldText width="100px">은행명</DarkBoldText>
+        {isDetail ? <DarkText width="100px">은행명</DarkText> : <DarkBoldText width="100px">은행명</DarkBoldText>}
+
         <DarkText selectable>{ot_vbank}</DarkText>
       </RowBox>
       <RowBox justifyContent="space-between" mg="0px 0px 10px">
-        <DarkBoldText width="100px">계좌번호</DarkBoldText>
+        {isDetail ? <DarkText width="100px">계좌번호</DarkText> : <DarkBoldText width="100px">계좌번호</DarkBoldText>}
         <DarkText selectable>{ot_vbank_num}</DarkText>
       </RowBox>
       <RowBox justifyContent="space-between" mg="0px 0px 10px">
-        <DarkBoldText width="100px">예금주</DarkBoldText>
+        {isDetail ? <DarkText width="100px">예금주</DarkText> : <DarkBoldText width="100px">예금주</DarkBoldText>}
         <DarkText selectable>{ot_vbank_name}</DarkText>
       </RowBox>
       <RowBox justifyContent="space-between" mg="0px 0px 10px">
-        <DarkBoldText width="100px">입금기간</DarkBoldText>
+        {isDetail ? <DarkText width="100px">입금기간</DarkText> : <DarkBoldText width="100px">입금기간</DarkBoldText>}
         <DarkText>{ot_vbank_date}</DarkText>
       </RowBox>
     </Box>

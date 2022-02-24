@@ -16,6 +16,7 @@ import {useLayoutEffect} from 'react';
 import SwiperAutoHeight from './SwiperAutoHeight';
 import Photo from './Photo';
 import {getPixel} from '@/Util/pixelChange';
+import AutoHeightImage from 'react-native-auto-height-image';
 
 export default function Review({
   isDetail = false,
@@ -109,11 +110,13 @@ export default function Review({
           // <Swiper width={size.minusPadding} height={200} imageArray={imageArray} borderRadius="All" isRolling={false} />
           imageArray?.length > 0 && (
             <Box>
-              <DefaultImage
+              <AutoHeightImage
                 source={imageArray[0]}
-                borderRadius="10px"
-                width={size.minusPadding}
-                height={`150px`}
+                // borderRadius="10px"
+                width={getPixel(380)}
+                maxHeight={200}
+                animated
+                style={{borderRadius: 10}}
                 resizeMode="cover"
               />
               {imageArray?.length > 1 && (

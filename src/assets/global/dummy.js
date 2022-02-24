@@ -82,11 +82,11 @@ export const repairHistoryDropdownList = [
   },
   {
     label: '승인완료',
-    value: '승인',
+    value: '승인완료',
   },
   {
-    label: '승인거부',
-    value: '승인거부',
+    label: '승인취소',
+    value: '승인취소',
   },
   {
     label: '처리완료',

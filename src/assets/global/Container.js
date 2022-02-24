@@ -70,7 +70,7 @@ export const Box = styled.View`
   ${p =>
     p.minHeight &&
     css`
-      min-height: ${pixelChange(p.minHeight)};
+      min-height: ${p.minHeight};
     `};
   ${p =>
     p.flexWrap &&
