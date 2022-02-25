@@ -133,6 +133,7 @@ export default function RepairHistoryDetail({route: {params}}) {
                 shopName=""
                 rejectionReason={repair?.ot_cmemo ? repair?.ot_cmemo : ''}
                 completeDate={repair?.ot_status === '처리완료' ? repair?.ot_cdate?.slice(0, 16) : ''}
+                orderNumber={repair?.ot_code}
                 // 수정 필요
               />
               <Box height="20px" />
@@ -224,6 +225,7 @@ export default function RepairHistoryDetail({route: {params}}) {
                 <RowBox>
                   <DarkBoldText>결제정보</DarkBoldText>
                 </RowBox>
+
                 <BetweenBox mg="10px 0px" width={size.minusPadding}>
                   <DarkMediumText fontSize={Theme.fontSize.fs15}>결제수단</DarkMediumText>
                   <DarkText fontSize={Theme.fontSize.fs15}>
@@ -327,6 +329,7 @@ const RepairHistoryDetailHeader = ({
   shopName = '인천신스',
   rejectionReason = '승인거절 사유 노출 영역 승인거절 사유노출 영역 승인거절 사유 노출 영역',
   completeDate,
+  orderNumber,
 }) => {
   return (
     <Box mg="0px 16px" pd="20px 0px" style={borderBottomWhiteGray}>
@@ -348,9 +351,15 @@ const RepairHistoryDetailHeader = ({
       )}
       {/* // 수정 필요 */}
       {completeDate !== '' && (
-        <RowBox>
+        <RowBox mg="0px 0px 10px">
           <DarkMediumText width="110px">완료시간</DarkMediumText>
           <DarkText width="275px">{completeDate}</DarkText>
+        </RowBox>
+      )}
+      {orderNumber.length > 0 && (
+        <RowBox>
+          <DarkMediumText width="110px">주문 번호</DarkMediumText>
+          <DarkText width="275px">{orderNumber}</DarkText>
         </RowBox>
       )}
     </Box>

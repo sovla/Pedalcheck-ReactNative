@@ -61,7 +61,8 @@ export default function ReservationManagementAll({
       .then(res => res.data?.result === 'true' && res.data.data.data)
       .then(data => {
         if (data) {
-          setList(data);
+          const reverse = data.reverse();
+          setList(reverse);
         } else {
           // 데이터가 없을때
           setList([]);

@@ -74,19 +74,19 @@ export default function ReservationManagementDetail({navigation, route: {params}
 
   const onPressApprove = async () => {
     // 승인 누를시
-    if (payState(reservationInfo?.ot_pay_status) === '결제대기') {
-      AlertButton('결제되지 않은 예약건입니다.');
-      return;
-    }
-    setIsLoading(true);
-    const result = await editApiHandle(3);
+    if (payState(reservationInfo?.ot_pay_status) === '결제완료' || type === 'coupon') {
+      setIsLoading(true);
+      const result = await editApiHandle(3);
 
-    if (result) {
-      // 승인 완료시 푸시 알림  정비요청이 승인되었습니다 전송 API 추가
-      showToastMessage('정비요청이 승인되었습니다.');
+      if (result) {
+        // 승인 완료시 푸시 알림  정비요청이 승인되었습니다 전송 API 추가
+        showToastMessage('정비요청이 승인되었습니다.');
+      } else {
+      }
+      setIsLoading(false);
     } else {
+      AlertButton('결제 되지 않은 주문건입니다.');
     }
-    setIsLoading(false);
   };
   const onPressRejection = async () => {
     // 거절 누를시
@@ -242,9 +242,15 @@ export default function ReservationManagementDetail({navigation, route: {params}
             )}
 
             {reservationInfo?.ot_cmemo?.length > 0 && (
-              <RowBox mg="0px 0px 20px">
+              <RowBox mg="0px 0px 10px">
                 <DarkMediumText width="110px">승인거절 사유</DarkMediumText>
                 <DarkText width="270px">{reservationInfo.ot_cmemo}</DarkText>
+              </RowBox>
+            )}
+            {reservationInfo?.ot_code?.length > 0 && (
+              <RowBox mg="0px 0px 20px">
+                <DarkMediumText width="110px">주문 번호</DarkMediumText>
+                <DarkText width="270px">{reservationInfo.ot_code}</DarkText>
               </RowBox>
             )}
           </Box>

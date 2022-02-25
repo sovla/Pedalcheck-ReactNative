@@ -218,7 +218,7 @@ export default function Update({navigation}) {
       <Header title="정보 수정" />
 
       <Container>
-        <ScrollBox>
+        <ScrollBox keyboardShouldPersistTaps="handled">
           <MenuNav menuItem={menuItem} select={select} setSelect={setSelect} />
           {select === '기본 정보 수정' && (
             <>

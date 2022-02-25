@@ -79,7 +79,15 @@ export const Box = styled.View`
     `};
 `;
 
-export const ScrollBox = styled.ScrollView`
+export const ScrollBox = props => {
+  return (
+    <ScrollBoxDefault {...props} keyboardShouldPersistTaps="handled">
+      {props.children}
+    </ScrollBoxDefault>
+  );
+};
+
+export const ScrollBoxDefault = styled.ScrollView`
   display: flex;
   padding: ${p => pixelChange(p.pd) ?? '0px'};
   margin: ${p => pixelChange(p.mg) ?? '0px'};

@@ -37,6 +37,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getTagList} from '@/API/More/More';
 import {useRef} from 'react';
 import useInterval from '@/Hooks/useInterval';
+import {get} from 'immer/dist/internal';
 
 export default function RepairHome() {
   const {
@@ -424,7 +425,8 @@ const Header = ({
         </RowBox>
       </Box>
       {/* <RecommenderShop totalCount={bannerList?.length} count={selectImage + 1} /> */}
-      <Box height="200px" mg="20px 16px 0px">
+      <Box height="20px" backgroundColor="#0000" />
+      <Box pd="0px 16px" backgroundColor="#0000" height={`${getPixel(200)}px`}>
         <ScrollView
           ref={ref}
           onTouchStart={onRemoveContactPress}
@@ -443,17 +445,17 @@ const Header = ({
               }}
               activeOpacity={0.6}>
               <DefaultImage
-                style={{borderRadius: 10}}
+                style={{borderRadius: 10, height: getPixel(200)}}
                 resizeMode="stretch"
                 source={{uri: imageAddress + item?.bt_image}}
                 width={size.minusPadding}
-                height="200px"
               />
             </TouchableOpacity>
           ))}
         </ScrollView>
         <SwiperCount count={selectImage} length={bannerList?.length} onPressArrow={onPressArrow} />
       </Box>
+      <Box height="20px" backgroundColor="#0000" />
     </>
   );
 };
@@ -565,8 +567,8 @@ export const numberCheck = number => {
 const SwiperCount = ({count, length, onPressArrow}) => {
   return (
     <PositionBox
-      right="16px"
-      bottom="40px"
+      right="32px"
+      bottom="16px"
       width="128px"
       height="24px"
       borderRadius="50px"

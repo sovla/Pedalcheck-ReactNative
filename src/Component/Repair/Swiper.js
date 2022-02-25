@@ -93,7 +93,7 @@ function SwiperComponent({imageArray, width, height, borderRadius = 'Bottom', is
       width={`${transformWidth}px`}
       height={`${transformHeight}px`}
       style={{
-        maxHeight: transformHeight,
+        maxHeight: getPixel(transformHeight),
       }}>
       <FlatList
         horizontal
@@ -115,8 +115,8 @@ function SwiperComponent({imageArray, width, height, borderRadius = 'Bottom', is
         style={[
           borderRadiusStyle,
           {
-            maxHeight: transformHeight,
-            width: transformWidth,
+            maxHeight: getPixel(transformHeight),
+            width: getPixel(transformWidth),
           },
         ]}
         onMomentumScrollEnd={onScrollSlide}

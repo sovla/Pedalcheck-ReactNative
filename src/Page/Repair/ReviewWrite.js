@@ -52,9 +52,10 @@ export default function ReviewWrite({navigation, route}) {
   return (
     <>
       <Header title="리뷰 작성" />
-      <ReviewRecord itemArray={[shopItem]} isSelect={false} pd="20px 16px" />
+
       <Box width={size.minusPadding} mg="0px 16px" flex={1}>
-        <ScrollView style={{width: '100%', height: size.screenHeight}}>
+        <ScrollView style={{width: '100%', height: size.screenHeight}} keyboardShouldPersistTaps="handled">
+          <ReviewRecord itemArray={[shopItem]} isSelect={false} pd="20px 0px" />
           <DefaultInput
             width="100%"
             height="200px"
