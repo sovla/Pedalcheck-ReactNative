@@ -84,6 +84,8 @@ export default function ReservationManagementDetail({navigation, route: {params}
       } else {
       }
       setIsLoading(false);
+    } else {
+      AlertButton('결제 되지 않은 주문건입니다.');
     }
   };
   const onPressRejection = async () => {
@@ -243,6 +245,12 @@ export default function ReservationManagementDetail({navigation, route: {params}
               <RowBox mg="0px 0px 20px">
                 <DarkMediumText width="110px">승인거절 사유</DarkMediumText>
                 <DarkText width="270px">{reservationInfo.ot_cmemo}</DarkText>
+              </RowBox>
+            )}
+            {reservationInfo?.ot_code?.length > 0 && (
+              <RowBox mg="0px 0px 20px">
+                <DarkMediumText width="110px">주문 번호</DarkMediumText>
+                <DarkText width="270px">{reservationInfo.ot_code}</DarkText>
               </RowBox>
             )}
           </Box>

@@ -134,6 +134,12 @@ export default function Detail({navigation, route}) {
                 <DarkText width="270px">{item?.ot_proc?.ot_cdate?.substring(0, 16)}</DarkText>
               </RowBox>
             )}
+            {item?.ot_code?.length > 0 && (
+              <RowBox>
+                <DarkMediumText width="110px">주문 번호</DarkMediumText>
+                <DarkText width="270px">{item?.ot_code}</DarkText>
+              </RowBox>
+            )}
           </Box>
           <Box mg="20px 0px 0px">
             <DarkBoldText>정비 자전거 정보</DarkBoldText>
