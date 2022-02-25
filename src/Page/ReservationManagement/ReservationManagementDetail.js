@@ -242,7 +242,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
             )}
 
             {reservationInfo?.ot_cmemo?.length > 0 && (
-              <RowBox mg="0px 0px 20px">
+              <RowBox mg="0px 0px 10px">
                 <DarkMediumText width="110px">승인거절 사유</DarkMediumText>
                 <DarkText width="270px">{reservationInfo.ot_cmemo}</DarkText>
               </RowBox>

@@ -129,7 +129,7 @@ export default function Detail({navigation, route}) {
               </RowBox>
             )}
             {item?.ot_proc?.ot_cdate?.length > 0 && (
-              <RowBox>
+              <RowBox mg="0px 0px 10px">
                 <DarkMediumText width="110px">완료시간</DarkMediumText>
                 <DarkText width="270px">{item?.ot_proc?.ot_cdate?.substring(0, 16)}</DarkText>
               </RowBox>
