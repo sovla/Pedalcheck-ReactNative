@@ -19,9 +19,9 @@ import CustomerOffIcon from '@assets/image/menu07.png';
 import DefaultImage from '@/assets/global/Image';
 import {DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
-import {Alert, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
-import {AlertButton, AlertButtons, RequireApple, RequireLogin, RequireLoginAlert} from '@/Util/Alert';
+import {AlertButtons} from '@/Util/Alert';
 
 export default function FooterButtons({selectMenu, isAdmin}) {
   const navigation = useNavigation();
@@ -103,7 +103,18 @@ export default function FooterButtons({selectMenu, isAdmin}) {
       }
     }
     if (result) {
-      navigation.navigate(item?.navigate);
+      try {
+        const {routes} = navigation.getState();
+        const {name} = routes[routes.length - 1];
+
+        if (name === item.navigate) {
+          navigation.replace(item.navigate);
+        } else {
+          navigation.navigate(item?.navigate);
+        }
+      } catch (error) {
+        navigation.navigate(item?.navigate);
+      }
     }
   };
   return (

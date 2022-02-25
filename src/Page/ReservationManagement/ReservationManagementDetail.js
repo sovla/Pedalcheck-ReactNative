@@ -74,7 +74,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
 
   const onPressApprove = async () => {
     // 승인 누를시
-    if (payState(reservationInfo?.ot_pay_status) === '결제완료') {
+    if (payState(reservationInfo?.ot_pay_status) === '결제완료' || type === 'coupon') {
       setIsLoading(true);
       const result = await editApiHandle(3);
 
