@@ -48,7 +48,6 @@ export default function ProductRegister({route: {params}}) {
   const isFocused = useIsFocused();
   const isItem = params?.item !== undefined; // item 있는경우 true 수정페이지
 
-  console.log('isItem', isItem);
   const regJoin = () => {
     let result = false;
     setErrorMessage({
@@ -68,8 +67,6 @@ export default function ProductRegister({route: {params}}) {
     }
     const stime = parseInt(product.pt_stime.substring(0, 2));
     const etime = parseInt(product.pt_etime.substring(0, 2));
-    console.log(stime);
-    console.log(etime);
     if ((stime !== 0 || etime !== 0) && stime >= etime) {
       setErrorMessage(prev => ({...prev, pt_time: '종료시간은 시작시간 이후여야 합니다.'}));
       result = true;
