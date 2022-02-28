@@ -94,7 +94,7 @@ export default function ProductDetail({route: {params}}) {
   return (
     <>
       <Header title="상품 상세" />
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="handled">
         <Container alignItems="center" pd="20px 0px">
           {item?.pt_image?.length > 0 && (
             <Box width={size.minusPadding} height="200px" mg="0px 0px 20px">

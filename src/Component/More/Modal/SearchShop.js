@@ -48,7 +48,7 @@ export default function SearchShop({setShopInfo}) {
         </PositionBox>
       </Box>
       <Box height="200px">
-        <ScrollBox>
+        <ScrollBox keyboardShouldPersistTaps="handled">
           {shopList?.map((item, index) => (
             <TouchableOpacity
               onPress={async () => {

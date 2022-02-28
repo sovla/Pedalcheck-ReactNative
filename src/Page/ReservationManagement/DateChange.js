@@ -116,7 +116,7 @@ export default function DateChange({route: {params}}) {
       {isLoading && <Loading isAbsolute backgroundColor="#0004" />}
       <Header title="예약시간 변경" />
       <Box flex={1}>
-        <ScrollBox flex={1}>
+        <ScrollBox flex={1} keyboardShouldPersistTaps="handled">
           <Box mg="0px 16px">
             <ReservationCalendar
               selectDate={selectDate}

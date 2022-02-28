@@ -126,7 +126,7 @@ export default function RepairHistoryDetail({route: {params}}) {
       <Container>
         {Object.keys(repair)?.length > 0 && (
           <>
-            <ScrollBox flex={1}>
+            <ScrollBox flex={1} keyboardShouldPersistTaps="handled">
               <RepairHistoryDetailHeader
                 status={repair?.ot_status}
                 productName={[repair?.pt_title]}

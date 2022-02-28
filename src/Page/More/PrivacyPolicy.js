@@ -32,7 +32,12 @@ export default function PrivacyPolicy({
     <>
       <Header title={title} />
       <Container pd="20px 16px">
-        <ScrollBox pd="16px" backgroundColor={Theme.color.backgroundBlue} width="380px" borderRadius="10px">
+        <ScrollBox
+          keyboardShouldPersistTaps="handled"
+          pd="16px"
+          backgroundColor={Theme.color.backgroundBlue}
+          width="380px"
+          borderRadius="10px">
           <DarkBoldText>{subTitle}</DarkBoldText>
           {st_agree === 1 && <DarkBoldText fontSize={Theme.fontSize.fs14}>개인정보 수집 및 이용 동의</DarkBoldText>}
           <RenderHtml

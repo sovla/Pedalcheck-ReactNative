@@ -69,7 +69,7 @@ export default function BikeBrand() {
             </TouchableOpacity>
           </PositionBox>
         </Box>
-        <ScrollBox maxHeight="200px">
+        <ScrollBox maxHeight="200px" keyboardShouldPersistTaps="handled">
           {bikeModel?.map((item, index) => (
             <TouchableOpacity onPress={() => onPressBrand(item.bt_brand)} key={item.bt_brand + index}>
               <Box

@@ -174,7 +174,7 @@ export default function More() {
 
   return (
     <Container>
-      <ScrollBox backgroundColor={Theme.borderColor.whiteLine}>
+      <ScrollBox backgroundColor={Theme.borderColor.whiteLine} keyboardShouldPersistTaps="handled">
         <GradientHeader title="더보기" imageSource={WhiteMoreIcon} height={76}></GradientHeader>
         <BetweenBox width={size.designWidth} pd="20px 16px" alignItems="center">
           <RowBox alignItems="center">

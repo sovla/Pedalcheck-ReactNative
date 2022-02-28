@@ -69,7 +69,7 @@ export default function Login() {
       style={{
         height: size.screenHeight,
       }}>
-      <ScrollBox pd="70px 16px 0px">
+      <ScrollBox pd="70px 16px 0px" keyboardShouldPersistTaps="handled">
         <LogoBox />
         <Box pd="35px 0px 0px">
           <Box>
@@ -97,19 +97,12 @@ export default function Login() {
             />
           </Box>
           <Box mg="5px 0px 0px">
-            <LinkButton
-              to={onClickLogin}
-              content="로그인"
-              width={size.minusPadding}
-              height="44px"></LinkButton>
+            <LinkButton to={onClickLogin} content="로그인" width={size.minusPadding} height="44px"></LinkButton>
           </Box>
         </Box>
         <Box alignItems="center">
           <Box pd="16px">
-            <TextLinkButton
-              to={() => navigation.navigate('Register')}
-              content="SNS 계정으로 회원가입/로그인"
-            />
+            <TextLinkButton to={() => navigation.navigate('Register')} content="SNS 계정으로 회원가입/로그인" />
           </Box>
           <BetweenBox width={`${size.designWidth - 100}px`} pd="0px 0px 10px">
             <KakaoImage />

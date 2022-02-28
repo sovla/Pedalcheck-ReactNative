@@ -77,7 +77,7 @@ export default function SearchTag({setShopInformation, shopInformation}) {
         </PositionBox>
       </Box>
       <Box height="200px" mg="5px 0px">
-        <ScrollBox>
+        <ScrollBox keyboardShouldPersistTaps="handled">
           {tagList?.map((item, index) => {
             const isSelect = selectListCopy?.find((findItem, findIndex) => {
               if (findItem === item.st_title) {

@@ -183,7 +183,7 @@ export default function ProductRegister({route: {params}}) {
   return (
     <>
       <Header title={`정비상품 ${isItem ? '수정' : '등록'}`} />
-      <ScrollBox pd="0px 16px" ref={ref}>
+      <ScrollBox pd="0px 16px" ref={ref} keyboardShouldPersistTaps="handled">
         <RowBox pd="20px 0px" style={borderBottomWhiteGray}>
           <RequireFieldText />
         </RowBox>

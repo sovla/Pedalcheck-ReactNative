@@ -261,7 +261,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
     <>
       {isLoading && <Loading isAbsolute />}
       <Header title="자전거 추가" />
-      <ScrollBox>
+      <ScrollBox keyboardShouldPersistTaps="handled">
         <Box width={size.designWidth} pd="20px 16px">
           <DarkBoldText fontSize={Theme.fontSize.fs18} mg="0px 0px 20px">
             필수 입력 항목

@@ -55,7 +55,7 @@ export default function RepairHistorySelectHome() {
   }
 
   return (
-    <ScrollBox pd="0px 16px" backgroundColor="#F8F8F8">
+    <ScrollBox pd="0px 16px" backgroundColor="#F8F8F8" keyboardShouldPersistTaps="handled">
       <BetweenBox backgroundColor="#0000" mg="20px 0px" width="380px" alignItems="center">
         <TouchableOpacity
           disabled={dateFormat(date).slice(0, 7) === storeInfo.mst_wdate.slice(0, 7)}

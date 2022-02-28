@@ -94,7 +94,7 @@ export default function Approval({navigation, route: {params}}) {
       {isLoading && <Loading isAbsolute />}
       <Header title="처리완료" />
       <Box flex={1}>
-        <ScrollBox flex={1} pd="0px 16px">
+        <ScrollBox flex={1} pd="0px 16px" keyboardShouldPersistTaps="handled">
           <Box mg="20px 0px 0px" flex={1} style={borderBottomWhiteGray}>
             <DarkBoldText>결제정보</DarkBoldText>
             <RowBox mg="10px 0px 20px" width={size.minusPadding} justifyContent="space-between">

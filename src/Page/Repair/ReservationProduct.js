@@ -76,7 +76,7 @@ export default function ShopReservationProduct({navigation}) {
     <>
       <Header title="정비예약" />
 
-      <ScrollBox>
+      <ScrollBox keyboardShouldPersistTaps="handled">
         <RepairReservationHeader step={1} />
         <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
         <Box mg="0px 16px">

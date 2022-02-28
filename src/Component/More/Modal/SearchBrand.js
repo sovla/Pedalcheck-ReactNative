@@ -61,7 +61,7 @@ export default function SearchBrand({setShopInformation, shopInformation}) {
         </PositionBox>
       </Box>
       <Box height="250px" mg="5px 0px">
-        <ScrollBox>
+        <ScrollBox keyboardShouldPersistTaps="handled">
           {brandList?.map((item, index) => {
             const isSelect = selectListCopy?.find((findItem, findIndex) => {
               if (findItem === item.bt_brand) {

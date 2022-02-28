@@ -107,7 +107,7 @@ export default function QuestionWrite({route: {params}}) {
   return (
     <Container>
       <Header title="문의하기" />
-      <Container height={`${size.screenHeight - 120}px`}>
+      <Container height={`${size.screenHeight - 120}px`} keyboardShouldPersistTaps="handled">
         <ScrollBox pd="0px 16px">
           <RowBox style={borderBottomWhiteGray} width={size.minusPadding} mg="20px 0px 20px">
             <DarkText mg="0px 0px 20px" fontSize={Theme.fontSize.fs16} fontWeight={Theme.fontWeight.bold}>

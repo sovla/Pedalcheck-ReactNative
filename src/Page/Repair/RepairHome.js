@@ -372,7 +372,7 @@ const Header = ({
         }}>
         <Event />
         <Box height="40px">
-          <ScrollView horizontal style={{marginTop: 10}}>
+          <ScrollView horizontal style={{marginTop: 10}} keyboardShouldPersistTaps="handled">
             {tagList.map(item => (
               <TagButton
                 key={`tag_${item}`}
@@ -430,6 +430,7 @@ const Header = ({
         <ScrollView
           ref={ref}
           onTouchStart={onRemoveContactPress}
+          keyboardShouldPersistTaps="handled"
           horizontal
           pagingEnabled
           style={{borderRadius: 10}}
@@ -519,6 +520,7 @@ const Event = () => {
           horizontal
           pagingEnabled
           showsHorizontalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
           onTouchStart={() => {
             onRemoveContactPress();
           }}>
