@@ -98,7 +98,7 @@ export default function ProductRegister({route: {params}}) {
   };
   const onPressSubmit = () => {
     if (regJoin()) {
-      ref.current.scrollTo({
+      ref?.current?.scrollTo({
         y: 0,
       });
       return null;
