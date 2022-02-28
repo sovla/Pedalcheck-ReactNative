@@ -28,13 +28,6 @@ const AndroidPermission = [
 
 function App() {
   async function requestPermissions() {
-    if (Platform.OS === 'ios') {
-      Geolocation.requestAuthorization();
-      Geolocation.setRNConfiguration({
-        skipPermissionRequests: false,
-        authorizationLevel: 'whenInUse',
-      });
-    }
 
     if (Platform.OS === 'android') {
       requestMultiple(AndroidPermission);
