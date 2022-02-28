@@ -5,10 +5,8 @@ import DefaultImage from '@/assets/global/Image';
 import GradientHeader from '@/Component/Layout/GradientHeader';
 import WhiteMoreIcon from '@assets/image/menu04_top.png';
 import FooterButtons from '@/Component/Layout/FooterButtons';
-import DummyIcon from '@assets/image/default_4.png';
 import {useDispatch, useSelector} from 'react-redux';
-import {BoldText, DarkBoldText, DarkMediumText, DarkText, GrayText} from '@/assets/global/Text';
-import {useState} from 'react';
+import {BoldText, DarkBoldText, DarkMediumText, GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import DefaultLine from '@/assets/global/Line';
 import SwitchOnIcon from '@assets/image/toggle_on.png';
@@ -28,7 +26,6 @@ import BoxIcon from '@assets/image/box_Indigo.png';
 
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import {isLastChild} from '@/Util/nthMap';
-import {BorderButton} from '@/assets/global/Button';
 import {useNavigation, useIsFocused} from '@react-navigation/core';
 import {imageAddress} from '@assets/global/config';
 import {loginType} from '@/assets/global/dummy';
@@ -43,6 +40,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setIsAdmin} from '@/Store/adminState';
 import isAdminCheck from '@/Util/isAdminCheck';
 import {RequireApple} from '@/Util/Alert';
+
+const VERSION_CODE = '1.6.0';
 
 export default function More() {
   const {
@@ -309,7 +308,7 @@ const MoreFooter = () => {
           버전 정보
         </GrayText>
         <BoldText fontSize={Theme.fontSize.fs13} color={Theme.color.gray}>
-          1.5.0
+          {VERSION_CODE}
         </BoldText>
       </RowBox>
     </Box>
