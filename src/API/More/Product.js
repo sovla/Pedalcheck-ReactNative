@@ -3,7 +3,7 @@ import axios from 'axios';
 import jwt_encode from 'jwt-encode';
 import {Platform} from 'react-native';
 
-const baseURL = 'https://dmonster1744.cafe24.com/api/';
+const baseURL = 'https://pedalcheck.co.kr/api/';
 
 const SECRETKEY = '3B9027B713FABE0C75AD3A1F9F7646CB1514DE99';
 
