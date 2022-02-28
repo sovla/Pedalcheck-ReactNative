@@ -494,7 +494,7 @@ export default function ShopUpdate() {
                 mst_intro: text,
               }));
             }}
-            maxLength={200}
+            maxLength={1000}
           />
           <DefaultInput
             title="태그"

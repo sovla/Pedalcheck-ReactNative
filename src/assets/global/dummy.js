@@ -294,7 +294,6 @@ export const bankList1 = [
 ];
 
 export const openTimeList = [
-  {label: '00', value: ''},
   {label: '00', value: '00'},
   {label: '01', value: '01'},
   {label: '02', value: '02'},

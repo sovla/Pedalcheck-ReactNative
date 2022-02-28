@@ -2,7 +2,7 @@ import {BorderButton} from '@/assets/global/Button';
 import {BetweenBox, Box, Container, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import {DefaultInput} from '@/assets/global/Input';
-import {DarkBoldText, DarkMediumText, GrayText, MoneyText} from '@/assets/global/Text';
+import {DarkBoldText, DarkMediumText, DarkText, GrayText, MoneyText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import Header from '@/Component/Layout/Header';
@@ -74,6 +74,17 @@ export default function AdjustmentHistory() {
               </Box>
             </>
           }
+          //           clt_cdate: "2022-03-01"
+          // clt_edate: "2022-02-28"
+          // clt_pc_percent: "5.0"
+          // clt_pc_price: "6335"
+          // clt_pc_vat: "634"
+          // clt_pdate: "2022-03-05"
+          // clt_pg_percent: "3.3"
+          // clt_pg_price: "4339"
+          // clt_pg_vat: "434"
+          // clt_price: "119720"
+          // clt_sdate: "2022-02-01"
           data={history}
           renderItem={({item, index}) => {
             return (
@@ -81,8 +92,10 @@ export default function AdjustmentHistory() {
                 size={size}
                 index={index}
                 price={item?.clt_price}
-                date={item?.clt_wdate?.slice(0, 16)}
+                date={item?.clt_cdate?.slice(0, 16)}
                 item={item}
+                startDate={item?.clt_sdate}
+                endDate={item?.clt_edate}
               />
             );
           }}
@@ -97,7 +110,7 @@ export default function AdjustmentHistory() {
   );
 }
 
-const IncomeItem = ({price = 168400, date = '2021-10-13 02:03', index = 1, item}) => {
+const IncomeItem = ({price = 168400, date = '2021-10-13 02:03', index = 1, item, startDate, endDate}) => {
   const dispatch = useDispatch();
 
   return (
@@ -121,6 +134,13 @@ const IncomeItem = ({price = 168400, date = '2021-10-13 02:03', index = 1, item}
           <GrayText letterSpacing="0px" fontSize={Theme.fontSize.fs13}>
             지급일 {date}
           </GrayText>
+          <RowBox>
+            <DarkText fontSize={Theme.fontSize.fs13}>정산일</DarkText>
+            <DarkText fontSize={Theme.fontSize.fs13} mg="0px 0px 0px 5px">
+              {startDate} ~
+            </DarkText>
+            <DarkText fontSize={Theme.fontSize.fs13}> {endDate}</DarkText>
+          </RowBox>
         </Box>
       </RowBox>
       <Box flex={1} alignItems="flex-end" justifyContent="center">
