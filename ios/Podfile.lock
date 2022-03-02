@@ -29,14 +29,14 @@ PODS:
     - FirebaseCoreDiagnostics (~> 8.0)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/Logger (~> 7.7)
-  - FirebaseCoreDiagnostics (8.11.0):
+  - FirebaseCoreDiagnostics (8.12.0):
     - GoogleDataTransport (~> 9.1)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/Logger (~> 7.7)
     - nanopb (~> 2.30908.0)
   - FirebaseDynamicLinks (8.11.0):
     - FirebaseCore (~> 8.0)
-  - FirebaseInstallations (8.11.0):
+  - FirebaseInstallations (8.12.0):
     - FirebaseCore (~> 8.0)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/UserDefaults (~> 7.7)
@@ -756,9 +756,9 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 6192956c9e346013d5f1809ba049af720b11c6a4
   Firebase: 44dd9724c84df18b486639e874f31436eaa9a20c
   FirebaseCore: 2f4f85b453cc8fea4bb2b37e370007d2bcafe3f0
-  FirebaseCoreDiagnostics: 64d9709d804a6c25bd77841371c1fcfd909d5601
+  FirebaseCoreDiagnostics: 3b40dfadef5b90433a60ae01f01e90fe87aa76aa
   FirebaseDynamicLinks: f506c83eb7eba0f9861f84cd6b65c38b3bd5ff6f
-  FirebaseInstallations: 044eede8a049bce71c4541ee68d6e4364fcbe774
+  FirebaseInstallations: 25764cf322e77f99449395870a65b2bef88e1545
   FirebaseMessaging: 02e248e8997f71fa8cc9d78e9d49ec1a701ba14a
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 5337263514dd6f09803962437687240c5dc39aa4

@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>ko_KR</string>
 	<key>CFBundleDisplayName</key>
-	<string>pedalcheckA</string>
+	<string>pedalcheck</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -25,6 +25,8 @@
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string></string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.574869846797-3i36jqlsa2338ugnrbshid2l2nrk7agm</string>
@@ -44,6 +46,26 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>NaverPedalcheck</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string></string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>https</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.dmonster.pedalcheck</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.dmonster.pedalcheck</string>
 			</array>
 		</dict>
 	</array>
