@@ -216,13 +216,10 @@ export default function Router() {
           }
         }
         //  다이나믹 링크 확인용
-        console.log(link.url, '\n', queryString, '\n', items);
+        console.log("다이나믹링크 \n",link.url, '\n', queryString, '\n', items);
         navigationRef.current.navigate(intent, items);
         return;
       } catch (error) {}
-    }
-    if (link.url === 'https://invertase.io/offer') {
-      // ...navigate to your offers screen
     }
   };
 
@@ -279,6 +276,32 @@ export default function Router() {
     dynamicLinks().getInitialLink().then(handleDynamicLink); // 백그라운드 일때
     return () => unsubscribe();
   }, []);
+
+  useEffect(()=>{
+
+    async function buildLink() {
+      const link = await dynamicLinks().buildLink({
+        link: 'https://pedalcheck/intent',
+        // domainUriPrefix is created in your Firebase console
+        domainUriPrefix: 'https://pedalcheck.page.link',
+        // optional setup which updates Firebase analytics campaign
+        // "banner". This also needs setting up before hand
+        android:{
+          packageName:"com.pedalchecka"
+        },
+        ios:{
+          bundleId:"com.dmonster.pedalcheck",
+          appStoreId:"1610296299"
+        },
+        analytics: {
+          campaign: 'banner',
+        },
+      });
+      console.log(link)
+      return link;
+    }
+    buildLink();
+  },[])
 
   if (isLoading) {
     return null;
