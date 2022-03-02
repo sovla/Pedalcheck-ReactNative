@@ -277,31 +277,7 @@ export default function Router() {
     return () => unsubscribe();
   }, []);
 
-  useEffect(()=>{
-
-    async function buildLink() {
-      const link = await dynamicLinks().buildLink({
-        link: 'https://pedalcheck/intent',
-        // domainUriPrefix is created in your Firebase console
-        domainUriPrefix: 'https://pedalcheck.page.link',
-        // optional setup which updates Firebase analytics campaign
-        // "banner". This also needs setting up before hand
-        android:{
-          packageName:"com.pedalchecka"
-        },
-        ios:{
-          bundleId:"com.dmonster.pedalcheck",
-          appStoreId:"1610296299"
-        },
-        analytics: {
-          campaign: 'banner',
-        },
-      });
-      console.log(link)
-      return link;
-    }
-    buildLink();
-  },[])
+  
 
   if (isLoading) {
     return null;
