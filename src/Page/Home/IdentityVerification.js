@@ -42,7 +42,7 @@ export default function IdentityVerification() {
         navigation.navigate('RegisterInformation');
         break;
       case 'already join':
-        AlertButton('이미 가입된 회원입니다.\n다시 로그인 해주세요.');
+        AlertButton('이미 가입된 회원입니다.');
         navigation.reset({routes: [{name: 'Home'}]});
         break;
       case 'no mt_idx':

@@ -60,8 +60,8 @@ export default function Review({
       style={
         !isDetailPage && {
           flex: 1,
-          borderBottomWidth: isRecomment ? 0 : 1,
-          borderBottomColor: Theme.color.backgroundWhiteGray,
+          borderBottomWidth: 10,
+          borderBottomColor: '#00000005',
         }
       }>
       <RowBox>

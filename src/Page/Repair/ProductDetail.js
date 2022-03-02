@@ -41,7 +41,6 @@ export default function ProductDetail({route: {params}}) {
     }
     setImageArray(tmpImageArray);
   }, []);
-
   const contentArray = [
     {
       title: '사용 가능시간',
@@ -55,7 +54,7 @@ export default function ProductDetail({route: {params}}) {
     },
     {
       title: '카테고리',
-      content: item?.ct_pname + ' / ' + item?.ct_pname,
+      content: item?.ct_pname + ' / ' + item?.ct_name,
       isShow: item?.ct_pname && item?.ct_pname ? true : false,
     },
     {
