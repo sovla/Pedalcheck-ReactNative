@@ -47,9 +47,6 @@ export default function CouponIssue() {
       }
     });
   }, []);
-  useUpdateEffect(() => {
-    setStartDate(new Date(selectCoupon?.ct_sdate));
-  }, [selectCoupon]);
 
   const onPressIssue = async () => {
     if (id === '') {
