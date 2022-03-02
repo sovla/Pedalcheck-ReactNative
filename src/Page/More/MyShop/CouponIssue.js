@@ -14,8 +14,11 @@ import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {useLayoutEffect} from 'react';
 import {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import {useDispatch, useSelector} from 'react-redux';
+import {useEffect} from 'react';
+import useUpdateEffect from '@/Hooks/useUpdateEffect';
+import {dateFormat} from '@/Util/DateFormat';
 
 export default function CouponIssue() {
   const [selectCoupon, setSelectCoupon] = useState('');
@@ -23,6 +26,11 @@ export default function CouponIssue() {
   const [issueCouponList, setIssueCouponList] = useState([]);
   const [issueCount, setIssueCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
+  const [isOpen, setIsOpen] = useState('');
 
   const login = useSelector(state => state.login);
   const navigation = useNavigation();
@@ -39,6 +47,9 @@ export default function CouponIssue() {
       }
     });
   }, []);
+  useUpdateEffect(() => {
+    setStartDate(new Date(selectCoupon?.ct_sdate));
+  }, [selectCoupon]);
 
   const onPressIssue = async () => {
     if (id === '') {
@@ -56,8 +67,8 @@ export default function CouponIssue() {
       cst_num: issueCount,
       mt_idx: id.mt_idx,
       mt_id: id.mt_id,
-      cst_sdate: selectCoupon.ct_sdate,
-      cst_edate: selectCoupon.ct_edate,
+      cst_sdate: dateFormat(startDate),
+      cst_edate: dateFormat(endDate),
     });
 
     if (response.data?.result === 'true') {
@@ -68,6 +79,18 @@ export default function CouponIssue() {
     }
     setIsLoading(false);
   };
+
+  const onChange = (e, date) => {
+    if (e?.type === 'set') {
+      if (isOpen === 'start') {
+        setStartDate(date);
+      } else {
+        setEndDate(date);
+      }
+    }
+    setIsOpen('');
+  };
+
   return (
     <>
       {isLoading && <Loading isAbsolute />}
@@ -108,11 +131,25 @@ export default function CouponIssue() {
         </Box>
         <Box mg="20px 0px 0px">
           <DarkMediumText mg="0px 0px 10px">사용 시작일</DarkMediumText>
-          <DefaultInput value={selectCoupon?.ct_sdate} width="380px" disabled />
+          <DefaultInput
+            value={startDate.toISOString().substring(0, 10)}
+            width="380px"
+            isText
+            PressText={() => {
+              setIsOpen('start');
+            }}
+          />
         </Box>
         <Box mg="20px 0px 0px">
           <DarkMediumText mg="0px 0px 10px">사용 종료일</DarkMediumText>
-          <DefaultInput value={selectCoupon?.ct_edate} width="380px" disabled />
+          <DefaultInput
+            value={endDate.toISOString().substring(0, 10)}
+            width="380px"
+            isText
+            PressText={() => {
+              setIsOpen('end');
+            }}
+          />
         </Box>
         <Box mg="20px 0px 0px">
           <DarkMediumText mg="0px 0px 10px">아이디</DarkMediumText>
@@ -134,6 +171,7 @@ export default function CouponIssue() {
         </Box>
       </Container>
       <LinkButton mg="0px 16px 20px" content={'확인'} to={onPressIssue} />
+      {isOpen?.length > 0 && <DateTimePicker value={isOpen === 'start' ? startDate : endDate} onChange={onChange} />}
     </>
   );
 }

@@ -1,15 +1,14 @@
 import {Box, RowBox} from '@/assets/global/Container';
 import React from 'react';
-import {DarkMediumText, DarkText} from '@/assets/global/Text';
+import {DarkText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {BorderButton} from '@/assets/global/Button';
-import {Platform, StyleSheet, TouchableOpacity} from 'react-native';
-import {useEffect} from 'react';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import {dateFormat} from '@/Util/DateFormat';
 import CalendarIcon from '@assets/image/calendar.png';
 import DefaultImage from '@/assets/global/Image';
-import pixelChange, {getPixel} from '@/Util/pixelChange';
+import {getPixel} from '@/Util/pixelChange';
 import {useLayoutEffect} from 'react';
 
 export default function DatePickerComponent({onPressStart, onPressEnd, selectDate, onPressSearch, setSelectDate}) {

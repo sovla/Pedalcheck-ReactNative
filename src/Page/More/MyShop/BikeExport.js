@@ -1,19 +1,15 @@
 import {addBikeExport, updateBikeExport} from '@/API/Manager/More';
 import {LinkButton} from '@/assets/global/Button';
-import {Box, ScrollBox} from '@/assets/global/Container';
+import {Box} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
 import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
-import useUpdateEffect from '@/Hooks/useUpdateEffect';
-import {modalOpen, modalOpenAndProp, modalSlice, setModalProp} from '@/Store/modalState';
+import {modalOpenAndProp} from '@/Store/modalState';
 import {phoneNumber} from '@/Util/phoneFormatter';
 import {getPixel} from '@/Util/pixelChange';
 import {showToastMessage} from '@/Util/Toast';
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
-import {useEffect} from 'react';
-import {useState} from 'react';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch, useSelector} from 'react-redux';
 
