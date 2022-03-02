@@ -42,7 +42,7 @@ export default function ReviewDetail({route: {params}}) {
   return (
     <>
       <Header title="리뷰" />
-      <ScrollBox pd="0px 16px">
+      <ScrollBox pd="0px 16px" keyboardShouldPersistTaps="handled">
         <Box>
           <Review
             item={{

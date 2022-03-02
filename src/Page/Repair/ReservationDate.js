@@ -108,7 +108,7 @@ export default function ReservationDate({navigation, route: {params}}) {
       {isLoading && <Loading isAbsolute />}
       <Header title="정비예약" />
       <Box flex={1}>
-        <ScrollBox flex={1}>
+        <ScrollBox flex={1} keyboardShouldPersistTaps="handled">
           <RepairReservationHeader step={3} />
           <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
           <Box mg="20px 16px">

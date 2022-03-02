@@ -99,7 +99,7 @@ export default function CouponUseBikeSelect({route: {params}}) {
       <Header title="쿠폰 사용" />
 
       <Box backgroundColor="#0000" style={{height: size.screenHeight - 130}}>
-        <ScrollBox backgroundColor="#0000">
+        <ScrollBox backgroundColor="#0000" keyboardShouldPersistTaps="handled">
           <RepairReservationHeader step={1} array={[1, 2, 3]} content="자전거 선택" />
           <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
           <ReservationBikeSelect

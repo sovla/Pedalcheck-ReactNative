@@ -215,7 +215,7 @@ export default function BikeDetail({navigation, route}) {
     <>
       <Header title="자전거 상세" RightComponent={RightComponent} />
       <Box flex={1}>
-        <ScrollBox flex={1} width={size.designWidth} pd="0px 16px">
+        <ScrollBox flex={1} width={size.designWidth} pd="0px 16px" keyboardShouldPersistTaps="handled">
           <BikeInformationHeader item={bikeInfo} />
           <Box>
             <RowBox width={size.minusPadding} justifyContent="space-between">

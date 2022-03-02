@@ -136,7 +136,7 @@ export default function ReservationPayment({navigation, route: {params}}) {
     <>
       <Header title="정비예약" isGoBack={false} />
       <Box style={{flex: 1}}>
-        <ScrollBox>
+        <ScrollBox keyboardShouldPersistTaps="handled">
           <RepairReservationHeader step={5} content="결제완료" />
           <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
           <RowBox justifyContent="center" alignItems="center" mg="33px 0px">

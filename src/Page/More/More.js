@@ -41,7 +41,7 @@ import {setIsAdmin} from '@/Store/adminState';
 import isAdminCheck from '@/Util/isAdminCheck';
 import {RequireApple} from '@/Util/Alert';
 
-const VERSION_CODE = '1.6.0';
+const VERSION_CODE = '1.7.0';
 
 export default function More() {
   const {
@@ -174,7 +174,7 @@ export default function More() {
 
   return (
     <Container>
-      <ScrollBox backgroundColor={Theme.borderColor.whiteLine}>
+      <ScrollBox backgroundColor={Theme.borderColor.whiteLine} keyboardShouldPersistTaps="handled">
         <GradientHeader title="더보기" imageSource={WhiteMoreIcon} height={76}></GradientHeader>
         <BetweenBox width={size.designWidth} pd="20px 16px" alignItems="center">
           <RowBox alignItems="center">

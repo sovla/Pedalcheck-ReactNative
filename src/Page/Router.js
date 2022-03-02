@@ -91,6 +91,7 @@ import Toast from 'react-native-toast-message';
 import SplashScreen from 'react-native-splash-screen';
 import IdentityVerification from './Home/IdentityVerification';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
+import AdjustmentDetail from './RepairHistory/AdjustmentDetail';
 
 const INIT_ROUTER_COMPONENT_NAME = 'Home'; //  라우팅 초기값
 
@@ -216,7 +217,7 @@ export default function Router() {
           }
         }
         //  다이나믹 링크 확인용
-        console.log("다이나믹링크 \n",link.url, '\n', queryString, '\n', items);
+        console.log('다이나믹링크 \n', link.url, '\n', queryString, '\n', items);
         navigationRef.current.navigate(intent, items);
         return;
       } catch (error) {}
@@ -226,7 +227,6 @@ export default function Router() {
   useEffect(() => {
     getToken();
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      console.log(remoteMessage, 'remoteMessageremoteMessageremoteMessageremoteMessageremoteMessage');
       showPushToastMessage({
         remoteMessage: remoteMessage,
         onShow: () => {
@@ -276,8 +276,6 @@ export default function Router() {
     dynamicLinks().getInitialLink().then(handleDynamicLink); // 백그라운드 일때
     return () => unsubscribe();
   }, []);
-
-  
 
   if (isLoading) {
     return null;
@@ -576,6 +574,10 @@ const RouterSetting = [
   {
     name: 'AdjustmentHistory',
     component: AdjustmentHistory,
+  },
+  {
+    name: 'AdjustmentDetail',
+    component: AdjustmentDetail,
   },
   {
     name: 'BikeStats',

@@ -16,6 +16,7 @@ export default function Service() {
     <>
       <ModalTitleBox size={size} title="서비스 이용 약관" />
       <ScrollView
+        keyboardShouldPersistTaps="handled"
         style={{
           maxHeight: 370,
           width: getPixel(size.designWidth - 64),

@@ -47,8 +47,16 @@ export default function ProductRegister({route: {params}}) {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const isItem = params?.item !== undefined; // item 있는경우 true 수정페이지
+
   const regJoin = () => {
     let result = false;
+    setErrorMessage({
+      pt_title: '',
+      pt_price: '',
+      pt_time: '',
+      pt_weeken_time: '',
+      pt_weekend: '',
+    });
     if (product.pt_title === '') {
       setErrorMessage(prev => ({...prev, pt_title: '상품명을 입력해주세요.'}));
       result = true;
@@ -59,8 +67,7 @@ export default function ProductRegister({route: {params}}) {
     }
     const stime = parseInt(product.pt_stime.substring(0, 2));
     const etime = parseInt(product.pt_etime.substring(0, 2));
-
-    if (stime >= etime) {
+    if ((stime !== 0 || etime !== 0) && stime >= etime) {
       setErrorMessage(prev => ({...prev, pt_time: '종료시간은 시작시간 이후여야 합니다.'}));
       result = true;
     }
@@ -98,7 +105,7 @@ export default function ProductRegister({route: {params}}) {
   };
   const onPressSubmit = () => {
     if (regJoin()) {
-      ref.current.scrollTo({
+      ref?.current?.scrollTo({
         y: 0,
       });
       return null;
@@ -183,7 +190,7 @@ export default function ProductRegister({route: {params}}) {
   return (
     <>
       <Header title={`정비상품 ${isItem ? '수정' : '등록'}`} />
-      <ScrollBox pd="0px 16px" ref={ref}>
+      <ScrollBox pd="0px 16px" ref={ref} keyboardShouldPersistTaps="handled">
         <RowBox pd="20px 0px" style={borderBottomWhiteGray}>
           <RequireFieldText />
         </RowBox>
@@ -238,7 +245,10 @@ export default function ProductRegister({route: {params}}) {
             <DarkMediumText fontSize={Theme.fontSize.fs15}>%</DarkMediumText>
           </PositionBox>
         </Box>
-        <DarkMediumText fontSize={Theme.fontSize.fs15}>사용가능시간</DarkMediumText>
+
+        <DarkMediumText mg="10px 0px 0px" fontSize={Theme.fontSize.fs15}>
+          사용가능시간
+        </DarkMediumText>
         <RowBox mg="0px 0px 10px">
           <DropdownTimeBox
             value={product?.pt_stime?.substring(0, 2)}

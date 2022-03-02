@@ -107,7 +107,7 @@ export default function FooterButtons({selectMenu, isAdmin}) {
         const {routes} = navigation.getState();
         const {name} = routes[routes.length - 1];
 
-        if (name === item.navigate) {
+        if (name === item.navigate && item.content === '정비소') {
           navigation.replace(item.navigate);
         } else {
           navigation.navigate(item?.navigate);

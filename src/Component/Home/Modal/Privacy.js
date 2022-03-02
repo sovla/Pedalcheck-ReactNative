@@ -27,6 +27,7 @@ export default function Privacy() {
     <>
       <ModalTitleBox size={size} title="페달체크 개인정보 수집 및 이용 약관" />
       <ScrollView
+        keyboardShouldPersistTaps="handled"
         style={{
           maxHeight: 370,
           width: getPixel(size.designWidth - 64),

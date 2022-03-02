@@ -162,7 +162,12 @@ export default function RepairReservation({type}) {
         }}
         ListHeaderComponent={
           <Box>
-            <ScrollDays daySelect={daySelect} setDaySelect={setDaySelect} orderList={orderList} />
+            <ScrollDays
+              daySelect={daySelect}
+              setDaySelect={setDaySelect}
+              orderList={orderList}
+              keyboardShouldPersistTaps="handled"
+            />
             <Box width={size.minusPadding} mg="0px 16px 32px">
               <GrayText fontSize={Theme.fontSize.fs13}>
                 좌/우로 슬라이드하여 지난 주/다음 주 예약내역을 볼 수 있습니다.

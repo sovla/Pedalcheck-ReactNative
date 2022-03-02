@@ -92,7 +92,7 @@ export default function LocationPicker({setLocation, isHome}) {
     <>
       <ModalTitleBox size={size} title="지역 선택"></ModalTitleBox>
       <Box height="300px">
-        <ScrollView style={{flex: 1}}>
+        <ScrollView style={{flex: 1}} keyboardShouldPersistTaps="handled">
           {/* <TouchableOpacity
             onPress={() => {
               setLocation('전체');

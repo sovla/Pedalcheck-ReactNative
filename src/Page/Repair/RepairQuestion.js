@@ -116,7 +116,11 @@ export default function RepairQuestion({route: {params}}) {
       <Header title="문의하기" />
       <Container height={`${size.screenHeight - 120}px`}>
         <ScrollBox pd="0px 16px">
-          <RowBox style={borderBottomWhiteGray} width={size.minusPadding} mg="20px 0px 20px">
+          <RowBox
+            style={borderBottomWhiteGray}
+            width={size.minusPadding}
+            mg="20px 0px 20px"
+            keyboardShouldPersistTaps="handled">
             <DarkText mg="0px 0px 20px" fontSize={Theme.fontSize.fs16} fontWeight={Theme.fontWeight.bold}>
               필수 입력 항목{' '}
             </DarkText>

@@ -2,7 +2,7 @@ import {BorderButton} from '@/assets/global/Button';
 import {BetweenBox, Box, Container, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import {DefaultInput} from '@/assets/global/Input';
-import {DarkBoldText, DarkMediumText, GrayText, MoneyText} from '@/assets/global/Text';
+import {DarkBoldText, DarkMediumText, DarkText, GrayText, MoneyText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import Header from '@/Component/Layout/Header';
@@ -14,6 +14,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {modalOpenAndProp} from '@/Store/modalState';
 import {useLayoutEffect} from 'react';
 import {getAdjustmentHistory} from '@/API/Manager/RepairHistory';
+import {useNavigation} from '@react-navigation/native';
 
 export default function AdjustmentHistory() {
   const mst_wdate = storeInfo?.mst_wdate ? new Date(storeInfo.mst_wdate.slice(0, 10)) : new Date();
@@ -74,6 +75,17 @@ export default function AdjustmentHistory() {
               </Box>
             </>
           }
+          //           clt_cdate: "2022-03-01"
+          // clt_edate: "2022-02-28"
+          // clt_pc_percent: "5.0"
+          // clt_pc_price: "6335"
+          // clt_pc_vat: "634"
+          // clt_pdate: "2022-03-05"
+          // clt_pg_percent: "3.3"
+          // clt_pg_price: "4339"
+          // clt_pg_vat: "434"
+          // clt_price: "119720"
+          // clt_sdate: "2022-02-01"
           data={history}
           renderItem={({item, index}) => {
             return (
@@ -81,8 +93,10 @@ export default function AdjustmentHistory() {
                 size={size}
                 index={index}
                 price={item?.clt_price}
-                date={item?.clt_wdate?.slice(0, 16)}
+                date={item?.clt_cdate?.slice(0, 16)}
                 item={item}
+                startDate={item?.clt_sdate}
+                endDate={item?.clt_edate}
               />
             );
           }}
@@ -97,45 +111,68 @@ export default function AdjustmentHistory() {
   );
 }
 
-const IncomeItem = ({price = 168400, date = '2021-10-13 02:03', index = 1, item}) => {
+const IncomeItem = ({price = 168400, date = '2021-10-13 02:03', index = 1, item, startDate, endDate}) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   return (
-    <BetweenBox width="380px" alignItems="center" minHeight="88px" style={borderBottomWhiteGray}>
-      <RowBox>
-        <Box>
-          <DarkBoldText fontSize={Theme.fontSize.fs18}>{index + 1}</DarkBoldText>
-        </Box>
-        <Box mg="0px 0px 0px 10px">
-          <RowBox alignItems="center">
-            <DarkMediumText>정산금액</DarkMediumText>
-            <MoneyText
-              mg="0px 0px 0px 5px"
-              fontWeight={Theme.fontWeight.bold}
-              color={Theme.color.black}
-              fontSize={Theme.fontSize.fs18}
-              money={price}
-            />
-          </RowBox>
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate('AdjustmentDetail', item?.clt_order_detail?.list);
+      }}>
+      <BetweenBox width="380px" alignItems="center" minHeight="88px" style={borderBottomWhiteGray}>
+        <RowBox>
+          <Box>
+            <DarkBoldText fontSize={Theme.fontSize.fs18}>{index + 1}</DarkBoldText>
+          </Box>
+          <Box mg="0px 0px 0px 10px">
+            <RowBox alignItems="center">
+              <DarkMediumText>정산금액</DarkMediumText>
+              <MoneyText
+                mg="0px 0px 0px 5px"
+                fontWeight={Theme.fontWeight.bold}
+                color={Theme.color.black}
+                fontSize={Theme.fontSize.fs18}
+                money={price}
+              />
+            </RowBox>
 
-          <GrayText letterSpacing="0px" fontSize={Theme.fontSize.fs13}>
-            지급일 {date}
-          </GrayText>
+            <GrayText letterSpacing="0px" fontSize={Theme.fontSize.fs13}>
+              지급일 {date}
+            </GrayText>
+            <RowBox>
+              <DarkText fontSize={Theme.fontSize.fs13}>정산일</DarkText>
+              <DarkText fontSize={Theme.fontSize.fs13} mg="0px 0px 0px 5px">
+                {startDate} ~
+              </DarkText>
+              <DarkText fontSize={Theme.fontSize.fs13}> {endDate}</DarkText>
+            </RowBox>
+          </Box>
+        </RowBox>
+        <Box flex={1} alignItems="flex-end" justifyContent="center">
+          <TouchableOpacity
+            hitSlop={getHitSlop(5)}
+            onPress={() =>
+              dispatch(
+                modalOpenAndProp({
+                  modalComponent: 'adjustmentHistory',
+                  item: item,
+                }),
+              )
+            }>
+            <BorderButton width="auto">정산내역 보기</BorderButton>
+          </TouchableOpacity>
         </Box>
-      </RowBox>
-      <Box flex={1} alignItems="flex-end" justifyContent="center">
-        <TouchableOpacity
-          onPress={() =>
-            dispatch(
-              modalOpenAndProp({
-                modalComponent: 'adjustmentHistory',
-                item: item,
-              }),
-            )
-          }>
-          <BorderButton width="auto">정산내역 보기</BorderButton>
-        </TouchableOpacity>
-      </Box>
-    </BetweenBox>
+      </BetweenBox>
+    </TouchableOpacity>
   );
+};
+
+export const getHitSlop = size => {
+  return {
+    top: +size,
+    bottom: +size,
+    left: +size,
+    right: +size,
+  };
 };

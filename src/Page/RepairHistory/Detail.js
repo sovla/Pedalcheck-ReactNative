@@ -110,7 +110,7 @@ export default function Detail({navigation, route}) {
     <>
       <Header title="상세보기" />
       <Box flex={1}>
-        <ScrollBox flex={1} pd="0px 16px">
+        <ScrollBox flex={1} pd="0px 16px" keyboardShouldPersistTaps="handled">
           <Box style={borderBottomWhiteGray} pd="0px 0px 20px">
             <RowBox mg="20px 0px 0px" alignItems="center">
               <Badge badgeContent={changeItem.status} />

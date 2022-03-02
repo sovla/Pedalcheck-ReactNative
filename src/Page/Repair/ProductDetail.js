@@ -17,17 +17,17 @@ import {useEffect} from 'react';
 export default function ProductDetail({route: {params}}) {
   const {
     shopInfo: {store_info},
-    login,
   } = useSelector(state => state);
   const item = params?.item;
   const shopTitle = store_info?.mst_name;
   const productName = item?.pt_title;
   const salePrice = item?.pt_dc_price;
   const Price = item?.pt_price;
+
+  const weekdayIsShow = parseInt(item?.pt_stime?.slice(0, 2)) + parseInt(item?.pt_etime.slice(0, 2)) > 0 ? true : false;
   const weekdayAvailableTime = `${item?.pt_stime?.slice(0, 2)}시 ~ ${item?.pt_etime?.slice(0, 2)}시`;
   const holydayAvailableTime = `${item?.pt_weekend_stime?.slice(0, 2)}시 ~ ${item?.pt_weekend_etime?.slice(0, 2)}시`;
   const {size} = useSelector(state => state);
-  const [category, setCategory] = useState([]);
   const [imageArray, setImageArray] = useState([]);
 
   useEffect(() => {
@@ -41,21 +41,20 @@ export default function ProductDetail({route: {params}}) {
     }
     setImageArray(tmpImageArray);
   }, []);
-
   const contentArray = [
     {
       title: '사용 가능시간',
       content: weekdayAvailableTime,
-      isShow: true,
+      isShow: weekdayIsShow,
     },
     {
       title: '주말 이용시간',
-      content: item?.pt_weekend_time === 'Y' ? holydayAvailableTime : weekdayAvailableTime,
-      isShow: item?.pt_weekend === 'Y' ? true : false,
+      content: item?.pt_weekend === 'Y' ? '주말 예약불가' : holydayAvailableTime,
+      isShow: true,
     },
     {
       title: '카테고리',
-      content: item?.ct_pname + ' / ' + item?.ct_pname,
+      content: item?.ct_pname + ' / ' + item?.ct_name,
       isShow: item?.ct_pname && item?.ct_pname ? true : false,
     },
     {
@@ -94,7 +93,7 @@ export default function ProductDetail({route: {params}}) {
   return (
     <>
       <Header title="상품 상세" />
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="handled">
         <Container alignItems="center" pd="20px 0px">
           {item?.pt_image?.length > 0 && (
             <Box width={size.minusPadding} height="200px" mg="0px 0px 20px">

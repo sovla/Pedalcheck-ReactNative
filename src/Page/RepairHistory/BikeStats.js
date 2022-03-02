@@ -8,7 +8,7 @@ export default function BikeStats({route: {params}}) {
   return (
     <Container>
       <Header title="통계 상세보기" />
-      <ScrollBox>
+      <ScrollBox keyboardShouldPersistTaps="handled">
         <ItemStats itemList={params.itemList} showCount={999} width={412} isFull />
       </ScrollBox>
     </Container>

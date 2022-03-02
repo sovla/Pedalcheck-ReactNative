@@ -25,7 +25,7 @@ export default function ReservationBikeSelect({
   const dispatch = useDispatch();
   return (
     <>
-      <ScrollBox mg="0px 16px">
+      <ScrollBox mg="0px 16px" keyboardShouldPersistTaps="handled">
         <DarkBoldText mg="0px 0px 14px">정비를 맡길 자전거를 선택해주세요</DarkBoldText>
         {bikeArray?.map((item, index) => {
           const changeItem = {

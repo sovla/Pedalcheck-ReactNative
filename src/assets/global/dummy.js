@@ -294,7 +294,6 @@ export const bankList1 = [
 ];
 
 export const openTimeList = [
-  {label: '00', value: ''},
   {label: '00', value: '00'},
   {label: '01', value: '01'},
   {label: '02', value: '02'},
@@ -454,3 +453,56 @@ export const loginType = ['', '', '카카오', '네이버', '구글', '애플'];
 //   lastChange: 550,
 //   changeCycle: 1200,
 // };
+
+export const userAdjustment = [
+  {
+    orderNumber: 'P220209155304D0E',
+    userId: 'dlgusxo1000@naver.com',
+    userName: '이현태',
+    repairDate: '2022-02-17 12:00',
+    paymentType: '카카오페이',
+    paymentPrice: '10원',
+    orderDate: '2022-02-09 15:53:04',
+    completeDate: '2022-02-09 15:53:11',
+  },
+  {
+    orderNumber: 'P220209155304D0E',
+    userId: 'dlgusxo1000@naver.com',
+    userName: '이현태',
+    repairDate: '2022-02-17 12:00',
+    paymentType: '카카오페이',
+    paymentPrice: '10원',
+    orderDate: '2022-02-09 15:53:04',
+    completeDate: '2022-02-09 15:53:11',
+  },
+  {
+    orderNumber: 'P220209155304D0E',
+    userId: 'dlgusxo1000@naver.com',
+    userName: '이현태',
+    repairDate: '2022-02-17 12:00',
+    paymentType: '카카오페이',
+    paymentPrice: '10원',
+    orderDate: '2022-02-09 15:53:04',
+    completeDate: '2022-02-09 15:53:11',
+  },
+  {
+    orderNumber: 'P220209155304D0E',
+    userId: 'dlgusxo1000@naver.com',
+    userName: '이현태',
+    repairDate: '2022-02-17 12:00',
+    paymentType: '카카오페이',
+    paymentPrice: '10원',
+    orderDate: '2022-02-09 15:53:04',
+    completeDate: '2022-02-09 15:53:11',
+  },
+  {
+    orderNumber: 'P220209155304D0E',
+    userId: 'dlgusxo1000@naver.com',
+    userName: '이현태',
+    repairDate: '2022-02-17 12:00',
+    paymentType: '카카오페이',
+    paymentPrice: '10원',
+    orderDate: '2022-02-09 15:53:04',
+    completeDate: '2022-02-09 15:53:11',
+  },
+];

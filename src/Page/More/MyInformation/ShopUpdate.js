@@ -220,7 +220,7 @@ export default function ShopUpdate() {
     <>
       {isLoading && <Loading isAbsolute />}
       <Header title="정보 수정" />
-      <ScrollBox>
+      <ScrollBox keyboardShouldPersistTaps="handled">
         <Box alignItems="center">
           <Box style={borderBottomWhiteGray}>
             <RowBox mg="20px 0px" width={size.minusPadding}>
@@ -460,20 +460,18 @@ export default function ShopUpdate() {
 
                 return (
                   <TouchableOpacity
-                  style={{
-                    backgroundColor:backgroundColor,
-                    borderColor:backgroundColor,
-                    borderRadius:10,
-                    justifyContent:"center",
-                    alignItems:"center",
-                    width:getPixel(44),
-                    height:getPixel(44),
-                  }}
-                  onPress={() => onPressDay(Index)} key={item}>
-                    <DefaultText
-                      color={color}>
-                      {item}
-                    </DefaultText>
+                    style={{
+                      backgroundColor: backgroundColor,
+                      borderColor: backgroundColor,
+                      borderRadius: 10,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: getPixel(44),
+                      height: getPixel(44),
+                    }}
+                    onPress={() => onPressDay(Index)}
+                    key={item}>
+                    <DefaultText color={color}>{item}</DefaultText>
                   </TouchableOpacity>
                 );
               })}
@@ -496,7 +494,7 @@ export default function ShopUpdate() {
                 mst_intro: text,
               }));
             }}
-            maxLength={200}
+            maxLength={1000}
           />
           <DefaultInput
             title="태그"

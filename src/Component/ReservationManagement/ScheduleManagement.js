@@ -106,7 +106,7 @@ export default function ScheduleManagement() {
   };
 
   return (
-    <ScrollBox>
+    <ScrollBox keyboardShouldPersistTaps="handled">
       {isLoading && <Loading isAbsolute top="-50px" />}
       <ScrollDays daySelect={daySelect} setDaySelect={setDaySelect} isNotPrev orderList={orderList} />
       <Box mg="0px 16px 40px">
