@@ -257,8 +257,8 @@ const menuItem = ['기본 정보 수정', '추가 정보 수정'];
 const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispatch}) => {
   const {size, login} = useSelector(state => state);
 
-  const onPressAddImage = () => {
-    ImageCropPicker.openPicker({
+  const onPressAddImage = async () => {
+    await ImageCropPicker.openPicker({
       width: 300,
       height: 400,
       cropping: true, // 자르기 활성화
@@ -379,8 +379,8 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
               />
             </Box>
             <RowBox width={size.minusPadding} alignItems="flex-end" mg="0px 0px 10px">
-              <TouchableOpacity>
-                <BorderButton onPress={onPressAddImage} width="105px" height="auto" fontSize={Theme.fontSize.fs15}>
+              <TouchableOpacity onPress={onPressAddImage}>
+                <BorderButton width="105px" height="auto" fontSize={Theme.fontSize.fs15}>
                   통장 사본 등록
                 </BorderButton>
               </TouchableOpacity>

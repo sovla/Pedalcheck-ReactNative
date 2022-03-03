@@ -21,12 +21,7 @@ export default function DefaultDropdown({
   disabled,
   backgroundColor = '#fff0',
 }) {
-  let fontFamily = '';
-  if (Platform.OS === 'android') {
-    fontFamily = fontType === 'normal' ? 'NotoSansKR-Regular' : `NotoSansKR-${fontType}`;
-  } else {
-    fontFamily = fontType === 'normal' ? 'NotoSansCJKkr-RegularTTF' : `NotoSansCJKkr-${fontType}TTF`;
-  }
+  const fontFamily = fontType === 'normal' ? 'NotoSansKR-Regular' : `NotoSansKR-${fontType}`;
   return (
     <Dropdown
       disable={disabled}

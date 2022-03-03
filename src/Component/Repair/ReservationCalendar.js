@@ -92,9 +92,7 @@ export default function ReservationCalendar({selectDate, setSelectDate, onChange
 
         arrowColor: 'gray',
         monthTextColor: '#333333',
-        textDayFontFamily: 'monospace',
-        textMonthFontFamily: 'monospace',
-        textDayHeaderFontFamily: 'monospace',
+
         textDayFontWeight: '300',
         textMonthFontWeight: 'bold',
         textDayHeaderFontWeight: '300',
