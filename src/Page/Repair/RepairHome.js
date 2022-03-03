@@ -290,7 +290,7 @@ const Header = ({
   tagList,
 }) => {
   const ref = useRef(null);
-
+  const navigation = useNavigation();
   const [count, setCount] = useState(1);
 
   const onPressArrow = type => {
@@ -328,7 +328,12 @@ const Header = ({
 
   return (
     <>
-      <GradientHeader title="정비소" imageSource={WhiteSpannerIcon}>
+      <GradientHeader
+        title="정비소"
+        imageSource={WhiteSpannerIcon}
+        titlePress={() => {
+          navigation.replace('RepairHome');
+        }}>
         <RowBox backgroundColor="rgba(0,0,0,0)" mg="20px 0px 0px">
           <DefaultDropdown
             data={sortArray2}

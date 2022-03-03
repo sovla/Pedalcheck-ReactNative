@@ -79,7 +79,7 @@ export default function RepairHistorySelectHistory() {
     }
     setIsLoading(true);
     const response = await getOrderList({
-      _mt_idx: login.idx,
+      _mt_idx: 22,
       ot_name: searchText,
       ot_sdate: selectDate.start,
       ot_edate: selectDate.end,

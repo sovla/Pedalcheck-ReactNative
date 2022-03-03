@@ -17,6 +17,7 @@ export default function GradientHeader({
   },
   height,
   onPressImage,
+  titlePress,
 }) {
   const {size} = useSelector(state => state);
   return (
@@ -27,7 +28,9 @@ export default function GradientHeader({
         height="36px"
         justifyContent="space-between"
         alignItems="center">
-        <DefaultText fontSize={Theme.fontSize.fs24}>{title}</DefaultText>
+        <TouchableOpacity onPress={titlePress} disabled={!titlePress}>
+          <DefaultText fontSize={Theme.fontSize.fs24}>{title}</DefaultText>
+        </TouchableOpacity>
         {onPressImage ? (
           <TouchableOpacity onPress={onPressImage}>
             <DefaultImage source={imageSource} width={imageSize.width} height={imageSize.height} />

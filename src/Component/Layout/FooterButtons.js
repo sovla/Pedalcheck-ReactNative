@@ -104,14 +104,10 @@ export default function FooterButtons({selectMenu, isAdmin}) {
     }
     if (result) {
       try {
-        const {routes} = navigation.getState();
-        const {name} = routes[routes.length - 1];
+        // const {routes} = navigation.getState();
+        // const {name} = routes[routes.length - 1];
 
-        if (name === item.navigate && item.content === '정비소') {
-          navigation.replace(item.navigate);
-        } else {
-          navigation.navigate(item?.navigate);
-        }
+        navigation.navigate(item?.navigate);
       } catch (error) {
         navigation.navigate(item?.navigate);
       }
