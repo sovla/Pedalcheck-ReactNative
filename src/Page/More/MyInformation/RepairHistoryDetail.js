@@ -15,7 +15,7 @@ import {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {cancelOrder, getRepairHistoryDetail} from '@/API/More/More';
 import {useLayoutEffect} from 'react';
-import {AlertButtons} from '@/Util/Alert';
+import {AlertButton, AlertButtons} from '@/Util/Alert';
 import {showToastMessage} from '@/Util/Toast';
 import {imageAddress} from '@assets/global/config';
 import {VirtualAccountItem} from '@/Page/Repair/ReservationPayment';
@@ -85,6 +85,8 @@ export default function RepairHistoryDetail({route: {params}}) {
     if (response?.data?.result === 'true') {
       showToastMessage('취소되었습니다.');
       navigation?.goBack();
+    } else if (response?.data?.result === 'false' && response?.data?.msg) {
+      AlertButton(response?.data?.msg);
     }
   };
 

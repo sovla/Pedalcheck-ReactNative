@@ -4,7 +4,6 @@ import IMP from 'iamport-react-native';
 
 /* 로딩 컴포넌트를 불러옵니다. */
 import Loading from '@Component/Layout/Loading';
-import {ButtonTouch} from '@/assets/global/Button';
 import {useSelector} from 'react-redux';
 import {useState} from 'react';
 import {sendOrder} from '@/API/Shop/Shop';

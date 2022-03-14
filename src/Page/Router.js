@@ -200,7 +200,7 @@ export default function Router() {
     //
     if (link?.url) {
       try {
-        const queryString = link?.url.split('https://pedalcheck/')[1].split('&');
+        const queryString = link?.url.split('https://pedalcheck/')[1].split(',');
         const intent = queryString[0].split('=')[1];
         let items = {};
         for (const item of queryString) {
@@ -217,7 +217,7 @@ export default function Router() {
           }
         }
         //  다이나믹 링크 확인용
-        console.log('다이나믹링크 \n', link.url, '\n', queryString, '\n', items);
+        console.log('다이나믹링크 \n', link.url, '\nqueryStirng :::', queryString, '\nitems :::', items);
         navigationRef.current.navigate(intent, items);
         return;
       } catch (error) {}

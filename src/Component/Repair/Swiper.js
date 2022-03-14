@@ -15,7 +15,14 @@ import scrollSlideNumber from '@/Util/scrollSlideNumber';
 import {useRef} from 'react';
 import {useEffect} from 'react';
 
-function SwiperComponent({imageArray, width, height, borderRadius = 'Bottom', isRolling = false}) {
+function SwiperComponent({
+  imageArray,
+  width,
+  height,
+  borderRadius = 'Bottom',
+  isRolling = false,
+  resizeMode = 'stretch',
+}) {
   const ref = useRef(null);
   const savedCallback = useRef();
   const transformWidth = typeof width === 'string' ? parseInt(width.split('px')[0]) : width;
@@ -109,7 +116,7 @@ function SwiperComponent({imageArray, width, height, borderRadius = 'Bottom', is
             source={item}
             width={`${transformWidth}px`}
             height={`${transformHeight}px`}
-            resizeMode="stretch"
+            resizeMode={resizeMode}
           />
         )}
         style={[

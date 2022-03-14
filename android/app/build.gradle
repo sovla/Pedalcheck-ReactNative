@@ -146,8 +146,8 @@ android {
         applicationId "com.pedalchecka"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 9
-        versionName "1.8.0"
+        versionCode 12
+        versionName "1.10.0"
     }
     splits {
         abi {

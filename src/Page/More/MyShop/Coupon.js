@@ -3,7 +3,7 @@ import {Box, Container, PositionBox, RowBox, ScrollBox} from '@/assets/global/Co
 import DefaultImage from '@/assets/global/Image';
 import {DarkText, DefaultText} from '@/assets/global/Text';
 import Header from '@/Component/Layout/Header';
-import React from 'react';
+import React, {useLayoutEffect} from 'react';
 import PlusIcon from '@assets/image/ic_plus_w.png';
 import Theme from '@/assets/global/Theme';
 import {DefaultInput} from '@/assets/global/Input';
@@ -49,6 +49,14 @@ export default function Coupon() {
   const [content, setContent] = useState('');
 
   const [isLoading, setIsLoading] = useState(true);
+  const storeInfo = useSelector(state => state.storeInfo);
+
+  useLayoutEffect(() => {
+    setSelectDate({
+      start: storeInfo.mst_wdate.substring(0, 10),
+      end: dateFormat(new Date()),
+    });
+  }, []);
 
   useEffect(() => {
     if (isFocused) {
@@ -91,8 +99,8 @@ export default function Coupon() {
       _mt_idx: login.idx,
       mt_text: content,
       cst_status: getCouponCategoryNumber(dropMenu),
-      cst_s_wdate: selectDate.start ?? '',
-      cst_e_wdate: selectDate.end ?? '',
+      cst_s_wdate: selectDate?.start || storeInfo?.mst_wdate?.substring(0, 10),
+      cst_e_wdate: selectDate?.end || dateFormat(new Date()),
     }).then(res => res.data?.result === 'true' && res.data.data.data);
 
     if (data?.length) {

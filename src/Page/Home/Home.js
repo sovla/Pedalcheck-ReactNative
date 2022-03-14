@@ -1,4 +1,4 @@
-import {BetweenBox, Box, Container} from '@/assets/global/Container';
+import {BetweenBox, Box, Container, PositionBox} from '@/assets/global/Container';
 import React from 'react';
 
 import LogoBox from '@/Component/Home/LogoBox';
@@ -7,8 +7,8 @@ import KakaoImage from '@/Component/Home/Icon/KakaoImage';
 import GoogleImage from '@/Component/Home/Icon/GoogleImage';
 import NaverImage from '@/Component/Home/Icon/NaverImage';
 import AppleImage from '@/Component/Home/Icon/AppleImage';
-import {Platform, TouchableOpacity} from 'react-native';
-import {GrayText} from '@/assets/global/Text';
+import {Platform, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {DefaultText, GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {useLayoutEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
@@ -18,6 +18,7 @@ import {LinkButton} from '@/assets/global/Button';
 import {modalOpen} from '@/Store/modalState';
 import {getStoreInfo} from '@/API/More/More';
 import {setStoreInfo} from '@/Store/storeInfoState';
+import {getPixel} from '@/Util/pixelChange';
 export default function Home({navigation}) {
   const betweenBoxWidth = Platform.OS === 'android' ? '262px' : '312px';
   // 안드로이드 카카오 구글 네이버    3가지
@@ -45,22 +46,36 @@ export default function Home({navigation}) {
     }
   }, [isFocused, login]);
   return (
-    <>
-      <Container mg="70px 16px 30px">
-        <LogoBox />
-      </Container>
-      <Box alignItems="center">
-        <Box pd="16px">
-          <GrayText fontSize={Theme.fontSize.fs15}>SNS 계정으로 회원가입/로그인</GrayText>
+    <Container alignItems="center" justifyContent="center">
+      <PositionBox top="250px" left="0px" width="412px" alignItems="center">
+        <Text style={styles.mainText}>페달체크</Text>
+        <DefaultText color="#00B7FF" fontSize={Theme.fontSize.fs24}>
+          쉽고 편한 자전거 관리
+        </DefaultText>
+      </PositionBox>
+      <PositionBox bottom="0px" left="0px" width="412px">
+        <Box alignItems="center" width="412px">
+          <Box pd="16px">
+            <GrayText fontSize={Theme.fontSize.fs15}>SNS 계정으로 회원가입/로그인</GrayText>
+          </Box>
+          <BetweenBox width={betweenBoxWidth} pd="0px 0px 10px" mg="0px 0px 40px">
+            <KakaoImage />
+            <GoogleImage />
+            <NaverImage />
+            <AppleImage />
+          </BetweenBox>
         </Box>
-        <BetweenBox width={betweenBoxWidth} pd="0px 0px 10px" mg="0px 0px 40px">
-          <KakaoImage />
-          <GoogleImage />
-          <NaverImage />
-          <AppleImage />
-        </BetweenBox>
-      </Box>
-      <HomeFooter navigation={navigation} isShowLogin={false} />
-    </>
+        <HomeFooter navigation={navigation} isShowLogin={false} />
+      </PositionBox>
+    </Container>
   );
 }
+
+const styles = StyleSheet.create({
+  mainText: {
+    fontFamily: Platform.OS === 'android' ? 'NotoSansKR-Bold' : 'NotoSansCJKkr-BoldTTF',
+    fontSize: getPixel(60),
+    color: '#00B7FF',
+    letterSpacing: -5,
+  },
+});

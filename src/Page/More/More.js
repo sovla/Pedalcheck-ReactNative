@@ -41,7 +41,7 @@ import {setIsAdmin} from '@/Store/adminState';
 import isAdminCheck from '@/Util/isAdminCheck';
 import {RequireApple} from '@/Util/Alert';
 
-const VERSION_CODE = '1.8.0';
+const VERSION_CODE = '1.10.0';
 
 export default function More() {
   const {
@@ -330,7 +330,7 @@ const PedalCheckInfo = () => {
   };
 
   return (
-    <Box backgroundColor="#0000" mg="10px 0px 0px" width="380px" mg="20px 16px">
+    <Box backgroundColor="#0000" width="380px" mg="20px 16px">
       <RowBox mg="0px 0px 5px" backgroundColor="#0000" width="380px">
         <DarkMediumText fontSize={Theme.fontSize.fs13}>주식회사</DarkMediumText>
         <GrayText mg="0px 5px" fontSize={Theme.fontSize.fs13}>
