@@ -35,6 +35,7 @@ const Theme = {
     fs18: '18px',
     fs24: '24px',
     fs21: '21px',
+    fs96: '55px',
   },
   fontWeight: {
     bold: 'bold',
