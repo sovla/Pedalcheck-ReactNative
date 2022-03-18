@@ -1,6 +1,4 @@
-import {BetweenBox, Box, Container, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
-import React from 'react';
-import {useState} from 'react';
+import {BetweenBox, Box, PositionBox, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import {
   DarkBoldText,
@@ -11,28 +9,28 @@ import {
   IndigoText,
   MoneyText,
 } from '@/assets/global/Text';
-import Theme from '@/assets/global/Theme';
-import numberFormat from '@/Util/numberFormat';
-import {useDispatch, useSelector} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
 import {DefaultInput} from '@/assets/global/Input';
-import SearchIcon from '@assets/image/ic_search.png';
-import Review from '@/Component/Repair/Review';
-import DummyIcon from '@assets/image/dummy.png';
 import {LinkButton, LinkWhiteButton} from '@/assets/global/Button';
-import {useEffect} from 'react';
-import {addReview, deleteReview, getReview} from '@/API/Manager/RepairHistory';
-import {TouchableOpacity, TouchableOpacityBase} from 'react-native';
-import {FlatList} from 'react-native-gesture-handler';
-import ReviewComment from '@/Component/Repair/ReviewComment';
+import Theme from '@/assets/global/Theme';
+
+import React, {useState, useLayoutEffect} from 'react';
+import {TouchableOpacity, FlatList} from 'react-native';
+import {useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 import moment from 'moment';
-import {useLayoutEffect} from 'react';
-import {AlertButtons} from '@/Util/Alert';
+import {addReview, deleteReview, getReview} from '@/API/Manager/RepairHistory';
+
+import numberFormat from '@/Util/numberFormat';
 import {showToastMessage} from '@/Util/Toast';
-import Loading from '@/Component/Layout/Loading';
+import {AlertButtons} from '@/Util/Alert';
+import {getHeightPixel} from '@/Util/pixelChange';
+
 import {imageAddress} from '@assets/global/config';
 import profileDefault from '@assets/image/profile_default.png';
-import {getHeightPixel} from '@/Util/pixelChange';
+import SearchIcon from '@assets/image/ic_search.png';
+
+import ReviewComment from '@/Component/Repair/ReviewComment';
+import Loading from '@/Component/Layout/Loading';
 
 // 2022-01-17 17:17:25 현태 수정 필요
 
@@ -285,8 +283,7 @@ const ReviewRecomment = ({item, size, commentSubmit, deleteHandle}) => {
             height={inputHeight + 'px'}
             maxHeight={'120px'}
             onContentSizeChange={event => {
-              if(event.nativeEvent.contentSize.height > 44)
-              setInputHeight(event.nativeEvent.contentSize.height);
+              if (event.nativeEvent.contentSize.height > 44) setInputHeight(event.nativeEvent.contentSize.height);
             }}
             value={comment}
             changeFn={text => setComment(text)}

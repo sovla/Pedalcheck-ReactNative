@@ -28,9 +28,9 @@ export default function Review({
   isJustShow = false,
 }) {
   const [isDetailButton, setIsDetailButton] = useState(false);
-
   const {size} = useSelector(state => state);
   const navigation = useNavigation();
+  const isCoupon = false;
 
   const imageArray =
     item?.srt_image?.length > 0
@@ -96,12 +96,14 @@ export default function Review({
           fontWeight={Theme.fontWeight.bold}>
           {item?.pt_title}
         </DefaultText>
-        <MoneyText
-          money={item?.ot_price}
-          color={Theme.color.black}
-          fontSize={Theme.fontSize.fs15}
-          fontWeight={Theme.fontWeight.medium}
-        />
+        {!isCoupon && (
+          <MoneyText
+            money={item?.ot_price}
+            color={Theme.color.black}
+            fontSize={Theme.fontSize.fs15}
+            fontWeight={Theme.fontWeight.medium}
+          />
+        )}
       </RowBox>
       <Box mg="15px 0px 0px" borderRadius="10px">
         {isDetailPage ? (
