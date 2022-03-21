@@ -126,7 +126,7 @@ export const BorderButton = styled.Text`
   justify-content: ${p => p.justifyContent ?? 'flex-start'};
   align-items: ${p => p.alignItems ?? 'flex-start'};
 
-  font-family: ${Platform.OS === 'android' ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF'};
+  font-family: 'NotoSansKR-Regular';
 `;
 
 export const FooterButton = ({
