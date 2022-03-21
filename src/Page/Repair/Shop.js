@@ -10,15 +10,16 @@ import ProductsShow from '@/Component/Repair/ProductsShow';
 import ReviewMain from '@/Component/Repair/ReviewMain';
 import MenuNav from '@/Component/Layout/MenuNav';
 import {useEffect} from 'react';
-import {getShopDetail, sendLikeShop} from '@/API/Shop/Shop';
+import {deleteReview, getShopDetail, sendLikeShop} from '@/API/Shop/Shop';
 import Review from '@/Component/Repair/Review';
 import {ResetShopInfo, setLikeCount, setShopInfo} from '@/Store/shopInfoState';
 import ShopHeader from '@/Component/Repair/ShopHeader';
-import {AlertButton, RequireLoginAlert} from '@/Util/Alert';
+import {AlertButton, AlertButtons, RequireLoginAlert} from '@/Util/Alert';
 import Loading from '@/Component/Layout/Loading';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {useIsFocused} from '@react-navigation/native';
 import {clearReservation} from '@/Store/reservationState';
+import {showToastMessage} from '@/Util/Toast';
 
 export default function Shop({route, navigation}) {
   const [selectMenu, setSelectMenu] = useState('매장소개');
@@ -42,6 +43,11 @@ export default function Shop({route, navigation}) {
       dispatch(clearReservation());
     }
   }, [isFocused]);
+  useEffect(() => {
+    if (route?.params?.menu?.length) {
+      setSelectMenu(route?.params?.menu);
+    }
+  }, []);
   useUpdateEffect(() => {
     setIsLike(shopInfo?.store_info?.like_on === 'on');
   }, [shopInfo?.store_info.like_on]);
@@ -75,8 +81,11 @@ export default function Shop({route, navigation}) {
 
   const isPartner = shopInfo?.store_info?.mst_type === '1';
 
-  const getShopDetailApi = async () => {
-    setIsDone(true);
+  const getShopDetailApi = async type => {
+    if (!type) {
+      setIsDone(true);
+    }
+
     await getShopDetail({
       _mt_idx: login?.idx,
       mt_idx: mt_idx,
@@ -86,6 +95,16 @@ export default function Shop({route, navigation}) {
     setIsDone(false);
   };
 
+  const onPressDelete = async srt_idx => {
+    const res = await deleteReview({
+      _mt_idx: login?.idx,
+      srt_idx: srt_idx,
+    });
+    if (res.data?.result === 'true') {
+      getShopDetailApi('retry');
+      showToastMessage('리뷰가 삭제되었습니다.', 2000);
+    }
+  };
   if (isDone && !shopInfo?.store_info?.mst_idx) {
     return <Loading />;
   }
@@ -114,6 +133,7 @@ export default function Shop({route, navigation}) {
                 mg="0px 16px"
                 isRecomment={item?.srt_res_content?.length > 0}
                 isJustShow={true}
+                onPressDelete={onPressDelete}
               />
             </>
           )}

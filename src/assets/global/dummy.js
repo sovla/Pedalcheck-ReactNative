@@ -293,6 +293,38 @@ export const bankList1 = [
   {label: '신영증권', value: 'DF'},
 ];
 
+export const bankList2 = [
+  {label: '은행을 선택해주세요.', value: ''},
+  {label: '기업은행', value: '기업은행'},
+  {label: '국민은행', value: '국민은행'},
+  {label: '외환은행', value: '외한은행'},
+  {label: '수협중앙회', value: '수협중앙회'},
+  {label: '농협중앙회', value: '농협중앙회'},
+  {label: '우리은행', value: '우리은행'},
+  {label: 'SC제일은행', value: 'SC제일은행'},
+  {label: '대구은행', value: '대구은행'},
+  {label: '부산은행', value: '부산은행'},
+  {label: '광주은행', value: '광주은행'},
+  {label: '한국씨티은행', value: '한국씨티은행'},
+  {label: '우체국', value: '우체국'},
+  {label: '하나은행', value: '하나은행'},
+  {label: '통합신한은행', value: '통합신한은행'},
+  {label: '동양종합금융증권', value: '동양종합금융증권'},
+  {label: '현대증권', value: '현대증권'},
+  {label: '미래에셋증권', value: '미래에셋증권'},
+  {label: '한국투자증권', value: '한국투자증권'},
+  {label: '우리투자증권', value: '우리투자증권'},
+  {label: '하이투자증권', value: '하이투자증권'},
+  {label: 'HMC 투자증권', value: 'HMC 투자증권'},
+  {label: 'SK 증권', value: 'SK 증권'},
+  {label: '대신증권', value: '대신증권'},
+  {label: '하나대투증권', value: '하나대투증권'},
+  {label: '굿모닝신한증권', value: '굿모닝신한증권'},
+  {label: '동부증권', value: '동부증권'},
+  {label: '유진투자증권', value: '유진투자증권'},
+  {label: '메리츠증권', value: '메리츠증권'},
+  {label: '신영증권', value: '신영증권'},
+];
 export const openTimeList = [
   {label: '00', value: '00'},
   {label: '01', value: '01'},
@@ -321,7 +353,6 @@ export const openTimeList = [
 ];
 
 export const openTimehalfList = [
-  {label: '00', value: ''},
   {label: '00', value: '00'},
   {label: '01', value: '01'},
   {label: '02', value: '02'},
@@ -337,7 +368,7 @@ export const openTimehalfList = [
   {label: '12', value: '12'},
 ];
 export const openTimePmList = [
-  {label: '00', value: ''},
+  {label: '00', value: '00'},
   {label: '01', value: '01'},
   {label: '02', value: '02'},
   {label: '03', value: '03'},

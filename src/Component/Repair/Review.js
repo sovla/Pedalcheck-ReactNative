@@ -1,12 +1,12 @@
-import {Box, PositionBox, RowBox} from '@/assets/global/Container';
+import {BetweenBox, Box, PositionBox, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import React from 'react';
-import {DarkBoldText, DarkText, DefaultText, MoneyText} from '@/assets/global/Text';
+import {DarkBoldText, DarkMediumText, DarkText, DefaultText, MoneyText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import ShopDummyImage from '@assets/image/shop_default.png';
 import {useSelector} from 'react-redux';
 import ProfileDefaultIcon from '@/assets/image/profile_default.png';
-import {LinkWhiteButton} from '@/assets/global/Button';
+import {BorderButton, LinkWhiteButton} from '@/assets/global/Button';
 import {useNavigation} from '@react-navigation/core';
 import Swiper from './Swiper';
 import {imageAddress} from '@assets/global/config';
@@ -17,6 +17,9 @@ import SwiperAutoHeight from './SwiperAutoHeight';
 import Photo from './Photo';
 import {getPixel} from '@/Util/pixelChange';
 import AutoHeightImage from 'react-native-auto-height-image';
+import {deleteReview} from '@/API/Shop/Shop';
+import {Text, TouchableOpacity} from 'react-native';
+import {AlertButtons} from '@/Util/Alert';
 
 export default function Review({
   isDetail = false,
@@ -26,12 +29,13 @@ export default function Review({
   mg = '0px',
   item = {},
   isJustShow = false,
+  onPressDelete = () => {},
 }) {
   const [isDetailButton, setIsDetailButton] = useState(false);
-
-  const {size} = useSelector(state => state);
+  const {size, login} = useSelector(state => state);
   const navigation = useNavigation();
-
+  const isCoupon = item?.ot_use_coupon?.length > 0;
+  const isMyReview = login?.idx === item?.mt_idx;
   const imageArray =
     item?.srt_image?.length > 0
       ? item?.srt_image?.map((v, i) => {
@@ -48,6 +52,7 @@ export default function Review({
   ) {
     setIsDetailButton(true);
   }
+
   useLayoutEffect(() => {
     setIsDetailButton(isDetail);
   }, []);
@@ -64,30 +69,54 @@ export default function Review({
           borderBottomColor: '#00000005',
         }
       }>
-      <RowBox>
-        <DefaultImage
-          source={item?.mt_image ? {uri: imageAddress + item?.mt_image} : ProfileDefaultIcon}
-          width="50px"
-          height="50px"
-        />
-        <Box mg="0px 0px 0px 10px" justifyContent="center" height="50px">
-          <RowBox>
-            <DarkBoldText fontSize={Theme.fontSize.fs15} mg="0px 10px 0px 0px">
-              {item?.mt_nickname}
-            </DarkBoldText>
-            <DarkText fontSize={Theme.fontSize.fs13}>{item?.srt_brand} </DarkText>
-            <DefaultText color={Theme.color.gray} fontSize={Theme.fontSize.fs12}>
-              |
-            </DefaultText>
-            <DarkText fontSize={Theme.fontSize.fs13}> {item?.srt_pt_model}</DarkText>
-          </RowBox>
-          <RowBox>
-            <DefaultText fontSize={Theme.fontSize.fs12} color={Theme.color.gray}>
-              {item?.srt_wdate?.slice(0, 16)}
-            </DefaultText>
-          </RowBox>
-        </Box>
-      </RowBox>
+      <BetweenBox width="380px">
+        <RowBox>
+          <DefaultImage
+            source={item?.mt_image ? {uri: imageAddress + item?.mt_image} : ProfileDefaultIcon}
+            width="50px"
+            height="50px"
+          />
+          <Box mg="0px 0px 0px 10px" justifyContent="center" height="50px">
+            <RowBox>
+              <DarkBoldText fontSize={Theme.fontSize.fs15} mg="0px 10px 0px 0px">
+                {item?.mt_nickname}
+              </DarkBoldText>
+              <DarkText fontSize={Theme.fontSize.fs13}>{item?.srt_brand} </DarkText>
+              <DefaultText color={Theme.color.gray} fontSize={Theme.fontSize.fs12}>
+                |
+              </DefaultText>
+              <DarkText fontSize={Theme.fontSize.fs13}> {item?.srt_pt_model}</DarkText>
+            </RowBox>
+            <RowBox>
+              <DefaultText fontSize={Theme.fontSize.fs12} color={Theme.color.gray}>
+                {item?.srt_wdate?.slice(0, 16)}
+              </DefaultText>
+            </RowBox>
+          </Box>
+        </RowBox>
+        <RowBox>
+          {isMyReview && (
+            <TouchableOpacity
+              onPress={() => {
+                AlertButtons(
+                  '삭제하시겠습니까?',
+                  '확인',
+                  '취소',
+                  () => {
+                    onPressDelete(item?.srt_idx);
+                  },
+                  () => {},
+                );
+              }}>
+              <Box mg="0px 5px">
+                <BorderButton width="auto" height="25px" borderColor={Theme.borderColor.gray} color={Theme.color.black}>
+                  <DarkMediumText fontSize={Theme.fontSize.fs13}>삭제</DarkMediumText>
+                </BorderButton>
+              </Box>
+            </TouchableOpacity>
+          )}
+        </RowBox>
+      </BetweenBox>
       <RowBox mg="10px 0px 0px">
         <DefaultText
           mg="0px 5px 0px 0px"
@@ -96,12 +125,14 @@ export default function Review({
           fontWeight={Theme.fontWeight.bold}>
           {item?.pt_title}
         </DefaultText>
-        <MoneyText
-          money={item?.ot_price}
-          color={Theme.color.black}
-          fontSize={Theme.fontSize.fs15}
-          fontWeight={Theme.fontWeight.medium}
-        />
+        {!isCoupon && (
+          <MoneyText
+            money={item?.ot_price}
+            color={Theme.color.black}
+            fontSize={Theme.fontSize.fs15}
+            fontWeight={Theme.fontWeight.medium}
+          />
+        )}
       </RowBox>
       <Box mg="15px 0px 0px" borderRadius="10px">
         {isDetailPage ? (

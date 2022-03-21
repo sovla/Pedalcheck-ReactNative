@@ -1,7 +1,7 @@
 import {AddInformationImage, getUserInformation, UpdateMember, UpdateMemberImage} from '@/API/User/Login';
 import {BorderButton, LinkButton} from '@/assets/global/Button';
 import {Box, Container, RowBox, ScrollBox} from '@/assets/global/Container';
-import {bankList1} from '@/assets/global/dummy';
+import {bankList2} from '@/assets/global/dummy';
 import {DefaultInput} from '@/assets/global/Input';
 import {DarkText, ErrorText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
@@ -178,29 +178,6 @@ export default function Update({navigation}) {
       result = true;
     }
 
-    if (isAdminCheck(login)) {
-      if (emptyData(user.mt_account)) {
-        setErrorMessage(prev => ({
-          ...prev,
-          account: '계좌번호를 입력해주세요.',
-        }));
-        result = true;
-      }
-      if (emptyData(user.mt_bname)) {
-        setErrorMessage(prev => ({
-          ...prev,
-          bname: '예금주명을 입력해주세요.',
-        }));
-        result = true;
-      }
-      if (emptyData(image)) {
-        setErrorMessage(prev => ({
-          ...prev,
-          mt_bank_image: '통장 사본을 등록해주세요.',
-        }));
-        result = true;
-      }
-    }
     return result;
   };
 
@@ -256,16 +233,6 @@ const menuItem = ['기본 정보 수정', '추가 정보 수정'];
 
 const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispatch}) => {
   const {size, login} = useSelector(state => state);
-
-  const onPressAddImage = async () => {
-    await ImageCropPicker.openPicker({
-      width: 300,
-      height: 400,
-      cropping: true, // 자르기 활성화
-    }).then(images => {
-      setImage(images);
-    });
-  };
 
   return (
     <Box pd="0px 16px">
@@ -342,61 +309,6 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
             pd="0px 0px 3px"
           />
         </Box>
-        {isAdminCheck(login) && (
-          <>
-            <Box>
-              <DefaultInput
-                errorMessage={errorMessage.bname !== '' && errorMessage.bname}
-                title="계좌정보"
-                placeHolder="예금주명을 입력하세요"
-                width={size.minusPadding}
-                fontSize={Theme.fontSize.fs15}
-                pd="0px 0px 3px"
-                value={user?.mt_bname}
-                changeFn={text => setUser(prev => ({...prev, mt_bname: text}))}
-                maxLength={10}
-              />
-              <DefaultInput
-                mg="10px 0px"
-                isDropdown
-                dropdownItem={bankList1}
-                changeFn={text => setUser(prev => ({...prev, mt_bank: text}))}
-                value={user?.mt_bank ?? ''}
-                placeHolder={'은행을 선택하세요.'}
-              />
-            </Box>
-            <Box mg="0px 0px 10px">
-              <DefaultInput
-                placeHolder="계좌번호를 입력하세요"
-                errorMessage={errorMessage.account !== '' && errorMessage.account}
-                width={size.minusPadding}
-                fontSize={Theme.fontSize.fs15}
-                pd="0px 0px 3px"
-                value={user?.mt_account}
-                changeFn={text => setUser(prev => ({...prev, mt_account: text}))}
-                maxLength={20}
-                keyboardType={'numeric'}
-              />
-            </Box>
-            <RowBox width={size.minusPadding} alignItems="flex-end" mg="0px 0px 10px">
-              <TouchableOpacity onPress={onPressAddImage}>
-                <BorderButton width="105px" height="auto" fontSize={Theme.fontSize.fs15}>
-                  통장 사본 등록
-                </BorderButton>
-              </TouchableOpacity>
-              <RowBox
-                width="259px"
-                mg="0px 0px 0px 16px"
-                alignItems="center"
-                height="100%"
-                style={borderBottomWhiteGray}>
-                <DarkText fontSize={Theme.fontSize.fs13}>{image && '통장 사본.jpg'}</DarkText>
-              </RowBox>
-            </RowBox>
-            {errorMessage.mt_bank_image !== '' && <ErrorText>{errorMessage.mt_bank_image}</ErrorText>}
-          </>
-        )}
-
         <Box mg="0px 0px 60px"></Box>
       </Box>
     </Box>

@@ -1,4 +1,12 @@
 import {API, ImageAPI} from '../Api';
+import axios from 'axios';
+import jwt_encode from 'jwt-encode';
+import {Platform} from 'react-native';
+import formFormatter from '@/Util/formFormatter';
+
+const SECRETKEY = '3B9027B713FABE0C75AD3A1F9F7646CB1514DE99';
+
+const baseURL = 'https://pedalcheck.co.kr/api/';
 
 export const getBoardList = async args => {
   try {
@@ -122,7 +130,48 @@ export const updateStore = async args => {
 export const updateStoreImage = async args => {
   try {
     const data = args;
-    const response = await ImageAPI(data, 'mst_image', 'mng/store_edit.php', false, false);
+
+    let cloneData = Object.assign({}, data);
+    delete cloneData['mst_image'];
+    delete cloneData['mt_bank_image'];
+
+    const jwt_data = jwt_encode(cloneData, SECRETKEY);
+
+    let imageResultObject = null;
+    let imageResult = [];
+    for (const imageItem of data['mst_image']) {
+      imageResult.push({
+        //  아닌경우 하나의 배열에 푸쉬
+        key: 'poto' + new Date().getTime(),
+        uri: Platform.OS === 'android' ? imageItem?.path : imageItem?.path.replace('file://', ''),
+        type: imageItem?.mime,
+        name: 'auto.jpg',
+      });
+    }
+
+    const imageItem = data['mt_bank_image'];
+    if (imageItem?.path) {
+      imageResultObject = {
+        key: 'poto' + new Date().getTime(),
+        uri: Platform.OS === 'android' ? imageItem?.path : imageItem?.path.replace('file://', ''),
+        type: imageItem?.mime,
+        name: 'auto.jpg',
+      };
+    }
+
+    const formData = formFormatter(
+      {
+        jwt_data,
+        secretKey: SECRETKEY,
+        mst_image: imageResult,
+        mt_bank_image: imageResultObject,
+      },
+      false,
+    );
+    const response = await axios.post(`${baseURL}mng/store_edit.php`, formData, {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    });
+
     return response;
   } catch (error) {}
 };

@@ -1,23 +1,17 @@
-import {Box, Container, PositionBox, ScrollBox} from '@/assets/global/Container';
-import React from 'react';
-import {TouchableOpacity} from 'react-native';
-
+import {Box, Container, PositionBox} from '@/assets/global/Container';
+import React, {useState, useEffect} from 'react';
+import {TouchableOpacity, FlatList} from 'react-native';
 import GradientHeader from '@/Component/Layout/GradientHeader';
 import Theme from '@/assets/global/Theme';
-import DefaultImage from '@/assets/global/Image';
 import {DarkBoldText} from '@/assets/global/Text';
 import CustomerHeader from '@/Component/Customer/CustomerHeader';
 import {DefaultInput} from '@/assets/global/Input';
-import CheckIcon from '@assets/image/ic_search.png';
 import {useSelector} from 'react-redux';
 import CustomerInformation from '@/Component/Customer/CustomerInformation';
 import FooterButtons from '@/Component/Layout/FooterButtons';
 import CustomerCheckIcon from '../../assets/image/menu07_top.png';
 import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
-import {useState} from 'react';
-import {useEffect} from 'react';
 import {getCustomer} from '@/API/Manager/Customer';
-import {FlatList} from 'react-native-gesture-handler';
 import {getPixel} from '@/Util/pixelChange';
 import SearchIcon from './SearchIcon';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';

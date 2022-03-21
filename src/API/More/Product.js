@@ -49,8 +49,6 @@ export const editProductInfo = async args => {
         }
       });
     }
-    console.log('editProductInfo :::', args);
-    console.log('editProductInfo :::', formData);
 
     const response = await axios.post(baseURL + 'mng/product_edit.php', formData);
     return response;
