@@ -353,7 +353,6 @@ export const openTimeList = [
 ];
 
 export const openTimehalfList = [
-  {label: '00', value: ''},
   {label: '00', value: '00'},
   {label: '01', value: '01'},
   {label: '02', value: '02'},
@@ -369,7 +368,7 @@ export const openTimehalfList = [
   {label: '12', value: '12'},
 ];
 export const openTimePmList = [
-  {label: '00', value: ''},
+  {label: '00', value: '00'},
   {label: '01', value: '01'},
   {label: '02', value: '02'},
   {label: '03', value: '03'},

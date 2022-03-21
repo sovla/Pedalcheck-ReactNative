@@ -12,6 +12,7 @@ export default function IdentityVerification() {
   const navigation = useNavigation();
   const {snsLogin} = useSelector(state => state);
   const [msg, setmsg] = useState('');
+  const [idx, setIdx] = useState('');
 
   const onShouldStartLoadWithRequest = event => {
     if (event.url.startsWith('http://') || event.url.startsWith('https://') || event.url.startsWith('about:blank')) {
@@ -35,11 +36,14 @@ export default function IdentityVerification() {
       return false;
     }
   };
+  //  mt_idx 받아와서
+  //  Register 에서 mt_idx 기준으로 정보 받아와서
+  //  처리된다.
 
   useUpdateEffect(() => {
     switch (msg) {
       case 'success':
-        navigation.navigate('RegisterInformation');
+        navigation.navigate('RegisterInformation', {idx});
         break;
       case 'already join':
         AlertButton('이미 가입된 회원입니다.');
@@ -50,7 +54,9 @@ export default function IdentityVerification() {
         navigation.reset({routes: [{name: 'Home'}]});
         break;
       case 'mt_idx is not exist':
-        AlertButton('고객번호가 조회되지 않습니다. 재 로그인 해주세요.');
+        AlertButton(
+          '고객번호가 조회되지 않습니다. 재 로그인                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       해주세요.',
+        );
         navigation.reset({routes: [{name: 'Home'}]});
         break;
       case 'mt_idx is unsign':
@@ -77,7 +83,10 @@ export default function IdentityVerification() {
     <SafeAreaView style={{flex: 1}}>
       <WebView
         source={{uri: `https://pedalcheck.co.kr/phone_cert.php?mt_idx=${snsLogin?.mt_idx}`}}
-        onMessage={res => setmsg(JSON.parse(res.nativeEvent.data)?.msg)}
+        onMessage={async res => {
+          await setIdx(JSON.parse(res.nativeEvent.data)?.data);
+          await setmsg(JSON.parse(res.nativeEvent.data)?.msg);
+        }}
         originWhitelist={['*']}
         onShouldStartLoadWithRequest={event => {
           return onShouldStartLoadWithRequest(event);

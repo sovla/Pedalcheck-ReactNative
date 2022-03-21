@@ -1,4 +1,4 @@
-import {MemberJoin} from '@/API/User/Login';
+import {getUserInformation, MemberJoin} from '@/API/User/Login';
 import {FooterButton} from '@/assets/global/Button';
 import {Box, RowBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
@@ -15,7 +15,7 @@ import {useDispatch} from 'react-redux';
 import {useSelector} from 'react-redux';
 import {Platform} from 'react-native';
 
-export default function RegisterInformation({navigation}) {
+export default function RegisterInformation({navigation, route: {params}}) {
   const [information, setInformaition] = useState(informationInit);
   const [errorMessage, setErrorMessage] = useState(informationInit);
   const {size, location, snsLogin, token} = useSelector(state => state);
@@ -65,6 +65,20 @@ export default function RegisterInformation({navigation}) {
       onChangeInformation(snsLogin.name, 'name');
     }
   }, [snsLogin]);
+
+  useLayoutEffect(() => {
+    getUserInformation({
+      _mt_idx: params?.idx,
+    }).then(res => {
+      if (res.data.result === 'true') {
+        const {data} = res.data.data;
+        setInformaition(prev => ({
+          ...prev,
+          tel: data?.mt_hp ?? '',
+        }));
+      }
+    });
+  }, []);
 
   return (
     <>

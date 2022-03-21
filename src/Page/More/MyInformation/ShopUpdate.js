@@ -38,9 +38,9 @@ export default function ShopUpdate() {
   const [shopInformation, setShopInformation] = useState(null);
   const [openingHours, setOpeningHours] = useState({
     weekdayStart: '00',
-    weekdayEnd: '01',
+    weekdayEnd: '00',
     weekendStart: '00',
-    weekendEnd: '01',
+    weekendEnd: '00',
   });
   const [errorMessage, setErrorMessage] = useState({
     mst_name: '',
@@ -56,7 +56,6 @@ export default function ShopUpdate() {
     weekendStart: '오전',
     weekendEnd: '오후',
   });
-  const [sns, setSns] = useState('');
 
   const dispatch = useDispatch();
   const [lastSortCount, setLastSortCount] = useState(0);
@@ -158,8 +157,11 @@ export default function ShopUpdate() {
     if (!result) {
       return;
     }
+
     setIsLoading(true);
+
     let response;
+
     if (imageArray.length > 0) {
       const localImageArray = imageArray.filter(item => !item?.sort);
       response = await updateStoreImage({
@@ -585,9 +587,18 @@ const ampm = [
 ];
 
 const setWorkTime = (time, ampmSelect) => {
-  return `평일 ${ampmSelect.weekdayStart} ${+time.weekdayStart}시 ~ ${
-    ampmSelect.weekdayEnd
-  } ${+time.weekdayEnd}시\n주말 ${ampmSelect.weekendStart} ${+time.weekendStart}시 ~ ${
-    ampmSelect.weekendEnd
-  } ${+time.weekendEnd}시`;
+  if (Object.values(time).filter(v => +v).length > 0) {
+    // 시간이 00 이 아닌경우 출력
+
+    // 평일 오전 00시 ~ 00시
+    // 주말 오전 00시 ~ 00시
+    // 형태로 출력합니다.
+    return `평일 ${ampmSelect.weekdayStart} ${+time.weekdayStart}시 ~ ${
+      ampmSelect.weekdayEnd
+    } ${+time.weekdayEnd}시\n주말 ${ampmSelect.weekendStart} ${+time.weekendStart}시 ~ ${
+      ampmSelect.weekendEnd
+    } ${+time.weekendEnd}시`;
+  } else {
+    return '';
+  }
 };
