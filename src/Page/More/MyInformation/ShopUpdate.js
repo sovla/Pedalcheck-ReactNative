@@ -38,7 +38,7 @@ const initAccountInfo = {
 export default function ShopUpdate() {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-  const {size, login, storeInfo} = useSelector(state => state);
+  const {login, storeInfo} = useSelector(state => state);
 
   const ref = useRef(null);
   const [imageArray, setImageArray] = useState([]);
@@ -59,7 +59,6 @@ export default function ShopUpdate() {
     mst_email: '',
   });
   const [user, setUser] = useState(initAccountInfo); // 계좌정보 용 추가
-  const [image, setImage] = useState(null); // 계좌정보 이미지
   const [AccountErrorMessage, setAccountErrorMessage] = useState(initAccountInfo);
 
   const [openingSelect, setOpeningSelect] = useState({
@@ -75,6 +74,13 @@ export default function ShopUpdate() {
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     if (isFocused && storeInfo) {
+      setUser(prev => ({
+        ...prev,
+        mt_account: storeInfo?.mt_account,
+        mt_bank: storeInfo?.mt_bank,
+        mt_bank_image: storeInfo?.mt_bank_image,
+        mt_bname: storeInfo?.mt_bname,
+      }));
       setShopInformation(storeInfo);
       const changeValue = storeInfo?.mst_holiday?.includes(',')
         ? storeInfo?.mst_holiday?.split(',')
@@ -225,32 +231,21 @@ export default function ShopUpdate() {
 
     let response;
 
-    if (imageArray.length > 0) {
-      const localImageArray = imageArray.filter(item => !item?.sort);
-      response = await updateStoreImage({
-        ...shopInformation,
-        mst_worktime: setWorkTime(openingHours, openingSelect),
-        mst_holiday: selectDay
-          .map(v => v - 1)
-          .sort()
-          .join(),
-        mst_image: localImageArray,
-        _mt_idx: login.idx,
-        store_image_num: localImageArray.map((item, index) => {
-          return lastSortCount + index + 1;
-        }),
-      });
-    } else {
-      response = await updateStore({
-        ...shopInformation,
-        mst_holiday: selectDay
-          .map(v => v - 1)
-          .sort()
-          .join(),
-        _mt_idx: login.idx,
-        mst_worktime: setWorkTime(openingHours, openingSelect),
-      });
-    }
+    const localImageArray = imageArray?.filter(item => !item?.sort);
+    response = await updateStoreImage({
+      ...shopInformation,
+      mst_worktime: setWorkTime(openingHours, openingSelect),
+      mst_holiday: selectDay
+        .map(v => v - 1)
+        .sort()
+        .join(),
+      mst_image: localImageArray,
+      _mt_idx: login.idx,
+      store_image_num: localImageArray.map((item, index) => {
+        return lastSortCount + index + 1;
+      }),
+      ...user,
+    });
 
     if (response?.data?.result === 'true') {
       const getResponse = await getStoreInfo({
@@ -396,7 +391,6 @@ export default function ShopUpdate() {
             user={user}
             setUser={setUser}
             onPressAddImage={onPressAddImage}
-            image={image}
           />
           <Box height="20px" />
         </Box>
@@ -691,7 +685,7 @@ const setWorkTime = (time, ampmSelect) => {
   }
 };
 
-const AccountInformation = ({errorMessage, user, setUser, onPressAddImage, image}) => {
+const AccountInformation = ({errorMessage, user, setUser, onPressAddImage}) => {
   return (
     <>
       <Box>

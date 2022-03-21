@@ -174,6 +174,7 @@ export default function Router() {
         await navigationRef.current.navigate(remoteMessage?.data?.intent, {
           menu: remoteMessage?.data?.content_idx2,
           od_idx: remoteMessage?.data?.content_idx,
+          mt_idx: remoteMessage?.data?.content_idx,
         });
       }
       return true;
