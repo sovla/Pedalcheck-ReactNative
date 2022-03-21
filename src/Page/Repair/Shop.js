@@ -42,6 +42,11 @@ export default function Shop({route, navigation}) {
       dispatch(clearReservation());
     }
   }, [isFocused]);
+  useEffect(() => {
+    if (route?.params?.menu?.length) {
+      setSelectMenu(route?.params?.menu);
+    }
+  }, []);
   useUpdateEffect(() => {
     setIsLike(shopInfo?.store_info?.like_on === 'on');
   }, [shopInfo?.store_info.like_on]);

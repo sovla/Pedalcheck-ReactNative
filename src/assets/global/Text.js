@@ -37,9 +37,9 @@ export const DefaultText = styled.Text`
     css`
       font-family: ${p =>
         p.fontWeight === 'bold'
-            ? 'NotoSansKR-Bold'
+          ? 'NotoSansKR-Bold'
           : p.fontWeight === 600
-            ? 'NotoSansKR-Medium'
+          ? 'NotoSansKR-Medium'
           : 'NotoSansKR-Regular'};
     `};
 
@@ -73,12 +73,12 @@ export const ErrorText = ({children}) => {
 
 export const BoldText = styled(DefaultText)`
   /* font-weight: ${Theme.fontWeight.bold}; */
-  font-family:  'NotoSansKR-Bold'
+  font-family: 'NotoSansKR-Bold';
 `;
 
 export const MediumText = styled(DefaultText)`
   /* font-weight: ${Theme.fontWeight.medium}; */
-  font-family:  'NotoSansKR-Medium';
+  font-family: 'NotoSansKR-Medium';
 `;
 
 export const DarkText = styled(DefaultText)`

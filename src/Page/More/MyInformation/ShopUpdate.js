@@ -14,7 +14,7 @@ import {phoneNumber} from '@/Util/phoneFormatter';
 import {showToastMessage} from '@/Util/Toast';
 import Postcode from '@actbase/react-daum-postcode';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useRef} from 'react';
 import {useEffect} from 'react';
 import {useState} from 'react';
 import {TouchableOpacity} from 'react-native';
@@ -23,15 +23,24 @@ import {imageAddress} from '@assets/global/config';
 import {setStoreInfo} from '@/Store/storeInfoState';
 import Loading from '@/Component/Layout/Loading';
 import pixelChange, {getPixel} from '@/Util/pixelChange';
-import {openTimehalfList, openTimePmList} from '@/assets/global/dummy';
+import {bankList2, openTimehalfList, openTimePmList} from '@/assets/global/dummy';
 import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
 import {numberChangeFormat} from '@/Util/numberFormat';
+import ImageCropPicker from 'react-native-image-crop-picker';
+
+const initAccountInfo = {
+  mt_bname: '',
+  mt_bank: '',
+  mt_account: '',
+  mt_bank_image: '',
+};
 
 export default function ShopUpdate() {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const {size, login, storeInfo} = useSelector(state => state);
 
+  const ref = useRef(null);
   const [imageArray, setImageArray] = useState([]);
   const [selectDay, setSelectDay] = useState([]);
   const [isDaumOpen, setIsDaumOpen] = useState(false);
@@ -49,6 +58,9 @@ export default function ShopUpdate() {
     mst_addr2: '',
     mst_email: '',
   });
+  const [user, setUser] = useState(initAccountInfo); // 계좌정보 용 추가
+  const [image, setImage] = useState(null); // 계좌정보 이미지
+  const [AccountErrorMessage, setAccountErrorMessage] = useState(initAccountInfo);
 
   const [openingSelect, setOpeningSelect] = useState({
     weekdayStart: '오전',
@@ -121,6 +133,17 @@ export default function ShopUpdate() {
     }
   };
 
+  const emptyData = data => {
+    // "" null !data Object일경우 key값이 없는경우
+    // true 리턴
+
+    if (data === '' || data === null || !data || (typeof data === 'object' && Object.keys(data).length === 0)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const RegJoin = async () => {
     let check = true;
 
@@ -150,11 +173,51 @@ export default function ShopUpdate() {
       setErrorMessage(prev => ({...prev, mst_email: '이메일 형식에 맞지 않습니다.'}));
       check = false;
     }
+    if (emptyData(user.mt_account)) {
+      setAccountErrorMessage(prev => ({
+        ...prev,
+        mt_account: '계좌번호를 입력해주세요.',
+      }));
+      check = false;
+    }
+    if (emptyData(user.mt_bname)) {
+      setAccountErrorMessage(prev => ({
+        ...prev,
+        mt_bname: '예금주명을 입력해주세요.',
+      }));
+      check = false;
+    }
+    if (emptyData(user.mt_bank_image)) {
+      setAccountErrorMessage(prev => ({
+        ...prev,
+        mt_bank_image: '통장 사본을 등록해주세요.',
+      }));
+      check = false;
+    }
+    if (emptyData(user.mt_bank)) {
+      setAccountErrorMessage(prev => ({
+        ...prev,
+        mt_bank: '은행을 선택해주세요.',
+      }));
+      check = false;
+    }
     return check;
   };
   const updateStoreHandle = async () => {
+    setAccountErrorMessage(initAccountInfo);
+    setErrorMessage({
+      mst_name: '',
+      mst_company_num: '',
+      mst_zip: '',
+      mst_addr2: '',
+      mst_email: '',
+    });
     const result = await RegJoin();
     if (!result) {
+      if (ref?.current) {
+        ref.current.scrollTo({top: 0});
+      }
+
       return;
     }
 
@@ -218,20 +281,37 @@ export default function ShopUpdate() {
     // type -> amStart amEnd pmStart pmEnd
     setOpeningHours(prev => ({...prev, [type]: value}));
   };
+  console.log(user);
+  const onPressAddImage = async () => {
+    await ImageCropPicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true, // 자르기 활성화
+      compressImageQuality: 0.9,
+      compressImageMaxWidth: 1000,
+      compressImageMaxHeight: 1000,
+      forceJpg: true,
+    }).then(images => {
+      setUser(prev => ({
+        ...prev,
+        mt_bank_image: images,
+      }));
+    });
+  };
   return (
     <>
       {isLoading && <Loading isAbsolute />}
       <Header title="정보 수정" />
-      <ScrollBox keyboardShouldPersistTaps="handled">
+      <ScrollBox ref={ref} keyboardShouldPersistTaps="handled">
         <Box alignItems="center">
           <Box style={borderBottomWhiteGray}>
-            <RowBox mg="20px 0px" width={size.minusPadding}>
+            <RowBox mg="20px 0px" width={'380px'}>
               <RequireFieldText />
             </RowBox>
           </Box>
           <DefaultInput
             title="업체명"
-            width={size.minusPadding}
+            width={'380px'}
             fontSize={Theme.fontSize.fs15}
             placeHolder="업체명을 입력해주세요"
             errorMessage={errorMessage.mst_name !== '' && errorMessage.mst_name}
@@ -247,7 +327,7 @@ export default function ShopUpdate() {
           />
           <DefaultInput
             title="사업자 번호"
-            width={size.minusPadding}
+            width={'380px'}
             fontSize={Theme.fontSize.fs15}
             placeHolder="사업자 번호를 입력해주세요(숫자 10자리)"
             errorMessage={errorMessage.mst_company_num !== '' && errorMessage.mst_company_num}
@@ -289,7 +369,7 @@ export default function ShopUpdate() {
           )}
 
           <DefaultInput
-            width={size.minusPadding}
+            width={'380px'}
             fontSize={Theme.fontSize.fs15}
             placeHolder="기본주소를 입력해주세요"
             pd="0px 0px 5px"
@@ -297,7 +377,7 @@ export default function ShopUpdate() {
             value={shopInformation?.mst_addr1}
           />
           <DefaultInput
-            width={size.minusPadding}
+            width={'380px'}
             fontSize={Theme.fontSize.fs15}
             placeHolder="상세주소를 입력해주세요"
             pd="0px 0px 5px"
@@ -311,15 +391,23 @@ export default function ShopUpdate() {
               }));
             }}
           />
+          <AccountInformation
+            errorMessage={AccountErrorMessage}
+            user={user}
+            setUser={setUser}
+            onPressAddImage={onPressAddImage}
+            image={image}
+          />
+          <Box height="20px" />
         </Box>
         <Box alignItems="center">
-          <Box width={size.minusPadding} style={borderBottomWhiteGray}>
+          <Box width={'380px'} style={borderBottomWhiteGray}>
             <DarkBoldText mg="0px 0px 20px">선택 입력 항목</DarkBoldText>
           </Box>
           <DefaultInput
             title="브랜드"
             innerPadding={pixelChange('10px')}
-            width={size.minusPadding}
+            width={'380px'}
             fontSize={Theme.fontSize.fs15}
             height="auto"
             minHeight="44px"
@@ -341,7 +429,7 @@ export default function ShopUpdate() {
           />
           <DefaultInput
             title="일반전화"
-            width={size.minusPadding}
+            width={'380px'}
             fontSize={Theme.fontSize.fs15}
             placeHolder="전화번호를 등록해주세요"
             pd="0px 0px 5px"
@@ -432,7 +520,7 @@ export default function ShopUpdate() {
           </Box>
           {/* <DefaultInput
             title="영업시간"
-            width={size.minusPadding}
+            width={"380px"}
             fontSize={Theme.fontSize.fs15}
             placeHolder="영업시간을 입력해주세요"
             isAlignTop
@@ -449,11 +537,11 @@ export default function ShopUpdate() {
             }}
             maxLength={200}
           /> */}
-          <Box width={size.minusPadding}>
+          <Box width={'380px'}>
             <DarkBoldText fontSize={Theme.fontSize.fs15} mg="10px 0px 10px">
               휴무요일
             </DarkBoldText>
-            <BetweenBox width={size.minusPadding}>
+            <BetweenBox width={'380px'}>
               {dayList.map((item, Index) => {
                 const isSelect = selectDay.find(findItem => findItem === Index + 1) !== undefined;
                 const backgroundColor = isSelect ? Theme.color.skyBlue : Theme.color.backgroundWhiteGray;
@@ -480,7 +568,7 @@ export default function ShopUpdate() {
           </Box>
           <DefaultInput
             title="매장 소개"
-            width={size.minusPadding}
+            width={'380px'}
             fontSize={Theme.fontSize.fs15}
             placeHolder="매장 소개를 입력해주세요"
             isAlignTop
@@ -500,7 +588,7 @@ export default function ShopUpdate() {
           <DefaultInput
             title="태그"
             innerPadding={pixelChange('10px')}
-            width={size.minusPadding}
+            width={'380px'}
             fontSize={Theme.fontSize.fs15}
             placeHolder="태그를 선택해주세요"
             pd="0px 0px 5px"
@@ -520,7 +608,7 @@ export default function ShopUpdate() {
           />
           <DefaultInput
             title="매장 링크"
-            width={size.minusPadding}
+            width={'380px'}
             fontSize={Theme.fontSize.fs15}
             placeHolder="매장 링크를 입력해주세요"
             pd="0px 0px 5px"
@@ -536,7 +624,7 @@ export default function ShopUpdate() {
           />
           <DefaultInput
             title="이메일 (세금계산서 발급용)"
-            width={size.minusPadding}
+            width={'380px'}
             fontSize={Theme.fontSize.fs15}
             placeHolder="이메일(세금계산서 발급용)을 입력해주세요"
             errorMessage={errorMessage.mst_email !== '' && errorMessage.mst_email}
@@ -601,4 +689,58 @@ const setWorkTime = (time, ampmSelect) => {
   } else {
     return '';
   }
+};
+
+const AccountInformation = ({errorMessage, user, setUser, onPressAddImage, image}) => {
+  return (
+    <>
+      <Box>
+        <DefaultInput
+          errorMessage={errorMessage.mt_bname !== '' && errorMessage.mt_bname}
+          title="계좌정보"
+          placeHolder="예금주명을 입력하세요"
+          width={'380px'}
+          fontSize={Theme.fontSize.fs15}
+          pd="0px 0px 3px"
+          value={user?.mt_bname}
+          changeFn={text => setUser(prev => ({...prev, mt_bname: text}))}
+          maxLength={10}
+        />
+        <DefaultInput
+          mg="10px 0px 0px"
+          isDropdown
+          dropdownItem={bankList2}
+          changeFn={text => setUser(prev => ({...prev, mt_bank: text}))}
+          value={user?.mt_bank ?? ''}
+          placeHolder={'은행을 선택하세요.'}
+        />
+        {errorMessage.mt_bank !== '' && <ErrorText>{errorMessage.mt_bank}</ErrorText>}
+        <Box height="10px" />
+      </Box>
+      <Box mg="0px 0px 10px">
+        <DefaultInput
+          placeHolder="계좌번호를 입력하세요"
+          errorMessage={errorMessage.mt_account !== '' && errorMessage.mt_account}
+          width={'380px'}
+          fontSize={Theme.fontSize.fs15}
+          pd="0px 0px 3px"
+          value={user?.mt_account}
+          changeFn={text => setUser(prev => ({...prev, mt_account: text}))}
+          maxLength={20}
+          keyboardType={'numeric'}
+        />
+      </Box>
+      <RowBox width={'380px'} alignItems="flex-end" mg="0px 0px 10px">
+        <TouchableOpacity onPress={onPressAddImage}>
+          <BorderButton width="105px" height="auto" fontSize={Theme.fontSize.fs15}>
+            통장 사본 등록
+          </BorderButton>
+        </TouchableOpacity>
+        <RowBox width="259px" mg="0px 0px 0px 16px" alignItems="center" height="100%" style={borderBottomWhiteGray}>
+          <DarkText fontSize={Theme.fontSize.fs13}>{user.mt_bank_image && '통장 사본.jpg'}</DarkText>
+        </RowBox>
+      </RowBox>
+      {errorMessage.mt_bank_image !== '' && <ErrorText>{errorMessage.mt_bank_image}</ErrorText>}
+    </>
+  );
 };

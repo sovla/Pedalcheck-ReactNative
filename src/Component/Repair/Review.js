@@ -30,8 +30,7 @@ export default function Review({
   const [isDetailButton, setIsDetailButton] = useState(false);
   const {size} = useSelector(state => state);
   const navigation = useNavigation();
-  const isCoupon = false;
-
+  const isCoupon = item?.ot_use_coupon?.length > 0;
   const imageArray =
     item?.srt_image?.length > 0
       ? item?.srt_image?.map((v, i) => {
