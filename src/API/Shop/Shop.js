@@ -80,3 +80,10 @@ export const getOrderCheck = async args => {
     return response;
   } catch (error) {}
 };
+
+export const deleteReview = async args => {
+  try {
+    const response = await API.post('store_review_del.php', args);
+    return response;
+  } catch (error) {}
+};
