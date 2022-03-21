@@ -20,7 +20,7 @@ export default function ReservationDate({navigation, route: {params}}) {
   const isFocused = useIsFocused();
   const now = new Date(moment().format('YYYY-MM-DD HH:mm:ss'));
   const [selectItem, setSelectItem] = useState(''); // 선택한 시간
-  const [selectDate, setSelectDate] = useState(null); // 선택한 날짜
+  const [selectDate, setSelectDate] = useState(new Date().toISOString().substring(0, 7)); // 선택한 날짜
   const naviState = useNavigationState(state => state);
   const [disabledDayList, setDisabledDayList] = useState([]); // 선택불가 날짜
   const [disabledTimeList, setDisabledTimeList] = useState([]); // 선택불가 시간

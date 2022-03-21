@@ -259,7 +259,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
             <BikeInformationHeader item={bikeInfo} mg="10px 0px" />
             <BikeInformaitonBody bikeInfoDetail={bikeInfoDetail} />
           </Box>
-          {type !== 'coupon' && (
+          {type !== 'coupon' && reservationInfo?.ot_pay_status?.length > 0 && (
             <Box mg="10px 0px 20px" style={borderBottomWhiteGray}>
               <DarkBoldText>결제정보</DarkBoldText>
               <RowBox mg="10px 0px 20px" justifyContent="space-between" width={size.minusPadding}>

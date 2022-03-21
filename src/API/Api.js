@@ -18,7 +18,7 @@ export const API = axios.create({
   },
   processData: false,
   contentType: false,
-  transformRequest: (data, headers) => {
+  transformRequest: data => {
     if (LOGON) console.log('formData :::', data);
     const jwt_data = jwt_encode(data, SECRETKEY);
     const result = formFormatter(
