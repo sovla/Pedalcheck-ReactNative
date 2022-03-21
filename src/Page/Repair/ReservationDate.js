@@ -26,7 +26,7 @@ export default function ReservationDate({navigation, route: {params}}) {
 
   const {shopInfo, reservationInfo} = useSelector(state => state);
   const [selectItem, setSelectItem] = useState(''); // 선택한 시간
-  const [selectDate, setSelectDate] = useState(null); // 선택한 날짜
+  const [selectDate, setSelectDate] = useState(new Date().toISOString().substring(0, 7)); // 선택한 날짜
 
   const [disabledDayList, setDisabledDayList] = useState([]); // 선택불가 날짜
   const [disabledTimeList, setDisabledTimeList] = useState([]); // 선택불가 시간
