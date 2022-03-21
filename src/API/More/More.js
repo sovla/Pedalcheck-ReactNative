@@ -129,7 +129,6 @@ export const updateStore = async args => {
 
 export const updateStoreImage = async args => {
   try {
-    console.log('data :::', args);
     const data = args;
 
     let cloneData = Object.assign({}, data);
@@ -169,15 +168,12 @@ export const updateStoreImage = async args => {
       },
       false,
     );
-    console.log(formData);
     const response = await axios.post(`${baseURL}mng/store_edit.php`, formData, {
       'Content-Type': 'application/x-www-form-urlencoded',
     });
 
     return response;
-  } catch (error) {
-    console.log('API Error :::', error);
-  }
+  } catch (error) {}
 };
 
 export const getTagList = async args => {

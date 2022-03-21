@@ -276,7 +276,6 @@ export default function ShopUpdate() {
     // type -> amStart amEnd pmStart pmEnd
     setOpeningHours(prev => ({...prev, [type]: value}));
   };
-  console.log(user);
   const onPressAddImage = async () => {
     await ImageCropPicker.openPicker({
       width: 300,

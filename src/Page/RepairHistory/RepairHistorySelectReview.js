@@ -197,7 +197,6 @@ export default function RepairHistorySelectReview() {
 
 const ReviewRecomment = ({item, size, commentSubmit, deleteHandle}) => {
   const [inputHeight, setInputHeight] = useState(44);
-  console.log(inputHeight);
   const [comment, setComment] = useState('');
   const navigation = useNavigation();
 
