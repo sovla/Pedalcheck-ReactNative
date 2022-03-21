@@ -15,19 +15,19 @@ import Loading from '@/Component/Layout/Loading';
 import {useLayoutEffect} from 'react';
 import {couponReservation} from '@/API/More/More';
 
-export default function CouponUseComplete({route: {params}, route}) {
-  const {item: coupon, selectBike, selectDate, shopInfo} = params;
+export default function CouponUseComplete({route, navigation}) {
+  const {item: coupon, selectBike, selectDate, shopInfo} = route?.params;
   const {size, login} = useSelector(state => state);
-  const navigation = useNavigation();
+
   const dummy = {
-    cst_title: '무료세차',
-    mst_name: '제일정비',
-    od_idx: 7,
-    ot_code: 'P220117093554E14',
-    ot_datetime: '2022-01-18',
+    cst_title: '',
+    mst_name: '',
+    od_idx: 1,
+    ot_code: '',
+    ot_datetime: '',
     ot_email: null,
-    ot_hp: '010-6464-6464',
-    ot_name: '신혜수',
+    ot_hp: '',
+    ot_name: '',
   };
   const [isDone, setIsDone] = useState(true);
   const [reservationInfo, setReservationInfo] = useState(dummy);

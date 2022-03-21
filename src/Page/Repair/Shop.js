@@ -14,7 +14,7 @@ import {deleteReview, getShopDetail, sendLikeShop} from '@/API/Shop/Shop';
 import Review from '@/Component/Repair/Review';
 import {ResetShopInfo, setLikeCount, setShopInfo} from '@/Store/shopInfoState';
 import ShopHeader from '@/Component/Repair/ShopHeader';
-import {AlertButton, AlertButtons, RequireLoginAlert} from '@/Util/Alert';
+import {AlertButton, RequireLoginAlert} from '@/Util/Alert';
 import Loading from '@/Component/Layout/Loading';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {useIsFocused} from '@react-navigation/native';
