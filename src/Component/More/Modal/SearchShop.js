@@ -40,6 +40,7 @@ export default function SearchShop({setShopInfo}) {
           width={`${412 - 32 - 40}px`}
           changeFn={item => setShop(item)}
           value={shop}
+          onSend={onPressSearch}
         />
         <PositionBox right="15px" bottom="11px" backgroundColor="#0000">
           <TouchableOpacity onPress={onPressSearch}>

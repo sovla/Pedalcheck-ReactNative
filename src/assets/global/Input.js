@@ -34,6 +34,7 @@ export const DefaultInput = ({
   maxLength, //        문자열 최대길이
   maxHeight, //       최대 높이
   keyboardType, //    keyboardType
+  onSend,
   mg = '0px',
   pd = '0px 10px 5px',
   onBlur = () => {},
@@ -98,6 +99,7 @@ export const DefaultInput = ({
           multiline={multiline}
           onChangeText={changeFn}
           onBlur={onBlur}
+          onEndEditing={onSend} // 완료버튼클릭
           returnKeyType="done" // 완료버튼
           style={[
             isAlignTop && {
@@ -137,7 +139,7 @@ export const DefaultInput = ({
           placeholderStyle={{
             color: Theme.color.black,
             fontSize: 15,
-            fontFamily: 'NotoSansKR-Regular' ,
+            fontFamily: 'NotoSansKR-Regular',
           }}
           selectedTextStyle={{
             color: Theme.color.black,
@@ -203,13 +205,12 @@ const DefaultInputStyle = styled.TextInput`
   line-height: 22px;
   include-font-padding: false;
   color: ${p => p.color ?? Theme.color.black};
-  font-family:  'NotoSansKR-Regular'
-
-  ${p =>
-    p.width &&
-    css`
-      width: ${pixelChange(p.width)};
-    `};
+  font-family: 'NotoSansKR-Regular'
+    ${p =>
+      p.width &&
+      css`
+        width: ${pixelChange(p.width)};
+      `};
   ${p =>
     p.height &&
     css`

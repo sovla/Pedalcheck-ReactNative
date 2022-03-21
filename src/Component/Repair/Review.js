@@ -29,7 +29,7 @@ export default function Review({
   mg = '0px',
   item = {},
   isJustShow = false,
-  onPressDelete = () => {},
+  onPressDelete,
 }) {
   const [isDetailButton, setIsDetailButton] = useState(false);
   const {size, login} = useSelector(state => state);
@@ -95,7 +95,7 @@ export default function Review({
           </Box>
         </RowBox>
         <RowBox>
-          {isMyReview && (
+          {isMyReview && onPressDelete && (
             <TouchableOpacity
               onPress={() => {
                 AlertButtons(

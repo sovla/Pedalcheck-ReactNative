@@ -62,19 +62,21 @@ export default function CouponDetail({route: {params}}) {
             </Box>
           </RowBox>
           {couponInfo?.cst_pt_date?.length > 0 && (
-            <RowBox mg="0px 0px 10px">
+            <RowBox>
               <DarkMediumText width="75px">예약시간</DarkMediumText>
               <DarkText>
                 {couponInfo.cst_pt_date} {couponInfo.cst_pt_time}
               </DarkText>
             </RowBox>
           )}
+          <Box height="10px" />
           {couponInfo.cst_status === '처리완료' && (
-            <RowBox mg="10px 0px 20px">
-              <DarkMediumText>완료시간</DarkMediumText>
+            <RowBox>
+              <DarkMediumText width="75px">완료시간</DarkMediumText>
               <DarkText>2021-10-14 10:58</DarkText>
             </RowBox>
           )}
+          <Box height="10px" />
         </Box>
         {couponInfo.cst_status !== '미사용' && (
           <Box style={borderBottomWhiteGray} width="380px">
