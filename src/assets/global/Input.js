@@ -137,12 +137,12 @@ export const DefaultInput = ({
           placeholderStyle={{
             color: Theme.color.black,
             fontSize: 15,
-            fontFamily: Platform.OS === 'android' ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF',
+            fontFamily: 'NotoSansKR-Regular' ,
           }}
           selectedTextStyle={{
             color: Theme.color.black,
             fontSize: 15,
-            fontFamily: Platform.OS === 'android' ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF',
+            fontFamily: 'NotoSansKR-Regular',
             lineHeight: 20,
             height: 20,
           }}
@@ -203,7 +203,7 @@ const DefaultInputStyle = styled.TextInput`
   line-height: 22px;
   include-font-padding: false;
   color: ${p => p.color ?? Theme.color.black};
-  font-family: ${Platform.OS === 'android' ? 'NotoSansKR-Regular' : 'NotoSansCJKkr-RegularTTF'};
+  font-family:  'NotoSansKR-Regular'
 
   ${p =>
     p.width &&
