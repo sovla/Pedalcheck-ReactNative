@@ -139,7 +139,7 @@ export default function ModalBasic() {
               // 슬라이드형 아닐때 기본
               <Box
                 backgroundColor={Theme.color.white}
-                width={size.minusPadding}
+                width="380px"
                 minHeight="150px"
                 borderRadius="15px"
                 pd="20px 16px"
@@ -151,7 +151,7 @@ export default function ModalBasic() {
               <PositionBox
                 style={{borderTopLeftRadius: 15, borderTopRightRadius: 15}}
                 backgroundColor={Theme.color.white}
-                minWidth={size.designWidth}
+                minWidth={412}
                 minHeight="200px"
                 pd="20px 16px"
                 bottom="0px"

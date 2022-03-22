@@ -19,12 +19,12 @@ import {useLayoutEffect} from 'react';
 // prop , setLocation 추가 / 정비소 홈에서 API를 두번 쳐서 추가했음
 
 export default function LocationPicker({setLocation, isHome}) {
-  const {modal, size, location} = useSelector(state => state);
+  const {modal, location} = useSelector(state => state);
   const dispatch = useDispatch();
 
   const [locationArray, setLocationArray] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const BoxWidth = size.designWidth - 72;
+  const BoxWidth = 412 - 72;
   const isDetail = modal.modalComponent === 'locationPickerDetail';
   const apiObject = !isDetail
     ? {
@@ -90,7 +90,7 @@ export default function LocationPicker({setLocation, isHome}) {
   };
   return (
     <>
-      <ModalTitleBox size={size} title="지역 선택"></ModalTitleBox>
+      <ModalTitleBox title="지역 선택"></ModalTitleBox>
       <Box height="300px">
         <ScrollView style={{flex: 1}} keyboardShouldPersistTaps="handled">
           {/* <TouchableOpacity

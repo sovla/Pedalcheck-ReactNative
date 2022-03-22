@@ -16,7 +16,7 @@ export default function ReviewMain() {
   const navigation = useNavigation();
   return (
     <Box pd="20px 16px 0px">
-      <RowBox justifyContent="space-between" width={size.minusPadding} alignItems="center">
+      <RowBox justifyContent="space-between" width="380px" alignItems="center">
         <RowBox>
           <DarkBoldText fontSize={Theme.fontSize.fs15}>리뷰</DarkBoldText>
           <IndigoText

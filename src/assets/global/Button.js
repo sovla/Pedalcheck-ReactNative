@@ -140,9 +140,8 @@ export const FooterButton = ({
   isRelative,
   position,
 }) => {
-  const {size} = useSelector(state => state);
-  const buttonBoxWidth = width ? width : size.minusPadding;
-  const buttonWidthCalc = buttonWidth ? buttonWidth : `${(size.designWidth - 42) / 2}px`;
+  const buttonBoxWidth = width ? width : '380px';
+  const buttonWidthCalc = buttonWidth ? buttonWidth : `${(412 - 42) / 2}px`;
   const RenderBox = isRelative ? Box : PositionBox;
 
   return (

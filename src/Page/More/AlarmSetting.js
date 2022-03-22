@@ -41,7 +41,7 @@ export default function AlarmSetting() {
       <Header title="알림 설정" />
       <Container backgroundColor={Theme.borderColor.gray}>
         <Box>
-          <BetweenBox pd="20px 16px 15px" width={size.designWidth} alignItems="center">
+          <BetweenBox pd="20px 16px 15px" width={412} alignItems="center">
             <DarkMediumText>푸쉬 알림</DarkMediumText>
             <TouchableOpacity
               onPress={() => {
@@ -57,7 +57,7 @@ export default function AlarmSetting() {
               />
             </TouchableOpacity>
           </BetweenBox>
-          <BetweenBox pd="0px 16px 15px" width={size.designWidth} alignItems="center">
+          <BetweenBox pd="0px 16px 15px" width={412} alignItems="center">
             <DarkMediumText>문자 알림</DarkMediumText>
             <TouchableOpacity
               onPress={() => {

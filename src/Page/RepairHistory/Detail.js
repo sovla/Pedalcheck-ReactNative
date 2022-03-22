@@ -170,7 +170,7 @@ export default function Detail({navigation, route}) {
               <Box mg="10px 0px 0px" style={borderBottomWhiteGray}>
                 <DarkBoldText>결제정보</DarkBoldText>
 
-                <BetweenBox mg="10px 0px 0px" width={size.minusPadding}>
+                <BetweenBox mg="10px 0px 0px" width="380px">
                   <DarkMediumText fontSize={Theme.fontSize.fs15}>결제 방식</DarkMediumText>
                   <RowBox alignItems="center">
                     <Badge badgeContent="쿠폰" />
@@ -183,7 +183,7 @@ export default function Detail({navigation, route}) {
             <>
               <Box mg="10px 0px 0px" style={borderBottomWhiteGray}>
                 <DarkBoldText>결제정보</DarkBoldText>
-                <BetweenBox mg="10px 0px 0px" width={size.minusPadding}>
+                <BetweenBox mg="10px 0px 0px" width="380px">
                   <DarkMediumText fontSize={Theme.fontSize.fs15}>가격</DarkMediumText>
                   <RowBox alignItems="center">
                     {changeItem.salePrice * 1 - changeItem.totalPrice * 1 > 0 && (
@@ -198,7 +198,7 @@ export default function Detail({navigation, route}) {
                     />
                   </RowBox>
                 </BetweenBox>
-                <BetweenBox mg="10px 0px 0px" width={size.minusPadding}>
+                <BetweenBox mg="10px 0px 0px" width="380px">
                   <DarkMediumText fontSize={Theme.fontSize.fs15}>할인</DarkMediumText>
                   <RowBox alignItems="center">
                     <MoneyText
@@ -229,7 +229,7 @@ export default function Detail({navigation, route}) {
 
           <Box mg="20px 0px 0px">
             <DarkBoldText>고객정보</DarkBoldText>
-            <Box width={size.minusPadding}>
+            <Box width="380px">
               <RowBox mg="10px 0px 0px" alignItems="center">
                 <DarkMediumText width="65px">이름</DarkMediumText>
 

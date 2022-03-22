@@ -176,7 +176,7 @@ export default function More() {
     <Container>
       <ScrollBox backgroundColor={Theme.borderColor.whiteLine} keyboardShouldPersistTaps="handled">
         <GradientHeader title="더보기" imageSource={WhiteMoreIcon} height={76}></GradientHeader>
-        <BetweenBox width={size.designWidth} pd="20px 16px" alignItems="center">
+        <BetweenBox width={412} pd="20px 16px" alignItems="center">
           <RowBox alignItems="center">
             <DefaultImage
               source={login?.mt_image ? {uri: imageAddress + login?.mt_image} : profileDefault}
@@ -195,7 +195,7 @@ export default function More() {
           2022-01-12 16:45:15
         */}
         {isAdminCheck(login) ? (
-          <BetweenBox width={size.designWidth} pd="20px 16px 10px 16px" alignItems="center">
+          <BetweenBox width={412} pd="20px 16px 10px 16px" alignItems="center">
             <DarkBoldText>정비소 관리자 화면으로 전환</DarkBoldText>
             <TouchableOpacity onPress={() => dispatch(setIsAdmin(!isAdmin))}>
               <DefaultImage source={isAdmin ? SwitchOnIcon : SwitchOffIcon} width="61px" height="27px" />
@@ -216,7 +216,7 @@ export default function More() {
                   : {borderBottomColor: Theme.borderColor.whiteLine},
               ]}>
               <TouchableOpacity onPress={() => onPressMenu(item.content)}>
-                <RowBox width={size.minusPadding} alignItems="center" pd="0px 16px">
+                <RowBox width="380px" alignItems="center" pd="0px 16px">
                   <DefaultImage source={item.icon} width="24px" height="24px" />
                   <DarkMediumText fontSize={Theme.fontSize.fs15} mg="15px 0px 15px 5px">
                     {item.content}

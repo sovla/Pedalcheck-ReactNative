@@ -77,7 +77,7 @@ export default function RepairHome() {
   };
 
   const onScrollSlide = e => {
-    setSelectImage(scrollSlideNumber(e, size.designWidth - 36));
+    setSelectImage(scrollSlideNumber(e, 412 - 36));
   };
   if (!isFocused && isModal) {
     setIsModal(false);
@@ -456,7 +456,7 @@ const Header = ({
                     style={{borderRadius: 10, height: getPixel(200)}}
                     resizeMode="stretch"
                     source={{uri: imageAddress + item?.bt_image}}
-                    width={size.minusPadding}
+                    width="380px"
                   />
                 </TouchableOpacity>
               ))}

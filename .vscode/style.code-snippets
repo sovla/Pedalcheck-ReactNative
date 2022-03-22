@@ -83,7 +83,7 @@
   "sizeMinusPadding": {
     "scope": "javascript",
     "prefix": "minus",
-    "body": ["width={size.minusPadding} "]
+    "body": ["width="380px" "]
   },
   "DefaultMargin": {
     "scope": "javascript",

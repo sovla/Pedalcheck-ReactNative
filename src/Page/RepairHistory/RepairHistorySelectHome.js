@@ -18,7 +18,6 @@ import {useLayoutEffect} from 'react';
 import {getRepairHomeInformation} from '@/API/Manager/RepairHistory';
 import {numberChangeFormat} from '@/Util/numberFormat';
 import {dateFormat} from '@/Util/DateFormat';
-import RenderHtml from 'react-native-render-html';
 import WebView from 'react-native-webview';
 import {getPixel} from '@/Util/pixelChange';
 import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
@@ -28,13 +27,12 @@ import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
 export default function RepairHistorySelectHome() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const {login, storeInfo, size} = useSelector(state => state);
+  const {login, storeInfo} = useSelector(state => state);
 
   const [date, setDate] = useState(new Date());
   const [selectDate, setSelectDate] = useState('지난 6개월');
   const [isLoading, setIsLoading] = useState(true);
   const [homeInfo, setHomeInfo] = useState(initData);
-  const [staticData, setStaticData] = useState([]);
 
   useLayoutEffect(() => {
     setIsLoading(true);

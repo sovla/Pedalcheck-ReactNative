@@ -95,7 +95,7 @@ export default function ShopReservationRequest({navigation, route: {params}}) {
           <DarkBoldText mg="0px 0px 10px">요청사항 (선택)</DarkBoldText>
           <DefaultInput
             multiline
-            width={size.minusPadding}
+            width="380px"
             height="100px"
             value={repairRequest}
             changeFn={setRepairRequest}
@@ -103,13 +103,13 @@ export default function ShopReservationRequest({navigation, route: {params}}) {
             placeHolder="정비 시 요청사항을 입력해주세요.(선택 입력)"
           />
         </Box>
-        <Box width={size.minusPadding} mg="0px 16px 20px">
-          <DefaultLine width={size.minusPadding} />
+        <Box width="380px" mg="0px 16px 20px">
+          <DefaultLine width="380px" />
         </Box>
         <Box mg="0px 16px">
           <DarkBoldText mg="0px 0px 10px">결제수단 선택</DarkBoldText>
           <Box>
-            <RowBox width={size.minusPadding} justifyContent="space-between" flexWrap="wrap">
+            <RowBox width="380px" justifyContent="space-between" flexWrap="wrap">
               {paymentMethod.map(item => {
                 return (
                   <RowBox key={item} width="50%" mg="0px 0px 12px">
@@ -148,7 +148,7 @@ export default function ShopReservationRequest({navigation, route: {params}}) {
             isRight
             onPressRight={() => dispatch(modalOpen('thirdParty'))}
             pd="10px 0px 0px"
-            width={size.minusPadding}>
+            width="380px">
             <DarkText fontSize={Theme.fontSize.fs14} mg="0px 0px 0px 5px">
               개인정보 제3자 제공 동의
             </DarkText>

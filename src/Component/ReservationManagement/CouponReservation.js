@@ -26,12 +26,12 @@ export default function CouponReservation() {
   return (
     <Container>
       <ScrollDays daySelect={daySelect} setDaySelect={setDaySelect} keyboardShouldPersistTaps="handled" />
-      <Box width={size.minusPadding} mg="0px 16px 32px">
+      <Box width="380px" mg="0px 16px 32px">
         <GrayText fontSize={Theme.fontSize.fs13}>
           좌/우로 슬라이드하여 지난 주/다음 주 예약내역을 볼 수 있습니다.
         </GrayText>
       </Box>
-      <Box width={size.minusPadding} mg="0px 16px">
+      <Box width="380px" mg="0px 16px">
         <Box width="100%" alignItems="flex-end">
           <RowBox>
             {/* 드롭다운으로 변경예정 */}

@@ -54,7 +54,7 @@ export default function ReservationCalendar({selectDate, setSelectDate, onChange
       onDayPress={day => onPressDate(day)}
       onMonthChange={day => onChangeMonth(day?.dateString?.substr(0, 7))}
       style={{
-        width: getPixel(size.designWidth - 32),
+        width: getPixel(412 - 32),
       }}
       theme={{
         'stylesheet.calendar.header': {

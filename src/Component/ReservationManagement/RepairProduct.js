@@ -16,7 +16,7 @@ export default function RepairProduct({
   const {size} = useSelector(state => state);
   return (
     <Box style={{borderTopWidth: 1, borderTopColor: Theme.borderColor.whiteGray}}>
-      <RowBox width={size.minusPadding} justifyContent="space-between" pd="16px 10px">
+      <RowBox width="380px" justifyContent="space-between" pd="16px 10px">
         <Box>
           {productName.map(item => (
             <DarkBoldText key={item + reservationDate}>{item}</DarkBoldText>

@@ -25,7 +25,7 @@ export default function TimeList({timeList = [], disabled = [], selectItem, setS
 
   return (
     <Box mg="0px 16px">
-      <RowBox width={size.minusPadding} flexWrap="wrap">
+      <RowBox width="380px" flexWrap="wrap">
         {timeList.map((item, index) => {
           if (!item) {
             return null;

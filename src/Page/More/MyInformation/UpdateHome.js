@@ -19,7 +19,7 @@ export default function UpdateHome() {
       <Header title="내 정보 수정" />
       <Box backgroundColor="#0000" mg="0px 16px">
         <TouchableOpacity onPress={() => navigation.navigate('Update')}>
-          <Box backgroundColor="#0000" width={size.minusPadding} style={borderBottomWhiteGray}>
+          <Box backgroundColor="#0000" width="380px" style={borderBottomWhiteGray}>
             <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
               내 정보 수정
             </DarkMediumText>
@@ -27,7 +27,7 @@ export default function UpdateHome() {
         </TouchableOpacity>
         {isAdminCheck(login) && (
           <TouchableOpacity onPress={() => navigation.navigate('ShopUpdate')}>
-            <Box backgroundColor="#0000" width={size.minusPadding} style={borderBottomWhiteGray}>
+            <Box backgroundColor="#0000" width="380px" style={borderBottomWhiteGray}>
               <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
                 업체 정보 수정
               </DarkMediumText>
@@ -38,7 +38,7 @@ export default function UpdateHome() {
           onPress={() => {
             dispatch(modalOpen('deleteAccount'));
           }}>
-          <Box backgroundColor="#0000" width={size.minusPadding} style={borderBottomWhiteGray}>
+          <Box backgroundColor="#0000" width="380px" style={borderBottomWhiteGray}>
             <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
               회원탈퇴
             </DarkMediumText>

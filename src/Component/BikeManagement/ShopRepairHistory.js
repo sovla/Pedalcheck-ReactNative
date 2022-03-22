@@ -13,10 +13,9 @@ export default function ShopRepairHistory({
     status: '승인완료',
   },
 }) {
-  const {size} = useSelector(state => state);
   return (
     <RowBox
-      width={size.minusPadding}
+      width="380px"
       justifyContent="space-between"
       pd="16px 10px"
       backgroundColor="#0000"

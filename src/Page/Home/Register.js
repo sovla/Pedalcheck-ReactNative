@@ -72,7 +72,7 @@ export default function Register({navigation}) {
           <DarkBoldText fontSize={Theme.fontSize.fs18}>페달체크</DarkBoldText>
           <DarkText fontSize={Theme.fontSize.fs18}>이용 약관 동의</DarkText>
         </Box>
-        <Box style={{borderTopWidth: 1, borderBottomWidth: 1}} width={size.minusPadding} pd="6px 0px 20px">
+        <Box style={{borderTopWidth: 1, borderBottomWidth: 1}} width="380px" pd="6px 0px 20px">
           <CheckBox isCheck={isAllCheck} setIsCheck={onPressAllCheck}>
             <DarkBoldText mg="0px 0px 0px 10px">전체 동의하기</DarkBoldText>
           </CheckBox>
@@ -92,7 +92,7 @@ export default function Register({navigation}) {
             );
           })}
         </Box>
-        <Box alignItems="center" mg="10px 0px 0px" width={size.minusPadding}>
+        <Box alignItems="center" mg="10px 0px 0px" width="380px">
           <DefaultText color={Theme.color.gray} fontSize={Theme.fontSize.fs13} textAlign="center">
             선택항목에 동의하지 않으셔도 정상적인 서비스를 이용하실 수 있습니다.
           </DefaultText>
@@ -100,7 +100,7 @@ export default function Register({navigation}) {
 
         <PositionBox bottom="20px" left="16px">
           <LinkButton
-            width={size.minusPadding}
+            width="380px"
             to={() => {
               navigation.navigate('IdentityVerification');
             }}

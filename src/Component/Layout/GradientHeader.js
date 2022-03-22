@@ -24,7 +24,7 @@ export default function GradientHeader({
     <Gradient height={height}>
       <RowBox
         backgroundColor="rgba(0,0,0,0)"
-        width={size.minusPadding}
+        width="380px"
         height="36px"
         justifyContent="space-between"
         alignItems="center">

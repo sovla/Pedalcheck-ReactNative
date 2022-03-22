@@ -50,7 +50,7 @@ export default function Information({route: {params}}) {
     <>
       <Header title="내 정보" />
       <Container>
-        <Box mg="20px 0px" width={size.designWidth} alignItems="center">
+        <Box mg="20px 0px" width={412} alignItems="center">
           <DefaultImage
             source={login?.mt_image ? {uri: imageAddress + login.mt_image} : profileDefault}
             width="80px"
@@ -78,7 +78,7 @@ export default function Information({route: {params}}) {
                   alignItems="center"
                   justifyContent="space-between"
                   backgroundColor="#0000"
-                  width={size.minusPadding}>
+                  width="380px">
                   <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
                     자전거 관리
                   </DarkMediumText>
@@ -91,7 +91,7 @@ export default function Information({route: {params}}) {
                     navigation.navigate('CouponManagement');
                   }
                 }}>
-                <RowBox backgroundColor="#0000" style={borderBottomWhiteGray} width={size.minusPadding}>
+                <RowBox backgroundColor="#0000" style={borderBottomWhiteGray} width="380px">
                   <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
                     쿠폰 관리
                   </DarkMediumText>
@@ -105,7 +105,7 @@ export default function Information({route: {params}}) {
                 navigation.navigate('UpdateHome');
               }
             }}>
-            <RowBox backgroundColor="#0000" style={borderBottomWhiteGray} width={size.minusPadding}>
+            <RowBox backgroundColor="#0000" style={borderBottomWhiteGray} width="380px">
               <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
                 내 정보 수정
               </DarkMediumText>
@@ -123,7 +123,7 @@ export default function Information({route: {params}}) {
               await AsyncStorage.removeItem('isAdmin');
               navigation.reset({routes: [{name: 'Home'}]});
             }}>
-            <RowBox backgroundColor="#0000" style={borderBottomWhiteGray} width={size.minusPadding}>
+            <RowBox backgroundColor="#0000" style={borderBottomWhiteGray} width="380px">
               <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
                 로그아웃
               </DarkMediumText>

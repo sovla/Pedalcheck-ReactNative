@@ -13,7 +13,6 @@ import {useEffect} from 'react';
 import RenderHTML from 'react-native-render-html';
 
 export default function Privacy() {
-  const size = useSelector(state => state.size);
   const dispatch = useDispatch();
   const [content, setContent] = useState('');
 
@@ -25,12 +24,12 @@ export default function Privacy() {
   }, []);
   return (
     <>
-      <ModalTitleBox size={size} title="페달체크 개인정보 수집 및 이용 약관" />
+      <ModalTitleBox title="페달체크 개인정보 수집 및 이용 약관" />
       <ScrollView
         keyboardShouldPersistTaps="handled"
         style={{
           maxHeight: 370,
-          width: getPixel(size.designWidth - 64),
+          width: getPixel(412 - 64),
         }}>
         <Box pd="20px" width="100%" backgroundColor={Theme.color.backgroundBlue} borderRadius="5px">
           <DefaultText color={Theme.color.black} fontSize={Theme.fontSize.fs14} fontWeight={Theme.fontWeight.bold}>
@@ -49,7 +48,7 @@ export default function Privacy() {
         mg="20px 0px 0px"
         to={() => dispatch(modalClose())}
         content="확인"
-        width={`${size.designWidth - 64}px`}
+        width={`${412 - 64}px`}
         color={Theme.color.black}
         borderColor={Theme.borderColor.gray}
         backgroundColor={Theme.color.white}

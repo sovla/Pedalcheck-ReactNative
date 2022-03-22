@@ -96,11 +96,11 @@ export default function ProductDetail({route: {params}}) {
       <ScrollView keyboardShouldPersistTaps="handled">
         <Container alignItems="center" pd="20px 0px">
           {item?.pt_image?.length > 0 && (
-            <Box width={size.minusPadding} height="200px" mg="0px 0px 20px">
+            <Box width="380px" height="200px" mg="0px 0px 20px">
               <Swiper imageArray={imageArray} width={412 - 32} height={200} borderRadius="All" />
             </Box>
           )}
-          <Box width={size.minusPadding} alignItems="center">
+          <Box width="380px" alignItems="center">
             <DefaultText fontSize={Theme.fontSize.fs15} color={Theme.color.gray}>
               {shopTitle}
             </DefaultText>
@@ -108,8 +108,8 @@ export default function ProductDetail({route: {params}}) {
             <MoneyText fontSize={Theme.fontSize.fs13} money={Price} disabled />
             <MoneyText fontSize={Theme.fontSize.fs18} money={salePrice} color={Theme.color.indigo} />
           </Box>
-          <Box mg="20px 0px 0px" width={size.designWidth}>
-            <DefaultLine height="10px" width={size.designWidth} />
+          <Box mg="20px 0px 0px" width={412}>
+            <DefaultLine height="10px" width={412} />
           </Box>
           <Box pd="0px 16px" width="100%">
             {contentArray.map((item, index) => {

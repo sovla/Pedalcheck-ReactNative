@@ -236,7 +236,7 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
 
   return (
     <Box pd="0px 16px">
-      <Box style={borderBottomWhiteGray} width={size.minusPadding}>
+      <Box style={borderBottomWhiteGray} width="380px">
         <RowBox mg="20px 0px">
           <RequireFieldText />
         </RowBox>
@@ -247,7 +247,7 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
             title="이름"
             placeHolder="이름을 입력해주세요"
             errorMessage={errorMessage.name !== '' && errorMessage.name}
-            width={size.minusPadding}
+            width="380px"
             fontSize={Theme.fontSize.fs15}
             pd="0px 0px 3px"
             value={user?.mt_name}
@@ -259,7 +259,7 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
             title="닉네임"
             placeHolder="닉네임을 입력해주세요"
             errorMessage={errorMessage.nickname !== '' && errorMessage.nickname}
-            width={size.minusPadding}
+            width="380px"
             fontSize={Theme.fontSize.fs15}
             pd="0px 0px 3px"
             value={user?.mt_nickname}
@@ -272,7 +272,7 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
             placeHolder="이메일을 입력해주세요"
             value={user?.mt_id}
             disabled
-            width={size.minusPadding}
+            width="380px"
             fontSize={Theme.fontSize.fs15}
             pd="0px 0px 3px"
           />
@@ -286,7 +286,7 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
               setUser(prev => ({...prev, mt_hp: phoneNumber(text)}));
             }}
             maxLength={13}
-            width={size.minusPadding}
+            width="380px"
             fontSize={Theme.fontSize.fs15}
             pd="0px 0px 3px"
             errorMessage={errorMessage.mt_hp !== '' && errorMessage.mt_hp}
@@ -295,7 +295,7 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
         <Box mg="0px 0px 20px">
           <DefaultInput
             title="지역"
-            width={size.minusPadding}
+            width="380px"
             fontSize={Theme.fontSize.fs15}
             placeHolder="지역을 선택해주세요"
             value={user?.mt_addr}

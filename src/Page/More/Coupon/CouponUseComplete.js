@@ -58,7 +58,7 @@ export default function CouponUseComplete({route, navigation}) {
             <RepairReservationHeader step={3} array={[1, 2, 3]} content="예약완료" />
             <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
             <Box>
-              <RowBox mg="30px 0px" justifyContent="center" alignItems="center" width={size.designWidth}>
+              <RowBox mg="30px 0px" justifyContent="center" alignItems="center" width={412}>
                 <DefaultImage source={BorderCheckIcon} width="20px" height="20px" />
                 <DarkBoldText fontSize={Theme.fontSize.fs18}>예약이 접수 되었습니다.</DarkBoldText>
               </RowBox>
@@ -99,27 +99,27 @@ const CouponCompleteComponent = ({
   const {size} = useSelector(state => state);
   return (
     <Box mg="0px 16px">
-      <RowBox width={size.minusPadding} mg="0px 0px 10px">
+      <RowBox width="380px" mg="0px 0px 10px">
         <DarkMediumText width="100px">매장명</DarkMediumText>
         <DarkText>{shopName}</DarkText>
       </RowBox>
-      <RowBox width={size.minusPadding} mg="0px 0px 10px">
+      <RowBox width="380px" mg="0px 0px 10px">
         <DarkMediumText width="100px">쿠폰이름</DarkMediumText>
         <DarkText>{couponName}</DarkText>
       </RowBox>
-      <RowBox width={size.minusPadding} mg="0px 0px 10px">
+      <RowBox width="380px" mg="0px 0px 10px">
         <DarkMediumText width="100px">예약시간</DarkMediumText>
         <DarkText>{reservationDate}</DarkText>
       </RowBox>
-      <RowBox width={size.minusPadding} mg="0px 0px 10px">
+      <RowBox width="380px" mg="0px 0px 10px">
         <DarkMediumText width="100px">예약자 이름</DarkMediumText>
         <DarkText>{reservationName}</DarkText>
       </RowBox>
-      <RowBox width={size.minusPadding} mg="0px 0px 10px">
+      <RowBox width="380px" mg="0px 0px 10px">
         <DarkMediumText width="100px">이메일</DarkMediumText>
         <DarkText>{email}</DarkText>
       </RowBox>
-      <RowBox width={size.minusPadding} mg="0px 0px 10px">
+      <RowBox width="380px" mg="0px 0px 10px">
         <DarkMediumText width="100px">전화번호</DarkMediumText>
         <DarkText>{tel}</DarkText>
       </RowBox>

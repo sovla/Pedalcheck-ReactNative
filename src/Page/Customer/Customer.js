@@ -117,7 +117,7 @@ export default function Customer({navigation}) {
                 <DefaultInput
                   value={searchText}
                   changeFn={text => setSearchText(text)}
-                  width={size.minusPadding}
+                  width="380px"
                   borderColor={Theme.borderColor.gray}
                   backgroundColor={Theme.color.white}
                   placeHolder="회원 이름을 입력하세요"></DefaultInput>

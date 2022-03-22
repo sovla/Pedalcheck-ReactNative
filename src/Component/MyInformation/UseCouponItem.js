@@ -23,7 +23,7 @@ const UseCouponItem = ({
   const {size} = useSelector(state => state);
   const height = badgeContent === '미사용' ? '120px' : '100px';
   return (
-    <Box style={borderBottomWhiteGray} width={size.minusPadding} mg="0px 16px">
+    <Box style={borderBottomWhiteGray} width="380px" mg="0px 16px">
       <BetweenBox alignItems="center" pd="16px 10px" width="100%" height={'auto'}>
         <Box>
           <RowBox alignItems="center">

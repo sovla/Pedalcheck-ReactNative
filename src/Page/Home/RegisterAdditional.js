@@ -180,7 +180,7 @@ export const RegisterAdditionalBody = ({
         <DefaultInput
           title="생년월일"
           placeHolder="생년월일을 선택해주세요"
-          width={size.minusPadding}
+          width="380px"
           value={birthDateValue}
           PressText={() => {
             dispatch(

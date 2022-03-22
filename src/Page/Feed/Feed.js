@@ -84,7 +84,7 @@ export default function Feed() {
         </Box>
         {webUri !== '' && (
           <Modal visible>
-            <SafeAreaView style={{flex:0}} />
+            <SafeAreaView style={{flex: 0}} />
             <SafeAreaView style={{flex: 1}}>
               <PositionBox
                 backgroundColor="#0006"
@@ -106,7 +106,7 @@ export default function Feed() {
 
               <WebView ref={ref} onNavigationStateChange={setNavState} style={{flex: 1}} source={{uri: webUri}} />
             </SafeAreaView>
-            <SafeAreaView style={{flex:0}} />
+            <SafeAreaView style={{flex: 0}} />
           </Modal>
         )}
       </Container>
@@ -132,7 +132,7 @@ const FeedBox = ({item, size, onPressImage}) => {
   const image = item?.ft_store_img ? {uri: imageAddress + item.ft_store_img} : DummyImage;
   return (
     <Box
-      width={size.minusPadding}
+      width="380px"
       mg="20px 0px 0px 16px"
       pd="0px 0px 20px"
       alignItems="center"

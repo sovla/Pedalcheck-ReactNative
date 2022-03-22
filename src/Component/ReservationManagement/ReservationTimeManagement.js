@@ -180,7 +180,7 @@ export default function ReservationTimeManagement() {
           </Button>
         </TouchableOpacity>
       </Box>
-      <RowBox width={size.designWidth} flexWrap="wrap">
+      <RowBox width={412} flexWrap="wrap">
         <FlatList
           data={timeList}
           numColumns={2}

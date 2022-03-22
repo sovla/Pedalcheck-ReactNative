@@ -21,7 +21,7 @@ export default function RepairHistoryItem({
   const {size} = useSelector(state => state);
   const navigation = useNavigation();
   return (
-    <BetweenBox width={size.minusPadding} pd="16px 10px" style={borderBottomWhiteGray}>
+    <BetweenBox width="380px" pd="16px 10px" style={borderBottomWhiteGray}>
       <Box width="300px">
         <RowBox alignItems="flex-end">
           <Box>

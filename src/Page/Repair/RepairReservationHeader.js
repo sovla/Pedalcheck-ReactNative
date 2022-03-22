@@ -7,31 +7,19 @@ import DefaultImage from '@assets/global/Image';
 import ProcessBikeIcon from '@assets/image/process_bike.png';
 import {DarkMediumText, DarkText, IndigoText} from '@/assets/global/Text';
 
-export default function RepairReservationHeader({
-  step,
-  array = [1, 2, 3, 4, 5],
-  content = '정비 상품 선택',
-}) {
+export default function RepairReservationHeader({step, array = [1, 2, 3, 4, 5], content = '정비 상품 선택'}) {
   const {size} = useSelector(state => state);
   const transformWidth = parseInt(size?.minusPadding.split('px')[0]);
   return (
-    <RowBox mg="0px 16px" height="100px" width={size.minusPadding} alignItems="center">
-      <PositionBox
-        left="0px"
-        borderRadius="20px"
-        width="7px"
-        height="7px"
-        backgroundColor={Theme.color.indigo}
-      />
+    <RowBox mg="0px 16px" height="100px" width="380px" alignItems="center">
+      <PositionBox left="0px" borderRadius="20px" width="7px" height="7px" backgroundColor={Theme.color.indigo} />
       {array.map((item, index) => {
         return (
           <Box
             key={`Bike${index}`}
             height="3px"
             width={transformWidth / array.length}
-            backgroundColor={
-              index >= step ? Theme.borderColor.whiteGray : Theme.color.indigo
-            }></Box>
+            backgroundColor={index >= step ? Theme.borderColor.whiteGray : Theme.color.indigo}></Box>
         );
       })}
       <BikeStep content={content} step={step} left={(transformWidth / array.length) * step - 56} />

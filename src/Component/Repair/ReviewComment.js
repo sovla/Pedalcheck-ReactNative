@@ -9,7 +9,6 @@ import DefaultImage from '@/assets/global/Image';
 import {BorderButton} from '@/assets/global/Button';
 
 export default function ReviewComment({
-  size,
   isDetailPage,
   name = '사장님',
   reviewDate = '2021-10-13',
@@ -46,7 +45,7 @@ export default function ReviewComment({
         <DefaultText
           numberOfLines={isDetailPage ? 50 : 3}
           color={Theme.color.black}
-          width={size.designWidth - 32 - 54}
+          width={412 - 32 - 54}
           fontSize={Theme.fontSize.fs15}
           lineHeight="22px">
           {reviewContent}

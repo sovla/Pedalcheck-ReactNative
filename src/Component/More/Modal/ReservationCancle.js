@@ -105,7 +105,7 @@ export default function ReservationCancle({ot_code, cancelComplete, setBank, ban
           );
         })}
       </Box>
-      <Box width={size.minusPadding} pd="0px 16px">
+      <Box width="380px" pd="0px 16px">
         <FooterButton
           width="348px"
           buttonWidth="169px"

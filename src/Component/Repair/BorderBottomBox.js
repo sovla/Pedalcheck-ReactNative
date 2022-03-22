@@ -19,7 +19,7 @@ export default function BorderBottomBox({
 
   const deviceLeftWidth = (380 * leftWidth) / 100;
   return (
-    <RowBox widht={size.minusPadding} height={height} backgroundColor="rgba(0,0,0,0)">
+    <RowBox widht="380px" height={height} backgroundColor="rgba(0,0,0,0)">
       <Box
         backgroundColor="rgba(0,0,0,0)"
         width={`${deviceLeftWidth}px`}

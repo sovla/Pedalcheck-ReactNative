@@ -76,7 +76,7 @@ const PhotoComponent = ({
     }
   };
   return (
-    <RowBox width={size.minusPadding} flexWrap="wrap">
+    <RowBox width="380px" flexWrap="wrap">
       {imageArray.map((item, index) => {
         return (
           <Result

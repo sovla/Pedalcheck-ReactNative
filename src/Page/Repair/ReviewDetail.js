@@ -72,7 +72,7 @@ export default function ReviewDetail({route: {params}}) {
                 <DefaultText
                   numberOfLines={isDetailPage ? 50 : 3}
                   color={Theme.color.black}
-                  width={size.designWidth - 32 - 54}
+                  width={412 - 32 - 54}
                   fontSize={Theme.fontSize.fs15}
                   lineHeight="22px">
                   {item.srt_res_content}

@@ -114,16 +114,16 @@ export default function ShopReservationProduct({navigation}) {
       <Box pd="0px 16px">
         <DefaultLine />
         <DarkBoldText mg="20px 0px 15px">결제금액</DarkBoldText>
-        <RowBox justifyContent="space-between" width={size.minusPadding}>
+        <RowBox justifyContent="space-between" width="380px">
           <DarkText>가격</DarkText>
           <MoneyText money={money > 0 ? money : 0} color={Theme.color.black} fontWeight={Theme.fontWeight.bold} />
         </RowBox>
-        <RowBox mg="10px 0px 20px" justifyContent="space-between" width={size.minusPadding}>
+        <RowBox mg="10px 0px 20px" justifyContent="space-between" width="380px">
           <DarkText>할인</DarkText>
           <MoneyText money={saleMoney * -1 > 0 ? saleMoney : 0} color={Theme.color.black} />
         </RowBox>
         <DefaultLine />
-        <RowBox mg="10px 0px 20px" justifyContent="space-between" width={size.minusPadding}>
+        <RowBox mg="10px 0px 20px" justifyContent="space-between" width="380px">
           <RowBox width="225px">
             <IndigoText fontSize={Theme.fontSize.fs12}>
               서비스에 따라 현장에서 추가금액 또는 차액이 발생할 수 있습니다.
@@ -136,8 +136,8 @@ export default function ShopReservationProduct({navigation}) {
             fontWeight={Theme.fontWeight.bold}
           />
         </RowBox>
-        <Box height="44px" mg="0px 0px 20px" width={size.minusPadding}>
-          <LinkButton widht={size.minusPadding} to={onPressNext} content="다음"></LinkButton>
+        <Box height="44px" mg="0px 0px 20px" width="380px">
+          <LinkButton widht="380px" to={onPressNext} content="다음"></LinkButton>
         </Box>
       </Box>
     </>
@@ -148,7 +148,7 @@ export const ReservationProduct = ({item, onPressMain, selectItem, onPressDetail
   const {size} = useSelector(state => state);
 
   return (
-    <RowBox width={size.minusPadding} mg="0px 0px 15px" justifyContent="space-between">
+    <RowBox width="380px" mg="0px 0px 15px" justifyContent="space-between">
       <RowBox>
         <DefaultCheckBox isCheck={selectItem?.main} setIsCheck={onPressMain} />
         <Box>

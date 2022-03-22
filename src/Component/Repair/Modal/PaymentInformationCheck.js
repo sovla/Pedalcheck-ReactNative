@@ -53,7 +53,7 @@ export default function PaymentInformationCheck({onPressComplete}) {
   ];
   return (
     <>
-      <ModalTitleBox size={size} title="결제정보 확인" padding={64} />
+      <ModalTitleBox title="결제정보 확인" padding={64} />
       <Box width={'100%'}>
         {paymentObject.map(item => {
           if (!item.content) {
@@ -70,8 +70,8 @@ export default function PaymentInformationCheck({onPressComplete}) {
         })}
         <Box mg="10px 0px" height="50px" />
         <FooterButton
-          width={size.designWidth - 64}
-          buttonWidth={(size.designWidth - 74) / 2}
+          width={412 - 64}
+          buttonWidth={(412 - 74) / 2}
           leftContent="확인"
           rightContent="취소"
           leftPress={onPressComplete}

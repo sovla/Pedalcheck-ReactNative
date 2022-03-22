@@ -11,6 +11,7 @@ import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {useEffect} from 'react';
 import {useState} from 'react';
+import {Dimensions} from 'react-native';
 
 import {useSelector} from 'react-redux';
 
@@ -18,6 +19,8 @@ import {useSelector} from 'react-redux';
 // Junhan
 // 리뷰 작성,수정 페이지
 // Toast 메시지 추가 필요
+
+const {height} = Dimensions.get('window');
 
 export default function QuestionWrite({route: {params}}) {
   const navigation = useNavigation();
@@ -107,9 +110,9 @@ export default function QuestionWrite({route: {params}}) {
   return (
     <Container>
       <Header title="문의하기" />
-      <Container height={`${size.screenHeight - 120}px`} keyboardShouldPersistTaps="handled">
+      <Container height={`${height - 120}px`} keyboardShouldPersistTaps="handled">
         <ScrollBox pd="0px 16px">
-          <RowBox style={borderBottomWhiteGray} width={size.minusPadding} mg="20px 0px 20px">
+          <RowBox style={borderBottomWhiteGray} width="380px" mg="20px 0px 20px">
             <DarkText mg="0px 0px 20px" fontSize={Theme.fontSize.fs16} fontWeight={Theme.fontWeight.bold}>
               필수 입력 항목{' '}
             </DarkText>

@@ -13,9 +13,8 @@ import {modalClose} from '@/Store/modalState';
 
 export default function ImagePicker({setSelectImage, setImageType}) {
   const [selectNumber, setSelectNumber] = useState(0);
-  const size = useSelector(state => state.size);
   const dispatch = useDispatch();
-  const imageWidth = `${(size.designWidth - 32 - 60) / 4}px`;
+  const imageWidth = `${(412 - 32 - 60) / 4}px`;
 
   const setImage = selectNumber => {
     setSelectNumber(selectNumber);
@@ -24,42 +23,22 @@ export default function ImagePicker({setSelectImage, setImageType}) {
 
   return (
     <>
-      <ModalTitleBox size={size} title="기본 이미지 선택" padding={32} />
-      <RowBox style={{flexWrap: 'wrap'}} width={size.minusPadding} mg={'0px 0px 10px'}>
+      <ModalTitleBox title="기본 이미지 선택" padding={32} />
+      <RowBox style={{flexWrap: 'wrap'}} width="380px" mg={'0px 0px 10px'}>
         <TouchableOpacity onPress={() => setImage(1)}>
-          <DefaultImage
-            source={Default1}
-            width={imageWidth}
-            height="80px"
-            style={selectNumber === 1 && selectBorder}
-          />
+          <DefaultImage source={Default1} width={imageWidth} height="80px" style={selectNumber === 1 && selectBorder} />
         </TouchableOpacity>
         <Box width="18px"></Box>
         <TouchableOpacity onPress={() => setImage(2)}>
-          <DefaultImage
-            source={Default2}
-            width={imageWidth}
-            height="80px"
-            style={selectNumber === 2 && selectBorder}
-          />
+          <DefaultImage source={Default2} width={imageWidth} height="80px" style={selectNumber === 2 && selectBorder} />
         </TouchableOpacity>
         <Box width="18px"></Box>
         <TouchableOpacity onPress={() => setImage(3)}>
-          <DefaultImage
-            source={Default3}
-            width={imageWidth}
-            height="80px"
-            style={selectNumber === 3 && selectBorder}
-          />
+          <DefaultImage source={Default3} width={imageWidth} height="80px" style={selectNumber === 3 && selectBorder} />
         </TouchableOpacity>
         <Box width="18px"></Box>
         <TouchableOpacity onPress={() => setImage(4)}>
-          <DefaultImage
-            source={Default4}
-            width={imageWidth}
-            height="80px"
-            style={selectNumber === 4 && selectBorder}
-          />
+          <DefaultImage source={Default4} width={imageWidth} height="80px" style={selectNumber === 4 && selectBorder} />
         </TouchableOpacity>
       </RowBox>
       <LinkWhiteButton

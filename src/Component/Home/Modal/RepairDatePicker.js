@@ -26,7 +26,7 @@ export default function RepairDatePicker({birth, setBirth}) {
 
   return (
     <>
-      <ModalTitleBox size={size} title="날짜 선택" padding={32} />
+      <ModalTitleBox title="날짜 선택" padding={32} />
       <RowBox mg="15px 0px 30px" alignItems="center" justifyContent="center">
         <Box width="100px" />
         <DatePicker

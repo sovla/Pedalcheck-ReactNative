@@ -12,6 +12,9 @@ import KakaoImage from '@/Component/Home/Icon/KakaoImage';
 import GoogleImage from '@/Component/Home/Icon/GoogleImage';
 import NaverImage from '@/Component/Home/Icon/NaverImage';
 import AppleImage from '@/Component/Home/Icon/AppleImage';
+import {Dimensions} from 'react-native';
+
+const {height} = Dimensions.get('window');
 
 export default function Login() {
   const initErrorMessage = {
@@ -20,7 +23,6 @@ export default function Login() {
   };
 
   const {
-    size,
     token: {token},
   } = useSelector(state => state);
 
@@ -67,14 +69,14 @@ export default function Login() {
   return (
     <Container
       style={{
-        height: size.screenHeight,
+        height: height,
       }}>
       <ScrollBox pd="70px 16px 0px" keyboardShouldPersistTaps="handled">
         <LogoBox />
         <Box pd="35px 0px 0px">
           <Box>
             <DefaultInput
-              width={size.minusPadding}
+              width="380px"
               height="44px"
               title="E-MAIL"
               value={email}
@@ -86,7 +88,7 @@ export default function Login() {
           </Box>
           <Box>
             <DefaultInput
-              width={size.minusPadding}
+              width="380px"
               height="44px"
               title="PASSWORD"
               value={password}
@@ -97,14 +99,14 @@ export default function Login() {
             />
           </Box>
           <Box mg="5px 0px 0px">
-            <LinkButton to={onClickLogin} content="로그인" width={size.minusPadding} height="44px"></LinkButton>
+            <LinkButton to={onClickLogin} content="로그인" width="380px" height="44px"></LinkButton>
           </Box>
         </Box>
         <Box alignItems="center">
           <Box pd="16px">
             <TextLinkButton to={() => navigation.navigate('Register')} content="SNS 계정으로 회원가입/로그인" />
           </Box>
-          <BetweenBox width={`${size.designWidth - 100}px`} pd="0px 0px 10px">
+          <BetweenBox width={`${412 - 100}px`} pd="0px 0px 10px">
             <KakaoImage />
             <GoogleImage />
             <NaverImage />

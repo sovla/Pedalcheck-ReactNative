@@ -82,10 +82,8 @@ export default function BikeManagement({navigation}) {
               <Header title="자전거 관리" />
 
               <MenuNav menuItem={menuItem} setSelect={setSelect} select={select} />
-              {select === '사용중인 자전거' && <UseBike size={size} items={useBikeList} />}
-              {select === '보관 자전거' && (
-                <StorageBike size={size} getBikeListHandle={getBikeListHandle} item={storageBikeList} />
-              )}
+              {select === '사용중인 자전거' && <UseBike items={useBikeList} />}
+              {select === '보관 자전거' && <StorageBike getBikeListHandle={getBikeListHandle} item={storageBikeList} />}
             </>
           ) : (
             <BikeRegisterFirst navigation={navigation} />

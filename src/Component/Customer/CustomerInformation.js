@@ -1,22 +1,11 @@
-import {BetweenBox, Box, Container, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
+import {BetweenBox, Box, RowBox} from '@/assets/global/Container';
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import CustomerSmileIcon from '@assets/image/menu07_top.png';
-import CustomerCheckIcon from '@assets/image/ic_alluser.png';
-import CustomerHeartIcon from '@assets/image/ic_heartuser.png';
-import CustomerIcon from '@assets/image/ic_user.png';
 
-import GradientHeader from '@/Component/Layout/GradientHeader';
 import Theme from '@/assets/global/Theme';
-import DefaultImage from '@/assets/global/Image';
-import {BoldText, DarkBoldText, DarkMediumText, DarkText, GrayText, IndigoText, MediumText} from '@/assets/global/Text';
-import numberFormat, {numberChangeFormat} from '@/Util/numberFormat';
-import CustomerHeader from '@/Component/Customer/CustomerHeader';
-import {DefaultInput} from '@/assets/global/Input';
-import CheckIcon from '@assets/image/ic_search.png';
+import {BoldText, DarkBoldText, DarkText, GrayText, IndigoText} from '@/assets/global/Text';
+import {numberChangeFormat} from '@/Util/numberFormat';
 import {useSelector} from 'react-redux';
 import {BorderButton} from '@/assets/global/Button';
-import {size} from 'lodash';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 
 export default function CustomerInformation({
@@ -27,9 +16,8 @@ export default function CustomerInformation({
   lastRepairDate,
   level,
 }) {
-  const {size} = useSelector(state => state);
   return (
-    <Box style={borderBottomWhiteGray} pd="0px 10px" width={size.minusPadding}>
+    <Box style={borderBottomWhiteGray} pd="0px 10px" width="380px">
       <BetweenBox width={`${380 - 20}px`} mg="16px 0px 7px">
         <RowBox alignItems="center">
           <DarkBoldText mg="0px 5px 0px 0px">{name}</DarkBoldText>
