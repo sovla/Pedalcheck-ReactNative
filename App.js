@@ -7,8 +7,6 @@ import Toast from 'react-native-toast-message';
 import {DefaultText} from './src/assets/global/Text';
 import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
 
-const STORYBOOK_START = false;
-
 const IosPermission = [
   // PERMISSIONS.IOS.ACCESS_NOTIFICATION_POLICY,
   // PERMISSIONS.IOS.ACCESS_FINE_LOCATION,
@@ -28,7 +26,6 @@ const AndroidPermission = [
 
 function App() {
   async function requestPermissions() {
-
     if (Platform.OS === 'android') {
       requestMultiple(AndroidPermission);
     } else {
@@ -112,6 +109,6 @@ function App() {
   );
 }
 
-const module = STORYBOOK_START ? require('./storybook').default : App;
+const module = App;
 
 export default module;
