@@ -27,7 +27,7 @@ import {VirtualAccountItem} from '@/Page/Repair/ReservationPayment';
  *
  */
 export default function RepairHistoryDetail({route: {params}}) {
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const isFocused = navigation.isFocused();

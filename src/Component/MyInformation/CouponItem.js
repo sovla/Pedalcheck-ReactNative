@@ -22,7 +22,6 @@ const CouponItem = ({
   onPressCouponUse = () => {},
   isAdmin,
 }) => {
-  const {size} = useSelector(state => state);
   const height = badgeContent === '미사용' ? (isAdmin ? '100px' : '120px') : '100px';
   return (
     <Box style={borderBottomWhiteGray} width="380px" mg="0px 16px">

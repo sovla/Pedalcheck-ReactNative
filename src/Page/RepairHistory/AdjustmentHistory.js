@@ -23,7 +23,7 @@ export default function AdjustmentHistory() {
   const [history, setHistory] = useState([]);
   const [totalPrice, setTotalPrice] = useState('0');
   const [year, setYear] = useState(nowFullYear);
-  const {storeInfo, login, size} = useSelector(state => state);
+  const {storeInfo, login} = useSelector(state => state);
 
   const shopDateHistory = [...Array(nowFullYear - mst_wdate.getFullYear() + 1).keys()].map(mapValue => {
     return {value: mapValue + mst_wdate.getFullYear(), label: `${mapValue + mst_wdate.getFullYear()}년`};
@@ -90,7 +90,6 @@ export default function AdjustmentHistory() {
           renderItem={({item, index}) => {
             return (
               <IncomeItem
-                size={size}
                 index={index}
                 price={item?.clt_price}
                 date={item?.clt_cdate?.slice(0, 16)}

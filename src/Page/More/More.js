@@ -45,7 +45,6 @@ const VERSION_CODE = '1.14.0';
 
 export default function More() {
   const {
-    size,
     login,
     admin: {isAdmin},
   } = useSelector(state => state);

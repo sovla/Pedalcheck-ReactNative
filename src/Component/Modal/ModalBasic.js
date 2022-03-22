@@ -39,7 +39,7 @@ import Privacy from '../Home/Modal/Privacy';
 // 사용법 modal.modalComponent에 원하는 값을 넣고 switch문을 추가하면 됩니다.
 
 export default function ModalBasic() {
-  const {modal, size} = useSelector(state => state);
+  const {modal} = useSelector(state => state);
   const dispatch = useDispatch();
 
   if (modal?.isOpenModal !== true) {

@@ -12,9 +12,7 @@ import {useDispatch, useSelector} from 'react-redux';
 
 export default function PaymentInformationCheck({onPressComplete}) {
   const {
-    size,
     shopInfo: {store_info},
-    modal,
     login,
     reservationInfo,
   } = useSelector(state => state);

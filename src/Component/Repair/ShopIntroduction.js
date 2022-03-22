@@ -17,7 +17,6 @@ import {useState} from 'react';
 
 export default function ShopIntroduction() {
   const {
-    size,
     shopInfo: {store_info},
   } = useSelector(state => state);
 

@@ -21,7 +21,7 @@ import {Dimensions} from 'react-native';
 const {height} = Dimensions.get('window');
 
 export default function CouponUseBikeSelect({route: {params}}) {
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const dispatch = useDispatch();

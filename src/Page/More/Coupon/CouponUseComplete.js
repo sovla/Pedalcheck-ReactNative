@@ -5,7 +5,6 @@ import {DarkBoldText, DarkMediumText, DarkText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import RepairReservationHeader from '@/Page/Repair/RepairReservationHeader';
-import {useNavigation} from '@react-navigation/core';
 import React from 'react';
 import {useState} from 'react';
 import {useSelector} from 'react-redux';
@@ -17,7 +16,7 @@ import {couponReservation} from '@/API/More/More';
 
 export default function CouponUseComplete({route, navigation}) {
   const {item: coupon, selectBike, selectDate, shopInfo} = route?.params;
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
 
   const dummy = {
     cst_title: '',
@@ -96,7 +95,6 @@ const CouponCompleteComponent = ({
   email = '',
   tel = '',
 }) => {
-  const {size} = useSelector(state => state);
   return (
     <Box mg="0px 16px">
       <RowBox width="380px" mg="0px 0px 10px">

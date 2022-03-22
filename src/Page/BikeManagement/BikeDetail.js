@@ -33,7 +33,7 @@ import {AlertButton} from '@/Util/Alert';
 import numberFormat from '@/Util/numberFormat';
 
 export default function BikeDetail({navigation, route}) {
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const [bikeInformation, setBikeInformation] = useState([]);
   const [bikeDistanceText, setBikeDistacneText] = useState('');
 

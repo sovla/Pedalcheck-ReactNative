@@ -7,10 +7,7 @@ import Swiper from '@/Component/Repair/Swiper';
 import React from 'react';
 import {ScrollView} from 'react-native';
 import {useSelector} from 'react-redux';
-import ShopDummyImage from '@assets/image/shop_default.png';
 import {useState} from 'react';
-import {getProductCategoryList} from '@/API/More/Product';
-import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {imageAddress} from '@assets/global/config';
 import {useEffect} from 'react';
 
@@ -27,7 +24,7 @@ export default function ProductDetail({route: {params}}) {
   const weekdayIsShow = parseInt(item?.pt_stime?.slice(0, 2)) + parseInt(item?.pt_etime.slice(0, 2)) > 0 ? true : false;
   const weekdayAvailableTime = `${item?.pt_stime?.slice(0, 2)}시 ~ ${item?.pt_etime?.slice(0, 2)}시`;
   const holydayAvailableTime = `${item?.pt_weekend_stime?.slice(0, 2)}시 ~ ${item?.pt_weekend_etime?.slice(0, 2)}시`;
-  const {size} = useSelector(state => state);
+
   const [imageArray, setImageArray] = useState([]);
 
   useEffect(() => {

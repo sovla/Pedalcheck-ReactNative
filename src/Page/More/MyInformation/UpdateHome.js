@@ -7,11 +7,11 @@ import {modalOpen} from '@/Store/modalState';
 import isAdminCheck from '@/Util/isAdminCheck';
 import {useNavigation} from '@react-navigation/core';
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 export default function UpdateHome() {
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   return (

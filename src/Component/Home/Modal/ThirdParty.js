@@ -9,7 +9,6 @@ import ModalTitleBox from '../../Modal/ModalTitleBox';
 import {getHeightPixel, getPixel} from '@/Util/pixelChange';
 
 export default function ThirdParty() {
-  const size = useSelector(state => state.size);
   const dispatch = useDispatch();
   const paddingText = '20px 0px 0px';
   return (

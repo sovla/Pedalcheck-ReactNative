@@ -21,7 +21,7 @@ import numberFormat from '@/Util/numberFormat';
 import Loading from '@/Component/Layout/Loading';
 
 export default function Approval({navigation, route: {params}}) {
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const [isShow, setIsShow] = useState(false);
   const [checkList, setCheckList] = useState(initCheckList);
   const [imageArray, setImageArray] = useState([]);

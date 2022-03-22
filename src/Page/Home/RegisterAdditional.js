@@ -97,8 +97,6 @@ export const RegisterAdditionalBody = ({
   birthDate,
   setBirthDate,
 }) => {
-  const {size} = useSelector(state => state);
-
   const dispatch = useDispatch();
 
   const birthDateValue = birthDate?.year !== '' ? `${birthDate.year}년 ${birthDate.month}월 ${birthDate.day}일` : '';

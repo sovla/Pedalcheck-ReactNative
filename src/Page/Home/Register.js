@@ -1,5 +1,5 @@
-import {LinkButton, LinkWhiteButton} from '@/assets/global/Button';
-import {Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
+import {LinkButton} from '@/assets/global/Button';
+import {Box, Container, PositionBox} from '@/assets/global/Container';
 import DefaultLine from '@/assets/global/Line';
 import {DarkBoldText, DarkText, DefaultText, GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
@@ -9,11 +9,10 @@ import {modalOpen} from '@/Store/modalState';
 import React from 'react';
 import {useState} from 'react';
 import {Platform, TouchableOpacity} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 
 export default function Register({navigation}) {
   const dispatch = useDispatch();
-  const size = useSelector(state => state.size);
 
   const checkObjectInit = {
     service: false,

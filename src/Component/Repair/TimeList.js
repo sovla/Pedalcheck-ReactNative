@@ -10,7 +10,6 @@ import EqualsDay from '@/Util/EqualsDay';
 
 export default function TimeList({timeList = [], disabled = [], selectItem, setSelectItem, selectDate, isMultiple}) {
   const TimeBoxWithNthChild = withNthMap(mapInnerItem);
-  const {size} = useSelector(state => state);
 
   const now = new Date();
 

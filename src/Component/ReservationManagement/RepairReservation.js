@@ -1,23 +1,20 @@
-import {BetweenBox, Box, Container, RowBox} from '@/assets/global/Container';
+import {BetweenBox, Box, RowBox} from '@/assets/global/Container';
 import React from 'react';
 import {FlatList, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
-import {BorderButton, Button, LinkWhiteButton} from '@/assets/global/Button';
+import {BorderButton, Button} from '@/assets/global/Button';
 import Theme from '@/assets/global/Theme';
 import {useState} from 'react';
 import {DarkMediumText, DarkText, GrayText} from '@/assets/global/Text';
 import DefaultImage from '@assets/global/Image';
-import ArrowDownIcon from '@assets/image/arr_down.png';
 import RepairProduct from '@/Component/ReservationManagement/RepairProduct';
 import CheckIcon from '@assets/image/ic_check_cal.png';
 import {useNavigation} from '@react-navigation/core';
 import ScrollDays from './ScrollDays';
-import MenuNav from '../Layout/MenuNav';
 import {useEffect} from 'react';
 import {
   getCouponReservationList,
   getOrderCount,
-  getReservationDayList,
   getReservationList,
   sendAllApprove,
 } from '@/API/ReservationManagement/ReservationManagement';
@@ -30,14 +27,13 @@ import {changeDropMenu} from '@/Page/More/MyInformation/CouponManagement';
 import {AlertButtons} from '@/Util/Alert';
 import {showToastMessage} from '@/Util/Toast';
 import {useIsFocused} from '@react-navigation/native';
-import {useLayoutEffect} from 'react';
 import Loading from '../Layout/Loading';
 
 export default function RepairReservation({type}) {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const [daySelect, setDaySelect] = useState(new Date()); // 날짜 선택
   const [isScroll, setIsScroll] = useState(false); // onEndReached 스크롤 여부
   const [dropDown, setDropDown] = useState('전체'); // 드롭다운 메뉴

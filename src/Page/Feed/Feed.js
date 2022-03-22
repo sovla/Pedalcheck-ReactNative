@@ -18,7 +18,6 @@ import AutoHeightImage from 'react-native-auto-height-image';
 import {getPixel} from '@/Util/pixelChange';
 
 export default function Feed() {
-  const {size} = useSelector(state => state);
   const [feedList, setFeedList] = useState([]);
   const [page, setPage] = useState(1);
 
@@ -68,7 +67,6 @@ export default function Feed() {
             return (
               <FeedBox
                 item={item}
-                size={size}
                 onPressImage={uri => {
                   setWebUri(uri);
                 }}
@@ -126,7 +124,7 @@ export const ShadowStyle = {
   elevation: 5,
 };
 
-const FeedBox = ({item, size, onPressImage}) => {
+const FeedBox = ({item, onPressImage}) => {
   //item?.ft_link
   const thumbImage = item?.ft_thumb ? {uri: imageAddress + item.ft_thumb} : DummyImage;
   const image = item?.ft_store_img ? {uri: imageAddress + item.ft_store_img} : DummyImage;

@@ -31,7 +31,6 @@ const PhotoComponent = ({
   imageHeight,
   isTouch = false,
 }) => {
-  const {size} = useSelector(state => state);
   const [isModal, setIsModal] = useState(false);
   const [ViewItem, setViewItem] = useState('');
   const onPressAddPhoto = async () => {

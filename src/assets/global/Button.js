@@ -1,10 +1,9 @@
 import styled from 'styled-components/native';
 import React from 'react';
-import {Platform, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import Theme from './Theme';
 import {DefaultText, GrayText} from './Text';
-import {Box, PositionBox, RowBox} from './Container';
-import {useSelector} from 'react-redux';
+import {Box, PositionBox} from './Container';
 import pixelChange from '@/Util/pixelChange';
 
 export const Button = styled.View`

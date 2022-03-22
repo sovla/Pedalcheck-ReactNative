@@ -1,4 +1,4 @@
-import {BetweenBox, Box, Container, RowBox} from '@/assets/global/Container';
+import {BetweenBox, Box, Container} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import {DarkMediumText} from '@/assets/global/Text';
 import Header from '@/Component/Layout/Header';
@@ -6,16 +6,15 @@ import React from 'react';
 import {useState} from 'react';
 import SwitchOnIcon from '@assets/image/toggle_on.png';
 import SwitchOffIcon from '@assets/image/toggle_off.png';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Theme from '@/assets/global/Theme';
-import {useEffect} from 'react';
 import {setPushNotice} from '@/API/More/More';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {setUserInfo} from '@/Store/loginState';
 
 export default function AlarmSetting() {
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   // const [pushAlarm, setPushAlarm] = useState(false);
   // const [messageAlarm, setMessageAlarm] = useState(false);
   const [userInformation, setUserInformation] = useState(login);

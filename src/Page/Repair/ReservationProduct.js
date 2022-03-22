@@ -23,10 +23,9 @@ import {useNavigation} from '@react-navigation/native';
 export default function ShopReservationProduct({navigation}) {
   const dispatch = useDispatch();
   const {
-    size,
     shopInfo: {pt_list},
   } = useSelector(state => state);
-  const {shopInfo} = useSelector(state => state);
+
   const [selectProduct, setSelectProduct] = useState([]);
 
   const onPressItem = (item, index) => {
@@ -145,8 +144,6 @@ export default function ShopReservationProduct({navigation}) {
 }
 
 export const ReservationProduct = ({item, onPressMain, selectItem, onPressDetail}) => {
-  const {size} = useSelector(state => state);
-
   return (
     <RowBox width="380px" mg="0px 0px 15px" justifyContent="space-between">
       <RowBox>

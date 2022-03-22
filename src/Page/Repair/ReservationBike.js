@@ -5,16 +5,15 @@ import Header from '@/Component/Layout/Header';
 import ReservationBikeSelect from '@/Component/Repair/ReservationBikeSelect';
 import {setReservationBike} from '@/Store/reservationState';
 import {AlertButton} from '@/Util/Alert';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 import React from 'react';
 import {useLayoutEffect} from 'react';
-import {useEffect} from 'react';
 import {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import RepairReservationHeader from './RepairReservationHeader';
 
-export default function ShopReservationBike({navigation, route: {params}}) {
-  const {size, login, reservationInfo, shopInfo} = useSelector(state => state);
+export default function ShopReservationBike({navigation}) {
+  const {reservationInfo, shopInfo} = useSelector(state => state);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 

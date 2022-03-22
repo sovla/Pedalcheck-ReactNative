@@ -45,7 +45,6 @@ function SwiperComponent({imageArray, width, height, borderRadius = 'Bottom', is
     }
   };
 
-  const {size} = useSelector(state => state);
   const borderRadiusStyle =
     borderRadius === 'Bottom'
       ? {

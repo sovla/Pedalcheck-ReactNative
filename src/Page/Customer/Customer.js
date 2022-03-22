@@ -18,7 +18,7 @@ import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import Loading from '@/Component/Layout/Loading';
 
 export default function Customer({navigation}) {
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const [sortSelectItem, setSortSelectItem] = useState('전체');
   const [customerCount, setCustomerCount] = useState(0);
   const [searchText, setSearchText] = useState('');

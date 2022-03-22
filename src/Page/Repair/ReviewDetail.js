@@ -17,7 +17,7 @@ import DefaultImage from '@/assets/global/Image';
 const {height} = Dimensions.get('window');
 export default function ReviewDetail({route: {params}}) {
   const [comment, setComment] = useState('');
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const isRecomment = params?.isRecomment !== undefined ? params?.isRecomment : !item?.srt_res_content;
   const [item, setItem] = useState(params?.item);
   const commentSubmit = params?.commentSubmit;
@@ -96,7 +96,7 @@ export default function ReviewDetail({route: {params}}) {
           }}>
           <DefaultInput
             value={comment}
-            changeFn={text => setComment(prev => text)}
+            changeFn={text => setComment(() => text)}
             placeHolder="댓글을 입력해주세요 (500자 이내)"
             width="310px"
             minHeight="44px"

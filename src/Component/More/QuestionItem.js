@@ -25,7 +25,6 @@ export default function QuestionItem({
   onPressDelete,
   isDetail = true,
 }) {
-  const {size} = useSelector(state => state);
   const color = status === '답변' ? Theme.color.skyBlue : Theme.color.red;
   return (
     <Box>

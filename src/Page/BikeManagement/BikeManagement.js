@@ -1,4 +1,4 @@
-import {Box, ScrollBox} from '@/assets/global/Container';
+import {Box} from '@/assets/global/Container';
 import Header from '@/Component/Layout/Header';
 import MenuNav from '@/Component/Layout/MenuNav';
 import React from 'react';
@@ -9,7 +9,6 @@ import UseBike from '@/Component/BikeManagement/UseBike';
 import StorageBike from '@/Component/BikeManagement/StorageBike';
 import {getBikeList} from '@/API/Bike/Bike';
 import {useEffect} from 'react';
-import {Alert} from 'react-native';
 import {useIsFocused} from '@react-navigation/native';
 import BikeRegisterFirst from './BikeRegisterFirst';
 import Loading from '@/Component/Layout/Loading';
@@ -17,7 +16,7 @@ import Theme from '@/assets/global/Theme';
 import FooterButtons from '@/Component/Layout/FooterButtons';
 
 export default function BikeManagement({navigation}) {
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const [select, setSelect] = useState('사용중인 자전거');
   const [page, setPage] = useState(1);
   const [useBikeList, setUseBikeList] = useState([]);

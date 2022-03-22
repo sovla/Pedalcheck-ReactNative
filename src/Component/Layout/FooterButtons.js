@@ -25,7 +25,7 @@ import {AlertButtons} from '@/Util/Alert';
 
 export default function FooterButtons({selectMenu, isAdmin}) {
   const navigation = useNavigation();
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const boxWidth = `${(412 - 32) / 4}px`;
   const menuArray = isAdmin
     ? [

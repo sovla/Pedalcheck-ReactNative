@@ -18,7 +18,7 @@ import {Platform} from 'react-native';
 export default function RegisterInformation({navigation, route: {params}}) {
   const [information, setInformaition] = useState(informationInit);
   const [errorMessage, setErrorMessage] = useState(informationInit);
-  const {size, location, snsLogin, token} = useSelector(state => state);
+  const {location, snsLogin, token} = useSelector(state => state);
   const dispatch = useDispatch();
 
   const onChangeInformation = (value, key) => {

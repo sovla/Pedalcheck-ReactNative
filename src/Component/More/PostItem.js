@@ -12,7 +12,6 @@ import AutoHeightImage from 'react-native-auto-height-image';
 import {getPixel} from '@/Util/pixelChange';
 
 export default function PostItem({item, index, selectPost, setSelectPost, isImage = true}) {
-  const {size} = useSelector(state => state);
   const isIdx = item?.idx !== undefined;
   const onPressPost = (idx, type) => {
     if (selectPost.find(findItem => findItem === idx)) {

@@ -25,7 +25,6 @@ export default function QuestionRecomment({
   onPressSubmit,
   writeName,
 }) {
-  const size = useSelector(state => state.size);
   const color = status === '답변완료' ? Theme.color.skyBlue : Theme.color.red;
 
   return (

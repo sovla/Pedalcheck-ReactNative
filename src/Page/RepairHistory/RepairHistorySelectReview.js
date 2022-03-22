@@ -41,7 +41,7 @@ export default function RepairHistorySelectReview() {
   const [page, setPage] = useState(1);
   const [isScroll, setIsScroll] = useState(false);
 
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -166,7 +166,6 @@ export default function RepairHistorySelectReview() {
             setReview={setReview}
             commentSubmit={commentSubmit}
             deleteHandle={deleteHandle}
-            size={size}
             item={item}
           />
         )}
@@ -195,7 +194,7 @@ export default function RepairHistorySelectReview() {
   );
 }
 
-const ReviewRecomment = ({item, size, commentSubmit, deleteHandle}) => {
+const ReviewRecomment = ({item, commentSubmit, deleteHandle}) => {
   const [inputHeight, setInputHeight] = useState(44);
   const [comment, setComment] = useState('');
   const navigation = useNavigation();
@@ -269,7 +268,6 @@ const ReviewRecomment = ({item, size, commentSubmit, deleteHandle}) => {
           <ReviewComment
             reviewDate={item.srt_adate}
             reviewContent={item.srt_res_content}
-            size={size}
             deletePress={() => deletePress(item.srt_idx)}
           />
         </RowBox>

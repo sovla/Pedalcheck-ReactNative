@@ -1,9 +1,7 @@
 import {AddInformationImage, getUserInformation, UpdateMember, UpdateMemberImage} from '@/API/User/Login';
-import {BorderButton, LinkButton} from '@/assets/global/Button';
+import {LinkButton} from '@/assets/global/Button';
 import {Box, Container, RowBox, ScrollBox} from '@/assets/global/Container';
-import {bankList2} from '@/assets/global/dummy';
 import {DefaultInput} from '@/assets/global/Input';
-import {DarkText, ErrorText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import Header from '@/Component/Layout/Header';
@@ -17,19 +15,16 @@ import {useLayoutEffect} from 'react';
 import {useEffect} from 'react';
 import {useState} from 'react';
 import {Alert} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import ImageCropPicker from 'react-native-image-crop-picker';
 import {useDispatch, useSelector} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
 import {setUserInfo} from '@/Store/loginState';
 import {phoneNumber} from '@/Util/phoneFormatter';
-import isAdminCheck from '@/Util/isAdminCheck';
 
 export default function Update({navigation}) {
   const isFocused = useIsFocused();
   const [imageType, setImageType] = useState(1);
   const [select, setSelect] = useState('기본 정보 수정');
-  const {sizem, login, location} = useSelector(state => state);
+  const {login, location} = useSelector(state => state);
   const [user, setUser] = useState(); //  기본정보 (유저정보)
   const [image, setImage] = useState(); //  기본정보
   const [selectImage, setSelectImage] = useState(); //  추가정보
@@ -232,8 +227,6 @@ export default function Update({navigation}) {
 const menuItem = ['기본 정보 수정', '추가 정보 수정'];
 
 const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispatch}) => {
-  const {size, login} = useSelector(state => state);
-
   return (
     <Box pd="0px 16px">
       <Box style={borderBottomWhiteGray} width="380px">

@@ -24,7 +24,7 @@ const {height} = Dimensions.get('window');
 
 export default function QuestionWrite({route: {params}}) {
   const navigation = useNavigation();
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const isFocused = navigation.isFocused();
 
   const [category, setCategory] = useState('개선 제안');

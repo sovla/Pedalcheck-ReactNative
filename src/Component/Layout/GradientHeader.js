@@ -19,7 +19,6 @@ export default function GradientHeader({
   onPressImage,
   titlePress,
 }) {
-  const {size} = useSelector(state => state);
   return (
     <Gradient height={height}>
       <RowBox

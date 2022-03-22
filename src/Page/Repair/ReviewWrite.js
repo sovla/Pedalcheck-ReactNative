@@ -17,7 +17,7 @@ const {height} = Dimensions.get('window');
 export default function ReviewWrite({navigation, route}) {
   const [content, setContent] = useState('');
   const [imageArray, setImageArray] = useState([]);
-  const {size, login, shopInfo} = useSelector(state => state);
+  const {login, shopInfo} = useSelector(state => state);
 
   const shopItem = route.params.item;
 

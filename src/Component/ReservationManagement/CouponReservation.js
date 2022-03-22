@@ -1,15 +1,12 @@
-import {Box, Container, RowBox, ScrollBox} from '@/assets/global/Container';
+import {Box, Container, RowBox} from '@/assets/global/Container';
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
-import {useSelector} from 'react-redux';
 import {Button} from '@/assets/global/Button';
 import Theme from '@/assets/global/Theme';
 import {useState} from 'react';
 import {DarkMediumText, DarkText, GrayText} from '@/assets/global/Text';
 import DefaultImage from '@assets/global/Image';
-import {getPixel} from '@/Util/pixelChange';
 import ArrowDownIcon from '@assets/image/arr_down.png';
-import Card from '@/Component/ReservationManagement/Card';
 import RepairProduct from '@/Component/ReservationManagement/RepairProduct';
 import CheckIcon from '@assets/image/ic_check_cal.png';
 import {useNavigation} from '@react-navigation/core';
@@ -17,7 +14,6 @@ import ScrollDays from './ScrollDays';
 
 export default function CouponReservation() {
   const navigation = useNavigation();
-  const {size} = useSelector(state => state);
   const [daySelect, setDaySelect] = useState(new Date());
   const onPressAllApprove = () => {};
   const onPressProduct = () => {

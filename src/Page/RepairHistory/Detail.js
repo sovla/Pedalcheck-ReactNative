@@ -13,13 +13,11 @@ import CheckList from '@/Component/ReservationManagement/CheckList';
 import React from 'react';
 import {useEffect} from 'react';
 import {useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
 import {imageAddress} from '@assets/global/config';
 
 // rejection: item.ot_cmemo, // 수정 필요 API 값없음
 
-export default function Detail({navigation, route}) {
-  const {size} = useSelector(state => state);
+export default function Detail({route}) {
   const [checkList, setCheckList] = useState(initCheckList);
   const [isCheckListShow, setIsCheckListShow] = useState(true);
   const [isShow, setIsShow] = useState(false);
@@ -78,8 +76,8 @@ export default function Detail({navigation, route}) {
       const data = item?.ot_proc;
       let notNullCount = 0;
       setCheckList(prev =>
-        prev.map((firstValue, firstIndex) => {
-          let tmpValue = firstValue.item.map((secondValue, secondIndex) => {
+        prev.map(firstValue => {
+          let tmpValue = firstValue.item.map(secondValue => {
             try {
               if (data[secondValue.indexName] === '1') {
                 notNullCount++;

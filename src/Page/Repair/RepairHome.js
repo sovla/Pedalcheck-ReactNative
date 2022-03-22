@@ -11,7 +11,7 @@ import SearchIcon from '@assets/image/ic_search.png';
 import GradientHeader from '@/Component/Layout/GradientHeader';
 import PlusIcon from '@assets/image/ic_plus.png';
 import BorderBottomBox from '@/Component/Repair/BorderBottomBox';
-import {BorderButton, DisabledBorderButton, LinkButton} from '@/assets/global/Button';
+import {BorderButton, DisabledBorderButton} from '@/assets/global/Button';
 import ShopComponent from '@/Component/Repair/ShopComponent';
 import ArrowLeft from '@assets/image/slide_l.png';
 import ArrowRight from '@assets/image/slide_r.png';
@@ -24,9 +24,9 @@ import scrollSlideNumber from '@/Util/scrollSlideNumber';
 import {useEffect} from 'react';
 import {getShopList} from '@/API/Shop/Shop';
 import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
-import {modalOpen, modalOpenAndProp} from '@/Store/modalState';
+import {modalOpenAndProp} from '@/Store/modalState';
 import {getEventList} from '@/API/Repair/Repair';
-import {useIsFocused, useNavigation, useNavigationState} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {reduceItemSplit} from '@/Util/reduceItem';
 import Loading from '@/Component/Layout/Loading';
@@ -37,11 +37,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getTagList} from '@/API/More/More';
 import {useRef} from 'react';
 import useInterval from '@/Hooks/useInterval';
-import {get} from 'immer/dist/internal';
 
 export default function RepairHome() {
   const {
-    size,
     login,
     banner: {bannerList},
     ad,
@@ -191,7 +189,6 @@ export default function RepairHome() {
         <FlatList
           ListHeaderComponent={
             <Header
-              size={size}
               tag={tag}
               selectItem={selectItem}
               setSelectItem={setSelectItem}
@@ -268,7 +265,6 @@ export default function RepairHome() {
   );
 }
 const Header = ({
-  size,
   tag,
   selectItem,
   setSelectItem,

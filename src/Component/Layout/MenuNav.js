@@ -7,7 +7,6 @@ import {TouchableOpacity, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
 
 export default function MenuNav({menuItem, setSelect, select}) {
-  const {size} = useSelector(state => state);
   return (
     <RowBox pd="16px 16px 0px" height="46px" width={412}>
       {menuItem.map(item => {

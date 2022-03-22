@@ -68,7 +68,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 

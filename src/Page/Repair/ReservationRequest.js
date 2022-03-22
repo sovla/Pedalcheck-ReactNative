@@ -17,9 +17,9 @@ import {TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import RepairReservationHeader from './RepairReservationHeader';
 
-export default function ShopReservationRequest({navigation, route: {params}}) {
+export default function ShopReservationRequest({navigation}) {
   const dispatch = useDispatch();
-  const {size, reservationInfo} = useSelector(state => state);
+  const {reservationInfo} = useSelector(state => state);
   const isFocuesd = useIsFocused();
 
   const [repairRequest, setRepairRequest] = useState('');

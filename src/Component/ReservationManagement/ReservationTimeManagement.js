@@ -1,8 +1,8 @@
-import {BorderButton, Button, LinkButton} from '@/assets/global/Button';
+import {Button, LinkButton} from '@/assets/global/Button';
 import {Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import React from 'react';
-import {Alert, FlatList, TextInput, TouchableOpacity} from 'react-native';
+import {FlatList, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import PlusBlackIcon from '@assets/image/ic_plus.png';
 import {DarkText} from '@/assets/global/Text';
@@ -10,10 +10,7 @@ import Theme from '@/assets/global/Theme';
 import {DefaultCheckBox} from '../Home/CheckBox';
 import {WhiteInput} from '@/assets/global/Input';
 import {useState} from 'react';
-import TrashIcon from '@assets/image/ic_trash.png';
-import ModifyIcon from '@assets/image/ic_modify.png';
 import {useEffect} from 'react';
-import {useLayoutEffect} from 'react';
 import ModifyButton from '../Buttons/ModifyButton';
 import TrashButton from '../Buttons/TrashButton';
 import {reservationTimeList, reservationTimeListSave} from '@/API/ReservationManagement/ReservationManagement';
@@ -25,7 +22,7 @@ import Loading from '../Layout/Loading';
 export default function ReservationTimeManagement() {
   const isFocused = useIsFocused();
 
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const [timeList, setTimeList] = useState([]);
   const [orderTimeIdx, setOrderTimeIdx] = useState('');
 

@@ -65,7 +65,6 @@ import {BackHandler, SafeAreaView, useWindowDimensions, View} from 'react-native
 import Theme from '@/assets/global/Theme';
 import {useDispatch} from 'react-redux';
 import ModalBasic from '@/Component/Modal/ModalBasic';
-import {initSetting} from '@/Store/sizeState';
 import ProductDetail from './Repair/ProductDetail';
 import BikeRegisterFirst from './BikeManagement/BikeRegisterFirst';
 import {useIsFocused, useNavigation} from '@react-navigation/core';
@@ -92,8 +91,6 @@ import SplashScreen from 'react-native-splash-screen';
 import IdentityVerification from './Home/IdentityVerification';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import AdjustmentDetail from './RepairHistory/AdjustmentDetail';
-import {PositionBox} from '@/assets/global/Container';
-import {DarkBoldText} from '@/assets/global/Text';
 
 const INIT_ROUTER_COMPONENT_NAME = 'Home'; //  라우팅 초기값
 
@@ -104,7 +101,6 @@ const Stack = createStackNavigator();
 export default function Router() {
   const dispatch = useDispatch();
 
-  const {height, width} = useWindowDimensions();
   const navigationRef = useRef(null);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -133,16 +129,6 @@ export default function Router() {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    dispatch(
-      initSetting({
-        screenWidth: width,
-        screenHeight: height, // Height 값으로 변경해주기 837.71428
-        minusPadding: `380px`,
-      }),
-    );
-  }, [height]);
 
   const mesagingHandler = async remoteMessage => {
     if (isLoading) {

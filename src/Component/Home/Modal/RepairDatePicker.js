@@ -12,7 +12,6 @@ import {numberChangeFormat} from '@/Util/numberFormat';
 
 export default function RepairDatePicker({birth, setBirth}) {
   const now = new Date();
-  const size = useSelector(state => state.size);
   const dispatch = useDispatch();
 
   const [date, setDate] = useState(new Date());

@@ -32,7 +32,7 @@ export default function Review({
   onPressDelete,
 }) {
   const [isDetailButton, setIsDetailButton] = useState(false);
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const navigation = useNavigation();
   const isCoupon = item?.ot_use_coupon?.length > 0;
   const isMyReview = login?.idx === item?.mt_idx;
@@ -176,7 +176,6 @@ export default function Review({
           <ReviewComment
             reviewDate={item?.srt_adate}
             reviewContent={item?.srt_res_content}
-            size={size}
             deletePress={isJustShow ? null : () => deletePress(item?.srt_idx)}
           />
         </RowBox>

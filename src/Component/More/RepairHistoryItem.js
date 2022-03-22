@@ -18,8 +18,6 @@ export default function RepairHistoryItem({
   isReview = false,
   onPressReview = () => {},
 }) {
-  const {size} = useSelector(state => state);
-  const navigation = useNavigation();
   return (
     <BetweenBox width="380px" pd="16px 10px" style={borderBottomWhiteGray}>
       <Box width="300px">

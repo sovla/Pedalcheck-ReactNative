@@ -13,7 +13,6 @@ import {useEffect} from 'react';
 import RenderHTML from 'react-native-render-html';
 
 export default function Service() {
-  const size = useSelector(state => state.size);
   const dispatch = useDispatch();
   const [content, setContent] = useState('');
 
