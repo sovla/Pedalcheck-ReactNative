@@ -5,7 +5,6 @@ import {DarkBoldText, DarkMediumText, DarkText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import RepairReservationHeader from '@/Page/Repair/RepairReservationHeader';
-import {useNavigation} from '@react-navigation/core';
 import React from 'react';
 import {useState} from 'react';
 import {useSelector} from 'react-redux';
@@ -15,19 +14,19 @@ import Loading from '@/Component/Layout/Loading';
 import {useLayoutEffect} from 'react';
 import {couponReservation} from '@/API/More/More';
 
-export default function CouponUseComplete({route: {params}, route}) {
-  const {item: coupon, selectBike, selectDate, shopInfo} = params;
-  const {size, login} = useSelector(state => state);
-  const navigation = useNavigation();
+export default function CouponUseComplete({route, navigation}) {
+  const {item: coupon, selectBike, selectDate, shopInfo} = route?.params;
+  const {login} = useSelector(state => state);
+
   const dummy = {
-    cst_title: '무료세차',
-    mst_name: '제일정비',
-    od_idx: 7,
-    ot_code: 'P220117093554E14',
-    ot_datetime: '2022-01-18',
+    cst_title: '',
+    mst_name: '',
+    od_idx: 1,
+    ot_code: '',
+    ot_datetime: '',
     ot_email: null,
-    ot_hp: '010-6464-6464',
-    ot_name: '신혜수',
+    ot_hp: '',
+    ot_name: '',
   };
   const [isDone, setIsDone] = useState(true);
   const [reservationInfo, setReservationInfo] = useState(dummy);
@@ -58,7 +57,7 @@ export default function CouponUseComplete({route: {params}, route}) {
             <RepairReservationHeader step={3} array={[1, 2, 3]} content="예약완료" />
             <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
             <Box>
-              <RowBox mg="30px 0px" justifyContent="center" alignItems="center" width={size.designWidth}>
+              <RowBox mg="30px 0px" justifyContent="center" alignItems="center" width={412}>
                 <DefaultImage source={BorderCheckIcon} width="20px" height="20px" />
                 <DarkBoldText fontSize={Theme.fontSize.fs18}>예약이 접수 되었습니다.</DarkBoldText>
               </RowBox>
@@ -96,30 +95,29 @@ const CouponCompleteComponent = ({
   email = '',
   tel = '',
 }) => {
-  const {size} = useSelector(state => state);
   return (
     <Box mg="0px 16px">
-      <RowBox width={size.minusPadding} mg="0px 0px 10px">
+      <RowBox width="380px" mg="0px 0px 10px">
         <DarkMediumText width="100px">매장명</DarkMediumText>
         <DarkText>{shopName}</DarkText>
       </RowBox>
-      <RowBox width={size.minusPadding} mg="0px 0px 10px">
+      <RowBox width="380px" mg="0px 0px 10px">
         <DarkMediumText width="100px">쿠폰이름</DarkMediumText>
         <DarkText>{couponName}</DarkText>
       </RowBox>
-      <RowBox width={size.minusPadding} mg="0px 0px 10px">
+      <RowBox width="380px" mg="0px 0px 10px">
         <DarkMediumText width="100px">예약시간</DarkMediumText>
         <DarkText>{reservationDate}</DarkText>
       </RowBox>
-      <RowBox width={size.minusPadding} mg="0px 0px 10px">
+      <RowBox width="380px" mg="0px 0px 10px">
         <DarkMediumText width="100px">예약자 이름</DarkMediumText>
         <DarkText>{reservationName}</DarkText>
       </RowBox>
-      <RowBox width={size.minusPadding} mg="0px 0px 10px">
+      <RowBox width="380px" mg="0px 0px 10px">
         <DarkMediumText width="100px">이메일</DarkMediumText>
         <DarkText>{email}</DarkText>
       </RowBox>
-      <RowBox width={size.minusPadding} mg="0px 0px 10px">
+      <RowBox width="380px" mg="0px 0px 10px">
         <DarkMediumText width="100px">전화번호</DarkMediumText>
         <DarkText>{tel}</DarkText>
       </RowBox>

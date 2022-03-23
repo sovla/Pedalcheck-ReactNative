@@ -19,7 +19,6 @@ export default function BirthDatePicker({birth, setBirth}) {
     day: now.getDate(),
   });
   const [dateDummy, setDateDummy] = useState(new Date());
-  const size = useSelector(state => state.size);
   const dispatch = useDispatch();
 
   const onPressConfirm = () => {
@@ -49,7 +48,7 @@ export default function BirthDatePicker({birth, setBirth}) {
 
   return (
     <>
-      <ModalTitleBox size={size} title="날짜 선택" padding={32} />
+      <ModalTitleBox title="날짜 선택" padding={32} />
       <RowBox>
         <DatePicker
           date={dateDummy}

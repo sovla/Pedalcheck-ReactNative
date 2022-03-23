@@ -41,6 +41,7 @@ export default function SearchId({setUser}) {
 
       <Box width={`${412 - 32 - 40}px`}>
         <DefaultInput
+          onSend={onPressSearch}
           placeHolder="아이디를 입력해주세요."
           width={`${412 - 32 - 40}px`}
           changeFn={setSearch}

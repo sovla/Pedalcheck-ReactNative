@@ -1,25 +1,21 @@
 import {BetweenBox, Box, Container, PositionBox} from '@/assets/global/Container';
 import React from 'react';
 
-import LogoBox from '@/Component/Home/LogoBox';
 import HomeFooter from '@/Component/Home/HomeFooter';
 import KakaoImage from '@/Component/Home/Icon/KakaoImage';
 import GoogleImage from '@/Component/Home/Icon/GoogleImage';
 import NaverImage from '@/Component/Home/Icon/NaverImage';
 import AppleImage from '@/Component/Home/Icon/AppleImage';
-import {Platform, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {Platform, StyleSheet, Text} from 'react-native';
 import {DefaultText, GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
-import {useLayoutEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {useIsFocused} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {useEffect} from 'react';
-import {LinkButton} from '@/assets/global/Button';
-import {modalOpen} from '@/Store/modalState';
 import {getStoreInfo} from '@/API/More/More';
 import {setStoreInfo} from '@/Store/storeInfoState';
 import {getPixel} from '@/Util/pixelChange';
-export default function Home({navigation}) {
+export default function Home() {
   const betweenBoxWidth = Platform.OS === 'android' ? '262px' : '312px';
   // 안드로이드 카카오 구글 네이버    3가지
   // IOS 카카오 구글 네이버 애플로그인 4가지 로 크기가 다릅니다.
@@ -27,6 +23,7 @@ export default function Home({navigation}) {
     login,
     admin: {isAdmin},
   } = useSelector(state => state);
+  const navigation = useNavigation();
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 

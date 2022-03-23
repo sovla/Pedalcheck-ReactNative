@@ -18,7 +18,7 @@ import {Platform} from 'react-native';
 export default function RegisterInformation({navigation, route: {params}}) {
   const [information, setInformaition] = useState(informationInit);
   const [errorMessage, setErrorMessage] = useState(informationInit);
-  const {size, location, snsLogin, token} = useSelector(state => state);
+  const {location, snsLogin, token} = useSelector(state => state);
   const dispatch = useDispatch();
 
   const onChangeInformation = (value, key) => {
@@ -92,12 +92,12 @@ export default function RegisterInformation({navigation, route: {params}}) {
           <RowBox mg="5px 0px 20px">
             <RequireFieldText />
           </RowBox>
-          <Box width={size.minusPadding} mg="0px 0px 20px">
+          <Box width="380px" mg="0px 0px 20px">
             <DefaultLine />
           </Box>
           <DefaultInput
             title="이름"
-            width={size.minusPadding}
+            width="380px"
             fontSize={Theme.fontSize.fs15}
             placeHolder="이름을 입력해주세요"
             value={information.name}
@@ -109,7 +109,7 @@ export default function RegisterInformation({navigation, route: {params}}) {
           />
           <DefaultInput
             title="닉네임"
-            width={size.minusPadding}
+            width="380px"
             fontSize={Theme.fontSize.fs15}
             placeHolder="닉네임을 입력해주세요"
             value={information.nickName}
@@ -122,7 +122,7 @@ export default function RegisterInformation({navigation, route: {params}}) {
           {Platform.OS === 'android' && (
             <DefaultInput
               title="이메일"
-              width={size.minusPadding}
+              width="380px"
               fontSize={Theme.fontSize.fs15}
               value={information.email}
               disabled
@@ -133,7 +133,7 @@ export default function RegisterInformation({navigation, route: {params}}) {
 
           <DefaultInput
             title="전화번호"
-            width={size.minusPadding}
+            width="380px"
             fontSize={Theme.fontSize.fs15}
             placeHolder="'-'없이 숫자만 입력하세요"
             value={information.tel}
@@ -146,7 +146,7 @@ export default function RegisterInformation({navigation, route: {params}}) {
           />
           <DefaultInput
             title="지역"
-            width={size.minusPadding}
+            width="380px"
             fontSize={Theme.fontSize.fs15}
             placeHolder="지역을 선택해주세요"
             value={information.location}

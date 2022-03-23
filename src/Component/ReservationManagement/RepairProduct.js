@@ -3,7 +3,6 @@ import React from 'react';
 import Theme from '@/assets/global/Theme';
 import {DarkBoldText, DarkText, GrayText, IndigoText, MoneyText} from '@/assets/global/Text';
 import Badge from '@/Component/BikeManagement/Badge';
-import {useSelector} from 'react-redux';
 
 export default function RepairProduct({
   productName = ['기본값'],
@@ -13,10 +12,9 @@ export default function RepairProduct({
   status = '승인완료',
   totalPrice = 30000,
 }) {
-  const {size} = useSelector(state => state);
   return (
     <Box style={{borderTopWidth: 1, borderTopColor: Theme.borderColor.whiteGray}}>
-      <RowBox width={size.minusPadding} justifyContent="space-between" pd="16px 10px">
+      <RowBox width="380px" justifyContent="space-between" pd="16px 10px">
         <Box>
           {productName.map(item => (
             <DarkBoldText key={item + reservationDate}>{item}</DarkBoldText>

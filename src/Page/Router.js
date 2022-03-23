@@ -65,7 +65,6 @@ import {BackHandler, SafeAreaView, useWindowDimensions, View} from 'react-native
 import Theme from '@/assets/global/Theme';
 import {useDispatch} from 'react-redux';
 import ModalBasic from '@/Component/Modal/ModalBasic';
-import {initSetting} from '@/Store/sizeState';
 import ProductDetail from './Repair/ProductDetail';
 import BikeRegisterFirst from './BikeManagement/BikeRegisterFirst';
 import {useIsFocused, useNavigation} from '@react-navigation/core';
@@ -93,100 +92,30 @@ import IdentityVerification from './Home/IdentityVerification';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import AdjustmentDetail from './RepairHistory/AdjustmentDetail';
 
-const INIT_ROUTER_COMPONENT_NAME = 'Home'; //  라우팅 초기값
-
 let count = 0; //  종료카운트
 
 const Stack = createStackNavigator();
 
+const forFade = ({current}) => {
+  return {
+    cardStyle: {opacity: current.progress},
+  };
+};
+
 export default function Router() {
   const dispatch = useDispatch();
 
-  const {height, width} = useWindowDimensions();
   const navigationRef = useRef(null);
 
   const [isLoading, setIsLoading] = useState(true);
-
-  const getToken = async () => {
-    try {
-      const token = await messaging().getToken();
-
-      dispatch(setToken(token));
-      const response = await autoLoginApi({
-        mt_app_token: token,
-      }).then(res => {
-        if (res.data?.result === 'true') {
-          dispatch(setUserInfo(res.data.data.data));
-        }
-        return res;
-      });
-      if (+response.data.data?.data?.mt_level === 5 && +response.data.data?.data?.mt_seller === 2) {
-        await getIsAdmin();
-      }
-    } catch (error) {
-    } finally {
-      setTimeout(() => {
-        SplashScreen.hide();
-      }, 500);
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    dispatch(
-      initSetting({
-        screenWidth: width,
-        screenHeight: height, // Height 값으로 변경해주기 837.71428
-        minusPadding: `380px`,
-      }),
-    );
-  }, [height]);
-
-  const mesagingHandler = async remoteMessage => {
-    if (isLoading) {
-      await getToken();
-    }
-
-    if (remoteMessage?.data?.intent) {
-      if (remoteMessage.data.intent === 'ShopUpdate') {
-        // 업체정보수정일때
-        await getToken();
-        const response = await getStoreInfo({
-          _mt_idx: remoteMessage.data?.content_idx,
-        });
-        if (response?.data?.result === 'true') {
-          await dispatch(setStoreInfo(response?.data?.data?.data));
-        }
-        await navigationRef.current.navigate(remoteMessage?.data?.intent);
-      } else if (remoteMessage.data.intent === 'RepairHistoryHome') {
-        await navigationRef.current.navigate(remoteMessage?.data?.intent, {
-          menu: remoteMessage.data.content_idx,
-        });
-      } else if (remoteMessage.data.intent === 'logout') {
-        //로그아웃일때
-        // dispatch(resetSnsInfo());
-        // dispatch(resetUserInfo());
-        // dispatch(ResetStoreInfo());
-        // dispatch(setIsAdmin(false));
-        // await AsyncStorage.removeItem('isAdmin');
-        // navigationRef.current.reset({routes: [{name: 'Home'}]});
-      } else {
-        await navigationRef.current.navigate(remoteMessage?.data?.intent, {
-          menu: remoteMessage?.data?.content_idx2,
-          od_idx: remoteMessage?.data?.content_idx,
-          mt_idx: remoteMessage?.data?.content_idx,
-        });
-      }
-      return true;
-    } else {
-      return false;
-    }
-  };
+  const [isToken, setIsToken] = useState(false);
+  const [isGetAdmin, setIsGetAdmin] = useState(false);
 
   const getIsAdmin = async () => {
     try {
       const isAdmin = await AsyncStorage.getItem('isAdmin');
 
+      setIsGetAdmin(true);
       if (isAdmin === 'true') {
         dispatch(setIsAdmin(true));
       } else {
@@ -194,6 +123,78 @@ export default function Router() {
       }
     } catch (error) {}
   };
+  const getToken = async () => {
+    try {
+      if (!isToken) {
+        const token = await messaging().getToken();
+
+        dispatch(setToken(token));
+        const response = await autoLoginApi({
+          mt_app_token: token,
+        }).then(res => {
+          if (res.data?.result === 'true') {
+            dispatch(setUserInfo(res.data.data.data));
+          }
+          return res;
+        });
+        setIsToken(true);
+      }
+
+      if (+response.data.data?.data?.mt_level === 5 && +response.data.data?.data?.mt_seller === 2 && !isGetAdmin) {
+        await getIsAdmin();
+      }
+    } catch (error) {
+    } finally {
+      setTimeout(() => {
+        SplashScreen.hide();
+        setIsLoading(false);
+      }, 500);
+    }
+  };
+
+  const mesagingHandler = async remoteMessage => {
+    try {
+      if (isLoading) {
+        await getToken();
+      }
+
+      if (remoteMessage?.data?.intent) {
+        if (remoteMessage.data.intent === 'ShopUpdate') {
+          // 업체정보수정일때
+          await getToken();
+          const response = await getStoreInfo({
+            _mt_idx: remoteMessage.data?.content_idx,
+          });
+          if (response?.data?.result === 'true') {
+            await dispatch(setStoreInfo(response?.data?.data?.data));
+          }
+          await navigationRef?.current?.navigate(remoteMessage?.data?.intent);
+        } else if (remoteMessage.data.intent === 'RepairHistoryHome') {
+          await navigationRef?.current?.navigate(remoteMessage?.data?.intent, {
+            menu: remoteMessage.data.content_idx,
+          });
+        } else if (remoteMessage.data.intent === 'logout') {
+          //로그아웃일때
+          // dispatch(resetSnsInfo());
+          // dispatch(resetUserInfo());
+          // dispatch(ResetStoreInfo());
+          // dispatch(setIsAdmin(false));
+          // await AsyncStorage.removeItem('isAdmin');
+          // navigationRef.current.reset({routes: [{name: 'Home'}]});
+        } else {
+          await navigationRef?.current?.navigate(remoteMessage?.data?.intent, {
+            menu: remoteMessage?.data?.content_idx2,
+            od_idx: remoteMessage?.data?.content_idx,
+            mt_idx: remoteMessage?.data?.content_idx,
+          });
+        }
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {}
+  };
+
   const handleDynamicLink = async link => {
     await getToken();
     //  다이나믹 링크 실행 함수
@@ -219,36 +220,44 @@ export default function Router() {
         }
         //  다이나믹 링크 확인용
         console.log('다이나믹링크 \n', link.url, '\nqueryStirng :::', queryString, '\nitems :::', items);
-        navigationRef.current.navigate(intent, items);
+        navigationRef?.current?.navigate(intent, items);
         return;
       } catch (error) {}
     }
   };
 
   useEffect(() => {
-    getToken();
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      showPushToastMessage({
-        remoteMessage: remoteMessage,
-        onShow: () => {
-          if (remoteMessage?.data?.intent === 'logout') {
-            getToken();
-          } else if (remoteMessage?.data?.intent === 'ShopUpdate') {
-            getToken();
-          }
-        },
-        onPress: () => {
-          mesagingHandler(remoteMessage);
-          Toast.hide();
-        },
+    try {
+      getToken();
+      const unsubscribe = messaging().onMessage(async remoteMessage => {
+        showPushToastMessage({
+          remoteMessage: remoteMessage,
+          onShow: () => {
+            if (remoteMessage?.data?.intent === 'logout') {
+              getToken();
+            } else if (remoteMessage?.data?.intent === 'ShopUpdate') {
+              getToken();
+            }
+          },
+          onPress: () => {
+            mesagingHandler(remoteMessage);
+            Toast.hide();
+          },
+        });
       });
-    });
 
-    dispatch(fetchBannerList()); // 배너
-    dispatch(fetchAd()); // 광고
+      dispatch(fetchBannerList()); // 배너
+      dispatch(fetchAd()); // 광고
+    } catch (error) {}
+
     return () => {
-      dispatch(resetUserInfo());
-      unsubscribe();
+      try {
+        dispatch(resetUserInfo());
+        unsubscribe();
+        setIsLoading(true);
+        setIsGetAdmin(false);
+        setIsToken(false);
+      } catch (error) {}
     };
   }, []);
 
@@ -283,14 +292,8 @@ export default function Router() {
   }
 
   return (
-    <NavigationContainer ref={navigationRef}>
-      <Stack.Navigator
-        initialRouteName={INIT_ROUTER_COMPONENT_NAME}
-        screenOptions={{
-          headerShown: false,
-          gestureDirection: 'horizontal',
-          cardStyleInterpolator: forFade,
-        }}>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName={'Home'}>
         {RouterSetting.map((item, index) => (
           <Stack.Screen
             name={item.name}
@@ -312,15 +315,6 @@ const withScrollView = WrappedComponent => {
   return props => {
     const isFocus = useIsFocused();
     const navigation = useNavigation();
-    useEffect(() => {
-      if (!navigation?.canGoBack() && isFocus) {
-        BackHandler.addEventListener('hardwareBackPress', onBackPress);
-      }
-
-      return () => {
-        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-      };
-    }, [isFocus]);
 
     const onBackPress = async () => {
       if (count < 1) {
@@ -336,6 +330,16 @@ const withScrollView = WrappedComponent => {
 
       return true;
     };
+    useEffect(() => {
+      if (!navigation?.canGoBack() && isFocus) {
+        BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      }
+
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+      };
+    }, [isFocus]);
+
     return (
       <>
         <SafeAreaView style={{flex: 0, backgroundColor: '#fff'}} />
@@ -343,6 +347,9 @@ const withScrollView = WrappedComponent => {
           <View style={{flex: 1, backgroundColor: Theme.color.white}}>
             <WrappedComponent {...props} />
             {isFocus && <ModalBasic navigation={props?.navigation} />}
+            {/* <PositionBox backgroundColor="#0000" flexDirection="row" top="0px" right="0px" zIndex={3000}>
+              <DarkBoldText>{props.route.name}</DarkBoldText>
+            </PositionBox> */}
           </View>
         </SafeAreaView>
         <SafeAreaView style={{flex: 0, backgroundColor: '#fff'}} />
@@ -356,7 +363,6 @@ const RouterSetting = [
     name: 'BikeRegisterFirst',
     component: BikeRegisterFirst,
   },
-
   {
     name: 'BikeRegister',
     component: BikeRegister,
@@ -633,8 +639,3 @@ const RouterSetting = [
     component: Notice,
   },
 ];
-const forFade = ({current}) => {
-  return {
-    cardStyle: {opacity: current.progress},
-  };
-};

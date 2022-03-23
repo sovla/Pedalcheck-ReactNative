@@ -1,22 +1,22 @@
-import {BorderButton, LinkWhiteButton} from '@/assets/global/Button';
-import {Box, Container, RowBox} from '@/assets/global/Container';
+import {BorderButton} from '@/assets/global/Button';
+import {Box, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
-import {DarkBoldText, DefaultText, IndigoText} from '@/assets/global/Text';
+import {DarkBoldText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import numberFormat from '@/Util/numberFormat';
 import React from 'react';
 import PencelIcon from '@assets/image/ic_modify.png';
 import {useSelector} from 'react-redux';
-import {Alert, FlatList, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import {RequireLoginAlert} from '@/Util/Alert';
 
 export default function ReviewMain() {
-  const {size, shopInfo, login} = useSelector(state => state);
+  const {shopInfo, login} = useSelector(state => state);
   const navigation = useNavigation();
   return (
     <Box pd="20px 16px 0px">
-      <RowBox justifyContent="space-between" width={size.minusPadding} alignItems="center">
+      <RowBox justifyContent="space-between" width="380px" alignItems="center">
         <RowBox>
           <DarkBoldText fontSize={Theme.fontSize.fs15}>리뷰</DarkBoldText>
           <IndigoText

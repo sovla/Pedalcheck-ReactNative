@@ -33,7 +33,7 @@ import {AlertButton} from '@/Util/Alert';
 import numberFormat from '@/Util/numberFormat';
 
 export default function BikeDetail({navigation, route}) {
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const [bikeInformation, setBikeInformation] = useState([]);
   const [bikeDistanceText, setBikeDistacneText] = useState('');
 
@@ -215,10 +215,10 @@ export default function BikeDetail({navigation, route}) {
     <>
       <Header title="자전거 상세" RightComponent={RightComponent} />
       <Box flex={1}>
-        <ScrollBox flex={1} width={size.designWidth} pd="0px 16px" keyboardShouldPersistTaps="handled">
+        <ScrollBox flex={1} width={412} pd="0px 16px" keyboardShouldPersistTaps="handled">
           <BikeInformationHeader item={bikeInfo} />
           <Box>
-            <RowBox width={size.minusPadding} justifyContent="space-between">
+            <RowBox width="380px" justifyContent="space-between">
               {bikeInfo.detail?.filter(item => item.value)?.length > 0 ? (
                 <DarkText fontWeight={Theme.fontWeight.medium}>자전거 정보</DarkText>
               ) : (
@@ -272,7 +272,7 @@ export default function BikeDetail({navigation, route}) {
           </Box>
           <Box>
             <TouchableOpacity onPress={() => navigation.navigate('RepairHistory')}>
-              <RowBox mg="20px 0px 0px" alignItems="center" justifyContent="space-between" width={size.minusPadding}>
+              <RowBox mg="20px 0px 0px" alignItems="center" justifyContent="space-between" width="380px">
                 <DarkText fontWeight={Theme.fontWeight.medium}>정비이력</DarkText>
                 <RowBox>
                   <DarkText fontWeight={Theme.fontWeight.medium}>전체 목록 보기</DarkText>

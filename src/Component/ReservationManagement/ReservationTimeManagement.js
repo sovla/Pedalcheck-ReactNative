@@ -1,8 +1,8 @@
-import {BorderButton, Button, LinkButton} from '@/assets/global/Button';
+import {Button, LinkButton} from '@/assets/global/Button';
 import {Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import React from 'react';
-import {Alert, FlatList, TextInput, TouchableOpacity} from 'react-native';
+import {FlatList, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import PlusBlackIcon from '@assets/image/ic_plus.png';
 import {DarkText} from '@/assets/global/Text';
@@ -10,10 +10,7 @@ import Theme from '@/assets/global/Theme';
 import {DefaultCheckBox} from '../Home/CheckBox';
 import {WhiteInput} from '@/assets/global/Input';
 import {useState} from 'react';
-import TrashIcon from '@assets/image/ic_trash.png';
-import ModifyIcon from '@assets/image/ic_modify.png';
 import {useEffect} from 'react';
-import {useLayoutEffect} from 'react';
 import ModifyButton from '../Buttons/ModifyButton';
 import TrashButton from '../Buttons/TrashButton';
 import {reservationTimeList, reservationTimeListSave} from '@/API/ReservationManagement/ReservationManagement';
@@ -25,7 +22,7 @@ import Loading from '../Layout/Loading';
 export default function ReservationTimeManagement() {
   const isFocused = useIsFocused();
 
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const [timeList, setTimeList] = useState([]);
   const [orderTimeIdx, setOrderTimeIdx] = useState('');
 
@@ -89,57 +86,78 @@ export default function ReservationTimeManagement() {
   };
 
   const onPressSave = () => {
-    if (!timeList?.length) {
-      return null;
-    }
+    try {
+      if (!timeList?.length) {
+        return null;
+      }
 
-    const copyTimeList = timeList.slice();
+      const copyTimeList = timeList.slice();
 
-    const changeTime = time => {
-      const timeSplit = time.split(':');
-      const hour = parseInt(timeSplit[0]);
-      const minute = parseInt(timeSplit[1]);
+      const changeTime = time => {
+        const timeSplit = time.split(':');
+        const hour = parseInt(timeSplit[0]);
+        const minute = parseInt(timeSplit[1]);
 
-      return hour * 60 + minute;
-    };
+        return hour * 60 + minute;
+      };
 
-    let result = false;
-    let ot_time = [];
-    let flag = [];
+      let result = false;
+      let ot_time = [];
+      let flag = [];
 
-    copyTimeList.sort((prev, next) => {
+      copyTimeList.forEach(v => {
+        const date = changeTime(v?.ot_time);
+        if (
+          isNaN(date) ||
+          v?.ot_time?.length !== 5 ||
+          isNaN(+v?.ot_time[0] + +v?.ot_time[1]) ||
+          isNaN(+v?.ot_time[3] + +v?.ot_time[4]) ||
+          !String(v.ot_time).includes(':')
+        ) {
+          throw '올바르지 않은 시간이 있습니다.';
+        }
+      });
+
+      copyTimeList.sort((prev, next) => {
+        if (result) {
+          return null;
+        }
+        const prevTime = changeTime(prev['ot_time']);
+        const nextTime = changeTime(next['ot_time']);
+        if (isNaN(prevTime) || isNaN(nextTime)) {
+          throw '올바르지 않은 시간이 있습니다.';
+        }
+        if (prevTime === nextTime) {
+          result = true;
+          AlertButton('입력한 예약 시간 중 중복된 값이 있습니다.');
+          return null;
+        }
+        return prevTime - nextTime;
+      });
       if (result) {
         return null;
       }
-      const prevTime = changeTime(prev['ot_time']);
-      const nextTime = changeTime(next['ot_time']);
-      if (prevTime === nextTime) {
-        result = true;
-        AlertButton('입력한 예약 시간 중 중복된 값이 있습니다.');
-        return null;
-      }
-      return prevTime - nextTime;
-    });
-    if (result) {
-      return null;
-    }
-    setIsLoading(true);
 
-    copyTimeList.forEach((item, index) => {
-      ot_time.push(item.ot_time);
-      flag.push(item.flag);
-    });
-
-    reservationTimeListSave({
-      _mt_idx: login.idx,
-      ot_time,
-      flag,
-      ordertime_idx: orderTimeIdx,
-    })
-      .then(res => res.data?.result === 'true' && showToastMessage('저장되었습니다.'))
-      .finally(() => {
-        setIsLoading(false);
+      copyTimeList.forEach((item, index) => {
+        ot_time.push(item.ot_time);
+        flag.push(item.flag);
       });
+
+      reservationTimeListSave({
+        _mt_idx: login.idx,
+        ot_time,
+        flag,
+        ordertime_idx: orderTimeIdx,
+      })
+        .then(res => res.data?.result === 'true' && showToastMessage('저장되었습니다.'))
+        .finally(() => {
+          setIsLoading(false);
+        });
+    } catch (error) {
+      console.log(error);
+      AlertButton(error);
+      setIsLoading(false);
+    }
   };
 
   const onPressDelete = index => {
@@ -159,7 +177,7 @@ export default function ReservationTimeManagement() {
           </Button>
         </TouchableOpacity>
       </Box>
-      <RowBox width={size.designWidth} flexWrap="wrap">
+      <RowBox width={412} flexWrap="wrap">
         <FlatList
           data={timeList}
           numColumns={2}

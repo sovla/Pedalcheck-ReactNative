@@ -16,9 +16,12 @@ import {DefaultInput} from '@/assets/global/Input';
 import {DefaultText} from '@/assets/global/Text';
 import {modalOpenAndProp} from '@/Store/modalState';
 import {AlertButton} from '@/Util/Alert';
+import {Dimensions} from 'react-native';
+
+const {height} = Dimensions.get('window');
 
 export default function CouponUseBikeSelect({route: {params}}) {
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -98,7 +101,7 @@ export default function CouponUseBikeSelect({route: {params}}) {
     <>
       <Header title="쿠폰 사용" />
 
-      <Box backgroundColor="#0000" style={{height: size.screenHeight - 130}}>
+      <Box backgroundColor="#0000" style={{height: height - 130}}>
         <ScrollBox backgroundColor="#0000" keyboardShouldPersistTaps="handled">
           <RepairReservationHeader step={1} array={[1, 2, 3]} content="자전거 선택" />
           <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />

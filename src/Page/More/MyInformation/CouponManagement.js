@@ -1,14 +1,5 @@
-import {Button} from '@/assets/global/Button';
-import {BetweenBox, Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
-import {
-  DarkBoldText,
-  DarkMediumText,
-  DarkText,
-  DefaultText,
-  GrayText,
-  IndigoText,
-  MediumText,
-} from '@/assets/global/Text';
+import {BetweenBox, Box, RowBox} from '@/assets/global/Container';
+import {DarkBoldText, DarkMediumText, DarkText, DefaultText, GrayText, MediumText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import Header from '@/Component/Layout/Header';
 import MenuNav from '@/Component/Layout/MenuNav';
@@ -16,20 +7,16 @@ import React from 'react';
 import {useState} from 'react';
 import {FlatList, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
-import {DefaultInput} from '@/assets/global/Input';
-import {couponDropdownList, repairHistoryDropdownList} from '@/assets/global/dummy';
 import CouponItem from '@/Component/MyInformation/CouponItem';
 import {useEffect} from 'react';
 import {useIsFocused} from '@react-navigation/native';
-import {getCouponList, getCouponUsageStateList} from '@/API/More/More';
+import {getCouponList} from '@/API/More/More';
 import UseCouponItem from '@/Component/MyInformation/UseCouponItem';
 import {useLayoutEffect} from 'react';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import Loading from '@/Component/Layout/Loading';
-import {getHeightPixel, getPixel} from '@/Util/pixelChange';
-import {getCouponCategoryNumber} from '@/Util/changeCategory';
+import {getPixel} from '@/Util/pixelChange';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
-import Badge from '@/Component/BikeManagement/Badge';
 
 export default function CouponManagement({navigation, route: {params}}) {
   const [selectMenu, setSelectMenu] = useState('쿠폰함');

@@ -13,14 +13,14 @@ import {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
 export default function ReservationCancle({ot_code, cancelComplete, setBank, bank}) {
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const dispatch = useDispatch();
   const [user, setUser] = useState({
     accountName: '',
     bankName: '',
     accountNumber: '',
   });
-  const [bankCode, setBankCode] = useState('');
+
   const onChange = (value, name) => {
     setUser(prev => ({...prev, [name]: value}));
   };
@@ -105,7 +105,7 @@ export default function ReservationCancle({ot_code, cancelComplete, setBank, ban
           );
         })}
       </Box>
-      <Box width={size.minusPadding} pd="0px 16px">
+      <Box width="380px" pd="0px 16px">
         <FooterButton
           width="348px"
           buttonWidth="169px"

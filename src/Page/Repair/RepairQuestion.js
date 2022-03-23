@@ -1,4 +1,4 @@
-import {sendPedalCheckQuestion, updateQna} from '@/API/More/More';
+import {updateQna} from '@/API/More/More';
 import {sendShopQuestion} from '@/API/Repair/Repair';
 import {LinkButton} from '@/assets/global/Button';
 import {Box, Container, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
@@ -7,13 +7,12 @@ import {DarkText, DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import Header from '@/Component/Layout/Header';
-import {getCategoryName, getCategoryNumber} from '@/Util/changeCategory';
 import {showToastMessage} from '@/Util/Toast';
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {useEffect} from 'react';
 import {useState} from 'react';
-import {View, Text} from 'react-native';
+import {Dimensions} from 'react-native';
 import {useSelector} from 'react-redux';
 
 // 2022-01-03 10:49:58
@@ -21,10 +20,11 @@ import {useSelector} from 'react-redux';
 // 정비소 리뷰 작성,수정 페이지
 // Toast 메시지 추가 필요
 
+const {height} = Dimensions.get('window');
+
 export default function RepairQuestion({route: {params}}) {
   const navigation = useNavigation();
   const {
-    size,
     login,
     shopInfo: {store_info},
   } = useSelector(state => state);
@@ -114,13 +114,9 @@ export default function RepairQuestion({route: {params}}) {
   return (
     <>
       <Header title="문의하기" />
-      <Container height={`${size.screenHeight - 120}px`}>
+      <Container height={`${height - 120}px`}>
         <ScrollBox pd="0px 16px">
-          <RowBox
-            style={borderBottomWhiteGray}
-            width={size.minusPadding}
-            mg="20px 0px 20px"
-            keyboardShouldPersistTaps="handled">
+          <RowBox style={borderBottomWhiteGray} width="380px" mg="20px 0px 20px" keyboardShouldPersistTaps="handled">
             <DarkText mg="0px 0px 20px" fontSize={Theme.fontSize.fs16} fontWeight={Theme.fontWeight.bold}>
               필수 입력 항목{' '}
             </DarkText>

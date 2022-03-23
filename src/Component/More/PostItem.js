@@ -12,7 +12,6 @@ import AutoHeightImage from 'react-native-auto-height-image';
 import {getPixel} from '@/Util/pixelChange';
 
 export default function PostItem({item, index, selectPost, setSelectPost, isImage = true}) {
-  const {size} = useSelector(state => state);
   const isIdx = item?.idx !== undefined;
   const onPressPost = (idx, type) => {
     if (selectPost.find(findItem => findItem === idx)) {
@@ -26,7 +25,7 @@ export default function PostItem({item, index, selectPost, setSelectPost, isImag
     <Box key={index} alignItems="center" style={isSelect && borderBottomWhiteGray}>
       <Box style={borderBottomWhiteGray}>
         <TouchableOpacity onPress={() => onPressPost(item?.idx ?? index + 1, item?.idx)}>
-          <BetweenBox pd="16p 10px" width={size.minusPadding}>
+          <BetweenBox pd="16p 10px" width="380px">
             <Box>
               <DarkBoldText fontSize={Theme.fontSize.fs15}>{item.title}</DarkBoldText>
               <GrayText fontSize={Theme.fontSize.fs12}>{item.date}</GrayText>

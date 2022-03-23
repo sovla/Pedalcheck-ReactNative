@@ -29,10 +29,10 @@ export default function Review({
   mg = '0px',
   item = {},
   isJustShow = false,
-  onPressDelete = () => {},
+  onPressDelete,
 }) {
   const [isDetailButton, setIsDetailButton] = useState(false);
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const navigation = useNavigation();
   const isCoupon = item?.ot_use_coupon?.length > 0;
   const isMyReview = login?.idx === item?.mt_idx;
@@ -95,7 +95,7 @@ export default function Review({
           </Box>
         </RowBox>
         <RowBox>
-          {isMyReview && (
+          {isMyReview && onPressDelete && (
             <TouchableOpacity
               onPress={() => {
                 AlertButtons(
@@ -138,7 +138,7 @@ export default function Review({
         {isDetailPage ? (
           <Photo imageArray={imageArray} isView isTouch />
         ) : (
-          // <Swiper width={size.minusPadding} height={200} imageArray={imageArray} borderRadius="All" isRolling={false} />
+          // <Swiper width="380px" height={200} imageArray={imageArray} borderRadius="All" isRolling={false} />
           imageArray?.length > 0 && (
             <Box>
               <AutoHeightImage
@@ -166,7 +166,7 @@ export default function Review({
           )
         )}
       </Box>
-      <Box width={size.minusPadding} mg="15px 0px 20px">
+      <Box width="380px" mg="15px 0px 20px">
         <DarkText numberOfLines={isDetailPage ? 50 : 3} fontSize={Theme.fontSize.fs15} lineHeight="22px">
           {item?.srt_content}
         </DarkText>
@@ -176,7 +176,6 @@ export default function Review({
           <ReviewComment
             reviewDate={item?.srt_adate}
             reviewContent={item?.srt_res_content}
-            size={size}
             deletePress={isJustShow ? null : () => deletePress(item?.srt_idx)}
           />
         </RowBox>
@@ -185,7 +184,7 @@ export default function Review({
       {isDetailButton && !isDetailPage && (
         <LinkWhiteButton
           to={() => navigation.navigate('ReviewDetail', {item: item, isRecomment: true})}
-          width={size.minusPadding}
+          width="380px"
           mg="15px 0px 0px 0px"
           content="자세히보기"
         />

@@ -23,7 +23,7 @@ import {imageAddress} from '@assets/global/config';
 import Loading from '../Layout/Loading';
 
 export default function BikeRegisterContainer({isUpdate, bike, setBike, image, setImage}) {
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const setChangeBike = (name, value) => {
@@ -110,7 +110,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
             text: '확인',
             onPress: () => {
               setBike({
-                bikeName: data.mbt_nick,
+                bikeName: data?.mbt_nick,
                 bikeModel: data.mbt_brand + '\t\t' + data.mbt_model,
                 vehicleNumber: data.mbt_serial,
                 vehicleYear: data.mbt_year,
@@ -262,7 +262,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
       {isLoading && <Loading isAbsolute />}
       <Header title="자전거 추가" />
       <ScrollBox keyboardShouldPersistTaps="handled">
-        <Box width={size.designWidth} pd="20px 16px">
+        <Box width={412} pd="20px 16px">
           <DarkBoldText fontSize={Theme.fontSize.fs18} mg="0px 0px 20px">
             필수 입력 항목
             <DefaultText color={Theme.color.skyBlue}>*</DefaultText>
@@ -283,7 +283,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
           <DefaultInput
             title="별명"
             placeHolder="별명을 입력해주세요"
-            width={size.minusPadding}
+            width="380px"
             fontSize={Theme.fontSize.fs16}
             value={bike.bikeName}
             changeFn={item => setChangeBike('bikeName', item)}
@@ -295,7 +295,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
           <DefaultInput
             title="모델"
             placeHolder="자전거 모델을 선택해주세요"
-            width={size.minusPadding}
+            width="380px"
             value={bike.bikeModel}
             PressText={() => {
               dispatch(
@@ -315,7 +315,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
           />
           <DefaultInput
             title="타입"
-            width={size.minusPadding}
+            width="380px"
             placeHolder={'자전거 타입을 입력해주세요'}
             question={undefined}
             value={bike?.type}
@@ -336,7 +336,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
           />
         </Box>
         <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
-        <Box width={size.designWidth} pd="20px 16px">
+        <Box width={412} pd="20px 16px">
           <DarkBoldText mg="0px 0px 20px" fontSize={Theme.fontSize.fs18}>
             선택 입력 항목
           </DarkBoldText>
@@ -346,7 +346,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
                 key={item.title}
                 title={item.title}
                 placeHolder={item.placeHolder}
-                width={size.minusPadding}
+                width="380px"
                 fontSize={Theme.fontSize.fs16}
                 mg="0px 0px 20px"
                 pd="0px 0px 5px"
@@ -368,7 +368,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
                   key={item.title}
                   title={item.title}
                   placeHolder={item.placeHolder}
-                  width={size.minusPadding}
+                  width="380px"
                   fontSize={Theme.fontSize.fs16}
                   mg="0px 0px 20px"
                   pd="0px 0px 5px"

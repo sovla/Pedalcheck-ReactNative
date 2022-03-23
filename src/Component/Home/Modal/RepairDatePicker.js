@@ -12,7 +12,6 @@ import {numberChangeFormat} from '@/Util/numberFormat';
 
 export default function RepairDatePicker({birth, setBirth}) {
   const now = new Date();
-  const size = useSelector(state => state.size);
   const dispatch = useDispatch();
 
   const [date, setDate] = useState(new Date());
@@ -26,7 +25,7 @@ export default function RepairDatePicker({birth, setBirth}) {
 
   return (
     <>
-      <ModalTitleBox size={size} title="날짜 선택" padding={32} />
+      <ModalTitleBox title="날짜 선택" padding={32} />
       <RowBox mg="15px 0px 30px" alignItems="center" justifyContent="center">
         <Box width="100px" />
         <DatePicker

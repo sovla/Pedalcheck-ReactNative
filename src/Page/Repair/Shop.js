@@ -14,7 +14,7 @@ import {deleteReview, getShopDetail, sendLikeShop} from '@/API/Shop/Shop';
 import Review from '@/Component/Repair/Review';
 import {ResetShopInfo, setLikeCount, setShopInfo} from '@/Store/shopInfoState';
 import ShopHeader from '@/Component/Repair/ShopHeader';
-import {AlertButton, AlertButtons, RequireLoginAlert} from '@/Util/Alert';
+import {AlertButton, RequireLoginAlert} from '@/Util/Alert';
 import Loading from '@/Component/Layout/Loading';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {useIsFocused} from '@react-navigation/native';
@@ -25,7 +25,7 @@ export default function Shop({route, navigation}) {
   const [selectMenu, setSelectMenu] = useState('매장소개');
   const [isDone, setIsDone] = useState(true);
   const [isLike, setIsLike] = useState(false);
-  const {size, login, shopInfo, test} = useSelector(state => state);
+  const {login, shopInfo} = useSelector(state => state);
   const mt_idx = route.params?.mt_idx ?? shopInfo?.store_info?.mt_idx;
   const isFocused = useIsFocused();
 
@@ -115,7 +115,7 @@ export default function Shop({route, navigation}) {
         <FlatList
           ListHeaderComponent={
             <>
-              <ShopHeader size={size} />
+              <ShopHeader />
               <MenuNav menuItem={isPartner ? menu : ['매장소개']} select={selectMenu} setSelect={setSelectMenu} />
 
               {selectMenu === '매장소개' && <ShopIntroduction />}

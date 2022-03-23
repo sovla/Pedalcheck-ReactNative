@@ -39,7 +39,7 @@ import Privacy from '../Home/Modal/Privacy';
 // 사용법 modal.modalComponent에 원하는 값을 넣고 switch문을 추가하면 됩니다.
 
 export default function ModalBasic() {
-  const {modal, size} = useSelector(state => state);
+  const {modal} = useSelector(state => state);
   const dispatch = useDispatch();
 
   if (modal?.isOpenModal !== true) {
@@ -139,7 +139,7 @@ export default function ModalBasic() {
               // 슬라이드형 아닐때 기본
               <Box
                 backgroundColor={Theme.color.white}
-                width={size.minusPadding}
+                width="380px"
                 minHeight="150px"
                 borderRadius="15px"
                 pd="20px 16px"
@@ -151,7 +151,7 @@ export default function ModalBasic() {
               <PositionBox
                 style={{borderTopLeftRadius: 15, borderTopRightRadius: 15}}
                 backgroundColor={Theme.color.white}
-                minWidth={size.designWidth}
+                minWidth={412}
                 minHeight="200px"
                 pd="20px 16px"
                 bottom="0px"

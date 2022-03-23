@@ -6,7 +6,6 @@ import {LinkButton} from '@/assets/global/Button';
 import {Box} from '@/assets/global/Container';
 
 export default function HomeFooter({navigation, isShowLogin = true, isAbsolute}) {
-  const size = useSelector(state => state.size);
   return (
     <Box
       alignItems="center"
@@ -21,12 +20,7 @@ export default function HomeFooter({navigation, isShowLogin = true, isAbsolute})
     >
       {isShowLogin && (
         <Box mg="40px 0px 0px">
-          <LinkButton
-            to={() => navigation.navigate('Login')}
-            content="이메일 로그인"
-            height="44px"
-            width={size.minusPadding}
-          />
+          <LinkButton to={() => navigation.navigate('Login')} content="이메일 로그인" height="44px" width="380px" />
         </Box>
       )}
       <Box pd="10px 0px 0px">

@@ -25,13 +25,12 @@ export default function QuestionItem({
   onPressDelete,
   isDetail = true,
 }) {
-  const {size} = useSelector(state => state);
   const color = status === '답변' ? Theme.color.skyBlue : Theme.color.red;
   return (
     <Box>
       <Box style={borderBottomWhiteGray}>
         <TouchableOpacity onPress={onPressItem}>
-          <Box pd="0px 0px 0px 10px" width={size.minusPadding}>
+          <Box pd="0px 0px 0px 10px" width="380px">
             <BetweenBox width="370px" mg="16px 0px">
               <Box>
                 {categoryName && <IndigoText fontSize={Theme.fontSize.fs14}>{categoryName}</IndigoText>}
@@ -89,7 +88,7 @@ export default function QuestionItem({
             <>
               <RowBox
                 pd="13px 10px 13px 0px"
-                width={size.minusPadding}
+                width="380px"
                 backgroundColor={Theme.color.backgroundBlue}
                 borderRadius="10px">
                 <RowBox width="44px" pd="0px 11px 0px 0px" justifyContent="flex-end" backgroundColor="#0000">

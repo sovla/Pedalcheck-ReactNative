@@ -7,10 +7,7 @@ import Swiper from '@/Component/Repair/Swiper';
 import React from 'react';
 import {ScrollView} from 'react-native';
 import {useSelector} from 'react-redux';
-import ShopDummyImage from '@assets/image/shop_default.png';
 import {useState} from 'react';
-import {getProductCategoryList} from '@/API/More/Product';
-import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {imageAddress} from '@assets/global/config';
 import {useEffect} from 'react';
 
@@ -27,7 +24,7 @@ export default function ProductDetail({route: {params}}) {
   const weekdayIsShow = parseInt(item?.pt_stime?.slice(0, 2)) + parseInt(item?.pt_etime.slice(0, 2)) > 0 ? true : false;
   const weekdayAvailableTime = `${item?.pt_stime?.slice(0, 2)}시 ~ ${item?.pt_etime?.slice(0, 2)}시`;
   const holydayAvailableTime = `${item?.pt_weekend_stime?.slice(0, 2)}시 ~ ${item?.pt_weekend_etime?.slice(0, 2)}시`;
-  const {size} = useSelector(state => state);
+
   const [imageArray, setImageArray] = useState([]);
 
   useEffect(() => {
@@ -96,11 +93,11 @@ export default function ProductDetail({route: {params}}) {
       <ScrollView keyboardShouldPersistTaps="handled">
         <Container alignItems="center" pd="20px 0px">
           {item?.pt_image?.length > 0 && (
-            <Box width={size.minusPadding} height="200px" mg="0px 0px 20px">
+            <Box width="380px" height="200px" mg="0px 0px 20px">
               <Swiper imageArray={imageArray} width={412 - 32} height={200} borderRadius="All" />
             </Box>
           )}
-          <Box width={size.minusPadding} alignItems="center">
+          <Box width="380px" alignItems="center">
             <DefaultText fontSize={Theme.fontSize.fs15} color={Theme.color.gray}>
               {shopTitle}
             </DefaultText>
@@ -108,8 +105,8 @@ export default function ProductDetail({route: {params}}) {
             <MoneyText fontSize={Theme.fontSize.fs13} money={Price} disabled />
             <MoneyText fontSize={Theme.fontSize.fs18} money={salePrice} color={Theme.color.indigo} />
           </Box>
-          <Box mg="20px 0px 0px" width={size.designWidth}>
-            <DefaultLine height="10px" width={size.designWidth} />
+          <Box mg="20px 0px 0px" width={412}>
+            <DefaultLine height="10px" width={412} />
           </Box>
           <Box pd="0px 16px" width="100%">
             {contentArray.map((item, index) => {

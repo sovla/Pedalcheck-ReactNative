@@ -16,7 +16,7 @@ import {getBikeModel} from '@/API/Bike/Bike';
 import Loading from '@/Component/Layout/Loading';
 
 export default function BikeBrand() {
-  const {size, modal} = useSelector(state => state);
+  const {modal} = useSelector(state => state);
   const dispatch = useDispatch();
 
   const [bikeModel, setBikeModel] = useState([]);
@@ -55,11 +55,11 @@ export default function BikeBrand() {
     <>
       <ModalTitleBox title="브랜드 검색"></ModalTitleBox>
       <Box>
-        <Box width={`${size.designWidth - 32 - 40}px`}>
+        <Box width={`${412 - 32 - 40}px`}>
           <DefaultInput
             title={'브랜드 선택'}
             placeHolder="브랜드명을 입력해주세요"
-            width={`${size.designWidth - 32 - 40}px`}
+            width={`${412 - 32 - 40}px`}
             changeFn={item => setSearchText(item)}
             value={searchText}
           />

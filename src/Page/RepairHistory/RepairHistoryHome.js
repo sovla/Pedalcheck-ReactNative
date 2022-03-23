@@ -34,7 +34,7 @@ export default function RepairHistoryHome({navigation, route: {params}}) {
   const getIsRead = async () => {
     setisLoading(prev => ({...prev, isRead: true}));
     const response = await getNotificationIsRead({
-      _mt_idx: login.idx,
+      _mt_idx: login?.idx,
     });
     if (response?.data?.result === 'false') {
       setIsRead(true);

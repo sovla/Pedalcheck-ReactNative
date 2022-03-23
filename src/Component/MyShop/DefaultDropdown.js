@@ -34,7 +34,7 @@ export default function DefaultDropdown({
       valueField="value"
       selectedTextStyle={{
         color: Theme.color.black,
-        fontSize: fontSize,
+        fontSize: getPixel(fontSize),
         fontFamily: fontFamily,
         letterSpacing: -0.45,
         paddingLeft: getPixel(pdLeft),

@@ -9,16 +9,15 @@ import ModalTitleBox from '../../Modal/ModalTitleBox';
 import {getHeightPixel, getPixel} from '@/Util/pixelChange';
 
 export default function ThirdParty() {
-  const size = useSelector(state => state.size);
   const dispatch = useDispatch();
   const paddingText = '20px 0px 0px';
   return (
     <>
-      <ModalTitleBox size={size} title="개인정보 제3자 제공 동의" />
+      <ModalTitleBox title="개인정보 제3자 제공 동의" />
       <Box
         style={{
           maxHeight: getHeightPixel(350),
-          width: getPixel(size.designWidth - 64),
+          width: getPixel(412 - 64),
         }}>
         <Box pd="16px" width="100%" backgroundColor={Theme.color.white} borderRadius="5px">
           <DarkText fontSize={Theme.fontSize.fs14}>
@@ -47,7 +46,7 @@ export default function ThirdParty() {
         mg="20px 0px 0px"
         to={() => dispatch(modalClose())}
         content="확인"
-        width={`${size.designWidth - 64}px`}
+        width={`${412 - 64}px`}
         color={Theme.color.black}
         borderColor={Theme.borderColor.gray}
         backgroundColor={Theme.color.white}

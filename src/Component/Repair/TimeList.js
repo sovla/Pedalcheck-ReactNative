@@ -10,7 +10,6 @@ import EqualsDay from '@/Util/EqualsDay';
 
 export default function TimeList({timeList = [], disabled = [], selectItem, setSelectItem, selectDate, isMultiple}) {
   const TimeBoxWithNthChild = withNthMap(mapInnerItem);
-  const {size} = useSelector(state => state);
 
   const now = new Date();
 
@@ -25,7 +24,7 @@ export default function TimeList({timeList = [], disabled = [], selectItem, setS
 
   return (
     <Box mg="0px 16px">
-      <RowBox width={size.minusPadding} flexWrap="wrap">
+      <RowBox width="380px" flexWrap="wrap">
         {timeList.map((item, index) => {
           if (!item) {
             return null;

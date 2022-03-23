@@ -1,19 +1,15 @@
 import Theme from '@/assets/global/Theme';
 import {getPixel} from '@/Util/pixelChange';
-import React, {useState} from 'react';
-import {Alert, Text, TouchableOpacity, View} from 'react-native';
+import React from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import CheckIcon from '@assets/image/ic_check_cal.png';
 import DefaultImage from '@assets/global/Image';
 import CalendarLocalConfig from '@Util/CalendarLocalConfig';
-import {useSelector} from 'react-redux';
-import moment from 'moment';
 import 'moment/locale/ko';
 CalendarLocalConfig;
 
 export default function ReservationCalendar({selectDate, setSelectDate, onChangeMonth = () => {}, disabledDayList}) {
-  const {size} = useSelector(state => state);
-
   const onPressDate = day => {
     if (disabledDayList?.length > 0 && disabledDayList.find(item => item === day.dateString)) {
       return null;
@@ -54,7 +50,7 @@ export default function ReservationCalendar({selectDate, setSelectDate, onChange
       onDayPress={day => onPressDate(day)}
       onMonthChange={day => onChangeMonth(day?.dateString?.substr(0, 7))}
       style={{
-        width: getPixel(size.designWidth - 32),
+        width: getPixel(412 - 32),
       }}
       theme={{
         'stylesheet.calendar.header': {

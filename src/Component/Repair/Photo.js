@@ -31,7 +31,6 @@ const PhotoComponent = ({
   imageHeight,
   isTouch = false,
 }) => {
-  const {size} = useSelector(state => state);
   const [isModal, setIsModal] = useState(false);
   const [ViewItem, setViewItem] = useState('');
   const onPressAddPhoto = async () => {
@@ -76,7 +75,7 @@ const PhotoComponent = ({
     }
   };
   return (
-    <RowBox width={size.minusPadding} flexWrap="wrap">
+    <RowBox width="380px" flexWrap="wrap">
       {imageArray.map((item, index) => {
         return (
           <Result

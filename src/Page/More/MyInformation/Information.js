@@ -2,7 +2,7 @@ import {Box, Container, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import Header from '@/Component/Layout/Header';
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import profileDefault from '@assets/image/profile_default.png';
 import {DarkBoldText, DarkMediumText, DarkText, GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
@@ -17,7 +17,6 @@ import {loginType} from '@/assets/global/dummy';
 import {useEffect} from 'react';
 import {useState} from 'react';
 import {getBikeList} from '@/API/Bike/Bike';
-import {ResetShopInfo} from '@/Store/shopInfoState';
 import {ResetStoreInfo} from '@/Store/storeInfoState';
 import {logOut} from '@/API/More/More';
 import {setIsAdmin} from '@/Store/adminState';
@@ -25,7 +24,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {RequireApple} from '@/Util/Alert';
 
 export default function Information({route: {params}}) {
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [bikeNumber, setBikeNumber] = useState(0);
@@ -50,7 +49,7 @@ export default function Information({route: {params}}) {
     <>
       <Header title="내 정보" />
       <Container>
-        <Box mg="20px 0px" width={size.designWidth} alignItems="center">
+        <Box mg="20px 0px" width={412} alignItems="center">
           <DefaultImage
             source={login?.mt_image ? {uri: imageAddress + login.mt_image} : profileDefault}
             width="80px"
@@ -78,7 +77,7 @@ export default function Information({route: {params}}) {
                   alignItems="center"
                   justifyContent="space-between"
                   backgroundColor="#0000"
-                  width={size.minusPadding}>
+                  width="380px">
                   <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
                     자전거 관리
                   </DarkMediumText>
@@ -91,7 +90,7 @@ export default function Information({route: {params}}) {
                     navigation.navigate('CouponManagement');
                   }
                 }}>
-                <RowBox backgroundColor="#0000" style={borderBottomWhiteGray} width={size.minusPadding}>
+                <RowBox backgroundColor="#0000" style={borderBottomWhiteGray} width="380px">
                   <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
                     쿠폰 관리
                   </DarkMediumText>
@@ -105,7 +104,7 @@ export default function Information({route: {params}}) {
                 navigation.navigate('UpdateHome');
               }
             }}>
-            <RowBox backgroundColor="#0000" style={borderBottomWhiteGray} width={size.minusPadding}>
+            <RowBox backgroundColor="#0000" style={borderBottomWhiteGray} width="380px">
               <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
                 내 정보 수정
               </DarkMediumText>
@@ -123,7 +122,7 @@ export default function Information({route: {params}}) {
               await AsyncStorage.removeItem('isAdmin');
               navigation.reset({routes: [{name: 'Home'}]});
             }}>
-            <RowBox backgroundColor="#0000" style={borderBottomWhiteGray} width={size.minusPadding}>
+            <RowBox backgroundColor="#0000" style={borderBottomWhiteGray} width="380px">
               <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
                 로그아웃
               </DarkMediumText>

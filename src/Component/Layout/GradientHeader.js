@@ -19,12 +19,11 @@ export default function GradientHeader({
   onPressImage,
   titlePress,
 }) {
-  const {size} = useSelector(state => state);
   return (
     <Gradient height={height}>
       <RowBox
         backgroundColor="rgba(0,0,0,0)"
-        width={size.minusPadding}
+        width="380px"
         height="36px"
         justifyContent="space-between"
         alignItems="center">

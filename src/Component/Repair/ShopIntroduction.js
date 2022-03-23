@@ -17,7 +17,6 @@ import {useState} from 'react';
 
 export default function ShopIntroduction() {
   const {
-    size,
     shopInfo: {store_info},
   } = useSelector(state => state);
 
@@ -143,8 +142,8 @@ export default function ShopIntroduction() {
           <Box mg="20px 0px 10px">
             <DarkBoldText>매장 상세</DarkBoldText>
           </Box>
-          <Box width={size.minusPadding}>
-            <DarkText lineHeight="22px" width={size.minusPadding}>
+          <Box width="380px">
+            <DarkText lineHeight="22px" width="380px">
               {store_info?.mst_intro}
             </DarkText>
           </Box>
@@ -155,7 +154,7 @@ export default function ShopIntroduction() {
           <Box mg="20px 0px 10px">
             <DarkBoldText>매장 링크</DarkBoldText>
           </Box>
-          <Box width={size.minusPadding}>
+          <Box width="380px">
             <TouchableOpacity
               onPress={async () => {
                 const result = await Linking.canOpenURL(store_info?.mst_sns);
@@ -163,7 +162,7 @@ export default function ShopIntroduction() {
                   Linking.openURL(store_info.mst_sns);
                 }
               }}>
-              <IndigoText lineHeight="22px" width={size.minusPadding}>
+              <IndigoText lineHeight="22px" width="380px">
                 {store_info?.mst_sns}
               </IndigoText>
             </TouchableOpacity>
@@ -197,7 +196,7 @@ export default function ShopIntroduction() {
           />
         </MapView>
       </Box>
-      {/* <DefaultImage source={Dummy} width={size.minusPadding} height="200px"></DefaultImage> */}
+      {/* <DefaultImage source={Dummy} width="380px" height="200px"></DefaultImage> */}
     </Box>
   );
 }

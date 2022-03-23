@@ -1,9 +1,7 @@
 import {AddInformationImage, getUserInformation, UpdateMember, UpdateMemberImage} from '@/API/User/Login';
-import {BorderButton, LinkButton} from '@/assets/global/Button';
+import {LinkButton} from '@/assets/global/Button';
 import {Box, Container, RowBox, ScrollBox} from '@/assets/global/Container';
-import {bankList2} from '@/assets/global/dummy';
 import {DefaultInput} from '@/assets/global/Input';
-import {DarkText, ErrorText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import Header from '@/Component/Layout/Header';
@@ -17,19 +15,16 @@ import {useLayoutEffect} from 'react';
 import {useEffect} from 'react';
 import {useState} from 'react';
 import {Alert} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import ImageCropPicker from 'react-native-image-crop-picker';
 import {useDispatch, useSelector} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
 import {setUserInfo} from '@/Store/loginState';
 import {phoneNumber} from '@/Util/phoneFormatter';
-import isAdminCheck from '@/Util/isAdminCheck';
 
 export default function Update({navigation}) {
   const isFocused = useIsFocused();
   const [imageType, setImageType] = useState(1);
   const [select, setSelect] = useState('기본 정보 수정');
-  const {sizem, login, location} = useSelector(state => state);
+  const {login, location} = useSelector(state => state);
   const [user, setUser] = useState(); //  기본정보 (유저정보)
   const [image, setImage] = useState(); //  기본정보
   const [selectImage, setSelectImage] = useState(); //  추가정보
@@ -232,11 +227,9 @@ export default function Update({navigation}) {
 const menuItem = ['기본 정보 수정', '추가 정보 수정'];
 
 const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispatch}) => {
-  const {size, login} = useSelector(state => state);
-
   return (
     <Box pd="0px 16px">
-      <Box style={borderBottomWhiteGray} width={size.minusPadding}>
+      <Box style={borderBottomWhiteGray} width="380px">
         <RowBox mg="20px 0px">
           <RequireFieldText />
         </RowBox>
@@ -247,7 +240,7 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
             title="이름"
             placeHolder="이름을 입력해주세요"
             errorMessage={errorMessage.name !== '' && errorMessage.name}
-            width={size.minusPadding}
+            width="380px"
             fontSize={Theme.fontSize.fs15}
             pd="0px 0px 3px"
             value={user?.mt_name}
@@ -259,7 +252,7 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
             title="닉네임"
             placeHolder="닉네임을 입력해주세요"
             errorMessage={errorMessage.nickname !== '' && errorMessage.nickname}
-            width={size.minusPadding}
+            width="380px"
             fontSize={Theme.fontSize.fs15}
             pd="0px 0px 3px"
             value={user?.mt_nickname}
@@ -272,7 +265,7 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
             placeHolder="이메일을 입력해주세요"
             value={user?.mt_id}
             disabled
-            width={size.minusPadding}
+            width="380px"
             fontSize={Theme.fontSize.fs15}
             pd="0px 0px 3px"
           />
@@ -286,7 +279,7 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
               setUser(prev => ({...prev, mt_hp: phoneNumber(text)}));
             }}
             maxLength={13}
-            width={size.minusPadding}
+            width="380px"
             fontSize={Theme.fontSize.fs15}
             pd="0px 0px 3px"
             errorMessage={errorMessage.mt_hp !== '' && errorMessage.mt_hp}
@@ -295,7 +288,7 @@ const DefaultInformation = ({user, setUser, errorMessage, image, setImage, dispa
         <Box mg="0px 0px 20px">
           <DefaultInput
             title="지역"
-            width={size.minusPadding}
+            width="380px"
             fontSize={Theme.fontSize.fs15}
             placeHolder="지역을 선택해주세요"
             value={user?.mt_addr}

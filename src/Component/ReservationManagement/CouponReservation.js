@@ -1,15 +1,12 @@
-import {Box, Container, RowBox, ScrollBox} from '@/assets/global/Container';
+import {Box, Container, RowBox} from '@/assets/global/Container';
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
-import {useSelector} from 'react-redux';
 import {Button} from '@/assets/global/Button';
 import Theme from '@/assets/global/Theme';
 import {useState} from 'react';
 import {DarkMediumText, DarkText, GrayText} from '@/assets/global/Text';
 import DefaultImage from '@assets/global/Image';
-import {getPixel} from '@/Util/pixelChange';
 import ArrowDownIcon from '@assets/image/arr_down.png';
-import Card from '@/Component/ReservationManagement/Card';
 import RepairProduct from '@/Component/ReservationManagement/RepairProduct';
 import CheckIcon from '@assets/image/ic_check_cal.png';
 import {useNavigation} from '@react-navigation/core';
@@ -17,7 +14,6 @@ import ScrollDays from './ScrollDays';
 
 export default function CouponReservation() {
   const navigation = useNavigation();
-  const {size} = useSelector(state => state);
   const [daySelect, setDaySelect] = useState(new Date());
   const onPressAllApprove = () => {};
   const onPressProduct = () => {
@@ -26,12 +22,12 @@ export default function CouponReservation() {
   return (
     <Container>
       <ScrollDays daySelect={daySelect} setDaySelect={setDaySelect} keyboardShouldPersistTaps="handled" />
-      <Box width={size.minusPadding} mg="0px 16px 32px">
+      <Box width="380px" mg="0px 16px 32px">
         <GrayText fontSize={Theme.fontSize.fs13}>
           좌/우로 슬라이드하여 지난 주/다음 주 예약내역을 볼 수 있습니다.
         </GrayText>
       </Box>
-      <Box width={size.minusPadding} mg="0px 16px">
+      <Box width="380px" mg="0px 16px">
         <Box width="100%" alignItems="flex-end">
           <RowBox>
             {/* 드롭다운으로 변경예정 */}

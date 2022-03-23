@@ -16,7 +16,7 @@ import {getBikeModel} from '@/API/Bike/Bike';
 import Loading from '@/Component/Layout/Loading';
 
 export default function BikeModel() {
-  const {size, modal} = useSelector(state => state);
+  const {modal} = useSelector(state => state);
   const dispatch = useDispatch();
 
   const [bikeModel, setBikeModel] = useState([]);
@@ -50,7 +50,7 @@ export default function BikeModel() {
     <>
       <ModalTitleBox title="모델 검색"></ModalTitleBox>
       <Box>
-        <Box width={`${size.designWidth - 32 - 40}px`}>
+        <Box width={`${412 - 32 - 40}px`}>
           {modal?.modalProp?.brand !== '' && modal?.modalProp?.brand !== undefined && (
             <RowBox alignItems="center">
               <DefaultText color={Theme.color.skyBlue}>{modal.modalProp.brand}</DefaultText>
@@ -61,7 +61,7 @@ export default function BikeModel() {
           <DefaultInput
             title={modal?.modalProp?.brand}
             placeHolder="모델명을 입력해주세요"
-            width={`${size.designWidth - 32 - 40}px`}
+            width={`${412 - 32 - 40}px`}
             changeFn={item => setSearchText(item)}
             value={searchText}
           />

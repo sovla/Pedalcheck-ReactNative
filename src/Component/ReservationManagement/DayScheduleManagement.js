@@ -5,9 +5,7 @@ import {DarkBoldText, DarkText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {AlertButtons} from '@/Util/Alert';
 import React from 'react';
-import {useState} from 'react';
 import {TouchableOpacity} from 'react-native';
-import {useSelector} from 'react-redux';
 import {DefaultCheckBox} from '../Home/CheckBox';
 import TimeList from '../Repair/TimeList';
 
@@ -24,7 +22,6 @@ export default function DayScheduleManagement({
   setSelectTime,
   onPressSave,
 }) {
-  const {size} = useSelector(state => state);
   const isTimeListArray = Array.isArray(timeList);
   const storeTimeList = isTimeListArray && timeList?.map(item => item?.ot_time ?? item.st_time);
   const storeTimeDisabledList =
@@ -53,7 +50,7 @@ export default function DayScheduleManagement({
   return (
     <>
       <Box mg="0px 16px 20px">
-        <BetweenBox width={size.minusPadding}>
+        <BetweenBox width="380px">
           <DarkBoldText>일정 리스트</DarkBoldText>
 
           <TouchableOpacity onPress={() => setAllOff(!allOff)}>
@@ -87,7 +84,7 @@ export default function DayScheduleManagement({
       <Box mg="0px 16px 10px">
         <DarkBoldText mg="0px 0px 10px">메모</DarkBoldText>
         <DefaultInput
-          width={size.minusPadding}
+          width="380px"
           height="100px"
           placeHolder="메모를 입력해주세요"
           isAlignTop

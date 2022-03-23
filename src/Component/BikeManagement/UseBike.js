@@ -11,7 +11,7 @@ import {useNavigation} from '@react-navigation/core';
 import {FlatList} from 'react-native-gesture-handler';
 import {AlertButton} from '@/Util/Alert';
 
-export default function UseBike({items, size}) {
+export default function UseBike({items}) {
   const navigation = useNavigation();
 
   const onPressAddBike = () => {
@@ -27,13 +27,13 @@ export default function UseBike({items, size}) {
   };
   return (
     <Box alignItems="center" flex={1}>
-      <RowBox pd="20px 16px" justifyContent="space-between" width={size.designWidth}>
+      <RowBox pd="20px 16px" justifyContent="space-between" width={412}>
         <DarkBoldText>사용중인 자전거</DarkBoldText>
         <DarkBoldText>{items?.length ? items?.length : 0} 대</DarkBoldText>
       </RowBox>
       <TouchableOpacity onPress={onPressAddBike}>
         <Button
-          width={size.minusPadding}
+          width="380px"
           height="44px"
           backgroundColor={Theme.color.skyBlue}
           borderRadius="10px"
@@ -50,7 +50,7 @@ export default function UseBike({items, size}) {
           const changeItem = {
             brandName: item.mbt_brand,
             modelName: item.mbt_model,
-            bikeName: item.mbt_nick,
+            bikeName: item?.mbt_nick,
             date: item.mbt_wdate.substring(0, 10),
             repairCount: item.mbt_orders,
           };

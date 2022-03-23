@@ -1,10 +1,9 @@
 import styled from 'styled-components/native';
 import React from 'react';
-import {Platform, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import Theme from './Theme';
 import {DefaultText, GrayText} from './Text';
-import {Box, PositionBox, RowBox} from './Container';
-import {useSelector} from 'react-redux';
+import {Box, PositionBox} from './Container';
 import pixelChange from '@/Util/pixelChange';
 
 export const Button = styled.View`
@@ -140,9 +139,8 @@ export const FooterButton = ({
   isRelative,
   position,
 }) => {
-  const {size} = useSelector(state => state);
-  const buttonBoxWidth = width ? width : size.minusPadding;
-  const buttonWidthCalc = buttonWidth ? buttonWidth : `${(size.designWidth - 42) / 2}px`;
+  const buttonBoxWidth = width ? width : '380px';
+  const buttonWidthCalc = buttonWidth ? buttonWidth : `${(412 - 42) / 2}px`;
   const RenderBox = isRelative ? Box : PositionBox;
 
   return (

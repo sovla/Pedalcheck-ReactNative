@@ -13,13 +13,11 @@ import CheckList from '@/Component/ReservationManagement/CheckList';
 import React from 'react';
 import {useEffect} from 'react';
 import {useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
 import {imageAddress} from '@assets/global/config';
 
 // rejection: item.ot_cmemo, // 수정 필요 API 값없음
 
-export default function Detail({navigation, route}) {
-  const {size} = useSelector(state => state);
+export default function Detail({route}) {
   const [checkList, setCheckList] = useState(initCheckList);
   const [isCheckListShow, setIsCheckListShow] = useState(true);
   const [isShow, setIsShow] = useState(false);
@@ -78,8 +76,8 @@ export default function Detail({navigation, route}) {
       const data = item?.ot_proc;
       let notNullCount = 0;
       setCheckList(prev =>
-        prev.map((firstValue, firstIndex) => {
-          let tmpValue = firstValue.item.map((secondValue, secondIndex) => {
+        prev.map(firstValue => {
+          let tmpValue = firstValue.item.map(secondValue => {
             try {
               if (data[secondValue.indexName] === '1') {
                 notNullCount++;
@@ -170,7 +168,7 @@ export default function Detail({navigation, route}) {
               <Box mg="10px 0px 0px" style={borderBottomWhiteGray}>
                 <DarkBoldText>결제정보</DarkBoldText>
 
-                <BetweenBox mg="10px 0px 0px" width={size.minusPadding}>
+                <BetweenBox mg="10px 0px 0px" width="380px">
                   <DarkMediumText fontSize={Theme.fontSize.fs15}>결제 방식</DarkMediumText>
                   <RowBox alignItems="center">
                     <Badge badgeContent="쿠폰" />
@@ -183,7 +181,7 @@ export default function Detail({navigation, route}) {
             <>
               <Box mg="10px 0px 0px" style={borderBottomWhiteGray}>
                 <DarkBoldText>결제정보</DarkBoldText>
-                <BetweenBox mg="10px 0px 0px" width={size.minusPadding}>
+                <BetweenBox mg="10px 0px 0px" width="380px">
                   <DarkMediumText fontSize={Theme.fontSize.fs15}>가격</DarkMediumText>
                   <RowBox alignItems="center">
                     {changeItem.salePrice * 1 - changeItem.totalPrice * 1 > 0 && (
@@ -198,7 +196,7 @@ export default function Detail({navigation, route}) {
                     />
                   </RowBox>
                 </BetweenBox>
-                <BetweenBox mg="10px 0px 0px" width={size.minusPadding}>
+                <BetweenBox mg="10px 0px 0px" width="380px">
                   <DarkMediumText fontSize={Theme.fontSize.fs15}>할인</DarkMediumText>
                   <RowBox alignItems="center">
                     <MoneyText
@@ -229,7 +227,7 @@ export default function Detail({navigation, route}) {
 
           <Box mg="20px 0px 0px">
             <DarkBoldText>고객정보</DarkBoldText>
-            <Box width={size.minusPadding}>
+            <Box width="380px">
               <RowBox mg="10px 0px 0px" alignItems="center">
                 <DarkMediumText width="65px">이름</DarkMediumText>
 

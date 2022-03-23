@@ -10,21 +10,18 @@ import TimeList from '@/Component/Repair/TimeList';
 import ReservationCalendar from '@/Component/Repair/ReservationCalendar';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {getdisabledReservationDayList, getReservationTimeList} from '@/API/Shop/Shop';
-import {useDispatch, useSelector} from 'react-redux';
-import {useIsFocused} from '@react-navigation/native';
+import {useIsFocused, useNavigationState} from '@react-navigation/native';
 import {useEffect} from 'react';
 import moment from 'moment';
 import 'moment/locale/ko';
-import {setReservationDate} from '@/Store/reservationState';
 import {AlertButton} from '@/Util/Alert';
 
 export default function ReservationDate({navigation, route: {params}}) {
   const isFocused = useIsFocused();
   const now = new Date(moment().format('YYYY-MM-DD HH:mm:ss'));
-  const {shopInfo, reservationInfo} = useSelector(state => state);
   const [selectItem, setSelectItem] = useState(''); // 선택한 시간
-  const [selectDate, setSelectDate] = useState(null); // 선택한 날짜
-
+  const [selectDate, setSelectDate] = useState(new Date().toISOString().substring(0, 7)); // 선택한 날짜
+  const naviState = useNavigationState(state => state);
   const [disabledDayList, setDisabledDayList] = useState([]); // 선택불가 날짜
   const [disabledTimeList, setDisabledTimeList] = useState([]); // 선택불가 시간
   const [timeList, setTimeList] = useState([]); // 선택가능한 시간
@@ -73,12 +70,21 @@ export default function ReservationDate({navigation, route: {params}}) {
 
   const onPressNext = () => {
     if (selectDate && selectItem) {
-      navigation.navigate('CouponUseComplete', {
-        ...params,
-        selectDate: {
-          date: selectDate,
-          time: selectItem,
-        },
+      navigation.reset({
+        index: naviState.index - 1,
+        routes: [
+          ...naviState.routes.filter((value, index) => index < naviState.index - 1),
+          {
+            name: 'CouponUseComplete',
+            params: {
+              ...params,
+              selectDate: {
+                date: selectDate,
+                time: selectItem,
+              },
+            },
+          },
+        ],
       });
     } else {
       if (!selectDate) {

@@ -1,13 +1,8 @@
-import {Button} from '@/assets/global/Button';
 import {BetweenBox, Box, RowBox} from '@/assets/global/Container';
-import DefaultImage from '@/assets/global/Image';
 import {DarkBoldText, DarkText, DefaultText, GrayText, MediumText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {useSelector} from 'react-redux';
-import CheckIcon from '@assets/image/ic_check_w.png';
 import Badge from '@/Component/BikeManagement/Badge';
 
 const UseCouponItem = ({
@@ -20,10 +15,9 @@ const UseCouponItem = ({
   useCouponShopName,
   couponDate,
 }) => {
-  const {size} = useSelector(state => state);
-  const height = badgeContent === '미사용' ? '120px' : '100px';
+  // const height = badgeContent === '미사용' ? '120px' : '100px';
   return (
-    <Box style={borderBottomWhiteGray} width={size.minusPadding} mg="0px 16px">
+    <Box style={borderBottomWhiteGray} width="380px" mg="0px 16px">
       <BetweenBox alignItems="center" pd="16px 10px" width="100%" height={'auto'}>
         <Box>
           <RowBox alignItems="center">

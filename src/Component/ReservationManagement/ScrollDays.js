@@ -11,6 +11,7 @@ import moment from 'moment';
 import 'moment/locale/ko';
 import {numberChangeFormat} from '@/Util/numberFormat';
 import {useState} from 'react';
+import useUpdateEffect from '@/Hooks/useUpdateEffect';
 
 export default function ScrollDays({setDaySelect, daySelect, isNotPrev, orderList = []}) {
   const now = new Date(moment().format('YYYY-MM-DD'));
@@ -18,6 +19,7 @@ export default function ScrollDays({setDaySelect, daySelect, isNotPrev, orderLis
 
   const prevDay = isNotPrev ? 0 : 7;
   const nextDay = isNotPrev ? 13 : 7;
+
   const dateList = getDateList(
     now.getTime() - prevDay * 24 * 60 * 60 * 1000,
     now.getTime() + nextDay * 24 * 60 * 60 * 1000,
@@ -35,15 +37,20 @@ export default function ScrollDays({setDaySelect, daySelect, isNotPrev, orderLis
       };
     }
   });
-
   const dayList = ['일', '월', '화', '수', '목', '금', '토'];
 
-  useLayoutEffect(() => {
+  useUpdateEffect(() => {
     if (flatListRef?.current?.props?.data?.length) {
       if (!isNotPrev)
-        flatListRef.current.scrollToEnd({
-          animated: true,
-        });
+        console.log(
+          flatListRef.current.scrollToOffset({
+            offset: getPixel(384),
+            animated: true,
+          }),
+        );
+      // flatListRef.current.scrollTo({
+
+      // });
     }
   }, []);
 
@@ -52,7 +59,9 @@ export default function ScrollDays({setDaySelect, daySelect, isNotPrev, orderLis
       <FlatList
         ref={flatListRef}
         horizontal
-        getItemLayout={(data, index) => ({length: getPixel(83), offset: getPixel(300), index})}
+        removeClippedSubviews={false}
+        initialNumToRender={20}
+        getItemLayout={(data, index) => ({length: getPixel(50), offset: getPixel(50) * index, index})}
         data={dateList}
         renderItem={({item, index}) => {
           if (!item?.date) {

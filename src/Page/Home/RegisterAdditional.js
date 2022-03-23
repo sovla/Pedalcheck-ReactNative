@@ -97,8 +97,6 @@ export const RegisterAdditionalBody = ({
   birthDate,
   setBirthDate,
 }) => {
-  const {size} = useSelector(state => state);
-
   const dispatch = useDispatch();
 
   const birthDateValue = birthDate?.year !== '' ? `${birthDate.year}년 ${birthDate.month}월 ${birthDate.day}일` : '';
@@ -180,7 +178,7 @@ export const RegisterAdditionalBody = ({
         <DefaultInput
           title="생년월일"
           placeHolder="생년월일을 선택해주세요"
-          width={size.minusPadding}
+          width="380px"
           value={birthDateValue}
           PressText={() => {
             dispatch(

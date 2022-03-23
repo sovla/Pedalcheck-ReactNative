@@ -68,7 +68,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
@@ -259,10 +259,10 @@ export default function ReservationManagementDetail({navigation, route: {params}
             <BikeInformationHeader item={bikeInfo} mg="10px 0px" />
             <BikeInformaitonBody bikeInfoDetail={bikeInfoDetail} />
           </Box>
-          {type !== 'coupon' && (
+          {type !== 'coupon' && reservationInfo?.ot_pay_status?.length > 0 && (
             <Box mg="10px 0px 20px" style={borderBottomWhiteGray}>
               <DarkBoldText>결제정보</DarkBoldText>
-              <RowBox mg="10px 0px 20px" justifyContent="space-between" width={size.minusPadding}>
+              <RowBox mg="10px 0px 20px" justifyContent="space-between" width="380px">
                 <DarkMediumText fontSize={Theme.fontSize.fs15}> 가격</DarkMediumText>
                 <RowBox>
                   <Badge badgeContent={payState(reservationInfo.ot_pay_status)} />
@@ -280,7 +280,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
 
           <Box style={borderBottomWhiteGray}>
             <DarkBoldText>고객정보</DarkBoldText>
-            <Box width={size.minusPadding}>
+            <Box width="380px">
               <RowBox mg="10px 0px 0px" alignItems="center">
                 <DarkMediumText width="65px">이름</DarkMediumText>
 
@@ -308,7 +308,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
                 <DarkBoldText mg="20px 0px 10px">정비소 관리자 메모</DarkBoldText>
                 <DefaultInput
                   placeHolder="메모를 입력해주세요"
-                  width={size.minusPadding}
+                  width="380px"
                   height="100px"
                   isAlignTop
                   multiline

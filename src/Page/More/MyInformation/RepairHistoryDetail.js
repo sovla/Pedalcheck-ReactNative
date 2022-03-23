@@ -27,7 +27,7 @@ import {VirtualAccountItem} from '@/Page/Repair/ReservationPayment';
  *
  */
 export default function RepairHistoryDetail({route: {params}}) {
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const isFocused = navigation.isFocused();
@@ -149,7 +149,7 @@ export default function RepairHistoryDetail({route: {params}}) {
               {repair?.ot_note && (
                 <Box mg="0px 16px 20px">
                   <DarkBoldText>정비노트</DarkBoldText>
-                  <DarkText width={size.minusPadding} fontSize={Theme.fontSize.fs15}>
+                  <DarkText width="380px" fontSize={Theme.fontSize.fs15}>
                     {repair?.ot_note}
                   </DarkText>
                 </Box>
@@ -210,7 +210,7 @@ export default function RepairHistoryDetail({route: {params}}) {
                   <RowBox>
                     <DarkBoldText>추가/반환 공임비</DarkBoldText>
                   </RowBox>
-                  <BetweenBox mg="10px 0px" width={size.minusPadding}>
+                  <BetweenBox mg="10px 0px" width="380px">
                     <DarkMediumText fontSize={Theme.fontSize.fs15}>
                       {repair?.ot_return === 'A' ? '추가' : '반환'} 공임비
                     </DarkMediumText>
@@ -228,7 +228,7 @@ export default function RepairHistoryDetail({route: {params}}) {
                   <DarkBoldText>결제정보</DarkBoldText>
                 </RowBox>
 
-                <BetweenBox mg="10px 0px" width={size.minusPadding}>
+                <BetweenBox mg="10px 0px" width="380px">
                   <DarkMediumText fontSize={Theme.fontSize.fs15}>결제수단</DarkMediumText>
                   <DarkText fontSize={Theme.fontSize.fs15}>
                     {repair?.ot_pay_type === 'card'
@@ -245,7 +245,7 @@ export default function RepairHistoryDetail({route: {params}}) {
 
                 {repair?.ot_use_coupon === '0' && (
                   <>
-                    <BetweenBox width={size.minusPadding}>
+                    <BetweenBox width="380px">
                       <DarkMediumText fontSize={Theme.fontSize.fs15}>가격</DarkMediumText>
                       <MoneyText
                         money={repair?.ot_sprice}
@@ -254,7 +254,7 @@ export default function RepairHistoryDetail({route: {params}}) {
                         fontWeight={Theme.fontWeight.bold}
                       />
                     </BetweenBox>
-                    <BetweenBox width={size.minusPadding} mg="10px 0px 15px">
+                    <BetweenBox width="380px" mg="10px 0px 15px">
                       <DarkMediumText fontSize={Theme.fontSize.fs15}>할인</DarkMediumText>
                       <MoneyText
                         money={(+repair?.ot_sprice - repair?.ot_price) * -1}
@@ -280,7 +280,7 @@ export default function RepairHistoryDetail({route: {params}}) {
 
               {repair?.ot_use_coupon === '0' && (
                 <Box mg="0px 16px" style={borderBottomWhiteGray}>
-                  <BetweenBox mg="20px 0px" width={size.minusPadding}>
+                  <BetweenBox mg="20px 0px" width="380px">
                     <DarkBoldText>결제 금액</DarkBoldText>
                     <RowBox alignItems="center">
                       {repair?.ot_status !== '예약취소' && repair?.ot_status !== '환불' && (

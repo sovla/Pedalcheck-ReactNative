@@ -26,7 +26,7 @@ import {imageAddress} from '@assets/global/config';
 // Junhan
 // 정비소 헤더
 
-const ShopHeader = ({size}) => {
+const ShopHeader = () => {
   const navigation = useNavigation();
   const {
     shopInfo: {store_info},
@@ -61,7 +61,7 @@ const ShopHeader = ({size}) => {
             <DefaultImage source={BackIcon} width="45px" height="45px" />
           </TouchableOpacity>
         </PositionBox>
-        <Swiper imageArray={dummyImageArray} width={size.designWidth} height={250} isRolling resizeMode="stretch" />
+        <Swiper imageArray={dummyImageArray} width={412} height={250} isRolling resizeMode="stretch" />
         {isPartner ? (
           <>
             {store_info?.mst_tel?.length > 0 && (

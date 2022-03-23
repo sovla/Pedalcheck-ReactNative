@@ -6,9 +6,8 @@ import {Text} from 'react-native';
 import {useSelector} from 'react-redux';
 
 export default function Bike({item, isUse = true}) {
-  const {size} = useSelector(state => state);
   return (
-    <Box width={size.minusPadding} minHeight="100px" justifyContent="center">
+    <Box width="380px" minHeight="100px" justifyContent="center">
       <RowBox>
         {isUse ? (
           <>

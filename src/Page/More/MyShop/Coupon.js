@@ -23,10 +23,12 @@ import {getCouponCategoryNumber} from '@/Util/changeCategory';
 import Loading from '@/Component/Layout/Loading';
 
 export default function Coupon() {
+  const storeInfo = useSelector(state => state.storeInfo);
+
   // 날짜 선택 필요한 상태, 함수 시작
   const [selectDate, setSelectDate] = useState({
-    start: '',
-    end: '',
+    start: storeInfo.mst_wdate.substring(0, 10),
+    end: dateFormat(new Date()),
   });
   const [datePicker, setDatePicker] = useState({
     start: false,
@@ -49,14 +51,13 @@ export default function Coupon() {
   const [content, setContent] = useState('');
 
   const [isLoading, setIsLoading] = useState(true);
-  const storeInfo = useSelector(state => state.storeInfo);
 
-  useLayoutEffect(() => {
-    setSelectDate({
-      start: storeInfo.mst_wdate.substring(0, 10),
-      end: dateFormat(new Date()),
-    });
-  }, []);
+  // useLayoutEffect(() => {
+  //   setSelectDate({
+  //     start: storeInfo.mst_wdate.substring(0, 10),
+  //     end: dateFormat(new Date()),
+  //   });
+  // }, []);
 
   useEffect(() => {
     if (isFocused) {
@@ -99,8 +100,8 @@ export default function Coupon() {
       _mt_idx: login.idx,
       mt_text: content,
       cst_status: getCouponCategoryNumber(dropMenu),
-      cst_s_wdate: selectDate?.start || storeInfo?.mst_wdate?.substring(0, 10),
-      cst_e_wdate: selectDate?.end || dateFormat(new Date()),
+      cst_s_wdate: selectDate?.start,
+      cst_e_wdate: selectDate?.end,
     }).then(res => res.data?.result === 'true' && res.data.data.data);
 
     if (data?.length) {

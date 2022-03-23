@@ -10,12 +10,14 @@ import {sendReview} from '@/API/Shop/Shop';
 
 import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
-import {Alert, ScrollView} from 'react-native';
+import {Alert, Dimensions, ScrollView} from 'react-native';
+
+const {height} = Dimensions.get('window');
 
 export default function ReviewWrite({navigation, route}) {
   const [content, setContent] = useState('');
   const [imageArray, setImageArray] = useState([]);
-  const {size, login, shopInfo} = useSelector(state => state);
+  const {login, shopInfo} = useSelector(state => state);
 
   const shopItem = route.params.item;
 
@@ -53,8 +55,8 @@ export default function ReviewWrite({navigation, route}) {
     <>
       <Header title="리뷰 작성" />
 
-      <Box width={size.minusPadding} mg="0px 16px" flex={1}>
-        <ScrollView style={{width: '100%', height: size.screenHeight}} keyboardShouldPersistTaps="handled">
+      <Box width="380px" mg="0px 16px" flex={1}>
+        <ScrollView style={{width: '100%', height: height}} keyboardShouldPersistTaps="handled">
           <ReviewRecord itemArray={[shopItem]} isSelect={false} pd="20px 0px" />
           <DefaultInput
             width="100%"
@@ -77,7 +79,7 @@ export default function ReviewWrite({navigation, route}) {
           <IndigoText fontSize={Theme.fontSize.fs14}>최대 5장까지 등록가능</IndigoText>
         </ScrollView>
         <PositionBox bottom="20px">
-          <LinkButton width={size.minusPadding} content="게시" to={onPressSend}></LinkButton>
+          <LinkButton width="380px" content="게시" to={onPressSend}></LinkButton>
         </PositionBox>
       </Box>
     </>

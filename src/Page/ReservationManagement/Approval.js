@@ -21,7 +21,7 @@ import numberFormat from '@/Util/numberFormat';
 import Loading from '@/Component/Layout/Loading';
 
 export default function Approval({navigation, route: {params}}) {
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const [isShow, setIsShow] = useState(false);
   const [checkList, setCheckList] = useState(initCheckList);
   const [imageArray, setImageArray] = useState([]);
@@ -97,7 +97,7 @@ export default function Approval({navigation, route: {params}}) {
         <ScrollBox flex={1} pd="0px 16px" keyboardShouldPersistTaps="handled">
           <Box mg="20px 0px 0px" flex={1} style={borderBottomWhiteGray}>
             <DarkBoldText>결제정보</DarkBoldText>
-            <RowBox mg="10px 0px 20px" width={size.minusPadding} justifyContent="space-between">
+            <RowBox mg="10px 0px 20px" width="380px" justifyContent="space-between">
               <DarkText>가격</DarkText>
               <MoneyText
                 money={params?.ot_price}
@@ -114,7 +114,7 @@ export default function Approval({navigation, route: {params}}) {
           </Box>
           <Box>
             <DarkBoldText mg="20px 0px 12px">추가/반환 공임비</DarkBoldText>
-            <RowBox mg="0px 0px 10px" width={size.minusPadding}>
+            <RowBox mg="0px 0px 10px" width="380px">
               {menuItem.map(item => (
                 <SelectItem content={item} onPress={setSelectWages} select={selectWages} key={item} />
               ))}
@@ -140,7 +140,7 @@ export default function Approval({navigation, route: {params}}) {
             <DarkBoldText mg="0px 0px 20px">선택 입력 항목</DarkBoldText>
           </Box>
           <Box>
-            <RowBox mg="20px 0px 10px" width={size.minusPadding} justifyContent="space-between" alignItems="center">
+            <RowBox mg="20px 0px 10px" width="380px" justifyContent="space-between" alignItems="center">
               <DarkMediumText>정비사진 업로드</DarkMediumText>
               <IndigoText fontSize={Theme.fontSize.fs14}>최대 15장까지 등록가능</IndigoText>
             </RowBox>
@@ -148,7 +148,7 @@ export default function Approval({navigation, route: {params}}) {
           </Box>
           <Box mg="20px 0px 0px">
             <DefaultInput
-              width={size.minusPadding}
+              width="380px"
               height="150px"
               placeHolder="정비노트를 입력해주세요"
               isAlignTop

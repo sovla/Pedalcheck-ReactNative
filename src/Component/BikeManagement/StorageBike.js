@@ -8,7 +8,7 @@ import {TouchableOpacity} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import Bike from './Bike';
 
-export default function StorageBike({size, item, getBikeListHandle}) {
+export default function StorageBike({item, getBikeListHandle}) {
   const [isScroll, setIsScroll] = useState(false);
   const navigation = useNavigation();
   const onPressBike = idx => {
@@ -16,7 +16,7 @@ export default function StorageBike({size, item, getBikeListHandle}) {
   };
   return (
     <Box alignItems="center" flex={1}>
-      <RowBox pd="20px 16px" justifyContent="space-between" width={size.designWidth}>
+      <RowBox pd="20px 16px" justifyContent="space-between" width={412}>
         <DarkBoldText>보관 자전거</DarkBoldText>
         <DarkBoldText>{item === null ? 0 : item?.length} 대</DarkBoldText>
       </RowBox>
@@ -37,7 +37,7 @@ export default function StorageBike({size, item, getBikeListHandle}) {
           const changeItem = {
             brandName: item.mbt_brand,
             modelName: item.mbt_model,
-            bikeName: item.mbt_nick,
+            bikeName: item?.mbt_nick,
             date: item.mbt_wdate.substring(0, 10),
             repairCount: item.mbt_orders,
           };

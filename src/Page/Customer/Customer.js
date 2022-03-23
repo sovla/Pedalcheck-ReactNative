@@ -18,7 +18,7 @@ import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import Loading from '@/Component/Layout/Loading';
 
 export default function Customer({navigation}) {
-  const {size, login} = useSelector(state => state);
+  const {login} = useSelector(state => state);
   const [sortSelectItem, setSortSelectItem] = useState('전체');
   const [customerCount, setCustomerCount] = useState(0);
   const [searchText, setSearchText] = useState('');
@@ -117,7 +117,7 @@ export default function Customer({navigation}) {
                 <DefaultInput
                   value={searchText}
                   changeFn={text => setSearchText(text)}
-                  width={size.minusPadding}
+                  width="380px"
                   borderColor={Theme.borderColor.gray}
                   backgroundColor={Theme.color.white}
                   placeHolder="회원 이름을 입력하세요"></DefaultInput>

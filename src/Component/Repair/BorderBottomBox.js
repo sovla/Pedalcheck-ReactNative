@@ -1,10 +1,7 @@
 import {Box, RowBox} from '@/assets/global/Container';
-import DefaultImage from '@/assets/global/Image';
-import {DarkText, DefaultText} from '@/assets/global/Text';
+import {DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
-import {useSelector} from 'react-redux';
 
 export default function BorderBottomBox({
   title,
@@ -15,11 +12,9 @@ export default function BorderBottomBox({
   fontSize = '16px',
   leftWidth = 20,
 }) {
-  const {size} = useSelector(state => state);
-
   const deviceLeftWidth = (380 * leftWidth) / 100;
   return (
-    <RowBox widht={size.minusPadding} height={height} backgroundColor="rgba(0,0,0,0)">
+    <RowBox widht="380px" height={height} backgroundColor="rgba(0,0,0,0)">
       <Box
         backgroundColor="rgba(0,0,0,0)"
         width={`${deviceLeftWidth}px`}
