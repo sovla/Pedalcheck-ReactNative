@@ -110,7 +110,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
             text: '확인',
             onPress: () => {
               setBike({
-                bikeName: data.mbt_nick,
+                bikeName: data?.mbt_nick,
                 bikeModel: data.mbt_brand + '\t\t' + data.mbt_model,
                 vehicleNumber: data.mbt_serial,
                 vehicleYear: data.mbt_year,

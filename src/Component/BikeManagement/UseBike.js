@@ -50,7 +50,7 @@ export default function UseBike({items}) {
           const changeItem = {
             brandName: item.mbt_brand,
             modelName: item.mbt_model,
-            bikeName: item.mbt_nick,
+            bikeName: item?.mbt_nick,
             date: item.mbt_wdate.substring(0, 10),
             repairCount: item.mbt_orders,
           };

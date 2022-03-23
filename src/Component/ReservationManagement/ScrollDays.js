@@ -52,7 +52,7 @@ export default function ScrollDays({setDaySelect, daySelect, isNotPrev, orderLis
 
       // });
     }
-  }, [dateList]);
+  }, []);
 
   return (
     <Box style={{height: 83}} mg="20px 0px 10px">

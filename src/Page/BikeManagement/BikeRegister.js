@@ -27,7 +27,7 @@ export default function BikeRegister({route}) {
       const data = route.params.bike;
       setBike({
         mbt_idx: data.idx,
-        bikeName: data.mbt_nick,
+        bikeName: data?.mbt_nick,
         bikeModel: data.mbt_brand + '\t\t' + data.mbt_model,
         vehicleNumber: data.mbt_serial,
         vehicleYear: data.mbt_year,
