@@ -25,7 +25,6 @@ export default function ReservationDate({navigation, route: {params}}) {
   const [disabledDayList, setDisabledDayList] = useState([]); // 선택불가 날짜
   const [disabledTimeList, setDisabledTimeList] = useState([]); // 선택불가 시간
   const [timeList, setTimeList] = useState([]); // 선택가능한 시간
-
   useUpdateEffect(() => {
     setDisabledTimeList([]);
     setTimeList([]);
@@ -110,6 +109,7 @@ export default function ReservationDate({navigation, route: {params}}) {
               setSelectDate={setSelectDate}
               onChangeMonth={onChangeMonth}
               disabledDayList={disabledDayList}
+              lastDay={new Date(params.item.cst_edate).setDate(new Date(params.item.cst_edate).getDate() + 1)}
             />
           </Box>
           <TimeList
