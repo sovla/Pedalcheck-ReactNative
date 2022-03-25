@@ -91,6 +91,8 @@ import SplashScreen from 'react-native-splash-screen';
 import IdentityVerification from './Home/IdentityVerification';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import AdjustmentDetail from './RepairHistory/AdjustmentDetail';
+import {PositionBox} from '@/assets/global/Container';
+import {DarkBoldText} from '@/assets/global/Text';
 
 let count = 0; //  종료카운트
 
@@ -347,9 +349,9 @@ const withScrollView = WrappedComponent => {
           <View style={{flex: 1, backgroundColor: Theme.color.white}}>
             <WrappedComponent {...props} />
             {isFocus && <ModalBasic navigation={props?.navigation} />}
-            {/* <PositionBox backgroundColor="#0000" flexDirection="row" top="0px" right="0px" zIndex={3000}>
+            <PositionBox backgroundColor="#0000" flexDirection="row" top="0px" right="0px" zIndex={3000}>
               <DarkBoldText>{props.route.name}</DarkBoldText>
-            </PositionBox> */}
+            </PositionBox>
           </View>
         </SafeAreaView>
         <SafeAreaView style={{flex: 0, backgroundColor: '#fff'}} />
