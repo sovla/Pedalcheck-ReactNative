@@ -39,7 +39,7 @@ export default function ScrollDays({setDaySelect, daySelect, isNotPrev, orderLis
   });
   const dayList = ['일', '월', '화', '수', '목', '금', '토'];
 
-  useUpdateEffect(() => {
+  useLayoutEffect(() => {
     if (flatListRef?.current?.props?.data?.length) {
       if (!isNotPrev)
         console.log(
@@ -48,9 +48,6 @@ export default function ScrollDays({setDaySelect, daySelect, isNotPrev, orderLis
             animated: true,
           }),
         );
-      // flatListRef.current.scrollTo({
-
-      // });
     }
   }, []);
 
