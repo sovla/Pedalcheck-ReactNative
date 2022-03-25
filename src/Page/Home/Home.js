@@ -70,7 +70,7 @@ export default function Home() {
 
 const styles = StyleSheet.create({
   mainText: {
-    fontFamily: Platform.OS === 'android' ? 'NotoSansKR-Bold' : 'NotoSansCJKkr-BoldTTF',
+    fontFamily: 'NotoSansKR-Bold',
     fontSize: getPixel(60),
     color: '#00B7FF',
     letterSpacing: -5,
