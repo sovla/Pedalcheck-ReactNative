@@ -95,6 +95,7 @@ import {PositionBox} from '@/assets/global/Container';
 import {DarkBoldText} from '@/assets/global/Text';
 import CouponUseRequest from './More/Coupon/CouponUseRequest';
 import CouponDownload from './More/MyInformation/CouponDownload';
+import CouponUseRepair from './More/Coupon/CouponUseRepair';
 
 let count = 0; //  종료카운트
 

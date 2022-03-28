@@ -1,6 +1,6 @@
 import {Container, RowBox} from '@/assets/global/Container';
 import React, {useState} from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList, Modal, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 import ShopIntroduction from '@/Component/Repair/ShopIntroduction';
@@ -26,6 +26,7 @@ export default function Shop({route, navigation}) {
   const [isDone, setIsDone] = useState(true);
   const [isLike, setIsLike] = useState(false);
   const {login, shopInfo} = useSelector(state => state);
+
   const mt_idx = route.params?.mt_idx ?? shopInfo?.store_info?.mt_idx;
   const isFocused = useIsFocused();
 

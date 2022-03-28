@@ -83,9 +83,9 @@ export default function IdentityVerification() {
     <SafeAreaView style={{flex: 1}}>
       <WebView
         source={{uri: `https://pedalcheck.co.kr/phone_cert.php?mt_idx=${snsLogin?.mt_idx}`}}
-        onMessage={async res => {
-          await setIdx(JSON.parse(res.nativeEvent.data)?.data);
-          await setmsg(JSON.parse(res.nativeEvent.data)?.msg);
+        onMessage={res => {
+          setIdx(JSON.parse(res.nativeEvent.data)?.data);
+          setmsg(JSON.parse(res.nativeEvent.data)?.msg);
         }}
         originWhitelist={['*']}
         onShouldStartLoadWithRequest={event => {

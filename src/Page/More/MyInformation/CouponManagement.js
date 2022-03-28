@@ -174,8 +174,9 @@ export default function CouponManagement({navigation, route: {params}}) {
   return (
     <>
       {isDone && <Loading isAbsolute />}
-      <Header title="쿠폰 관리" />
-      <MenuNav menuItem={menu} select={selectMenu} setSelect={setSelectMenu} />
+      <Header title={params?.isShop ? '쿠폰 선택' : '쿠폰 관리'} />
+      {!params?.isShop && <MenuNav menuItem={menu} select={selectMenu} setSelect={setSelectMenu} />}
+
       {/* {selectMenu === '쿠폰함' && <CouponBox selectSubMenu={selectSubMenu} setSelectSubMenu={setSelectSubMenu} />} */}
       {/* {selectMenu === '쿠폰 사용 현황' && <CouponUsageStatus setDropMenu={setDropMenu} dropMenu={dropMenu} />} */}
       <FlatList
@@ -274,7 +275,7 @@ export default function CouponManagement({navigation, route: {params}}) {
   );
 }
 
-const CouponBox = ({
+export const CouponBox = ({
   couponName = '쿠폰이름',
   shopName = '매장명',
   issueDate = '발급날',
