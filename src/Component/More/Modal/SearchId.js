@@ -65,13 +65,18 @@ export default function SearchId({setUser}) {
                   }}>
                   <RowBox
                     width="340px"
-                    height="35px"
+                    height="auto"
                     pd="0px 5px"
                     backgroundColor={Theme.color.white}
                     alignItems="center"
-                    style={borderBottomWhiteGray}>
-                    <DarkText>{item?.mt_id}</DarkText>
-                    <GrayText>{`(고객명)`}</GrayText>
+                    style={[
+                      borderBottomWhiteGray,
+                      {
+                        minHeight: 35,
+                      },
+                    ]}>
+                    <DarkText>{item?.mt_name}</DarkText>
+                    <GrayText mg="0px 0px 0px 5px">{`(${item?.mt_id})`}</GrayText>
                   </RowBox>
                 </TouchableOpacity>
               );

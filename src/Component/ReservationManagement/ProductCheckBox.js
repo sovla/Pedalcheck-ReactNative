@@ -12,7 +12,7 @@ export default function ProductCheckBox({title, item, onPress, disabled}) {
       {item.map((innerItem, index) => {
         if (innerItem?.select !== '') {
           return (
-            <RowBox mg="0px 0px 10px" key={innerItem + index} width="380px">
+            <RowBox mg="0px 0px 10px" key={index} width="380px">
               <DarkText width="50%">{innerItem.itemTitle}</DarkText>
               <RowBox justifyContent="space-between" width="50%">
                 <TouchableOpacity

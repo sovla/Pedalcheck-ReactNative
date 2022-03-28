@@ -30,6 +30,8 @@ import {payState} from '../More/MyInformation/RepairHistoryDetail';
 import Loading from '@/Component/Layout/Loading';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {AlertButton, AlertButtons} from '@/Util/Alert';
+import CheckList from '@/Component/ReservationManagement/CheckList';
+import {changeCheckList} from './Approval';
 
 export default function ReservationManagementDetail({navigation, route: {params}}) {
   const type = params?.type;
@@ -67,6 +69,9 @@ export default function ReservationManagementDetail({navigation, route: {params}
   const [isChange, setIsChange] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
+
+  const [isCheckList, setIsCheckList] = useState(false); // CheckList 표시용
+  const [checkList, setCheckList] = useState(initCheckList);
 
   const {login} = useSelector(state => state);
   const dispatch = useDispatch();
@@ -128,12 +133,18 @@ export default function ReservationManagementDetail({navigation, route: {params}
     // content 거절 사유
 
     const approveFunction = type === 'coupon' ? couponReservationEdit : reservationEdit;
+    let result = {};
+    if (ot_status === 5) {
+      result = changeCheckList(checkList);
+    }
+
     const response = await approveFunction({
       _mt_idx: login?.idx,
       od_idx: params?.od_idx,
       ot_cmemo: ot_status === 4 && content,
       ot_adm_memo: memo,
       ot_status,
+      ...result,
     });
     if (response.data?.result === 'true') {
       setIsChange(prev => !prev);
@@ -301,6 +312,16 @@ export default function ReservationManagementDetail({navigation, route: {params}
               </RowBox>
             </Box>
           </Box>
+          {type === 'coupon' && reservationInfo?.ot_status === '승인완료' && (
+            <Box>
+              <CheckList
+                setIsShow={setIsCheckList}
+                isShow={isCheckList}
+                setCheckList={setCheckList}
+                checkList={checkList}
+              />
+            </Box>
+          )}
 
           {type !== 'coupon' && ( // 쿠폰 아닌경우엔 줄이 길어 스크롤 뷰 안에서
             <>
@@ -372,3 +393,125 @@ export default function ReservationManagementDetail({navigation, route: {params}
     </>
   );
 }
+
+const initCheckList = [
+  {
+    title: '휠/허브',
+    item: [
+      {
+        itemTitle: '휠 정렬',
+        select: '1',
+      },
+      {
+        itemTitle: '구름성',
+        select: '1',
+      },
+    ],
+  },
+  {
+    title: '핸들',
+    item: [
+      {
+        itemTitle: '헤드셋 유격',
+        select: '1',
+      },
+      {
+        itemTitle: '핸들바 위치',
+        select: '1',
+      },
+      {
+        itemTitle: '바테입',
+        select: '1',
+      },
+    ],
+  },
+  {
+    title: '프레임',
+    item: [
+      {
+        itemTitle: '세척상태',
+        select: '1',
+      },
+      {
+        itemTitle: '녹 발생',
+        select: '1',
+      },
+      {
+        itemTitle: '프레임 외관',
+        select: '1',
+      },
+    ],
+  },
+  {
+    title: '비비/페달',
+    item: [
+      {
+        itemTitle: '비비 유격',
+        select: '1',
+      },
+      {
+        itemTitle: '페달 조립',
+        select: '1',
+      },
+      {
+        itemTitle: '구름성',
+        select: '1',
+      },
+    ],
+  },
+  {
+    title: '타이어',
+    item: [
+      {
+        itemTitle: '공기압',
+        select: '1',
+      },
+      {
+        itemTitle: '마모상태(프론트)',
+        select: '1',
+      },
+      {
+        itemTitle: '마모상태(리어)',
+        select: '1',
+      },
+    ],
+  },
+  {
+    title: '안장',
+    item: [
+      {
+        itemTitle: '안장 위치',
+        select: '1',
+      },
+      {
+        itemTitle: '싯클램프 체결',
+        select: '1',
+      },
+    ],
+  },
+  {
+    title: '체인/기어',
+    item: [
+      {
+        itemTitle: '체인 윤활',
+        select: '1',
+      },
+      {
+        itemTitle: '체인 수명',
+        select: '1',
+      },
+      {
+        itemTitle: '체인 청소상태',
+        select: '1',
+      },
+      {
+        itemTitle: '스프라켓 청소상태',
+        select: '1',
+      },
+      {
+        itemTitle: '기어 변속',
+        select: '1',
+      },
+    ],
+  },
+];

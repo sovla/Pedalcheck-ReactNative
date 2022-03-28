@@ -737,3 +737,9 @@ const AccountInformation = ({errorMessage, user, setUser, onPressAddImage}) => {
     </>
   );
 };
+
+// [
+//   {"yoil":"월","stime":"09:00","etime":"19:00"},
+//   {"yoil":"화","stime":"09:00","etime":"19:00"},
+//   {"yoil":"수","stime":"09:00","etime":"19:00"}
+//   ]
