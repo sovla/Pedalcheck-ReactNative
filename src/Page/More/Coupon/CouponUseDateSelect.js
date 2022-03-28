@@ -15,6 +15,7 @@ import {useEffect} from 'react';
 import moment from 'moment';
 import 'moment/locale/ko';
 import {AlertButton} from '@/Util/Alert';
+import {couponUseMenu} from '@/assets/global/dummy';
 
 export default function ReservationDate({navigation, route: {params}}) {
   const isFocused = useIsFocused();
@@ -69,21 +70,12 @@ export default function ReservationDate({navigation, route: {params}}) {
 
   const onPressNext = () => {
     if (selectDate && selectItem) {
-      navigation.reset({
-        index: naviState.index - 1,
-        routes: [
-          ...naviState.routes.filter((value, index) => index < naviState.index - 1),
-          {
-            name: 'CouponUseComplete',
-            params: {
-              ...params,
-              selectDate: {
-                date: selectDate,
-                time: selectItem,
-              },
-            },
-          },
-        ],
+      navigation.navigate('CouponUseRequest', {
+        ...params,
+        selectDate: {
+          date: selectDate,
+          time: selectItem,
+        },
       });
     } else {
       if (!selectDate) {
@@ -101,7 +93,7 @@ export default function ReservationDate({navigation, route: {params}}) {
       <Header title="정비예약" />
       <Box flex={1}>
         <ScrollBox flex={1} keyboardShouldPersistTaps="handled">
-          <RepairReservationHeader step={2} array={[1, 2, 3]} content="쿠폰 사용날짜 선택" />
+          <RepairReservationHeader step={2} array={couponUseMenu} content="쿠폰 사용날짜 선택" />
           <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
           <Box mg="20px 16px">
             <ReservationCalendar
@@ -120,7 +112,7 @@ export default function ReservationDate({navigation, route: {params}}) {
             setSelectItem={setSelectItem}
           />
           <Box mg="20px 16px" height="44px">
-            <LinkButton to={() => onPressNext()} content="다음"></LinkButton>
+            <LinkButton to={onPressNext} content="다음"></LinkButton>
           </Box>
         </ScrollBox>
       </Box>

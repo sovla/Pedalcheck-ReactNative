@@ -17,6 +17,7 @@ import {DefaultText} from '@/assets/global/Text';
 import {modalOpenAndProp} from '@/Store/modalState';
 import {AlertButton} from '@/Util/Alert';
 import {Dimensions} from 'react-native';
+import {couponUseMenu} from '@/assets/global/dummy';
 
 const {height} = Dimensions.get('window');
 
@@ -103,7 +104,7 @@ export default function CouponUseBikeSelect({route: {params}}) {
 
       <Box backgroundColor="#0000" style={{height: height - 130}}>
         <ScrollBox backgroundColor="#0000" keyboardShouldPersistTaps="handled">
-          <RepairReservationHeader step={1} array={[1, 2, 3]} content="자전거 선택" />
+          <RepairReservationHeader step={1} array={couponUseMenu} content="자전거 선택" />
           <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
           <ReservationBikeSelect
             isButton={false}

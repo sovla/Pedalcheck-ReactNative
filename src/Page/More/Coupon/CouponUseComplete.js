@@ -13,11 +13,11 @@ import DefaultImage from '@/assets/global/Image';
 import Loading from '@/Component/Layout/Loading';
 import {useLayoutEffect} from 'react';
 import {couponReservation} from '@/API/More/More';
+import {couponUseMenu} from '@/assets/global/dummy';
 
 export default function CouponUseComplete({route, navigation}) {
   const {item: coupon, selectBike, selectDate, shopInfo} = route?.params;
   const {login} = useSelector(state => state);
-
   const dummy = {
     cst_title: '',
     mst_name: '',
@@ -41,6 +41,7 @@ export default function CouponUseComplete({route, navigation}) {
       mst_idx: shopInfo.mst_idx,
       ot_pt_date: selectDate.date,
       ot_pt_time: selectDate.time,
+      //  추가필요 요청사항 order_coupon.php request로 넘어옴
     })
       .then(res => res?.data?.result === 'true' && res.data.data.data)
       .then(data => {
@@ -54,7 +55,7 @@ export default function CouponUseComplete({route, navigation}) {
         <>
           <Header title="쿠폰 사용" />
           <Box flex={1} backgroundColor="#0000">
-            <RepairReservationHeader step={3} array={[1, 2, 3]} content="예약완료" />
+            <RepairReservationHeader step={4} array={couponUseMenu} content="예약완료" />
             <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
             <Box>
               <RowBox mg="30px 0px" justifyContent="center" alignItems="center" width={412}>

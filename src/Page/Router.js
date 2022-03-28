@@ -93,6 +93,7 @@ import dynamicLinks from '@react-native-firebase/dynamic-links';
 import AdjustmentDetail from './RepairHistory/AdjustmentDetail';
 import {PositionBox} from '@/assets/global/Container';
 import {DarkBoldText} from '@/assets/global/Text';
+import CouponUseRequest from './More/Coupon/CouponUseRequest';
 
 let count = 0; //  종료카운트
 
@@ -465,6 +466,10 @@ const RouterSetting = [
   {
     name: 'CouponUseDateSelect',
     component: CouponUseDateSelect,
+  },
+  {
+    name: 'CouponUseRequest',
+    component: CouponUseRequest,
   },
   {
     name: 'CouponUseComplete',
