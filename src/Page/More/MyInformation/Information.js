@@ -96,6 +96,18 @@ export default function Information({route: {params}}) {
                   </DarkMediumText>
                 </RowBox>
               </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  if (RequireApple(login, navigation, '쿠폰 다운로드를')) {
+                    navigation.navigate('CouponDownload');
+                  }
+                }}>
+                <RowBox backgroundColor="#0000" style={borderBottomWhiteGray} width="380px">
+                  <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
+                    쿠폰 다운로드
+                  </DarkMediumText>
+                </RowBox>
+              </TouchableOpacity>
             </>
           )}
           <TouchableOpacity

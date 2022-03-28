@@ -94,6 +94,7 @@ import AdjustmentDetail from './RepairHistory/AdjustmentDetail';
 import {PositionBox} from '@/assets/global/Container';
 import {DarkBoldText} from '@/assets/global/Text';
 import CouponUseRequest from './More/Coupon/CouponUseRequest';
+import CouponDownload from './More/MyInformation/CouponDownload';
 
 let count = 0; //  종료카운트
 
@@ -522,6 +523,10 @@ const RouterSetting = [
   {
     name: 'CouponManagement',
     component: CouponManagement,
+  },
+  {
+    name: 'CouponDownload',
+    component: CouponDownload,
   },
   {
     name: 'ExportRegister',
