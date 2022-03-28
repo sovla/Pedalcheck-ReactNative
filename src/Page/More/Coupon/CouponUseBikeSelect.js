@@ -17,11 +17,14 @@ import {DefaultText} from '@/assets/global/Text';
 import {modalOpenAndProp} from '@/Store/modalState';
 import {AlertButton} from '@/Util/Alert';
 import {Dimensions} from 'react-native';
+import {couponUseMenu} from '@/assets/global/dummy';
 
 const {height} = Dimensions.get('window');
 
 export default function CouponUseBikeSelect({route: {params}}) {
-  const {login} = useSelector(state => state);
+  const {login, shopInfo: shopInfoState} = useSelector(state => state);
+
+  const isSelect = shopInfoState?.store_info?.mt_idx?.length > 0;
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -83,6 +86,13 @@ export default function CouponUseBikeSelect({route: {params}}) {
 
   useLayoutEffect(() => {
     if (isFocused) {
+      if (shopInfoState?.store_info?.mt_idx) {
+        setShopInfo(prev => ({
+          ...prev,
+          mst_idx: shopInfoState?.store_info?.mt_idx,
+          mst_name: shopInfoState?.store_info?.mst_name,
+        }));
+      }
       getMyBikeList({
         _mt_idx: login?.idx,
         mbt_flag: 'Y',
@@ -103,7 +113,7 @@ export default function CouponUseBikeSelect({route: {params}}) {
 
       <Box backgroundColor="#0000" style={{height: height - 130}}>
         <ScrollBox backgroundColor="#0000" keyboardShouldPersistTaps="handled">
-          <RepairReservationHeader step={1} array={[1, 2, 3]} content="자전거 선택" />
+          <RepairReservationHeader step={1} array={couponUseMenu} content="자전거 선택" />
           <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
           <ReservationBikeSelect
             isButton={false}
@@ -116,19 +126,22 @@ export default function CouponUseBikeSelect({route: {params}}) {
             bikeNick={bikeNick}
             setBikeNick={setBikeNick}
           />
-          <BetweenBox mg="40px 16px 0px" alignItems="flex-end">
-            <DefaultInput
-              title="매장선택"
-              fontSize={Theme.fontSize.fs16}
-              width="310px"
-              pd="0px 0px 5px"
-              value={shopInfo?.mst_name}
-              disabled
-            />
-            <ButtonTouch onPress={onPressSearch} width="60px">
-              <DefaultText>검색</DefaultText>
-            </ButtonTouch>
-          </BetweenBox>
+          {!isSelect && (
+            <BetweenBox mg="40px 16px 0px" alignItems="flex-end">
+              <DefaultInput
+                title="매장선택"
+                fontSize={Theme.fontSize.fs16}
+                width="310px"
+                pd="0px 0px 5px"
+                value={shopInfo?.mst_name}
+                disabled
+              />
+
+              <ButtonTouch onPress={onPressSearch} width="60px">
+                <DefaultText>검색</DefaultText>
+              </ButtonTouch>
+            </BetweenBox>
+          )}
         </ScrollBox>
         <LinkButton mg="20px 16px" to={onPressNext} content="다음" />
       </Box>

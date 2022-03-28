@@ -226,6 +226,7 @@ export default function RepairHome() {
                   tagList={item?.mst_tag?.split(',')}
                   image={item?.mst_img ? {uri: imageAddress + item.mst_img} : Dummy}
                   isImage
+                  location={item?.mst_addr}
                 />
               </Box>
             );

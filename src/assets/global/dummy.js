@@ -537,3 +537,5 @@ export const userAdjustment = [
     completeDate: '2022-02-09 15:53:11',
   },
 ];
+
+export const couponUseMenu = [1, 2, 3, 4];

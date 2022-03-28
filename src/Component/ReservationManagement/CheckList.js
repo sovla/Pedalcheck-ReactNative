@@ -57,15 +57,13 @@ export default function CheckList({setIsShow, isShow, checkList, setCheckList, d
           });
           if (count !== 0) {
             return (
-              <>
-                <ProductCheckBox
-                  disabled={disabled}
-                  key={listIndex}
-                  title={list.title}
-                  item={list.item}
-                  onPress={onPressCheckList}
-                />
-              </>
+              <ProductCheckBox
+                disabled={disabled}
+                key={listIndex}
+                title={list.title}
+                item={list.item}
+                onPress={onPressCheckList}
+              />
             );
           }
         })}

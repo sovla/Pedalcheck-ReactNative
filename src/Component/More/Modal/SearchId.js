@@ -1,5 +1,5 @@
-import {BetweenBox, Box, ScrollBox} from '@/assets/global/Container';
-import {DarkText} from '@/assets/global/Text';
+import {BetweenBox, Box, RowBox, ScrollBox} from '@/assets/global/Container';
+import {DarkText, GrayText} from '@/assets/global/Text';
 import ModalTitleBox from '@/Component/Modal/ModalTitleBox';
 import React from 'react';
 import {useState} from 'react';
@@ -37,12 +37,12 @@ export default function SearchId({setUser}) {
   };
   return (
     <>
-      <ModalTitleBox title="아이디 검색" onclose={() => {}} />
+      <ModalTitleBox title="고객명 검색" onclose={() => {}} />
 
       <Box width={`${412 - 32 - 40}px`}>
         <DefaultInput
           onSend={onPressSearch}
-          placeHolder="아이디를 입력해주세요."
+          placeHolder="고객명을 입력해주세요."
           width={`${412 - 32 - 40}px`}
           changeFn={setSearch}
           value={search}
@@ -63,21 +63,27 @@ export default function SearchId({setUser}) {
                     await setUser(item);
                     await dispatch(modalClose());
                   }}>
-                  <BetweenBox
+                  <RowBox
                     width="340px"
-                    height="35px"
+                    height="auto"
                     pd="0px 5px"
                     backgroundColor={Theme.color.white}
                     alignItems="center"
-                    style={borderBottomWhiteGray}>
-                    <DarkText>{item?.mt_id}</DarkText>
-                  </BetweenBox>
+                    style={[
+                      borderBottomWhiteGray,
+                      {
+                        minHeight: 35,
+                      },
+                    ]}>
+                    <DarkText>{item?.mt_name}</DarkText>
+                    <GrayText mg="0px 0px 0px 5px">{`(${item?.mt_id})`}</GrayText>
+                  </RowBox>
                 </TouchableOpacity>
               );
             }}
             ListEmptyComponent={
               <Box height="200px" width="340px" alignItems="center" justifyContent="center">
-                <DarkText>해당 아이디는 존재하지 않습니다.</DarkText>
+                <DarkText>해당 고객명은 존재하지 않습니다.</DarkText>
               </Box>
             }
           />

@@ -50,7 +50,7 @@ export default function CouponIssue() {
 
   const onPressIssue = async () => {
     if (id === '') {
-      AlertButton('아이디를 입력해주세요.');
+      AlertButton('고객명을 입력해주세요.');
       return null;
     }
     if (selectCoupon === '') {
@@ -149,12 +149,12 @@ export default function CouponIssue() {
           />
         </Box>
         <Box mg="20px 0px 0px">
-          <DarkMediumText mg="0px 0px 10px">아이디</DarkMediumText>
+          <DarkMediumText mg="0px 0px 10px">고객명</DarkMediumText>
           <DefaultInput
             value={id?.mt_id ?? ''}
             fontSize={Theme.fontSize.fs15}
             width="380px"
-            placeHolder={'아이디를 입력해주세요'}
+            placeHolder={'고객명을 입력해주세요'}
             isText
             PressText={() => {
               dispatch(

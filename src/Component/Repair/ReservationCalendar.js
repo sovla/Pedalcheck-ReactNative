@@ -7,10 +7,22 @@ import CheckIcon from '@assets/image/ic_check_cal.png';
 import DefaultImage from '@assets/global/Image';
 import CalendarLocalConfig from '@Util/CalendarLocalConfig';
 import 'moment/locale/ko';
+import {AlertButton} from '@/Util/Alert';
 CalendarLocalConfig;
 
-export default function ReservationCalendar({selectDate, setSelectDate, onChangeMonth = () => {}, disabledDayList}) {
+export default function ReservationCalendar({
+  selectDate,
+  setSelectDate,
+  onChangeMonth = () => {},
+  disabledDayList,
+  lastDay,
+}) {
   const onPressDate = day => {
+    if (lastDay && day.timestamp > lastDay) {
+      AlertButton('쿠폰 유효기간보다 지난 날짜 입니다.');
+      return;
+    }
+
     if (disabledDayList?.length > 0 && disabledDayList.find(item => item === day.dateString)) {
       return null;
     }
@@ -47,7 +59,9 @@ export default function ReservationCalendar({selectDate, setSelectDate, onChange
       monthFormat={'yyyy년 MM월'}
       // 비활성화된 날의 모든 터치 이벤트를 비활성화합니다. MarkDates에서 disableTouchEvent로 재정의할 수 있습니다.
       disableAllTouchEventsForDisabledDays={true}
-      onDayPress={day => onPressDate(day)}
+      onDayPress={day => {
+        onPressDate(day);
+      }}
       onMonthChange={day => onChangeMonth(day?.dateString?.substr(0, 7))}
       style={{
         width: getPixel(412 - 32),

@@ -33,21 +33,6 @@ export default function Approval({navigation, route: {params}}) {
   const onPressCancle = () => {
     navigation.goBack();
   };
-  const changeCheckList = () => {
-    let data = {};
-
-    const apiDataString = 'opt_chk_';
-    for (let i = 0; i < checkList.length; i++) {
-      const item = checkList[i]?.item;
-      for (let j = 0; j < item.length; j++) {
-        const select = item[j]?.select;
-        Object.assign(data, {
-          [`${apiDataString}${i + 1}_${j + 1}`]: select === '양호' ? 1 : select === '정비 요망' ? 2 : 0,
-        });
-      }
-    }
-    return data;
-  };
 
   const onPressComfirm = () => {
     if (selectWages !== '없음') {
@@ -57,7 +42,7 @@ export default function Approval({navigation, route: {params}}) {
       }
     }
     setIsLoading(true);
-    const result = changeCheckList();
+    const result = changeCheckList(checkList);
     reservationComplete({
       _mt_idx: login.idx,
       od_idx: params.od_idx,
@@ -311,3 +296,19 @@ const initCheckList = [
     ],
   },
 ];
+
+export function changeCheckList(checkList) {
+  let data = {};
+
+  const apiDataString = 'opt_chk_';
+  for (let i = 0; i < checkList.length; i++) {
+    const item = checkList[i]?.item;
+    for (let j = 0; j < item.length; j++) {
+      const select = item[j]?.select;
+      Object.assign(data, {
+        [`${apiDataString}${i + 1}_${j + 1}`]: select === '양호' ? 1 : select === '정비 요망' ? 2 : 0,
+      });
+    }
+  }
+  return data;
+}

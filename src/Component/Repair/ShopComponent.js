@@ -1,8 +1,8 @@
 import {Box, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
-import {DarkBoldText, DarkText, DefaultText, GrayText} from '@/assets/global/Text';
+import {DarkBoldText, DefaultText, GrayText, IndigoText} from '@/assets/global/Text';
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import ParterIcon from '@assets/image/ic_partner.png';
 import Theme from '@/assets/global/Theme';
 import LikeIcon from '@assets/image/ic_good.png';
@@ -10,6 +10,7 @@ import Dummy from '@assets/image/default_4.png';
 import numberFormat from '@/Util/numberFormat';
 import {useNavigation} from '@react-navigation/core';
 import {borderBottomWhiteGray} from '../BikeManagement/ShopRepairHistory';
+import LocationIcon from '@assets/image/ic_location2.png';
 
 export default function ShopComponent({
   shopTitle = '인천신스',
@@ -27,6 +28,7 @@ export default function ShopComponent({
   titleFontSize,
   isBorder = true,
   width = '380px',
+  location,
 }) {
   const navigation = useNavigation();
 
@@ -42,6 +44,15 @@ export default function ShopComponent({
           }>
           <RowBox alignItems="center" width={width} minHeight="100px" mg={mg} pd={pd}>
             <Box minHeight={titleFontSize ? '100px' : '74px'} justifyContent="center">
+              {location?.length > 0 && (
+                <RowBox width="286px">
+                  <DefaultImage source={LocationIcon} width="15px" height="15px" resizeMode="contain" />
+                  <IndigoText mg="0px 0px 0px 5px" fontSize={Theme.fontSize.fs13}>
+                    {location}
+                  </IndigoText>
+                </RowBox>
+              )}
+
               <RowBox mg={titleFontSize ? '10px 0px 15px' : '0px'} alignItems="center">
                 <DarkBoldText mg="0px 5px 0px 0px" fontSize={titleFontSize ?? Theme.fontSize.fs16}>
                   {shopTitle}
