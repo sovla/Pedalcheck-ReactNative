@@ -102,3 +102,17 @@ export const getAllOrderList = async args => {
     return response;
   } catch (error) {}
 };
+
+export const updateCheckList = async args => {
+  try {
+    const response = await API.post('mng/order_proc_after.php', args);
+    return response;
+  } catch (error) {}
+};
+
+export const getIsCouponType = async args => {
+  try {
+    const response = await API.post('mng/get_order_info.php', args);
+    return response;
+  } catch (error) {}
+};

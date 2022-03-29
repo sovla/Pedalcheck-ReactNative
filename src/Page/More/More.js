@@ -41,7 +41,7 @@ import {setIsAdmin} from '@/Store/adminState';
 import isAdminCheck from '@/Util/isAdminCheck';
 import {RequireApple} from '@/Util/Alert';
 
-const VERSION_CODE = '1.17.0';
+const VERSION_CODE = '1.18.0';
 
 export default function More() {
   const {

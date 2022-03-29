@@ -28,6 +28,7 @@ export default function TimeSelect({setTimeList, item}) {
         <DefaultDropdown
           width={100}
           data={openTimePmList}
+          maxHeightLength={6}
           value={item?.stime} // 오전 00
           setValue={value => onChange(value, 'stime')}
         />
@@ -36,6 +37,7 @@ export default function TimeSelect({setTimeList, item}) {
         <DefaultDropdown
           width={100}
           data={openTimePmList}
+          maxHeightLength={6}
           value={item?.etime}
           setValue={value => onChange(value, 'etime')}
         />

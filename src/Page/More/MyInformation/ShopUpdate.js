@@ -1,6 +1,6 @@
-import {deleteImage, getStoreInfo, updateStore, updateStoreImage} from '@/API/More/More';
-import {BorderButton, Button, LinkButton} from '@/assets/global/Button';
-import {BetweenBox, Box, Container, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
+import {deleteImage, getBankList, getStoreInfo, updateStoreImage} from '@/API/More/More';
+import {BorderButton, LinkButton} from '@/assets/global/Button';
+import {BetweenBox, Box, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
 import {DarkBoldText, DarkMediumText, DarkText, DefaultText, ErrorText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
@@ -19,16 +19,11 @@ import {useEffect} from 'react';
 import {useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {imageAddress} from '@assets/global/config';
 import {setStoreInfo} from '@/Store/storeInfoState';
 import Loading from '@/Component/Layout/Loading';
 import pixelChange, {getPixel} from '@/Util/pixelChange';
-import {bankList2, openTimehalfList, openTimePmList} from '@/assets/global/dummy';
-import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
-import {numberChangeFormat} from '@/Util/numberFormat';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import TimeSelect from '@/Component/MyInformation/TimeSelect';
-import useUpdateEffect from '@/Hooks/useUpdateEffect';
 
 const initAccountInfo = {
   mt_bname: '',
@@ -60,6 +55,7 @@ export default function ShopUpdate() {
   const [isLoading, setIsLoading] = useState(false);
 
   const [yoil, setYoil] = useState(initYoil);
+  const [bankList, setBankList] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -83,6 +79,24 @@ export default function ShopUpdate() {
         }),
       );
       setImageArray(storeInfo.mst_image);
+      try {
+        const mst_worktime2 = JSON.parse(storeInfo?.mst_worktime2);
+        setYoil(prev =>
+          prev.map(v => {
+            if (Array.isArray(mst_worktime2)) {
+              const findItem = mst_worktime2.find(fv => fv.yoil === v.yoil);
+              if (findItem) {
+                return findItem;
+              } else {
+                return v;
+              }
+            }
+          }),
+        );
+      } catch (error) {
+        console.log(error);
+      }
+
       let maxSort = 0;
       for (const item of storeInfo.mst_image) {
         // sort 값중 제일 큰값을 찾기
@@ -92,6 +106,23 @@ export default function ShopUpdate() {
         }
       }
       setLastSortCount(maxSort);
+    }
+    if (isFocused) {
+      getBankList().then(res => {
+        if (res.data?.result === 'true') {
+          const data = res.data?.data?.data;
+          if (Array.isArray(data)) {
+            setBankList(
+              data.map(v => {
+                return {
+                  value: v?.name,
+                  label: v?.name,
+                };
+              }),
+            );
+          }
+        }
+      });
     }
   }, [isFocused]);
 
@@ -192,39 +223,51 @@ export default function ShopUpdate() {
       return;
     }
 
-    setIsLoading(true);
+    try {
+      setIsLoading(true);
 
-    let response;
-
-    const localImageArray = imageArray?.filter(item => !item?.sort);
-
-    response = await updateStoreImage({
-      ...shopInformation,
-      mst_worktime: '', // 여기 수정 필요,
-      mst_holiday: selectDay
+      const mst_holiday = selectDay
         .map(v => v - 1)
         .sort()
-        .join(),
-      mst_image: localImageArray,
-      _mt_idx: login.idx,
-      store_image_num: localImageArray.map((item, index) => {
-        return lastSortCount + index + 1;
-      }),
-      ...user,
-      mst_worktime: yoil,
-    });
+        .join();
+      const mst_worktime2 = JSON.stringify(
+        yoil.filter((v, i) => {
+          const isFind = selectDay.find(v => v === i + 1);
+          if (!isFind) {
+            return 1;
+          }
+        }),
+      );
 
-    if (response?.data?.result === 'true') {
-      const getResponse = await getStoreInfo({
+      const localImageArray = imageArray?.filter(item => !item?.sort);
+      const response = await updateStoreImage({
+        ...shopInformation,
+        mst_holiday: mst_holiday,
+        mst_image: localImageArray,
         _mt_idx: login.idx,
+        store_image_num: localImageArray.map((item, index) => {
+          return lastSortCount + index + 1;
+        }),
+        ...user,
+        mst_worktime: '',
+        mst_worktime2: mst_worktime2,
       });
-      if (getResponse?.data?.result === 'true') {
-        dispatch(setStoreInfo({...getResponse?.data?.data?.data}));
-        showToastMessage('저장되었습니다.');
-        navigation.goBack();
+
+      if (response?.data?.result === 'true') {
+        const getResponse = await getStoreInfo({
+          _mt_idx: login.idx,
+        });
+        if (getResponse?.data?.result === 'true') {
+          dispatch(setStoreInfo({...getResponse?.data?.data?.data}));
+          showToastMessage('저장되었습니다.');
+          navigation.goBack();
+        }
       }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const deleteImageHandle = async item => {
@@ -256,7 +299,15 @@ export default function ShopUpdate() {
       }));
     });
   };
-  console.log(yoil);
+  console.log(
+    yoil,
+    yoil.filter((v, i) => {
+      const isFind = selectDay.find(v => v === i + 1);
+      if (!isFind) {
+        return 1;
+      }
+    }),
+  );
 
   return (
     <>
@@ -356,6 +407,7 @@ export default function ShopUpdate() {
             user={user}
             setUser={setUser}
             onPressAddImage={onPressAddImage}
+            bankList={bankList}
           />
           <Box height="20px" />
         </Box>
@@ -554,7 +606,7 @@ export default function ShopUpdate() {
 }
 
 const dayList = ['일', '월', '화', '수', '목', '금', '토'];
-const AccountInformation = ({errorMessage, user, setUser, onPressAddImage}) => {
+const AccountInformation = ({errorMessage, user, setUser, onPressAddImage, bankList}) => {
   return (
     <>
       <Box>
@@ -572,7 +624,7 @@ const AccountInformation = ({errorMessage, user, setUser, onPressAddImage}) => {
         <DefaultInput
           mg="10px 0px 0px"
           isDropdown
-          dropdownItem={bankList2}
+          dropdownItem={bankList}
           changeFn={text => setUser(prev => ({...prev, mt_bank: text}))}
           value={user?.mt_bank ?? ''}
           placeHolder={'은행을 선택하세요.'}
@@ -611,36 +663,43 @@ const AccountInformation = ({errorMessage, user, setUser, onPressAddImage}) => {
 const initYoil = [
   {
     yoil: '일',
+    yoil2: '0',
     stime: '00:00',
     etime: '00:00',
   },
   {
     yoil: '월',
+    yoil2: '1',
     stime: '00:00',
     etime: '00:00',
   },
   {
     yoil: '화',
+    yoil2: '2',
     stime: '00:00',
     etime: '00:00',
   },
   {
     yoil: '수',
+    yoil2: '3',
     stime: '00:00',
     etime: '00:00',
   },
   {
     yoil: '목',
+    yoil2: '4',
     stime: '00:00',
     etime: '00:00',
   },
   {
     yoil: '금',
+    yoil2: '5',
     stime: '00:00',
     etime: '00:00',
   },
   {
     yoil: '토',
+    yoil2: '6',
     stime: '00:00',
     etime: '00:00',
   },

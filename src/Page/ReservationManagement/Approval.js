@@ -42,7 +42,7 @@ export default function Approval({navigation, route: {params}}) {
       }
     }
     setIsLoading(true);
-    const result = changeCheckList(checkList);
+    const [result, proc_chk] = changeCheckList(checkList);
     reservationComplete({
       _mt_idx: login.idx,
       od_idx: params.od_idx,
@@ -51,6 +51,7 @@ export default function Approval({navigation, route: {params}}) {
       opt_note: memo,
       opt_image: imageArray,
       ...result,
+      proc_chk: proc_chk,
     })
       .then(res => {
         const {data} = res;
@@ -299,16 +300,22 @@ const initCheckList = [
 
 export function changeCheckList(checkList) {
   let data = {};
+  let result = false;
 
   const apiDataString = 'opt_chk_';
+
   for (let i = 0; i < checkList.length; i++) {
     const item = checkList[i]?.item;
     for (let j = 0; j < item.length; j++) {
       const select = item[j]?.select;
+      if (select === '양호' || select === '정비 요망') {
+        result = true;
+      }
+
       Object.assign(data, {
         [`${apiDataString}${i + 1}_${j + 1}`]: select === '양호' ? 1 : select === '정비 요망' ? 2 : 0,
       });
     }
   }
-  return data;
+  return [data, result];
 }

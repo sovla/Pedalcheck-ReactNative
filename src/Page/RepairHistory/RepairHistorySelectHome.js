@@ -42,7 +42,7 @@ export default function RepairHistorySelectHome() {
     })
       .then(res => res.data?.result === 'true' && res.data.data.data)
       .then(data => {
-        setHomeInfo({...data});
+        setHomeInfo(data);
       });
 
     setIsLoading(false);
@@ -56,8 +56,8 @@ export default function RepairHistorySelectHome() {
     <ScrollBox pd="0px 16px" backgroundColor="#F8F8F8" keyboardShouldPersistTaps="handled">
       <BetweenBox backgroundColor="#0000" mg="20px 0px" width="380px" alignItems="center">
         <TouchableOpacity
-          disabled={dateFormat(date).slice(0, 7) === storeInfo.mst_wdate.slice(0, 7)}
-          onPress={() => setDate(new Date(date.setMonth(date.getMonth() - 1)))}>
+          disabled={dateFormat(date)?.slice(0, 7) === storeInfo?.mst_wdate?.slice(0, 7)}
+          onPress={() => setDate(new Date(date?.setMonth(date?.getMonth() - 1)))}>
           <DefaultImage source={ArrowLeftIcon} width="24px" height="24px" />
         </TouchableOpacity>
         <TouchableOpacity
@@ -79,16 +79,16 @@ export default function RepairHistorySelectHome() {
         </TouchableOpacity>
       </BetweenBox>
       <ReservationStats
-        reservationCount={homeInfo.order_cnt.order}
-        approvalCount={homeInfo.order_cnt.ok}
-        completeCount={homeInfo.order_cnt.done}
-        reservationCancleCount={homeInfo.order_cnt.cancel}
-        rejectionCount={homeInfo.order_cnt.reject}
+        reservationCount={homeInfo?.order_cnt?.order}
+        approvalCount={homeInfo?.order_cnt?.ok}
+        completeCount={homeInfo?.order_cnt?.done}
+        reservationCancleCount={homeInfo?.order_cnt?.cancel}
+        rejectionCount={homeInfo?.order_cnt?.reject}
       />
       <CalculateStats
-        totalIncome={homeInfo.calculator.tot}
-        unSettled={homeInfo.calculator.incomplete}
-        doneIncome={homeInfo.calculator.complete}
+        totalIncome={homeInfo?.calculator?.tot}
+        unSettled={homeInfo?.calculator?.incomplete}
+        doneIncome={homeInfo?.calculator?.complete}
       />
       <Box width="380px" pd="10px 16px 20px" height="300px" borderRadius="10px" mg="26px 0px 0px">
         <BetweenBox width="348px" mg="10px 0px 0px" alignItems="center">

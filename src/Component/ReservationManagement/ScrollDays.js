@@ -42,12 +42,10 @@ export default function ScrollDays({setDaySelect, daySelect, isNotPrev, orderLis
   useLayoutEffect(() => {
     if (flatListRef?.current?.props?.data?.length) {
       if (!isNotPrev)
-        console.log(
-          flatListRef.current.scrollToOffset({
-            offset: getPixel(384),
-            animated: true,
-          }),
-        );
+        flatListRef.current.scrollToOffset({
+          offset: getPixel(384),
+          animated: true,
+        });
     }
   }, []);
 
