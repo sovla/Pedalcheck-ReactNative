@@ -1,6 +1,6 @@
-import {deleteImage, getStoreInfo, updateStore, updateStoreImage} from '@/API/More/More';
-import {BorderButton, Button, LinkButton} from '@/assets/global/Button';
-import {BetweenBox, Box, Container, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
+import {deleteImage, getBankList, getStoreInfo, updateStoreImage} from '@/API/More/More';
+import {BorderButton, LinkButton} from '@/assets/global/Button';
+import {BetweenBox, Box, PositionBox, RowBox, ScrollBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
 import {DarkBoldText, DarkMediumText, DarkText, DefaultText, ErrorText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
@@ -19,14 +19,11 @@ import {useEffect} from 'react';
 import {useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {imageAddress} from '@assets/global/config';
 import {setStoreInfo} from '@/Store/storeInfoState';
 import Loading from '@/Component/Layout/Loading';
 import pixelChange, {getPixel} from '@/Util/pixelChange';
-import {bankList2, openTimehalfList, openTimePmList} from '@/assets/global/dummy';
-import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
-import {numberChangeFormat} from '@/Util/numberFormat';
 import ImageCropPicker from 'react-native-image-crop-picker';
+import TimeSelect from '@/Component/MyInformation/TimeSelect';
 
 const initAccountInfo = {
   mt_bname: '',
@@ -45,12 +42,6 @@ export default function ShopUpdate() {
   const [selectDay, setSelectDay] = useState([]);
   const [isDaumOpen, setIsDaumOpen] = useState(false);
   const [shopInformation, setShopInformation] = useState(null);
-  const [openingHours, setOpeningHours] = useState({
-    weekdayStart: '00',
-    weekdayEnd: '00',
-    weekendStart: '00',
-    weekendEnd: '00',
-  });
   const [errorMessage, setErrorMessage] = useState({
     mst_name: '',
     mst_company_num: '',
@@ -60,18 +51,14 @@ export default function ShopUpdate() {
   });
   const [user, setUser] = useState(initAccountInfo); // 계좌정보 용 추가
   const [AccountErrorMessage, setAccountErrorMessage] = useState(initAccountInfo);
+  const [lastSortCount, setLastSortCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [openingSelect, setOpeningSelect] = useState({
-    weekdayStart: '오전',
-    weekdayEnd: '오후',
-    weekendStart: '오전',
-    weekendEnd: '오후',
-  });
+  const [yoil, setYoil] = useState(initYoil);
+  const [bankList, setBankList] = useState([]);
 
   const dispatch = useDispatch();
-  const [lastSortCount, setLastSortCount] = useState(0);
 
-  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     if (isFocused && storeInfo) {
       setUser(prev => ({
@@ -85,39 +72,31 @@ export default function ShopUpdate() {
       const changeValue = storeInfo?.mst_holiday?.includes(',')
         ? storeInfo?.mst_holiday?.split(',')
         : [storeInfo?.mst_holiday];
-      if (storeInfo?.mst_worktime) {
-        const mstWorktime = storeInfo.mst_worktime;
 
-        try {
-          const weekdayStart = mstWorktime.split('주말')[0].split(' ')[2];
-          const weekdayEnd = mstWorktime.split('주말')[0].split(' ')[5];
-          const weekendStart = mstWorktime.split('주말')[1].split(' ')[2];
-          const weekendEnd = mstWorktime.split('주말')[1].split(' ')[5];
-
-          const getTime = timeString => {
-            return numberChangeFormat(timeString.substring(0, timeString.length));
-          };
-
-          setOpeningHours({
-            weekdayStart: getTime(weekdayStart),
-            weekdayEnd: getTime(weekdayEnd),
-            weekendStart: getTime(weekendStart),
-            weekendEnd: getTime(weekendEnd),
-          });
-          setOpeningSelect({
-            weekdayStart: mstWorktime.split('주말')[0].split(' ')[1],
-            weekdayEnd: mstWorktime.split('주말')[0].split(' ')[4],
-            weekendStart: mstWorktime.split('주말')[1].split(' ')[1],
-            weekendEnd: mstWorktime.split('주말')[1].split(' ')[4],
-          });
-        } catch (error) {}
-      }
       setSelectDay(
         changeValue.map(value => {
           return value * 1 + 1;
         }),
       );
       setImageArray(storeInfo.mst_image);
+      try {
+        const mst_worktime2 = JSON.parse(storeInfo?.mst_worktime2);
+        setYoil(prev =>
+          prev.map(v => {
+            if (Array.isArray(mst_worktime2)) {
+              const findItem = mst_worktime2.find(fv => fv.yoil === v.yoil);
+              if (findItem) {
+                return findItem;
+              } else {
+                return v;
+              }
+            }
+          }),
+        );
+      } catch (error) {
+        console.log(error);
+      }
+
       let maxSort = 0;
       for (const item of storeInfo.mst_image) {
         // sort 값중 제일 큰값을 찾기
@@ -127,6 +106,23 @@ export default function ShopUpdate() {
         }
       }
       setLastSortCount(maxSort);
+    }
+    if (isFocused) {
+      getBankList().then(res => {
+        if (res.data?.result === 'true') {
+          const data = res.data?.data?.data;
+          if (Array.isArray(data)) {
+            setBankList(
+              data.map(v => {
+                return {
+                  value: v?.name,
+                  label: v?.name,
+                };
+              }),
+            );
+          }
+        }
+      });
     }
   }, [isFocused]);
 
@@ -227,37 +223,51 @@ export default function ShopUpdate() {
       return;
     }
 
-    setIsLoading(true);
+    try {
+      setIsLoading(true);
 
-    let response;
-
-    const localImageArray = imageArray?.filter(item => !item?.sort);
-    response = await updateStoreImage({
-      ...shopInformation,
-      mst_worktime: setWorkTime(openingHours, openingSelect),
-      mst_holiday: selectDay
+      const mst_holiday = selectDay
         .map(v => v - 1)
         .sort()
-        .join(),
-      mst_image: localImageArray,
-      _mt_idx: login.idx,
-      store_image_num: localImageArray.map((item, index) => {
-        return lastSortCount + index + 1;
-      }),
-      ...user,
-    });
+        .join();
+      const mst_worktime2 = JSON.stringify(
+        yoil.filter((v, i) => {
+          const isFind = selectDay.find(v => v === i + 1);
+          if (!isFind) {
+            return 1;
+          }
+        }),
+      );
 
-    if (response?.data?.result === 'true') {
-      const getResponse = await getStoreInfo({
+      const localImageArray = imageArray?.filter(item => !item?.sort);
+      const response = await updateStoreImage({
+        ...shopInformation,
+        mst_holiday: mst_holiday,
+        mst_image: localImageArray,
         _mt_idx: login.idx,
+        store_image_num: localImageArray.map((item, index) => {
+          return lastSortCount + index + 1;
+        }),
+        ...user,
+        mst_worktime: '',
+        mst_worktime2: mst_worktime2,
       });
-      if (getResponse?.data?.result === 'true') {
-        dispatch(setStoreInfo({...getResponse?.data?.data?.data}));
-        showToastMessage('저장되었습니다.');
-        navigation.goBack();
+
+      if (response?.data?.result === 'true') {
+        const getResponse = await getStoreInfo({
+          _mt_idx: login.idx,
+        });
+        if (getResponse?.data?.result === 'true') {
+          dispatch(setStoreInfo({...getResponse?.data?.data?.data}));
+          showToastMessage('저장되었습니다.');
+          navigation.goBack();
+        }
       }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const deleteImageHandle = async item => {
@@ -272,10 +282,7 @@ export default function ShopUpdate() {
       return true;
     }
   };
-  const onChangeDate = (value, type) => {
-    // type -> amStart amEnd pmStart pmEnd
-    setOpeningHours(prev => ({...prev, [type]: value}));
-  };
+
   const onPressAddImage = async () => {
     await ImageCropPicker.openPicker({
       width: 300,
@@ -292,6 +299,16 @@ export default function ShopUpdate() {
       }));
     });
   };
+  console.log(
+    yoil,
+    yoil.filter((v, i) => {
+      const isFind = selectDay.find(v => v === i + 1);
+      if (!isFind) {
+        return 1;
+      }
+    }),
+  );
+
   return (
     <>
       {isLoading && <Loading isAbsolute />}
@@ -390,6 +407,7 @@ export default function ShopUpdate() {
             user={user}
             setUser={setUser}
             onPressAddImage={onPressAddImage}
+            bankList={bankList}
           />
           <Box height="20px" />
         </Box>
@@ -451,85 +469,6 @@ export default function ShopUpdate() {
               onPressDelete={deleteImageHandle}
             />
           </Box>
-          <Box width="380px">
-            <DarkBoldText fontSize={Theme.fontSize.fs15}>영업시간</DarkBoldText>
-            <RowBox alignItems="center">
-              <DarkText mg="0px 10px 0px 0px">평일</DarkText>
-              <DefaultDropdown
-                pdLeft={10}
-                data={ampm}
-                value={openingSelect.weekdayStart}
-                setValue={value => setOpeningSelect(prev => ({...prev, weekdayStart: value}))}
-              />
-              <Box width="10px" />
-              <DefaultDropdown
-                data={openTimehalfList}
-                value={openingHours.weekdayStart} // 오전 00
-                setValue={value => onChangeDate(value, 'weekdayStart')}
-              />
-              <DarkText mg="0px 10px">~</DarkText>
-              <DefaultDropdown
-                pdLeft={10}
-                data={ampm}
-                value={openingSelect.weekdayEnd}
-                setValue={value => setOpeningSelect(prev => ({...prev, weekdayEnd: value}))}
-              />
-              <Box width="10px" />
-              <DefaultDropdown
-                data={openTimePmList}
-                value={openingHours.weekdayEnd}
-                setValue={value => onChangeDate(value, 'weekdayEnd')}
-              />
-            </RowBox>
-            <RowBox alignItems="center" mg="10px 0px 0px">
-              <DarkText mg="0px 10px 0px 0px">주말</DarkText>
-              <DefaultDropdown
-                pdLeft={10}
-                data={ampm}
-                value={openingSelect.weekendStart}
-                setValue={value => setOpeningSelect(prev => ({...prev, weekendStart: value}))}
-              />
-              <Box width="10px" />
-              <DefaultDropdown
-                data={openTimehalfList}
-                value={openingHours.weekendStart}
-                setValue={value => onChangeDate(value, 'weekendStart')}
-              />
-              <DarkText mg="0px 10px">~</DarkText>
-              <DefaultDropdown
-                width={65}
-                pdLeft={10}
-                data={ampm}
-                value={openingSelect.weekendEnd}
-                setValue={value => setOpeningSelect(prev => ({...prev, weekdayEnd: value}))}
-              />
-              <Box width="10px" />
-              <DefaultDropdown
-                data={openTimePmList}
-                value={openingHours.weekendEnd}
-                setValue={value => onChangeDate(value, 'weekendEnd')}
-              />
-            </RowBox>
-          </Box>
-          {/* <DefaultInput
-            title="영업시간"
-            width={"380px"}
-            fontSize={Theme.fontSize.fs15}
-            placeHolder="영업시간을 입력해주세요"
-            isAlignTop
-            multiline
-            height="100px"
-            pd="0px 0px 5px"
-            mg="20px 0px"
-            value={shopInformation?.mst_worktime}
-            changeFn={text => {
-              setShopInformation(prev => ({
-                ...prev,
-                mst_worktime: text,
-              }));
-            }}
-            maxLength={200}
-          /> */}
           <Box width={'380px'}>
             <DarkBoldText fontSize={Theme.fontSize.fs15} mg="10px 0px 10px">
               휴무요일
@@ -539,7 +478,6 @@ export default function ShopUpdate() {
                 const isSelect = selectDay.find(findItem => findItem === Index + 1) !== undefined;
                 const backgroundColor = isSelect ? Theme.color.skyBlue : Theme.color.backgroundWhiteGray;
                 const color = isSelect ? Theme.color.white : Theme.color.gray;
-
                 return (
                   <TouchableOpacity
                     style={{
@@ -558,6 +496,18 @@ export default function ShopUpdate() {
                 );
               })}
             </BetweenBox>
+            {selectDay.length < 7 && (
+              <Box mg="10px 0px">
+                <DarkBoldText fontSize={Theme.fontSize.fs15}>영업시간</DarkBoldText>
+              </Box>
+            )}
+
+            {yoil.map((item, Index) => {
+              const isSelect = selectDay.find(findItem => findItem === Index + 1) !== undefined;
+              if (!isSelect) {
+                return <TimeSelect key={'timeSelect' + Index} setTimeList={setYoil} item={item} />;
+              }
+            })}
           </Box>
           <DefaultInput
             title="매장 소개"
@@ -656,35 +606,7 @@ export default function ShopUpdate() {
 }
 
 const dayList = ['일', '월', '화', '수', '목', '금', '토'];
-const ampm = [
-  {
-    label: '오전',
-    value: '오전',
-  },
-  {
-    label: '오후',
-    value: '오후',
-  },
-];
-
-const setWorkTime = (time, ampmSelect) => {
-  if (Object.values(time).filter(v => +v).length > 0) {
-    // 시간이 00 이 아닌경우 출력
-
-    // 평일 오전 00시 ~ 00시
-    // 주말 오전 00시 ~ 00시
-    // 형태로 출력합니다.
-    return `평일 ${ampmSelect.weekdayStart} ${+time.weekdayStart}시 ~ ${
-      ampmSelect.weekdayEnd
-    } ${+time.weekdayEnd}시\n주말 ${ampmSelect.weekendStart} ${+time.weekendStart}시 ~ ${
-      ampmSelect.weekendEnd
-    } ${+time.weekendEnd}시`;
-  } else {
-    return '';
-  }
-};
-
-const AccountInformation = ({errorMessage, user, setUser, onPressAddImage}) => {
+const AccountInformation = ({errorMessage, user, setUser, onPressAddImage, bankList}) => {
   return (
     <>
       <Box>
@@ -702,7 +624,7 @@ const AccountInformation = ({errorMessage, user, setUser, onPressAddImage}) => {
         <DefaultInput
           mg="10px 0px 0px"
           isDropdown
-          dropdownItem={bankList2}
+          dropdownItem={bankList}
           changeFn={text => setUser(prev => ({...prev, mt_bank: text}))}
           value={user?.mt_bank ?? ''}
           placeHolder={'은행을 선택하세요.'}
@@ -738,8 +660,47 @@ const AccountInformation = ({errorMessage, user, setUser, onPressAddImage}) => {
   );
 };
 
-// [
-//   {"yoil":"월","stime":"09:00","etime":"19:00"},
-//   {"yoil":"화","stime":"09:00","etime":"19:00"},
-//   {"yoil":"수","stime":"09:00","etime":"19:00"}
-//   ]
+const initYoil = [
+  {
+    yoil: '일',
+    yoil2: '0',
+    stime: '00:00',
+    etime: '00:00',
+  },
+  {
+    yoil: '월',
+    yoil2: '1',
+    stime: '00:00',
+    etime: '00:00',
+  },
+  {
+    yoil: '화',
+    yoil2: '2',
+    stime: '00:00',
+    etime: '00:00',
+  },
+  {
+    yoil: '수',
+    yoil2: '3',
+    stime: '00:00',
+    etime: '00:00',
+  },
+  {
+    yoil: '목',
+    yoil2: '4',
+    stime: '00:00',
+    etime: '00:00',
+  },
+  {
+    yoil: '금',
+    yoil2: '5',
+    stime: '00:00',
+    etime: '00:00',
+  },
+  {
+    yoil: '토',
+    yoil2: '6',
+    stime: '00:00',
+    etime: '00:00',
+  },
+];

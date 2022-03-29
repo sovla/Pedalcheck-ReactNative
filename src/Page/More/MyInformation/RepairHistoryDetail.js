@@ -37,27 +37,15 @@ export default function RepairHistoryDetail({route: {params}}) {
   const [checkList, setCheckList] = useState(initCheckList);
   const [isCheckListShow, setIsCheckListShow] = useState(true);
   const onPressReservationCancle = async () => {
-    if (repair?.ot_pay_type === 'vbank' && repair?.ot_pay_status !== 'ready') {
-      dispatch(
-        modalOpenAndProp({
-          modalComponent: 'reservationCancle',
-          ot_code: repair?.ot_code,
-          cancelComplete: () => {
-            navigation.goBack();
-          },
-        }),
-      );
-    } else {
-      AlertButtons(
-        '정비예약을 취소 하시겠습니까?',
-        '확인',
-        '취소',
-        () => {
-          cancelOrderApi();
-        },
-        () => {},
-      );
-    }
+    AlertButtons(
+      '정비예약을 취소 하시겠습니까?',
+      '확인',
+      '취소',
+      () => {
+        cancelOrderApi();
+      },
+      () => {},
+    );
   };
   const onPressReview = () => {
     if (repair?.ot_review === 'N') {
@@ -100,8 +88,8 @@ export default function RepairHistoryDetail({route: {params}}) {
         let notNullCount = 0;
         setRepair(data);
         setCheckList(prev =>
-          prev.map((firstValue, firstIndex) => {
-            let tmpValue = firstValue.item.map((secondValue, secondIndex) => {
+          prev.map(firstValue => {
+            let tmpValue = firstValue.item.map(secondValue => {
               if (data[secondValue.indexName] === '1') {
                 notNullCount++;
                 return {...secondValue, select: '양호'};

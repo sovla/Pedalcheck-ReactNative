@@ -134,7 +134,6 @@ export const updateStoreImage = async args => {
     let cloneData = Object.assign({}, data);
     delete cloneData['mst_image'];
     delete cloneData['mt_bank_image'];
-
     const jwt_data = jwt_encode(cloneData, SECRETKEY);
 
     let imageResultObject = null;
@@ -216,6 +215,13 @@ export const getFooter = async args => {
 export const logOut = async args => {
   try {
     const response = await API.post('logout.php', args);
+    return response;
+  } catch (error) {}
+};
+
+export const getBankList = async args => {
+  try {
+    const response = await API.post('mng/get_bank.php', args);
     return response;
   } catch (error) {}
 };

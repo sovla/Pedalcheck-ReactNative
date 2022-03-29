@@ -9,11 +9,14 @@ import ArrowRight from '@assets/image/slide_r.png';
 import ArrowLeftDisabled from '@assets/image/slide_l_d.png';
 import ArrowRightDisable from '@assets/image/slide_r_d.png';
 import {useSelector} from 'react-redux';
-import {Dimensions, FlatList, ScrollView, TouchableOpacity} from 'react-native';
+import {ActivityIndicator, Dimensions, FlatList, Modal, SafeAreaView, ScrollView, TouchableOpacity} from 'react-native';
 import {numberCheck} from '@/Page/Repair/RepairHome';
 import scrollSlideNumber from '@/Util/scrollSlideNumber';
 import {useRef} from 'react';
 import {useEffect} from 'react';
+import useBoolean from '@/Hooks/useBoolean';
+import ImageViewer from 'react-native-image-zoom-viewer';
+import AutoHeightImage from 'react-native-auto-height-image';
 
 function SwiperComponent({
   imageArray,
@@ -22,6 +25,7 @@ function SwiperComponent({
   borderRadius = 'Bottom',
   isRolling = false,
   resizeMode = 'stretch',
+  isTouch = false,
 }) {
   const ref = useRef(null);
   const savedCallback = useRef();
@@ -29,6 +33,8 @@ function SwiperComponent({
   const transformHeight = typeof height === 'string' ? parseInt(height.split('px')[0]) : height;
   const [imageNumber, setImageNumber] = useState(0);
   const [isEnd, setIsEnd] = useState(false);
+  const [isModal, setIsModal] = useBoolean(false);
+  const [viewItem, setViewItem] = useState('');
 
   const onScrollSlide = e => {
     if (typeof width === 'string') {
@@ -96,78 +102,107 @@ function SwiperComponent({
   }
 
   return (
-    <Box
-      width={`${transformWidth}px`}
-      height={`${transformHeight}px`}
-      style={{
-        maxHeight: getPixel(transformHeight),
-      }}>
-      <FlatList
-        horizontal
-        pagingEnabled
-        initialNumToRender={15}
-        showsHorizontalScrollIndicator={false}
-        data={imageArray}
-        ref={ref}
-        renderItem={({item, index}) => (
-          <DefaultImage
-            style={borderRadiusStyle}
-            key={`image_${index}`}
-            source={item}
-            width={`${transformWidth}px`}
-            height={`${transformHeight}px`}
-            resizeMode={resizeMode}
+    <>
+      <Box
+        width={`${transformWidth}px`}
+        height={`${transformHeight}px`}
+        style={{
+          maxHeight: getPixel(transformHeight),
+        }}>
+        <FlatList
+          horizontal
+          pagingEnabled
+          initialNumToRender={15}
+          showsHorizontalScrollIndicator={false}
+          data={imageArray}
+          ref={ref}
+          renderItem={({item, index}) => (
+            <TouchableOpacity
+              disabled={!isTouch}
+              onPress={() => {
+                setIsModal();
+                setViewItem(index);
+              }}>
+              <DefaultImage
+                style={borderRadiusStyle}
+                key={`image_${index}`}
+                source={item}
+                width={`${transformWidth}px`}
+                height={`${transformHeight}px`}
+                resizeMode={resizeMode}
+              />
+            </TouchableOpacity>
+          )}
+          style={[
+            borderRadiusStyle,
+            {
+              maxHeight: getPixel(transformHeight),
+              width: getPixel(transformWidth),
+            },
+          ]}
+          onMomentumScrollEnd={onScrollSlide}
+          onScrollToIndexFailed={info => {
+            const wait = new Promise(resolve => setTimeout(resolve, 500));
+            wait.then(() => {
+              ref.current?.scrollToIndex({index: info.index, animated: true});
+            });
+          }}
+        />
+        <PositionBox
+          left="16px"
+          bottom="10px"
+          width="128px"
+          height="24px"
+          borderRadius="50px"
+          backgroundColor="rgba(33,33,33,0.6)"
+          justifyContent="space-between"
+          alignItems="center"
+          style={{flexDirection: 'row'}}>
+          <TouchableOpacity
+            disabled={imageNumber === 0}
+            onPress={() => {
+              onPressArrow('prev');
+            }}>
+            <DefaultImage source={imageNumber === 0 ? ArrowLeftDisabled : ArrowLeft} width="24px" height="24px" />
+          </TouchableOpacity>
+          <DefaultText fontSize={Theme.fontSize.fs12}>
+            {numberCheck(imageNumber + 1)}{' '}
+            <GrayText fontSize={Theme.fontSize.fs12}> / {numberCheck(imageArray?.length)}</GrayText>
+          </DefaultText>
+          <TouchableOpacity
+            disabled={imageLength - 1 === imageNumber}
+            onPress={() => {
+              onPressArrow('next');
+            }}>
+            <DefaultImage
+              source={imageLength - 1 === imageNumber ? ArrowRightDisable : ArrowRight}
+              width="24px"
+              height="24px"
+            />
+          </TouchableOpacity>
+        </PositionBox>
+      </Box>
+
+      <Modal visible={isModal} onRequestClose={setIsModal}>
+        <SafeAreaView style={{flex: 0}}></SafeAreaView>
+        <SafeAreaView style={{flex: 1}}>
+          <PositionBox top="30px" right="30px" zIndex={200} backgroundColor="#0000">
+            <TouchableOpacity hitSlop={{top: 15, bottom: 15, right: 15, left: 15}} onPress={setIsModal}>
+              <AutoHeightImage source={require('@assets/image/close_white.png')} width={20} />
+            </TouchableOpacity>
+          </PositionBox>
+          <ImageViewer
+            saveToLocalByLongPress={false}
+            index={viewItem}
+            imageUrls={imageArray.map((v, i) => ({url: v?.uri ?? v?.path}))}
+            loadingRender={() => <ActivityIndicator color="#9BA57E" size={'large'} />}
+            useNativeDriver
+            pageAnimateTime={20}
           />
-        )}
-        style={[
-          borderRadiusStyle,
-          {
-            maxHeight: getPixel(transformHeight),
-            width: getPixel(transformWidth),
-          },
-        ]}
-        onMomentumScrollEnd={onScrollSlide}
-        onScrollToIndexFailed={info => {
-          const wait = new Promise(resolve => setTimeout(resolve, 500));
-          wait.then(() => {
-            ref.current?.scrollToIndex({index: info.index, animated: true});
-          });
-        }}
-      />
-      <PositionBox
-        left="16px"
-        bottom="10px"
-        width="128px"
-        height="24px"
-        borderRadius="50px"
-        backgroundColor="rgba(33,33,33,0.6)"
-        justifyContent="space-between"
-        alignItems="center"
-        style={{flexDirection: 'row'}}>
-        <TouchableOpacity
-          disabled={imageNumber === 0}
-          onPress={() => {
-            onPressArrow('prev');
-          }}>
-          <DefaultImage source={imageNumber === 0 ? ArrowLeftDisabled : ArrowLeft} width="24px" height="24px" />
-        </TouchableOpacity>
-        <DefaultText fontSize={Theme.fontSize.fs12}>
-          {numberCheck(imageNumber + 1)}{' '}
-          <GrayText fontSize={Theme.fontSize.fs12}> / {numberCheck(imageArray?.length)}</GrayText>
-        </DefaultText>
-        <TouchableOpacity
-          disabled={imageLength - 1 === imageNumber}
-          onPress={() => {
-            onPressArrow('next');
-          }}>
-          <DefaultImage
-            source={imageLength - 1 === imageNumber ? ArrowRightDisable : ArrowRight}
-            width="24px"
-            height="24px"
-          />
-        </TouchableOpacity>
-      </PositionBox>
-    </Box>
+        </SafeAreaView>
+        <SafeAreaView style={{flex: 0}}></SafeAreaView>
+      </Modal>
+    </>
   );
 }
 const Swiper = React.memo(SwiperComponent);

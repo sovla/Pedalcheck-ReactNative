@@ -1,12 +1,15 @@
 import {Box, RowBox} from '@/assets/global/Container';
 import {DarkMediumText} from '@/assets/global/Text';
-import React from 'react';
+import React, {useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 import ArrowUpIcon from '@assets/image/list_arr_top.png';
 import DefaultImage from '@assets/global/Image';
 import ProductCheckBox from '@/Component/ReservationManagement/ProductCheckBox';
+import {LinkButton} from '@/assets/global/Button';
+import useBoolean from '@/Hooks/useBoolean';
 
-export default function CheckList({setIsShow, isShow, checkList, setCheckList, disabled}) {
+export default function CheckList({setIsShow, isShow, checkList, setCheckList, disabled, isUpdate, onPressUpdate}) {
+  const [isUpdateCheck, setIsUpdateCheck] = useBoolean(false);
   const onPressCheckList = (title, itemTitle, value) => {
     setCheckList(prev => [
       ...prev.map(mapItem => {
@@ -20,7 +23,7 @@ export default function CheckList({setIsShow, isShow, checkList, setCheckList, d
                 if (!innerResult) {
                   innerResult = {
                     itemTitle: innerMapItem.itemTitle,
-                    select: innerMapItem.select === value ? '' : value,
+                    select: value,
                   };
                 }
                 return innerResult;
@@ -55,10 +58,15 @@ export default function CheckList({setIsShow, isShow, checkList, setCheckList, d
               count++;
             }
           });
+          let mapDisabled = disabled;
+          if (isUpdateCheck) {
+            mapDisabled = false;
+          }
+
           if (count !== 0) {
             return (
               <ProductCheckBox
-                disabled={disabled}
+                disabled={mapDisabled}
                 key={listIndex}
                 title={list.title}
                 item={list.item}
@@ -67,6 +75,22 @@ export default function CheckList({setIsShow, isShow, checkList, setCheckList, d
             );
           }
         })}
+      {isUpdate && isShow && !isUpdateCheck && (
+        <Box>
+          <LinkButton to={setIsUpdateCheck} content="수정" />
+        </Box>
+      )}
+      {isUpdate && isShow && isUpdateCheck && (
+        <Box>
+          <LinkButton
+            to={() => {
+              setIsUpdateCheck();
+              onPressUpdate();
+            }}
+            content="수정완료"
+          />
+        </Box>
+      )}
       {isShow && <Box height="10px" />}
     </Box>
   );

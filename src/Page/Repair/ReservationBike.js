@@ -56,19 +56,7 @@ export default function ShopReservationBike({navigation}) {
   };
   useLayoutEffect(() => {
     if (isFocused) {
-      setSelectItem(reservationInfo?.selectBike?.selectItem ?? '');
-      setBikeName(
-        reservationInfo?.selectBike?.bikeName ?? {
-          bikeBrand: '',
-          bikeModel: '',
-        },
-      );
       setBikeList(shopInfo?.my_bike?.length ? shopInfo.my_bike : []);
-    } else {
-      setBikeName({
-        bikeBrand: '',
-        bikeModel: '',
-      });
     }
   }, [isFocused]);
 

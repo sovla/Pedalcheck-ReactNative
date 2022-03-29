@@ -2,13 +2,13 @@ import {Box, PositionBox, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import {DarkText, DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, TouchableOpacity, Modal, TouchableWithoutFeedback} from 'react-native';
 import {useSelector} from 'react-redux';
 import RepairReservationIcon from '@assets/image/ic_reservation.png';
 import LikeIcon from '@assets/image/good.png';
 import UnLikeIcon from '@assets/image/good_b.png';
-import {useNavigation} from '@react-navigation/core';
+import {useNavigation, useIsFocused} from '@react-navigation/core';
 import {AlertButton, AlertButtons, RequireLoginAlert} from '@/Util/Alert';
 import useBoolean from '@/Hooks/useBoolean';
 import {LinkWhiteButton} from '@/assets/global/Button';
@@ -18,6 +18,7 @@ export default function FooterButtons({isRepair = false, isLike = false, onPress
 
   const {login, shopInfo} = useSelector(state => state);
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const onPressRepair = () => {
     if (shopInfo?.store_info?.mt_idx === login.idx) {
       AlertButton('본인 매장에는 예약할 수 없습니다.');
@@ -52,6 +53,12 @@ export default function FooterButtons({isRepair = false, isLike = false, onPress
       isShop: true,
     });
   };
+
+  useEffect(() => {
+    if (!isFocused && isView) {
+      setIsView();
+    }
+  }, [isFocused]);
   return (
     <>
       <PositionBox bottom="0px">

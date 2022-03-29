@@ -57,7 +57,6 @@ export const RequireLogin = (login, navigation) => {
 };
 
 export const RequireApple = (login, navigation, type) => {
-  console.log(login.apple_id);
   if (login.apple_id && login?.mt_status === 'N') {
     AlertButtons(`${type} 계속하려면 추가정보\n입력이 필요합니다.\n추가정보 입력 하시겠습니까?`, '확인', '취소', () => {
       navigation.navigate('Register');

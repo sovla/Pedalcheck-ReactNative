@@ -1,11 +1,13 @@
 import {
   couponReservationEdit,
   getCouponReservationDetail,
+  getIsCouponType,
   getReservationDetail,
   reservationEdit,
+  updateCheckList,
 } from '@/API/ReservationManagement/ReservationManagement';
 import {BorderButton, FooterButton, LinkWhiteButton} from '@/assets/global/Button';
-import {Box, RowBox, ScrollBox} from '@/assets/global/Container';
+import {Box, RowBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
 import {DarkBoldText, DarkMediumText, DarkText, MoneyText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
@@ -15,7 +17,7 @@ import BikeInformationHeader from '@/Component/BikeManagement/BikeInformationHea
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import Header from '@/Component/Layout/Header';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
-import {modalOpen, modalOpenAndProp} from '@/Store/modalState';
+import {modalOpenAndProp} from '@/Store/modalState';
 import {getPixel} from '@/Util/pixelChange';
 import React from 'react';
 import {useState} from 'react';
@@ -24,18 +26,15 @@ import {TouchableOpacity} from 'react-native';
 import 'moment/locale/ko';
 import {useDispatch, useSelector} from 'react-redux';
 import {showToastMessage} from '@/Util/Toast';
-import {imageAddress} from '@assets/global/config';
 import {useIsFocused} from '@react-navigation/native';
 import {payState} from '../More/MyInformation/RepairHistoryDetail';
 import Loading from '@/Component/Layout/Loading';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {AlertButton, AlertButtons} from '@/Util/Alert';
+import {AlertButton} from '@/Util/Alert';
 import CheckList from '@/Component/ReservationManagement/CheckList';
 import {changeCheckList} from './Approval';
 
 export default function ReservationManagementDetail({navigation, route: {params}}) {
-  const type = params?.type;
-
   const initData = {
     ot_status: '',
     pt_title: '',
@@ -72,6 +71,11 @@ export default function ReservationManagementDetail({navigation, route: {params}
 
   const [isCheckList, setIsCheckList] = useState(false); // CheckList 표시용
   const [checkList, setCheckList] = useState(initCheckList);
+
+  const [isViewCheckList, setIsViewCheckList] = useState(false);
+  const [viewCheckList, setViewCheckList] = useState(initCheckList); // CheckList View 보여주기용
+
+  const [type, setType] = useState(params?.type ?? 'repair');
 
   const {login} = useSelector(state => state);
   const dispatch = useDispatch();
@@ -134,8 +138,9 @@ export default function ReservationManagementDetail({navigation, route: {params}
 
     const approveFunction = type === 'coupon' ? couponReservationEdit : reservationEdit;
     let result = {};
+    let proc_chk = false;
     if (ot_status === 5) {
-      result = changeCheckList(checkList);
+      [result, proc_chk] = changeCheckList(checkList);
     }
 
     const response = await approveFunction({
@@ -145,6 +150,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
       ot_adm_memo: memo,
       ot_status,
       ...result,
+      proc_chk,
     });
     if (response.data?.result === 'true') {
       setIsChange(prev => !prev);
@@ -164,15 +170,64 @@ export default function ReservationManagementDetail({navigation, route: {params}
       od_idx: params?.od_idx,
     })
       .then(res => res.data?.result === 'true' && res.data.data.data)
-      .then(data => setReservationInfo(data))
+      .then(data => {
+        setReservationInfo(data);
+        setViewCheckList(prev =>
+          prev.map((firstValue, firstIndex) => {
+            let tmpValue = firstValue.item.map((secondValue, secondIndex) => {
+              const item = data[`opt_chk_${firstIndex + 1}_${secondIndex + 1}`];
+              if (item === '1') {
+                return {...secondValue, select: '양호'};
+              } else if (item === '2') {
+                return {...secondValue, select: '정비 요망'};
+              } else {
+                return {...secondValue};
+              }
+            });
+            return {...firstValue, item: tmpValue};
+          }),
+        );
+      })
       .finally(() => {
         setIsLoading(false);
       });
   };
 
+  const onPressUpdate = () => {
+    const [result, proc_chk] = changeCheckList(viewCheckList);
+    updateCheckList({
+      _mt_idx: login.idx,
+      od_idx: params?.od_idx,
+      ...result,
+      ot_proc: reservationInfo?.ot_proc,
+      ot_proc_idx: reservationInfo?.ot_proc_idx,
+    }).then(res => {
+      if (res.data?.result === 'true') {
+        showToastMessage('수정 되었습니다.');
+      }
+    });
+  };
+
+  const getIsCouponTypeHandle = async () => {
+    await getIsCouponType({
+      _mt_idx: login.idx,
+      od_idx: params?.od_idx,
+    }).then(res => {
+      if (res.data?.result === 'true') {
+        if (res.data?.data?.data?.ot_type === 'coupon') {
+          setType('coupon');
+        }
+      }
+    });
+  };
+
   useEffect(() => {
     // 초기, 값 변경시 예약정보 API
-    if (isFocused) getReservationInfoHandle();
+    if (isFocused) {
+      getIsCouponTypeHandle().then(() => {
+        getReservationInfoHandle();
+      });
+    }
   }, [isChange, isFocused]);
 
   useUpdateEffect(() => {
@@ -221,6 +276,7 @@ export default function ReservationManagementDetail({navigation, route: {params}
   const now = new Date();
   // 예약시간 <= 현재시간 인경우 true
   const isPrevTime = reservationTime <= now;
+
   return (
     <>
       {isLoading && <Loading isAbsolute />}
@@ -245,6 +301,12 @@ export default function ReservationManagementDetail({navigation, route: {params}
                 )}
               </RowBox>
             </RowBox>
+            {reservationInfo?.ot_end_time?.length > 0 && (
+              <RowBox mg="0px 0px 10px">
+                <DarkMediumText width="110px">완료시간</DarkMediumText>
+                <DarkText width="270px">{reservationInfo?.ot_end_time?.substring(0, 16)}</DarkText>
+              </RowBox>
+            )}
             {reservationInfo?.ot_memo?.length > 0 && (
               <RowBox mg="0px 0px 10px">
                 <DarkMediumText width="110px">요청사항</DarkMediumText>
@@ -362,6 +424,17 @@ export default function ReservationManagementDetail({navigation, route: {params}
                 )}
               </Box>
             </>
+          )}
+          {reservationInfo.ot_status === '처리완료' && (
+            <CheckList
+              disabled
+              checkList={viewCheckList}
+              setCheckList={setViewCheckList}
+              isShow={isViewCheckList}
+              setIsShow={setIsViewCheckList}
+              isUpdate
+              onPressUpdate={onPressUpdate}
+            />
           )}
         </KeyboardAwareScrollView>
         {type === 'coupon' && ( // 쿠폰인 경우 줄이 짧아서 스크롤 뷰 밖에서

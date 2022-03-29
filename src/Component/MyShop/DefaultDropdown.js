@@ -20,6 +20,7 @@ export default function DefaultDropdown({
   fontSize = 15,
   disabled,
   backgroundColor = '#fff0',
+  maxHeightLength,
 }) {
   const fontFamily = fontType === 'normal' ? 'NotoSansKR-Regular' : `NotoSansKR-${fontType}`;
   return (
@@ -49,8 +50,11 @@ export default function DefaultDropdown({
         borderWidth: isBorder ? 1 : 0,
         borderColor: isBorder ? Theme.borderColor.gray : Theme.color.white,
       }}
-      maxHeight={data.length * height}
-      autoScroll={false}
+      containerStyle={{
+        height: 100,
+      }}
+      maxHeight={maxHeightLength ? maxHeightLength * height : data?.length * height}
+      autoScroll={true}
       showsVerticalScrollIndicator={false}
       renderItem={item => {
         const isEqual = item?.value === value;
