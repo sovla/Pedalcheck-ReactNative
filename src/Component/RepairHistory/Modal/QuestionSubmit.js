@@ -64,11 +64,12 @@ export default function QuestionSubmit({item, setRecomment}) {
   return (
     <>
       <ModalTitleBox title="답변하기" />
-      <TouchableWithoutFeedback
-        onPress={() => {
-          Keyboard.dismiss();
-        }}>
-        <Box pd="0px 20px" width={'380px'}>
+
+      <Box pd="0px 20px" width={'380px'}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            Keyboard.dismiss();
+          }}>
           <BetweenBox width="340px" style={borderBottomWhiteGray} height="55px">
             <Box>
               <DarkBoldText fontSize={Theme.fontSize.fs15}>{item?.qt_title}</DarkBoldText>
@@ -106,11 +107,10 @@ export default function QuestionSubmit({item, setRecomment}) {
             fontSize={Theme.fontSize.fs16}
             maxLength={2000}
           />
-
-          {errorMessage !== '' && <ErrorText>{errorMessage}</ErrorText>}
-          <LinkButton content="저장하기" width="340px" to={() => answerWrite()} />
-        </Box>
-      </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
+        {errorMessage !== '' && <ErrorText>{errorMessage}</ErrorText>}
+        <LinkButton content="저장하기" width="340px" to={() => answerWrite()} />
+      </Box>
     </>
   );
 }

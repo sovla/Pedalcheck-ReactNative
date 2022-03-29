@@ -7,6 +7,8 @@ import Toast from 'react-native-toast-message';
 import {DefaultText} from './src/assets/global/Text';
 import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
 
+import messaging from '@react-native-firebase/messaging';
+
 const IosPermission = [
   // PERMISSIONS.IOS.ACCESS_NOTIFICATION_POLICY,
   // PERMISSIONS.IOS.ACCESS_FINE_LOCATION,
@@ -30,6 +32,15 @@ function App() {
       requestMultiple(AndroidPermission);
     } else {
       requestMultiple(IosPermission);
+    }
+
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      console.log('Authorization status:', authStatus);
     }
   }
 
