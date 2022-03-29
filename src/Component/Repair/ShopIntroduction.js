@@ -69,7 +69,7 @@ export default function ShopIntroduction() {
     <Box pd="20px 16px">
       <Box style={borderBottomWhiteGray} width="380px">
         {shopInformation.map((item, index) => {
-          if (item.content === '') {
+          if (item?.content === '' || !item?.content) {
             return;
           }
           return (
@@ -100,18 +100,18 @@ export default function ShopIntroduction() {
                       }}
                       fontSize={Theme.fontSize.fs15}
                       numberOfLines={isBrand ? 3 : 1000}>
-                      {item.content}
+                      {item?.content}
                     </DarkText>
                   </TouchableOpacity>
                 )}
-                {item.title === '영업시간' && (
+                {item?.title === '영업시간' && Array.isArray(item?.content) && (
                   <Box width="252px">
-                    {item.content.map((item, index) => {
+                    {item?.content?.map((item, index) => {
                       if (item?.yoil) {
                         return (
                           <RowBox width="252px" key={index} mg="0px 0px 3px">
                             <DarkMediumText fontSize={Theme.fontSize.fs15}>{item?.yoil}</DarkMediumText>
-                            <DarkText mg="0px 0px 0px 5px" fontSize={Theme.fontSize.fs15}>
+                            <DarkText mg="0px 0px 0px 5px" foyantSize={Theme.fontSize.fs15}>
                               {`${item?.stime} - ${item?.etime}`}
                             </DarkText>
                           </RowBox>
