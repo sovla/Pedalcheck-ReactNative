@@ -75,12 +75,17 @@ export default ItemStats;
 
 const TableRow = ({backgroundColor, width, height = '40px', itemList, test}) => {
   return (
-    <RowBox backgroundColor={backgroundColor} width={width} height={height} style={borderBottomWhiteGray}>
+    <RowBox
+      backgroundColor={backgroundColor}
+      width={width}
+      height={height}
+      style={borderBottomWhiteGray}
+      alignItems="center"
+      justifyContent="center">
       {itemList?.map((item, index) => (
         <DarkMediumText
           key={item + index}
           backgroundColor="#0000"
-          height={height}
           style={{
             flex: index === 0 ? 1.5 : 1,
             textAlign: 'center',
