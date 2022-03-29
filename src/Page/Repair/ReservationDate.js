@@ -26,7 +26,7 @@ export default function ReservationDate({navigation, route: {params}}) {
 
   const {shopInfo, reservationInfo} = useSelector(state => state);
   const [selectItem, setSelectItem] = useState(''); // 선택한 시간
-  const [selectDate, setSelectDate] = useState(new Date().toISOString().substring(0, 7)); // 선택한 날짜
+  const [selectDate, setSelectDate] = useState(new Date().toISOString().substring(0, 10)); // 선택한 날짜
 
   const [disabledDayList, setDisabledDayList] = useState([]); // 선택불가 날짜
   const [disabledTimeList, setDisabledTimeList] = useState([]); // 선택불가 시간
@@ -67,8 +67,6 @@ export default function ReservationDate({navigation, route: {params}}) {
 
   useEffect(() => {
     if (isFocused) {
-      setSelectDate(reservationInfo?.selectDate?.date ?? null);
-      setSelectItem(reservationInfo?.selectDate?.time ?? '');
       onChangeMonth(
         selectDate?.substr(0, 7) ??
           `${now.getFullYear()}-${now.getMonth() + 1 < 10 ? '0' + (now.getMonth() + 1) : now.getMonth() + 1}`,

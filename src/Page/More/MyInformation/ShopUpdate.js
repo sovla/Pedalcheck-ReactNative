@@ -27,6 +27,8 @@ import {bankList2, openTimehalfList, openTimePmList} from '@/assets/global/dummy
 import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
 import {numberChangeFormat} from '@/Util/numberFormat';
 import ImageCropPicker from 'react-native-image-crop-picker';
+import TimeSelect from '@/Component/MyInformation/TimeSelect';
+import useUpdateEffect from '@/Hooks/useUpdateEffect';
 
 const initAccountInfo = {
   mt_bname: '',
@@ -45,12 +47,6 @@ export default function ShopUpdate() {
   const [selectDay, setSelectDay] = useState([]);
   const [isDaumOpen, setIsDaumOpen] = useState(false);
   const [shopInformation, setShopInformation] = useState(null);
-  const [openingHours, setOpeningHours] = useState({
-    weekdayStart: '00',
-    weekdayEnd: '00',
-    weekendStart: '00',
-    weekendEnd: '00',
-  });
   const [errorMessage, setErrorMessage] = useState({
     mst_name: '',
     mst_company_num: '',
@@ -60,18 +56,13 @@ export default function ShopUpdate() {
   });
   const [user, setUser] = useState(initAccountInfo); // 계좌정보 용 추가
   const [AccountErrorMessage, setAccountErrorMessage] = useState(initAccountInfo);
+  const [lastSortCount, setLastSortCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [openingSelect, setOpeningSelect] = useState({
-    weekdayStart: '오전',
-    weekdayEnd: '오후',
-    weekendStart: '오전',
-    weekendEnd: '오후',
-  });
+  const [yoil, setYoil] = useState(initYoil);
 
   const dispatch = useDispatch();
-  const [lastSortCount, setLastSortCount] = useState(0);
 
-  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     if (isFocused && storeInfo) {
       setUser(prev => ({
@@ -85,33 +76,7 @@ export default function ShopUpdate() {
       const changeValue = storeInfo?.mst_holiday?.includes(',')
         ? storeInfo?.mst_holiday?.split(',')
         : [storeInfo?.mst_holiday];
-      if (storeInfo?.mst_worktime) {
-        const mstWorktime = storeInfo.mst_worktime;
 
-        try {
-          const weekdayStart = mstWorktime.split('주말')[0].split(' ')[2];
-          const weekdayEnd = mstWorktime.split('주말')[0].split(' ')[5];
-          const weekendStart = mstWorktime.split('주말')[1].split(' ')[2];
-          const weekendEnd = mstWorktime.split('주말')[1].split(' ')[5];
-
-          const getTime = timeString => {
-            return numberChangeFormat(timeString.substring(0, timeString.length));
-          };
-
-          setOpeningHours({
-            weekdayStart: getTime(weekdayStart),
-            weekdayEnd: getTime(weekdayEnd),
-            weekendStart: getTime(weekendStart),
-            weekendEnd: getTime(weekendEnd),
-          });
-          setOpeningSelect({
-            weekdayStart: mstWorktime.split('주말')[0].split(' ')[1],
-            weekdayEnd: mstWorktime.split('주말')[0].split(' ')[4],
-            weekendStart: mstWorktime.split('주말')[1].split(' ')[1],
-            weekendEnd: mstWorktime.split('주말')[1].split(' ')[4],
-          });
-        } catch (error) {}
-      }
       setSelectDay(
         changeValue.map(value => {
           return value * 1 + 1;
@@ -232,9 +197,10 @@ export default function ShopUpdate() {
     let response;
 
     const localImageArray = imageArray?.filter(item => !item?.sort);
+
     response = await updateStoreImage({
       ...shopInformation,
-      mst_worktime: setWorkTime(openingHours, openingSelect),
+      mst_worktime: '', // 여기 수정 필요,
       mst_holiday: selectDay
         .map(v => v - 1)
         .sort()
@@ -245,6 +211,7 @@ export default function ShopUpdate() {
         return lastSortCount + index + 1;
       }),
       ...user,
+      mst_worktime: yoil,
     });
 
     if (response?.data?.result === 'true') {
@@ -272,10 +239,7 @@ export default function ShopUpdate() {
       return true;
     }
   };
-  const onChangeDate = (value, type) => {
-    // type -> amStart amEnd pmStart pmEnd
-    setOpeningHours(prev => ({...prev, [type]: value}));
-  };
+
   const onPressAddImage = async () => {
     await ImageCropPicker.openPicker({
       width: 300,
@@ -292,6 +256,8 @@ export default function ShopUpdate() {
       }));
     });
   };
+  console.log(yoil);
+
   return (
     <>
       {isLoading && <Loading isAbsolute />}
@@ -451,85 +417,6 @@ export default function ShopUpdate() {
               onPressDelete={deleteImageHandle}
             />
           </Box>
-          <Box width="380px">
-            <DarkBoldText fontSize={Theme.fontSize.fs15}>영업시간</DarkBoldText>
-            <RowBox alignItems="center">
-              <DarkText mg="0px 10px 0px 0px">평일</DarkText>
-              <DefaultDropdown
-                pdLeft={10}
-                data={ampm}
-                value={openingSelect.weekdayStart}
-                setValue={value => setOpeningSelect(prev => ({...prev, weekdayStart: value}))}
-              />
-              <Box width="10px" />
-              <DefaultDropdown
-                data={openTimehalfList}
-                value={openingHours.weekdayStart} // 오전 00
-                setValue={value => onChangeDate(value, 'weekdayStart')}
-              />
-              <DarkText mg="0px 10px">~</DarkText>
-              <DefaultDropdown
-                pdLeft={10}
-                data={ampm}
-                value={openingSelect.weekdayEnd}
-                setValue={value => setOpeningSelect(prev => ({...prev, weekdayEnd: value}))}
-              />
-              <Box width="10px" />
-              <DefaultDropdown
-                data={openTimePmList}
-                value={openingHours.weekdayEnd}
-                setValue={value => onChangeDate(value, 'weekdayEnd')}
-              />
-            </RowBox>
-            <RowBox alignItems="center" mg="10px 0px 0px">
-              <DarkText mg="0px 10px 0px 0px">주말</DarkText>
-              <DefaultDropdown
-                pdLeft={10}
-                data={ampm}
-                value={openingSelect.weekendStart}
-                setValue={value => setOpeningSelect(prev => ({...prev, weekendStart: value}))}
-              />
-              <Box width="10px" />
-              <DefaultDropdown
-                data={openTimehalfList}
-                value={openingHours.weekendStart}
-                setValue={value => onChangeDate(value, 'weekendStart')}
-              />
-              <DarkText mg="0px 10px">~</DarkText>
-              <DefaultDropdown
-                width={65}
-                pdLeft={10}
-                data={ampm}
-                value={openingSelect.weekendEnd}
-                setValue={value => setOpeningSelect(prev => ({...prev, weekdayEnd: value}))}
-              />
-              <Box width="10px" />
-              <DefaultDropdown
-                data={openTimePmList}
-                value={openingHours.weekendEnd}
-                setValue={value => onChangeDate(value, 'weekendEnd')}
-              />
-            </RowBox>
-          </Box>
-          {/* <DefaultInput
-            title="영업시간"
-            width={"380px"}
-            fontSize={Theme.fontSize.fs15}
-            placeHolder="영업시간을 입력해주세요"
-            isAlignTop
-            multiline
-            height="100px"
-            pd="0px 0px 5px"
-            mg="20px 0px"
-            value={shopInformation?.mst_worktime}
-            changeFn={text => {
-              setShopInformation(prev => ({
-                ...prev,
-                mst_worktime: text,
-              }));
-            }}
-            maxLength={200}
-          /> */}
           <Box width={'380px'}>
             <DarkBoldText fontSize={Theme.fontSize.fs15} mg="10px 0px 10px">
               휴무요일
@@ -539,7 +426,6 @@ export default function ShopUpdate() {
                 const isSelect = selectDay.find(findItem => findItem === Index + 1) !== undefined;
                 const backgroundColor = isSelect ? Theme.color.skyBlue : Theme.color.backgroundWhiteGray;
                 const color = isSelect ? Theme.color.white : Theme.color.gray;
-
                 return (
                   <TouchableOpacity
                     style={{
@@ -558,6 +444,18 @@ export default function ShopUpdate() {
                 );
               })}
             </BetweenBox>
+            {selectDay.length < 7 && (
+              <Box mg="10px 0px">
+                <DarkBoldText fontSize={Theme.fontSize.fs15}>영업시간</DarkBoldText>
+              </Box>
+            )}
+
+            {yoil.map((item, Index) => {
+              const isSelect = selectDay.find(findItem => findItem === Index + 1) !== undefined;
+              if (!isSelect) {
+                return <TimeSelect key={'timeSelect' + Index} setTimeList={setYoil} item={item} />;
+              }
+            })}
           </Box>
           <DefaultInput
             title="매장 소개"
@@ -656,34 +554,6 @@ export default function ShopUpdate() {
 }
 
 const dayList = ['일', '월', '화', '수', '목', '금', '토'];
-const ampm = [
-  {
-    label: '오전',
-    value: '오전',
-  },
-  {
-    label: '오후',
-    value: '오후',
-  },
-];
-
-const setWorkTime = (time, ampmSelect) => {
-  if (Object.values(time).filter(v => +v).length > 0) {
-    // 시간이 00 이 아닌경우 출력
-
-    // 평일 오전 00시 ~ 00시
-    // 주말 오전 00시 ~ 00시
-    // 형태로 출력합니다.
-    return `평일 ${ampmSelect.weekdayStart} ${+time.weekdayStart}시 ~ ${
-      ampmSelect.weekdayEnd
-    } ${+time.weekdayEnd}시\n주말 ${ampmSelect.weekendStart} ${+time.weekendStart}시 ~ ${
-      ampmSelect.weekendEnd
-    } ${+time.weekendEnd}시`;
-  } else {
-    return '';
-  }
-};
-
 const AccountInformation = ({errorMessage, user, setUser, onPressAddImage}) => {
   return (
     <>
@@ -738,8 +608,40 @@ const AccountInformation = ({errorMessage, user, setUser, onPressAddImage}) => {
   );
 };
 
-// [
-//   {"yoil":"월","stime":"09:00","etime":"19:00"},
-//   {"yoil":"화","stime":"09:00","etime":"19:00"},
-//   {"yoil":"수","stime":"09:00","etime":"19:00"}
-//   ]
+const initYoil = [
+  {
+    yoil: '일',
+    stime: '00:00',
+    etime: '00:00',
+  },
+  {
+    yoil: '월',
+    stime: '00:00',
+    etime: '00:00',
+  },
+  {
+    yoil: '화',
+    stime: '00:00',
+    etime: '00:00',
+  },
+  {
+    yoil: '수',
+    stime: '00:00',
+    etime: '00:00',
+  },
+  {
+    yoil: '목',
+    stime: '00:00',
+    etime: '00:00',
+  },
+  {
+    yoil: '금',
+    stime: '00:00',
+    etime: '00:00',
+  },
+  {
+    yoil: '토',
+    stime: '00:00',
+    etime: '00:00',
+  },
+];

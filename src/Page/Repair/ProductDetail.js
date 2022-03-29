@@ -94,7 +94,14 @@ export default function ProductDetail({route: {params}}) {
         <Container alignItems="center" pd="20px 0px">
           {item?.pt_image?.length > 0 && (
             <Box width="380px" height="200px" mg="0px 0px 20px">
-              <Swiper imageArray={imageArray} width={412 - 32} height={200} borderRadius="All" />
+              <Swiper
+                isTouch
+                imageArray={imageArray}
+                width={412 - 32}
+                height={200}
+                borderRadius="All"
+                resizeMode="cover"
+              />
             </Box>
           )}
           <Box width="380px" alignItems="center">

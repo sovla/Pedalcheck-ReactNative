@@ -16,7 +16,7 @@ import {couponReservation} from '@/API/More/More';
 import {couponUseMenu} from '@/assets/global/dummy';
 
 export default function CouponUseComplete({route, navigation}) {
-  const {item: coupon, selectBike, selectDate, shopInfo} = route?.params;
+  const {item: coupon, selectBike, selectDate, shopInfo, request} = route?.params;
   const {login} = useSelector(state => state);
   const dummy = {
     cst_title: '',
@@ -41,6 +41,7 @@ export default function CouponUseComplete({route, navigation}) {
       mst_idx: shopInfo.mst_idx,
       ot_pt_date: selectDate.date,
       ot_pt_time: selectDate.time,
+      ot_memo: request,
       //  추가필요 요청사항 order_coupon.php request로 넘어옴
     })
       .then(res => res?.data?.result === 'true' && res.data.data.data)
@@ -69,6 +70,7 @@ export default function CouponUseComplete({route, navigation}) {
                 reservationName={reservationInfo?.ot_name}
                 email={reservationInfo?.ot_email}
                 tel={reservationInfo?.ot_hp}
+                request={request}
               />
             </Box>
           </Box>
@@ -95,6 +97,7 @@ const CouponCompleteComponent = ({
   reservationName = '',
   email = '',
   tel = '',
+  request = '',
 }) => {
   return (
     <Box mg="0px 16px">
@@ -122,6 +125,12 @@ const CouponCompleteComponent = ({
         <DarkMediumText width="100px">전화번호</DarkMediumText>
         <DarkText>{tel}</DarkText>
       </RowBox>
+      {request?.length > 0 && (
+        <RowBox width="380px" mg="0px 0px 10px">
+          <DarkMediumText width="100px">요청사항</DarkMediumText>
+          <DarkText width="270px">{request}</DarkText>
+        </RowBox>
+      )}
     </Box>
   );
 };

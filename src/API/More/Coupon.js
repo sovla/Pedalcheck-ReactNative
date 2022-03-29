@@ -31,3 +31,17 @@ export const getCouponList = async args => {
     return response;
   } catch (error) {}
 };
+
+export const getCouponDownLoadList = async args => {
+  try {
+    const response = await API.post('get_coupon_down.php', args);
+    return response;
+  } catch (error) {}
+};
+
+export const downloadCoupon = async args => {
+  try {
+    const response = await API.post('coupon_download.php', args);
+    return response;
+  } catch (error) {}
+};
