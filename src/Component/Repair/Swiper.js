@@ -122,9 +122,9 @@ function SwiperComponent({
               onPress={() => {
                 setIsModal();
                 setViewItem(index);
-              }}>
+              }}
+              style={[borderRadiusStyle, {overflow: 'hidden'}]}>
               <DefaultImage
-                style={borderRadiusStyle}
                 key={`image_${index}`}
                 source={item}
                 width={`${transformWidth}px`}
