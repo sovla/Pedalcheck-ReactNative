@@ -8,7 +8,7 @@ import ReplyIcon from '@assets/image/ic_reply.png';
 import {useNavigation} from '@react-navigation/native';
 import moment from 'moment';
 import React, {useEffect, useState} from 'react';
-import {Dimensions} from 'react-native';
+import {Dimensions, KeyboardAvoidingView, Platform} from 'react-native';
 import {useSelector} from 'react-redux';
 import Theme from '@assets/global/Theme';
 import {DarkBoldText, DefaultText} from '@/assets/global/Text';
@@ -40,7 +40,7 @@ export default function ReviewDetail({route: {params}}) {
   };
 
   return (
-    <>
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : ''} enabled={true} style={[{flex: 1}]}>
       <Header title="리뷰" />
       <ScrollBox pd="0px 16px" keyboardShouldPersistTaps="handled">
         <Box>
@@ -86,34 +86,37 @@ export default function ReviewDetail({route: {params}}) {
         )}
       </ScrollBox>
       {!isRecomment && (
-        <BetweenBox
-          mg="0px 16px"
-          height="auto"
-          alignItems="center"
-          width="380px"
-          style={{
-            maxHeight: height / 3,
-          }}>
-          <DefaultInput
-            value={comment}
-            changeFn={text => setComment(() => text)}
-            placeHolder="댓글을 입력해주세요 (500자 이내)"
-            width="310px"
-            minHeight="44px"
+        <>
+          <BetweenBox
+            mg="0px 16px 15px"
             height="auto"
-            multiline
-          />
-          <LinkButton
-            content="등록"
-            width="60px"
-            height="44px"
-            to={() => {
-              commentSubmit(item?.srt_idx, comment, moment().format('YYYY-MM-DD'));
-              navigation.goBack();
-            }}
-          />
-        </BetweenBox>
+            alignItems="center"
+            width="380px"
+            style={{
+              maxHeight: height / 3,
+            }}>
+            <DefaultInput
+              value={comment}
+              changeFn={text => setComment(() => text)}
+              placeHolder="댓글을 입력해주세요 (500자 이내)"
+              width="310px"
+              minHeight="44px"
+              height="auto"
+              multiline
+            />
+            <LinkButton
+              content="등록"
+              width="60px"
+              height="44px"
+              to={() => {
+                commentSubmit(item?.srt_idx, comment, moment().format('YYYY-MM-DD'));
+                navigation.goBack();
+              }}
+            />
+          </BetweenBox>
+          <Box height="15px" />
+        </>
       )}
-    </>
+    </KeyboardAvoidingView>
   );
 }

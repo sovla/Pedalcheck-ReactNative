@@ -20,11 +20,10 @@ export default function Header({title, RightComponent, isGoBack = true}) {
         <Box width="20%" height="100%" />
       )}
 
-      <Box width="60%" alignItems="center" justifyContent="center">
+      <Box width="60%" height={'100%'} alignItems="center" justifyContent="center">
         <DarkBoldText
           style={{
             textAlignVertical: 'center',
-            height: '100%',
             textAlign: 'center',
           }}>
           {title}

@@ -31,6 +31,7 @@ import SearchIcon from '@assets/image/ic_search.png';
 
 import ReviewComment from '@/Component/Repair/ReviewComment';
 import Loading from '@/Component/Layout/Loading';
+import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 
 // 2022-01-17 17:17:25 현태 수정 필요
 
@@ -122,7 +123,8 @@ export default function RepairHistorySelectReview() {
 
   return (
     <Box pd="0px 16px">
-      <FlatList
+      <KeyboardAwareFlatList
+        style={{marginBottom: 60}}
         keyExtractor={(item, index) => item.srt_idx}
         ListHeaderComponent={
           <>
