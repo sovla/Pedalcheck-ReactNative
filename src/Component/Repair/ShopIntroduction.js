@@ -110,7 +110,7 @@ export default function ShopIntroduction() {
                       if (item?.yoil) {
                         return (
                           <RowBox width="252px" key={index} mg="0px 0px 3px">
-                            <DarkMediumText fontSize={Theme.fontSize.fs15}>{item?.yoil}</DarkMediumText>
+                            <DarkMediumText fontSize={Theme.fontSize.fs15}>{item.yoil}</DarkMediumText>
                             <DarkText mg="0px 0px 0px 5px" foyantSize={Theme.fontSize.fs15}>
                               {`${item?.stime} - ${item?.etime}`}
                             </DarkText>
