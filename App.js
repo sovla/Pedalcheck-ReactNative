@@ -2,10 +2,11 @@ import {store} from '@/Store/store';
 import React, {useEffect} from 'react';
 import {Provider} from 'react-redux';
 import Router from './src/Page/Router';
-import {Text, View, TouchableOpacity} from 'react-native';
+import {Text, View, TouchableOpacity, Platform} from 'react-native';
 import Toast from 'react-native-toast-message';
 import {DefaultText} from './src/assets/global/Text';
 import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
 import messaging from '@react-native-firebase/messaging';
 
@@ -43,9 +44,19 @@ function App() {
       console.log('Authorization status:', authStatus);
     }
   }
+  const ios_push_reset = notification => {
+    PushNotificationIOS.removeAllPendingNotificationRequests();
+    PushNotificationIOS.removeAllDeliveredNotifications();
+    PushNotificationIOS.removeDeliveredNotifications();
+    PushNotificationIOS.removePendingNotificationRequests();
+    PushNotificationIOS.setApplicationIconBadgeNumber(0);
+  };
 
   useEffect(() => {
     requestPermissions();
+    if (Platform.OS === 'ios') {
+      ios_push_reset();
+    }
   }, []);
 
   const toastConfig = {
