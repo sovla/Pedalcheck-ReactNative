@@ -100,7 +100,6 @@ export const DefaultInput = ({
           onChangeText={changeFn}
           onBlur={onBlur}
           onEndEditing={onSend} // 완료버튼클릭
-          returnKeyType="done" // 완료버튼
           style={[
             isAlignTop && {
               textAlignVertical: 'top',
