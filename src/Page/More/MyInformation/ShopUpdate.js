@@ -80,21 +80,23 @@ export default function ShopUpdate() {
       );
       setImageArray(storeInfo.mst_image);
       try {
-        const mst_worktime2 = JSON.parse(storeInfo?.mst_worktime2);
-        setYoil(prev =>
-          prev.map(v => {
-            if (Array.isArray(mst_worktime2)) {
-              const findItem = mst_worktime2.find(fv => fv?.yoil === v?.yoil);
-              if (findItem) {
-                return findItem;
-              } else {
-                return v;
+        if (storeInfo?.mst_worktime2) {
+          const mst_worktime2 = JSON.parse(storeInfo?.mst_worktime2);
+          setYoil(prev =>
+            prev.map(v => {
+              if (Array.isArray(mst_worktime2)) {
+                const findItem = mst_worktime2.find(fv => fv?.yoil === v?.yoil);
+                if (findItem) {
+                  return findItem;
+                } else {
+                  return v;
+                }
               }
-            }
-          }),
-        );
+            }),
+          );
+        }
       } catch (error) {
-        console.log(error);
+        console.log('error1111', error, storeInfo.mst_worktime2);
       }
 
       let maxSort = 0;
@@ -264,7 +266,7 @@ export default function ShopUpdate() {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.log('errorerrorerror', error);
     } finally {
       setIsLoading(false);
     }

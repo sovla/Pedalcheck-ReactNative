@@ -7,7 +7,7 @@ export default function TimeSelect({setTimeList, item}) {
   const onChange = (value, valueName) => {
     setTimeList(prev =>
       prev.map(v => {
-        if (v.yoil === item.yoil) {
+        if (v?.yoil === item?.yoil) {
           return {
             ...v,
             [valueName]: value,
