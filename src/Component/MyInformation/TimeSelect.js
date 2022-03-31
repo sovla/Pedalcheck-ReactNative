@@ -22,7 +22,7 @@ export default function TimeSelect({setTimeList, item}) {
   return (
     <Box width="380px" mg="0px 0px 10px">
       <RowBox alignItems="center">
-        <DarkBoldText mg="0px 10px 0px 10px">{item.yoil}</DarkBoldText>
+        <DarkBoldText mg="0px 10px 0px 10px">{item?.yoil}</DarkBoldText>
 
         <Box width="10px" />
         <DefaultDropdown

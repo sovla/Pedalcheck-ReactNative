@@ -84,7 +84,7 @@ export default function ShopUpdate() {
         setYoil(prev =>
           prev.map(v => {
             if (Array.isArray(mst_worktime2)) {
-              const findItem = mst_worktime2.find(fv => fv.yoil === v.yoil);
+              const findItem = mst_worktime2.find(fv => fv?.yoil === v?.yoil);
               if (findItem) {
                 return findItem;
               } else {
@@ -299,15 +299,6 @@ export default function ShopUpdate() {
       }));
     });
   };
-  console.log(
-    yoil,
-    yoil.filter((v, i) => {
-      const isFind = selectDay.find(v => v === i + 1);
-      if (!isFind) {
-        return 1;
-      }
-    }),
-  );
 
   return (
     <>
@@ -502,7 +493,7 @@ export default function ShopUpdate() {
               </Box>
             )}
 
-            {yoil.map((item, Index) => {
+            {yoil?.map((item, Index) => {
               const isSelect = selectDay.find(findItem => findItem === Index + 1) !== undefined;
               if (!isSelect) {
                 return <TimeSelect key={'timeSelect' + Index} setTimeList={setYoil} item={item} />;
