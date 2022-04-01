@@ -542,7 +542,7 @@
 				CODE_SIGN_ENTITLEMENTS = pedalcheckA/pedalcheckA.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7Z3P63HN6Y;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = pedalcheckA/Info.plist;
@@ -550,7 +550,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.18.0;
+				MARKETING_VERSION = 1.18.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -575,14 +575,14 @@
 				CODE_SIGN_ENTITLEMENTS = pedalcheckA/pedalcheckA.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7Z3P63HN6Y;
 				INFOPLIST_FILE = pedalcheckA/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.18.0;
+				MARKETING_VERSION = 1.18.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
