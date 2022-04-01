@@ -3,7 +3,7 @@ import DefaultImage from '@/assets/global/Image';
 import {DarkBoldText, DarkMediumText, DarkText, DefaultText, GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import React, {useState} from 'react';
-import {ScrollView, TouchableOpacity, FlatList, Modal, Linking} from 'react-native';
+import {ScrollView, TouchableOpacity, FlatList, Modal, Linking, Platform} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import WhiteSpannerIcon from '@assets/image/menu01_top.png';
 import {WhiteInput} from '@assets/global/Input';
@@ -37,6 +37,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getTagList} from '@/API/More/More';
 import {useRef} from 'react';
 import useInterval from '@/Hooks/useInterval';
+import {AlertButtons} from '@/Util/Alert';
 
 export default function RepairHome() {
   const {
@@ -132,6 +133,25 @@ export default function RepairHome() {
     }
   };
 
+  const checkVersion = data => {
+    if (
+      (Platform.OS === 'ios' && data?.ios_ver === IOS_VERSION) ||
+      (Platform.OS === 'android' && data.aos_ver === ANDROID_VERSION)
+    ) {
+      return;
+    }
+
+    AlertButtons('최신 버전이 있습니다.\n업데이트 하시겠습니까?', '확인', '취소', () => {
+      if (Platform.OS === 'ios') {
+        Linking.openURL(
+          'https://apps.apple.com/us/app/%ED%8E%98%EB%8B%AC%EC%B2%B4%ED%81%AC-%EB%AA%A8%EB%B0%94%EC%9D%BC-%EC%9E%90%EC%A0%84%EA%B1%B0-%EA%B4%80%EB%A6%AC/id1610296299',
+        );
+      } else if (Platform.OS === 'android') {
+        Linking.openURL('https://play.google.com/store/apps/details?id=com.pedalchecka');
+      }
+    });
+  };
+
   const getShopListHandle = async initPage => {
     if (isLast && !initPage) {
       return null;
@@ -161,6 +181,8 @@ export default function RepairHome() {
       .then(res => {
         if (res?.data?.result === 'true') {
           const isData = res.data?.data?.data?.store_list?.length > 0;
+          checkVersion(res.data?.data?.data);
+
           if (isData) {
             if (initPage) {
               setStoreList([...res?.data?.data?.data?.store_list]);
