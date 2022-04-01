@@ -66,6 +66,8 @@ export default function RepairHome() {
   const [isModal, setIsModal] = useState(false);
 
   const [tagList, setTagList] = useState([]);
+
+  const [isCheckVersion, setisCheckVersion] = useState(false);
   const onPressTag = tagName => {
     // By.Junhan tag에 값이 없다면 넣어주고 있다면 제거
     if (tag.find(item => item === tagName)) {
@@ -136,7 +138,8 @@ export default function RepairHome() {
   const checkVersion = data => {
     if (
       (Platform.OS === 'ios' && data?.ios_ver === IOS_VERSION) ||
-      (Platform.OS === 'android' && data.aos_ver === ANDROID_VERSION)
+      (Platform.OS === 'android' && data.aos_ver === ANDROID_VERSION) ||
+      isCheckVersion
     ) {
       return;
     }
@@ -150,6 +153,7 @@ export default function RepairHome() {
         Linking.openURL('https://play.google.com/store/apps/details?id=com.pedalchecka');
       }
     });
+    setisCheckVersion(true);
   };
 
   const getShopListHandle = async initPage => {
