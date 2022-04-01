@@ -1,5 +1,5 @@
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import {Platform, TouchableOpacity} from 'react-native';
 import {BetweenBox, Box, Container, RowBox, ScrollBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import GradientHeader from '@/Component/Layout/GradientHeader';
@@ -307,7 +307,7 @@ const MoreFooter = () => {
           버전 정보
         </GrayText>
         <BoldText fontSize={Theme.fontSize.fs13} color={Theme.color.gray}>
-          {VERSION_CODE}
+          {Platform.OS === 'android' ? ANDROID_VERSION ?? '1.0.0' : IOS_VERSION ?? '1.0.0'}
         </BoldText>
       </RowBox>
     </Box>
