@@ -27,8 +27,8 @@ const PhotoComponent = ({
     return true;
   },
   isMulti = false,
-  imageWidth,
-  imageHeight,
+  imageWidth = 1000,
+  imageHeight = 1000,
   isTouch = false,
 }) => {
   const [isModal, setIsModal] = useState(false);
@@ -42,7 +42,6 @@ const PhotoComponent = ({
       height: imageHeight,
       cropping: true, // 자르기 활성화
       multiple: isMulti,
-      compressImageQuality: 0.9,
       compressImageMaxWidth: 1000,
       compressImageMaxHeight: 1000,
       forceJpg: true,
