@@ -2,7 +2,7 @@ import {Box, PositionBox, RowBox} from '@/assets/global/Container';
 import {DarkText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import React from 'react';
-import {ActivityIndicator, Alert, Image, Modal, TouchableOpacity, View} from 'react-native';
+import {ActivityIndicator, Alert, Image, Modal, Platform, TouchableOpacity, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import DefaultImage from '@assets/global/Image';
 import withNthMap from '@/Util/nthMap';
@@ -37,14 +37,21 @@ const PhotoComponent = ({
     if (checkImageCount()) {
       return;
     }
-    await ImageCropPicker.openPicker({
+
+    let imageData = {
       cropping: true, // 자르기 활성화
       multiple: isMulti,
       forceJpg: true,
       freeStyleCropEnabled: true,
       compressImageMaxWidth: 1000,
       compressImageMaxHeight: 1000,
-    })
+    };
+    if (Platform.OS === 'ios') {
+      const iosImgaeSize = {width: imageWidth, height: imageHeight};
+      imageData = {...iosImgaeSize, ...imageData};
+    }
+    await ImageCropPicker.openPicker(imageData)
+
       .then(images => {
         if (checkImageCount(images)) {
           return null;
