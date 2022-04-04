@@ -42,6 +42,8 @@ const PhotoComponent = ({
       multiple: isMulti,
       forceJpg: true,
       freeStyleCropEnabled: true,
+      compressImageMaxWidth: 1000,
+      compressImageMaxHeight: 1000,
     })
       .then(images => {
         if (checkImageCount(images)) {
