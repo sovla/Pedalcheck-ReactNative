@@ -38,13 +38,10 @@ const PhotoComponent = ({
       return;
     }
     await ImageCropPicker.openPicker({
-      width: imageWidth,
-      height: imageHeight,
       cropping: true, // 자르기 활성화
       multiple: isMulti,
-      compressImageMaxWidth: 1000,
-      compressImageMaxHeight: 1000,
       forceJpg: true,
+      freeStyleCropEnabled: true,
     })
       .then(images => {
         if (checkImageCount(images)) {
