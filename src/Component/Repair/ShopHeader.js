@@ -61,7 +61,7 @@ const ShopHeader = () => {
             <DefaultImage source={BackIcon} width="45px" height="45px" />
           </TouchableOpacity>
         </PositionBox>
-        <Swiper imageArray={dummyImageArray} width={412} height={250} isRolling resizeMode="stretch" />
+        <Swiper imageArray={dummyImageArray} width={412} height={250} isRolling resizeMode="cover" isTouch />
         {isPartner ? (
           <>
             {store_info?.mst_tel?.length > 0 && (
