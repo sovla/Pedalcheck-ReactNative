@@ -2,10 +2,11 @@ import {store} from '@/Store/store';
 import React, {useEffect} from 'react';
 import {Provider} from 'react-redux';
 import Router from './src/Page/Router';
-import {Text, View, TouchableOpacity} from 'react-native';
+import {Text, View, TouchableOpacity, Platform} from 'react-native';
 import Toast from 'react-native-toast-message';
 import {DefaultText} from './src/assets/global/Text';
 import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
+import {API} from './src/API/Api';
 
 import messaging from '@react-native-firebase/messaging';
 
@@ -49,6 +50,12 @@ function App() {
 
   useEffect(() => {
     requestPermissions();
+    (() => {
+      API.post('app_version.php', {
+        app_os: Platform.OS === 'ios' ? 'ios' : 'aos',
+        app_ver: Platform.OS === 'ios' ? IOS_VERSION : ANDROID_VERSION,
+      });
+    })();
   }, []);
 
   const toastConfig = {
