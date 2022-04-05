@@ -44,7 +44,7 @@ export default function PaymentInformationCheck({onPressComplete}) {
       content:
         selectBike.selectItem === 2000
           ? selectBike.bikeName.bikeBrand + ' - ' + selectBike.bikeName.bikeModel
-          : selectBike.selectBike.mbt_brand + ' - ' + selectBike.selectBike.mbt_model,
+          : selectBike.selectBike?.mbt_brand + ' - ' + selectBike.selectBike.mbt_model,
     },
     {title: '전화번호', content: login?.mt_sms},
     {title: '요청사항', content: selectPayment?.repairRequest},

@@ -6,7 +6,9 @@ import {Text, View, TouchableOpacity, Platform} from 'react-native';
 import Toast from 'react-native-toast-message';
 import {DefaultText} from './src/assets/global/Text';
 import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
+import {API} from './src/API/Api';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
+
 
 import messaging from '@react-native-firebase/messaging';
 
@@ -27,8 +29,8 @@ const AndroidPermission = [
   PERMISSIONS.ANDROID.CALL_PHONE,
 ];
 
-globalThis.ANDROID_VERSION = '1.18.6';
-globalThis.IOS_VERSION = '1.18.6';
+globalThis.ANDROID_VERSION = '1.18.7';
+globalThis.IOS_VERSION = '1.18.7';
 
 function App() {
   async function requestPermissions() {
@@ -57,9 +59,18 @@ function App() {
 
   useEffect(() => {
     requestPermissions();
+
+    (() => {
+      API.post('app_version.php', {
+        app_os: Platform.OS === 'ios' ? 'ios' : 'aos',
+        app_ver: Platform.OS === 'ios' ? IOS_VERSION : ANDROID_VERSION,
+      });
+    })();
+
     if (Platform.OS === 'ios') {
       ios_push_reset();
     }
+
   }, []);
 
   const toastConfig = {

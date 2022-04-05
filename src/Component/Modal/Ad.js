@@ -31,12 +31,25 @@ export default function Ad({info, setIsModal}) {
         </PositionBox>
       )}
       {info.at_close === '2' && (
-        <PositionBox right="16px" top="14px" zIndex={100} backgroundColor="#0000">
+        <PositionBox
+          right="3px"
+          top="3px"
+          zIndex={100}
+          backgroundColor="#0008"
+          pd="0px 10px"
+          style={{
+            borderRadius: 10,
+          }}>
           <TouchableOpacity
             onPress={() => {
               onPressClose('day');
             }}
-            style={{flexDirection: 'row', alignItems: 'center', paddingVertical: 5, paddingLeft: 5}}>
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingVertical: 5,
+              paddingLeft: 5,
+            }}>
             <DefaultText fontSize={Theme.fontSize.fs16} style={{marginRight: 5}}>
               오늘 하루 다시 보지 않기
             </DefaultText>
