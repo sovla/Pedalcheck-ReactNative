@@ -105,7 +105,7 @@ export default function RegisterInformation({navigation, route: {params}}) {
             errorMessage={errorMessage.name !== '' && errorMessage.name}
             pd="0px 0px 5px"
             mg={errorMessage.name === '' && '0px 0px 20px'}
-            maxLength={10}
+            maxLength={20}
           />
           <DefaultInput
             title="닉네임"
