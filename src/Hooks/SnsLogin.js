@@ -53,13 +53,7 @@ export const SnsLogin = async (id, name, email, type, dispatch, navigation, toke
       // 처음 SNS 로그인
       if (result?.data?.data?.data?.mt_di?.length > 0) {
         const data = result?.data?.data?.data;
-        if (
-          isEmail(data.mt_id) &&
-          data.mt_nickname?.length > 0 &&
-          data.mt_hp?.length > 0 &&
-          data.mt_email?.length > 0 &&
-          data.mt_addr?.length > 0
-        ) {
+        if (data.mt_nickname?.length > 0 && data.mt_hp?.length > 0 && data.mt_addr?.length > 0) {
           await MemberJoin({
             mt_name: data.mt_name,
             mt_nickname: data.mt_nickname,
