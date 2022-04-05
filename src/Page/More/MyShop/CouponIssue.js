@@ -19,6 +19,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useEffect} from 'react';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {dateFormat} from '@/Util/DateFormat';
+import {Modal, Platform, SafeAreaView, View} from 'react-native';
+import {getPixel} from '@/Util/pixelChange';
 
 export default function CouponIssue() {
   const [selectCoupon, setSelectCoupon] = useState('');
@@ -78,14 +80,15 @@ export default function CouponIssue() {
   };
 
   const onChange = (e, date) => {
-    if (e?.type === 'set') {
-      if (isOpen === 'start') {
-        setStartDate(date);
-      } else {
-        setEndDate(date);
-      }
-    }
     setIsOpen('');
+    if (e?.type !== 'set' && Platform.OS === 'android') {
+      return;
+    }
+    if (isOpen === 'start') {
+      setStartDate(date);
+    } else {
+      setEndDate(date);
+    }
   };
 
   return (
@@ -168,7 +171,33 @@ export default function CouponIssue() {
         </Box>
       </Container>
       <LinkButton mg="0px 16px 20px" content={'확인'} to={onPressIssue} />
-      {isOpen?.length > 0 && <DateTimePicker value={isOpen === 'start' ? startDate : endDate} onChange={onChange} />}
+      {isOpen?.length > 0 &&
+        (Platform.OS === 'ios' ? (
+          <Modal transparent visible>
+            <SafeAreaView
+              style={{
+                backgroundColor: '#0006',
+                flex: 1,
+                justifyContent: 'center',
+              }}>
+              <View style={{backgroundColor: '#fff', padding: getPixel(10), borderRadius: 5, margin: getPixel(10)}}>
+                <DateTimePicker
+                  value={isOpen === 'start' ? startDate : endDate}
+                  mode="date"
+                  display="inline"
+                  onChange={onChange}
+                />
+              </View>
+            </SafeAreaView>
+          </Modal>
+        ) : (
+          <DateTimePicker
+            value={isOpen === 'start' ? startDate : endDate}
+            mode="date"
+            display="default"
+            onChange={onChange}
+          />
+        ))}
     </>
   );
 }

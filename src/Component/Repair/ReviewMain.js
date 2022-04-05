@@ -1,7 +1,7 @@
 import {BorderButton} from '@/assets/global/Button';
 import {Box, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
-import {DarkBoldText, IndigoText} from '@/assets/global/Text';
+import {DarkBoldText, DefaultText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import numberFormat from '@/Util/numberFormat';
 import React from 'react';
@@ -10,6 +10,7 @@ import {useSelector} from 'react-redux';
 import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import {RequireLoginAlert} from '@/Util/Alert';
+import pixelChange from '@/Util/pixelChange';
 
 export default function ReviewMain() {
   const {shopInfo, login} = useSelector(state => state);
@@ -37,10 +38,16 @@ export default function ReviewMain() {
                 });
               }
             }}>
-            <BorderButton width="90px">
+            <RowBox
+              justifyContent="center"
+              alignItems="center"
+              width="90px"
+              height="30px"
+              borderColor={Theme.color.skyBlue}
+              borderRadius={pixelChange('3px')}>
               <DefaultImage source={PencelIcon} width="17px" height="17px" />
-              리뷰작성
-            </BorderButton>
+              <DefaultText color={Theme.color.skyBlue}>리뷰작성</DefaultText>
+            </RowBox>
           </TouchableOpacity>
         </Box>
       </RowBox>
