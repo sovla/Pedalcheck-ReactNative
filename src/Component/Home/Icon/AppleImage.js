@@ -29,7 +29,7 @@ export default function AppleImage({onPress}) {
     const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user);
     if (identityToken) {
       const identityToken_id = await jwtDecode(identityToken);
-      SnsLogin(identityToken_id?.sub, fullName, identityToken_id?.email, 5, dispatch, navigation, token);
+      SnsLogin(identityToken_id?.sub, fullName, identityToken_id?.email, 5, dispatch, navigation, token.token);
     }
 
     // use credentialState response to ensure the user is authenticated
