@@ -1,6 +1,6 @@
 import {Box, RowBox} from '@/assets/global/Container';
 import React from 'react';
-import {DarkText} from '@/assets/global/Text';
+import {DarkText, DefaultText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {BorderButton} from '@/assets/global/Button';
 import {StyleSheet, TouchableOpacity} from 'react-native';
@@ -8,7 +8,7 @@ import {useSelector} from 'react-redux';
 import {dateFormat} from '@/Util/DateFormat';
 import CalendarIcon from '@assets/image/calendar.png';
 import DefaultImage from '@/assets/global/Image';
-import {getPixel} from '@/Util/pixelChange';
+import pixelChange, {getPixel} from '@/Util/pixelChange';
 import {useLayoutEffect} from 'react';
 
 export default function DatePickerComponent({onPressStart, onPressEnd, selectDate, onPressSearch, setSelectDate}) {
@@ -37,9 +37,15 @@ export default function DatePickerComponent({onPressStart, onPressEnd, selectDat
 
       <TouchableOpacity onPress={onPressSearch}>
         <Box mg="0px 0px 0px 10px">
-          <BorderButton width="78px" height="36px">
-            조회
-          </BorderButton>
+          <Box
+            justifyContent="center"
+            alignItems="center"
+            width="78px"
+            height="36px"
+            borderColor={Theme.color.skyBlue}
+            borderRadius={pixelChange('3px')}>
+            <DefaultText color={Theme.color.skyBlue}>조회</DefaultText>
+          </Box>
         </Box>
       </TouchableOpacity>
     </RowBox>
