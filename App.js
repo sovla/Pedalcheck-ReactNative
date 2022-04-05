@@ -9,7 +9,6 @@ import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
 import {API} from './src/API/Api';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
-
 import messaging from '@react-native-firebase/messaging';
 
 const IosPermission = [
@@ -31,6 +30,7 @@ const AndroidPermission = [
 
 globalThis.ANDROID_VERSION = '1.18.7';
 globalThis.IOS_VERSION = '1.18.7';
+globalThis.isDev = true;
 
 function App() {
   async function requestPermissions() {
@@ -61,16 +61,16 @@ function App() {
     requestPermissions();
 
     (() => {
-      API.post('app_version.php', {
-        app_os: Platform.OS === 'ios' ? 'ios' : 'aos',
-        app_ver: Platform.OS === 'ios' ? IOS_VERSION : ANDROID_VERSION,
-      });
+      !isDev &&
+        API.post('app_version.php', {
+          app_os: Platform.OS === 'ios' ? 'ios' : 'aos',
+          app_ver: Platform.OS === 'ios' ? IOS_VERSION : ANDROID_VERSION,
+        });
     })();
 
     if (Platform.OS === 'ios') {
       ios_push_reset();
     }
-
   }, []);
 
   const toastConfig = {

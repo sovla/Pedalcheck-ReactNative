@@ -38,6 +38,7 @@ import {getTagList} from '@/API/More/More';
 import {useRef} from 'react';
 import useInterval from '@/Hooks/useInterval';
 import {AlertButtons} from '@/Util/Alert';
+import VersionCheck from '@/Util/VersionCheck';
 
 export default function RepairHome() {
   const {
@@ -137,8 +138,8 @@ export default function RepairHome() {
 
   const checkVersion = data => {
     if (
-      (Platform.OS === 'ios' && data?.ios_ver === IOS_VERSION) ||
-      (Platform.OS === 'android' && data.aos_ver === ANDROID_VERSION) ||
+      (Platform.OS === 'ios' && VersionCheck(data?.ios_ver) <= VersionCheck(IOS_VERSION)) ||
+      (Platform.OS === 'android' && VersionCheck(data?.aos_ver) <= VersionCheck(ANDROID_VERSION)) ||
       isCheckVersion
     ) {
       return;

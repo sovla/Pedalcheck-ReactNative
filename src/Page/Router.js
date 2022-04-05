@@ -138,7 +138,11 @@ export default function Router() {
           mt_app_token: token,
         }).then(res => {
           if (res.data?.result === 'true') {
-            dispatch(setUserInfo(res.data.data.data));
+            if (res.data?.data?.data?.mt_wdate && res.data?.data?.data?.mt_wdate?.length > 0) {
+              dispatch(setUserInfo(res.data.data.data));
+            } else {
+              return;
+            }
           }
           return res;
         });
