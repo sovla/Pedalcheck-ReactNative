@@ -10,7 +10,7 @@ import SpannerIcon from '@assets/image/menu01_on.png';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {DefaultInput} from '@/assets/global/Input';
-import {TouchableOpacity} from 'react-native';
+import {Modal, Platform, SafeAreaView, TouchableOpacity, View} from 'react-native';
 import {borderBottomWhiteGray} from '@/Component/BikeManagement/ShopRepairHistory';
 import numberFormat from '@/Util/numberFormat';
 
@@ -24,7 +24,7 @@ import SearchIcon from '../Customer/SearchIcon';
 import DatePickerComponent from '@/Component/BikeManagement/DatePickerComponent';
 import {showToastMessage} from '@/Util/Toast';
 import Loading from '@/Component/Layout/Loading';
-import {getHeightPixel} from '@/Util/pixelChange';
+import {getHeightPixel, getPixel} from '@/Util/pixelChange';
 import Badge from '@/Component/BikeManagement/Badge';
 
 // 데이트 픽커
@@ -127,7 +127,7 @@ export default function RepairHistorySelectHistory() {
     navigation.navigate('Detail', {item: item});
   };
   const onChange = (event, selectedDate) => {
-    if (event.type !== 'set') {
+    if (event.type !== 'set' && Platform.OS === 'android') {
       setDatePicker({
         end: false,
         start: false,
@@ -216,9 +216,25 @@ export default function RepairHistorySelectHistory() {
                 }}
               />
             </RowBox>
-            {(datePicker?.start || datePicker?.end) && (
-              <DateTimePicker value={date} mode="date" display="default" onChange={onChange} />
-            )}
+
+            {(datePicker?.start || datePicker?.end) &&
+              (Platform.OS === 'ios' ? (
+                <Modal transparent visible>
+                  <SafeAreaView
+                    style={{
+                      backgroundColor: '#0006',
+                      flex: 1,
+                      justifyContent: 'center',
+                    }}>
+                    <View
+                      style={{backgroundColor: '#fff', padding: getPixel(10), borderRadius: 5, margin: getPixel(10)}}>
+                      <DateTimePicker value={date} mode="date" display="inline" onChange={onChange} />
+                    </View>
+                  </SafeAreaView>
+                </Modal>
+              ) : (
+                <DateTimePicker value={date} mode="date" display="default" onChange={onChange} />
+              ))}
           </>
         }
         data={orderList}

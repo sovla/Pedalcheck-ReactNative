@@ -48,7 +48,7 @@ export default function RepairDatePicker({birth, setBirth}) {
             maxWidth: 400,
           }}
         />
-        <PositionBox top="0px" left="80px" width="60px" height="100%" backgroundColor="#fff" zIndex={1000} />
+        <PositionBox top="0px" left="65px" width="60px" height="100%" backgroundColor="#fff" zIndex={1000} />
         <PositionBox top="0px" right="0px" width="120px" height="100%" backgroundColor="#fff" zIndex={1000} />
       </RowBox>
       <LinkWhiteButton content="확인" to={onPressConfirm} />
