@@ -38,6 +38,25 @@ export const SnsLogin = async (id, name, email, type, dispatch, navigation, toke
     if (type === 5) {
       // ios
       dispatch(setUserInfo(result?.data?.data?.data));
+      if (result?.data?.data?.data?.mt_di?.length > 0 && !result?.data?.data?.data.mt_wdate?.length) {
+        const data = result?.data?.data?.data;
+        if (data.mt_nickname?.length > 0 && data.mt_hp?.length > 0 && data.mt_addr?.length > 0) {
+          MemberJoin({
+            mt_name: data.mt_name,
+            mt_nickname: data.mt_nickname,
+            mt_id: email,
+            mt_hp: data.mt_hp,
+            mt_addr: data.mt_addr,
+            mt_idx: data.idx,
+            mt_app_token: token,
+          }).then(res => {
+            if (res?.data?.result === 'true') {
+              dispatch(setUserInfo(res?.data?.data?.data));
+              navigation.reset({routes: [{name: 'RepairHome'}]});
+            }
+          });
+        }
+      }
       return navigation.reset({routes: [{name: 'RepairHome'}]});
     }
 
@@ -54,7 +73,6 @@ export const SnsLogin = async (id, name, email, type, dispatch, navigation, toke
       if (result?.data?.data?.data?.mt_di?.length > 0) {
         const data = result?.data?.data?.data;
         if (
-          isEmail(data.mt_id) &&
           data.mt_nickname?.length > 0 &&
           data.mt_hp?.length > 0 &&
           data.mt_email?.length > 0 &&
