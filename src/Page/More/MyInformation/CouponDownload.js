@@ -8,6 +8,7 @@ import DefaultImage from '@/assets/global/Image';
 import {downloadCoupon, getCouponDownLoadList} from '@/API/More/Coupon';
 import {useSelector} from 'react-redux';
 import {showToastMessage} from '@/Util/Toast';
+import {AlertButton} from '@/Util/Alert';
 
 export default function CouponDownload() {
   const {login} = useSelector(state => state);
@@ -57,6 +58,8 @@ function Coupon({item, login}) {
       }).then(res => {
         if (res.data.result === 'true') {
           showToastMessage('쿠폰 다운로드 완료');
+        } else {
+          AlertButton(res.data?.msg);
         }
       });
     }
