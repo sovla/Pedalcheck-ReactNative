@@ -167,7 +167,7 @@ const LikeShopItem = ({item, isEdit, deleteList}) => {
           likeCount={item?.mst_likes}
           reviewCount={item?.mst_reviews}
           repairCount={item?.mst_orders}
-          tagList={item?.mst_tag?.split(',')}
+          // tagList={item?.mst_tag?.split(',')}
           image={item?.mst_img}
           width={isEdit ? '346px' : '380px'}
           isBorder={false}
