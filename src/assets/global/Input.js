@@ -35,6 +35,7 @@ export const DefaultInput = ({
   maxHeight, //       최대 높이
   keyboardType, //    keyboardType
   onSend,
+  returnKeyType = "done",
   mg = '0px',
   pd = '0px 10px 5px',
   onBlur = () => {},
@@ -99,6 +100,7 @@ export const DefaultInput = ({
           multiline={multiline}
           onChangeText={changeFn}
           onBlur={onBlur}
+          // returnKeyType={returnKeyType}
           onEndEditing={onSend} // 완료버튼클릭
           style={[
             isAlignTop && {

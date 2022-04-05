@@ -7,6 +7,8 @@ import Toast from 'react-native-toast-message';
 import {DefaultText} from './src/assets/global/Text';
 import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
 import {API} from './src/API/Api';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
+
 
 import messaging from '@react-native-firebase/messaging';
 
@@ -47,15 +49,28 @@ function App() {
       console.log('Authorization status:', authStatus);
     }
   }
+  const ios_push_reset = notification => {
+    PushNotificationIOS.removeAllPendingNotificationRequests();
+    PushNotificationIOS.removeAllDeliveredNotifications();
+    PushNotificationIOS.removeDeliveredNotifications();
+    PushNotificationIOS.removePendingNotificationRequests();
+    PushNotificationIOS.setApplicationIconBadgeNumber(0);
+  };
 
   useEffect(() => {
     requestPermissions();
+
     (() => {
       API.post('app_version.php', {
         app_os: Platform.OS === 'ios' ? 'ios' : 'aos',
         app_ver: Platform.OS === 'ios' ? IOS_VERSION : ANDROID_VERSION,
       });
     })();
+
+    if (Platform.OS === 'ios') {
+      ios_push_reset();
+    }
+
   }, []);
 
   const toastConfig = {
