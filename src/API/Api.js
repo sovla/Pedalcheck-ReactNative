@@ -60,7 +60,7 @@ export const API = axios.create({
         console.log('API ErrorData :::', data);
       }
 
-      return jsonParseData;
+      return;
     }
   },
 });

@@ -119,7 +119,6 @@ export default function Router() {
   const getIsAdmin = async () => {
     try {
       const isAdmin = await AsyncStorage.getItem('isAdmin');
-
       setIsGetAdmin(true);
       if (isAdmin === 'true') {
         dispatch(setIsAdmin(true));
@@ -138,19 +137,18 @@ export default function Router() {
           mt_app_token: token,
         }).then(res => {
           if (res.data?.result === 'true') {
-            if (res.data?.data?.data?.mt_wdate && res.data?.data?.data?.mt_wdate?.length > 0) {
+            if (res.data?.data?.data?.mt_wdate?.length > 0) {
               dispatch(setUserInfo(res.data.data.data));
             } else {
-              return;
+              return res;
             }
           }
           return res;
         });
         setIsToken(true);
-      }
-
-      if (+response.data.data?.data?.mt_level === 5 && +response.data.data?.data?.mt_seller === 2 && !isGetAdmin) {
-        await getIsAdmin();
+        if (+response.data.data?.data?.mt_level === 5 && +response.data.data?.data?.mt_seller === 2 && !isGetAdmin) {
+          await getIsAdmin();
+        }
       }
     } catch (error) {
     } finally {
