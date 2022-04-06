@@ -9,7 +9,7 @@ import Theme from '@/assets/global/Theme';
 import {DefaultInput} from '@/assets/global/Input';
 import CouponItem from '@/Component/MyInformation/CouponItem';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {FlatList, TouchableOpacity} from 'react-native';
+import {FlatList, Modal, Platform, SafeAreaView, TouchableOpacity, View} from 'react-native';
 import {getCouponList} from '@/API/More/Coupon';
 import {useState} from 'react';
 import {useEffect} from 'react';
@@ -21,6 +21,7 @@ import {useSelector} from 'react-redux';
 import DatePickerComponent from '@/Component/BikeManagement/DatePickerComponent';
 import {getCouponCategoryNumber} from '@/Util/changeCategory';
 import Loading from '@/Component/Layout/Loading';
+import {getPixel} from '@/Util/pixelChange';
 
 export default function Coupon() {
   const storeInfo = useSelector(state => state.storeInfo);
@@ -71,11 +72,19 @@ export default function Coupon() {
 
   const onChange = (event, selectedDate) => {
     // 날짜 수정 함수
-    if (event.type === 'set') {
+    if (event.type === 'set' || Platform.OS === 'ios') {
       if (datePicker.start) {
+        setDatePicker({
+          start: false,
+          end: false,
+        });
         setSelectDate(prev => ({...prev, start: dateFormat(selectedDate)}));
       }
       if (datePicker.end) {
+        setDatePicker({
+          start: false,
+          end: false,
+        });
         setSelectDate(prev => ({...prev, end: dateFormat(selectedDate)}));
       }
     }
@@ -198,9 +207,23 @@ export default function Coupon() {
           );
         }}
       />
-      {(datePicker.end || datePicker.start) && (
-        <DateTimePicker value={new Date()} mode="date" display="default" onChange={onChange} />
-      )}
+      {(datePicker.end || datePicker.start) &&
+        (Platform.OS === 'ios' ? (
+          <Modal transparent visible>
+            <SafeAreaView
+              style={{
+                backgroundColor: '#0006',
+                flex: 1,
+                justifyContent: 'center',
+              }}>
+              <View style={{backgroundColor: '#fff', padding: getPixel(10), borderRadius: 5, margin: getPixel(10)}}>
+                <DateTimePicker value={new Date()} mode="date" display="inline" onChange={onChange} />
+              </View>
+            </SafeAreaView>
+          </Modal>
+        ) : (
+          <DateTimePicker value={new Date()} mode="date" display="default" onChange={onChange} />
+        ))}
     </>
   );
 }
