@@ -30,7 +30,7 @@ const AndroidPermission = [
 
 globalThis.ANDROID_VERSION = '1.18.7';
 globalThis.IOS_VERSION = '1.18.7';
-globalThis.isDev = false;
+globalThis.isDev = true;
 
 function App() {
   async function requestPermissions() {
@@ -46,7 +46,6 @@ function App() {
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
     if (enabled) {
-      console.log('Authorization status:', authStatus);
     }
   }
   const ios_push_reset = notification => {

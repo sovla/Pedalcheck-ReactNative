@@ -49,7 +49,6 @@ const ShopHeader = () => {
       navigation.navigate('RepairQuestion');
     }
   };
-
   return (
     <>
       <Box flex={1} zIndex={100}>
@@ -61,7 +60,14 @@ const ShopHeader = () => {
             <DefaultImage source={BackIcon} width="45px" height="45px" />
           </TouchableOpacity>
         </PositionBox>
-        <Swiper imageArray={dummyImageArray} width={412} height={250} isRolling resizeMode="cover" isTouch />
+        <Swiper
+          imageArray={dummyImageArray}
+          width={412}
+          height={250}
+          isRolling
+          resizeMode="cover"
+          isTouch={Array.isArray(dummyImageArray) && dummyImageArray.filter(v => v?.uri)?.length > 0}
+        />
         {isPartner ? (
           <>
             {store_info?.mst_tel?.length > 0 && (

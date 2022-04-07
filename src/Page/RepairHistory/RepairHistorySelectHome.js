@@ -121,10 +121,10 @@ export default function RepairHistorySelectHome() {
       </Box>
 
       <ShopCustomerStats
-        customer={homeInfo.quick.customers}
-        likeCount={homeInfo.quick.likes}
-        likeCustomer={homeInfo.quick.likes}
-        repairCount={homeInfo.quick.orders}
+        customer={homeInfo?.quick?.customers}
+        likeCount={homeInfo?.quick?.likes}
+        likeCustomer={homeInfo?.quick?.likes}
+        repairCount={homeInfo?.quick?.orders}
       />
       <ItemStats
         itemList={dataToItemList(homeInfo.product.data, 'repair')}

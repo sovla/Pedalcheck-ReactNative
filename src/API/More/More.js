@@ -225,3 +225,16 @@ export const getBankList = async args => {
     return response;
   } catch (error) {}
 };
+
+export const getBlindList = async args => {
+  try {
+    const response = await API.post('member_blind_list.php', args);
+    return response;
+  } catch (error) {}
+};
+export const blindClear = async args => {
+  try {
+    const response = await API.post('member_blind_del.php', args);
+    return response;
+  } catch (error) {}
+};

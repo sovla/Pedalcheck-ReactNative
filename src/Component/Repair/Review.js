@@ -1,10 +1,10 @@
 import {BetweenBox, Box, PositionBox, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import React from 'react';
-import {DarkBoldText, DarkMediumText, DarkText, DefaultText, MoneyText} from '@/assets/global/Text';
+import {DarkBoldText, DarkMediumText, DarkText, DefaultText, MediumText, MoneyText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import ShopDummyImage from '@assets/image/shop_default.png';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import ProfileDefaultIcon from '@/assets/image/profile_default.png';
 import {BorderButton, LinkWhiteButton} from '@/assets/global/Button';
 import {useNavigation} from '@react-navigation/core';
@@ -17,9 +17,11 @@ import SwiperAutoHeight from './SwiperAutoHeight';
 import Photo from './Photo';
 import {getPixel} from '@/Util/pixelChange';
 import AutoHeightImage from 'react-native-auto-height-image';
-import {deleteReview} from '@/API/Shop/Shop';
+import {deleteReview, reportUser} from '@/API/Shop/Shop';
 import {Text, TouchableOpacity} from 'react-native';
-import {AlertButtons} from '@/Util/Alert';
+import {AlertButton, AlertButtons} from '@/Util/Alert';
+import {modalOpenAndProp} from '@/Store/modalState';
+import {showToastMessage} from '@/Util/Toast';
 
 export default function Review({
   isDetail = false,
@@ -30,10 +32,12 @@ export default function Review({
   item = {},
   isJustShow = false,
   onPressDelete,
+  onPressReportHandle,
 }) {
   const [isDetailButton, setIsDetailButton] = useState(false);
   const {login} = useSelector(state => state);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const isCoupon = item?.ot_use_coupon?.length > 0;
   const isMyReview = login?.idx === item?.mt_idx;
   const imageArray =
@@ -53,6 +57,19 @@ export default function Review({
     setIsDetailButton(true);
   }
 
+  const onPressBlind = idx => {
+    reportUser({
+      _mt_idx: login?.idx,
+      mt_blind_idx: idx,
+    }).then(res => {
+      if (res.data?.result === 'true') {
+        showToastMessage('차단 완료');
+      } else {
+        showToastMessage(res.data?.msg);
+      }
+      onPressReportHandle();
+    });
+  };
   useLayoutEffect(() => {
     setIsDetailButton(isDetail);
   }, []);
@@ -111,6 +128,48 @@ export default function Review({
               <Box mg="0px 5px">
                 <BorderButton width="auto" height="25px" borderColor={Theme.borderColor.gray} color={Theme.color.black}>
                   <DarkMediumText fontSize={Theme.fontSize.fs13}>삭제</DarkMediumText>
+                </BorderButton>
+              </Box>
+            </TouchableOpacity>
+          )}
+          {!isMyReview && !isDetailPage && login?.idx?.length > 0 && (
+            <TouchableOpacity
+              onPress={() => {
+                dispatch(
+                  modalOpenAndProp({
+                    modalComponent: 'report',
+                    item: item,
+                    onPressReportHandle: onPressReportHandle,
+                  }),
+                );
+              }}>
+              <Box mg="0px 5px">
+                <BorderButton width="auto" height="25px" borderColor={Theme.borderColor.gray}>
+                  <MediumText color={Theme.color.black} fontSize={Theme.fontSize.fs13}>
+                    신고
+                  </MediumText>
+                </BorderButton>
+              </Box>
+            </TouchableOpacity>
+          )}
+          {!isMyReview && !isDetailPage && login?.idx?.length > 0 && (
+            <TouchableOpacity
+              onPress={() => {
+                AlertButtons(
+                  '차단하시겠습니까?',
+                  '확인',
+                  '취소',
+                  () => {
+                    onPressBlind(item?.mt_idx);
+                  },
+                  () => {},
+                );
+              }}>
+              <Box mg="0px 5px">
+                <BorderButton width="auto" height="25px" borderColor={Theme.borderColor.gray}>
+                  <MediumText color={Theme.color.black} fontSize={Theme.fontSize.fs13}>
+                    차단
+                  </MediumText>
                 </BorderButton>
               </Box>
             </TouchableOpacity>
