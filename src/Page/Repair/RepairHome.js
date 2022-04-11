@@ -39,6 +39,7 @@ import {useRef} from 'react';
 import useInterval from '@/Hooks/useInterval';
 import {AlertButtons} from '@/Util/Alert';
 import VersionCheck from '@/Util/VersionCheck';
+import {API} from '@/API/Api';
 
 export default function RepairHome() {
   const {
@@ -117,6 +118,17 @@ export default function RepairHome() {
       getShopListHandle(1);
     }
     if (isFocused) {
+      (() => {
+        !globalThis.isDev &&
+          !globalThis.isUpdate &&
+          API.post('app_version.php', {
+            app_os: Platform.OS === 'ios' ? 'ios' : 'aos',
+            app_ver: Platform.OS === 'ios' ? globalThis.IOS_VERSION : globalThis.ANDROID_VERSION,
+            _mt_idx: login?.idx,
+          }).finally(() => {
+            globalThis.isUpdate = true;
+          });
+      })();
       getTagListHandle();
     }
   }, [isFocused]);

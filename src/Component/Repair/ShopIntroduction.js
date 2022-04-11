@@ -15,7 +15,7 @@ import MapView, {Marker} from 'react-native-maps';
 import {getPixel} from '@/Util/pixelChange';
 import {useState} from 'react';
 
-export default function ShopIntroduction() {
+export default function ShopIntroduction({isPartner}) {
   const {
     shopInfo: {store_info},
   } = useSelector(state => state);
@@ -23,23 +23,46 @@ export default function ShopIntroduction() {
   const [isBrand, setIsBrand] = useState(true);
   const [isMoreBrand, setIsMoreBrand] = useState(true);
   const openTime = () => {
-    try {
-      if (store_info?.mst_worktime2 !== '' && store_info?.mst_worktime2) {
-        const yoil = JSON.parse(store_info?.mst_worktime2);
-        const dayList = ['일', '월', '화', '수', '목', '금', '토'];
-        const filterItem = dayList.filter(v => {
-          const findItem = yoil.find(fv => v === fv?.yoil);
-          if (!findItem) {
-            return 1;
+    if (isPartner) {
+      try {
+        if (store_info?.mst_worktime2 !== '' && store_info?.mst_worktime2) {
+          const yoil = JSON.parse(store_info?.mst_worktime2);
+          const dayList = ['일', '월', '화', '수', '목', '금', '토'];
+          const filterItem = dayList.filter(v => {
+            const findItem = yoil.find(fv => v === fv?.yoil);
+            if (!findItem) {
+              return 1;
+            }
+          });
+          if (filterItem?.length > 0) {
+            return [...yoil, filterItem.join(',')];
           }
-        });
-        if (filterItem?.length > 0) {
-          return [...yoil, filterItem.join(',')];
+
+          return yoil;
+        }
+      } catch (error) {}
+    } else {
+      if (store_info?.mst_worktime !== '' && store_info?.mst_worktime) {
+        // 메모였던것을
+        //  평일 오전 00시 ~ 오후 00시
+        //  주말 오전 00시 ~ 오후 00시
+        //  휴무 0,1,2 -> 일,월,화
+        let result = store_info?.mst_worktime;
+        if (result && !store_info?.mst_worktime?.includes('\n주말') && store_info?.mst_worktime?.includes('주말')) {
+          //  주말이 \n 개행 없이 들어오는 경우 개행추가
+          result = result.replace('주말', '\n주말');
         }
 
-        return yoil;
+        if (store_info?.mst_holiday !== '') {
+          //  휴무일 변환 fn
+          result += '\n' + changeHolyday(store_info.mst_holiday);
+          return result;
+        }
+        return result;
+      } else {
+        return '';
       }
-    } catch (error) {}
+    }
   };
 
   const shopInformation = [
@@ -106,22 +129,23 @@ export default function ShopIntroduction() {
                 )}
                 {item?.title === '영업시간' && Array.isArray(item?.content) && (
                   <Box width="252px">
-                    {item?.content?.map((item, index) => {
-                      if (item?.yoil) {
+                    {item?.content?.map((innerItem, innerIndex) => {
+                      console.log(innerItem);
+                      if (innerItem?.yoil) {
                         return (
-                          <RowBox width="252px" key={index} mg="0px 0px 3px">
-                            <DarkMediumText fontSize={Theme.fontSize.fs15}>{item.yoil}</DarkMediumText>
+                          <RowBox width="252px" key={innerIndex} mg="0px 0px 3px">
+                            <DarkMediumText fontSize={Theme.fontSize.fs15}>{innerItem.yoil}</DarkMediumText>
                             <DarkText mg="0px 0px 0px 5px" foyantSize={Theme.fontSize.fs15}>
-                              {`${item?.stime} - ${item?.etime}`}
+                              {`${innerItem?.stime} - ${innerItem?.etime}`}
                             </DarkText>
                           </RowBox>
                         );
                       } else {
                         return (
-                          <RowBox width="252px" key={index} mg="0px 0px 3px">
+                          <RowBox width="252px" key={innerIndex} mg="0px 0px 3px">
                             <DarkMediumText fontSize={Theme.fontSize.fs15}>휴무</DarkMediumText>
                             <DarkText mg="0px 0px 0px 5px" fontSize={Theme.fontSize.fs15}>
-                              {item}
+                              {innerItem}
                             </DarkText>
                           </RowBox>
                         );
@@ -129,6 +153,24 @@ export default function ShopIntroduction() {
                     })}
                   </Box>
                 )}
+                {item?.title === '영업시간' &&
+                  !isPartner &&
+                  item?.content?.length > 0 &&
+                  item?.content?.includes('평일') &&
+                  item?.content?.includes('주말') &&
+                  item?.content?.includes('\n') &&
+                  item?.content?.includes('시') && (
+                    <Box width="252px">
+                      {item.content.split('\n').map((mapItem, index) => (
+                        <RowBox width="252px" key={index} mg={index !== 2 ? '0px 0px 3px' : '0px'}>
+                          <DarkMediumText fontSize={Theme.fontSize.fs15}>{mapItem.substring(0, 2)}</DarkMediumText>
+                          <DarkText mg="0px 0px 0px 5px" fontSize={Theme.fontSize.fs15}>
+                            {mapItem.substring(2)}
+                          </DarkText>
+                        </RowBox>
+                      ))}
+                    </Box>
+                  )}
                 {item.title === '매장주소' && (
                   <RowBox width="252px">
                     <DarkText fontSize={Theme.fontSize.fs15}>{item.content}</DarkText>

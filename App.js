@@ -28,9 +28,10 @@ const AndroidPermission = [
   PERMISSIONS.ANDROID.CALL_PHONE,
 ];
 
-globalThis.ANDROID_VERSION = '1.18.7';
-globalThis.IOS_VERSION = '1.18.7';
+globalThis.ANDROID_VERSION = '1.18.8';
+globalThis.IOS_VERSION = '1.18.8';
 globalThis.isDev = false;
+globalThis.isUpdate = false;
 
 function App() {
   async function requestPermissions() {
@@ -58,14 +59,6 @@ function App() {
 
   useEffect(() => {
     requestPermissions();
-
-    (() => {
-      !isDev &&
-        API.post('app_version.php', {
-          app_os: Platform.OS === 'ios' ? 'ios' : 'aos',
-          app_ver: Platform.OS === 'ios' ? IOS_VERSION : ANDROID_VERSION,
-        });
-    })();
 
     if (Platform.OS === 'ios') {
       ios_push_reset();

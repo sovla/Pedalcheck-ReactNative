@@ -7,7 +7,7 @@ const SECRETKEY = '3B9027B713FABE0C75AD3A1F9F7646CB1514DE99';
 
 const baseURL = 'https://pedalcheck.co.kr/api/';
 
-const LOGON = false;
+const LOGON = globalThis.isDev;
 
 export const API = axios.create({
   baseURL: baseURL,
