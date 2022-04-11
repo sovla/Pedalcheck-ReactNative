@@ -87,3 +87,17 @@ export const deleteReview = async args => {
     return response;
   } catch (error) {}
 };
+
+export const reportReview = async args => {
+  try {
+    const response = await API.post('store_review_blind.php', args);
+    return response;
+  } catch (error) {}
+};
+
+export const reportUser = async args => {
+  try {
+    const response = await API.post('member_blind.php', args);
+    return response;
+  } catch (error) {}
+};

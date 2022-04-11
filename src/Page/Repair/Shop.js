@@ -106,6 +106,11 @@ export default function Shop({route, navigation}) {
       showToastMessage('리뷰가 삭제되었습니다.', 2000);
     }
   };
+
+  const onPressReportHandle = () => {
+    getShopDetailApi('retry');
+  };
+
   if (isDone && !shopInfo?.store_info?.mst_idx) {
     return <Loading />;
   }
@@ -135,6 +140,7 @@ export default function Shop({route, navigation}) {
                 isRecomment={item?.srt_res_content?.length > 0}
                 isJustShow={true}
                 onPressDelete={onPressDelete}
+                onPressReportHandle={onPressReportHandle}
               />
             </>
           )}

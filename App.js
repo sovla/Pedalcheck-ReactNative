@@ -46,7 +46,6 @@ function App() {
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
     if (enabled) {
-      console.log('Authorization status:', authStatus);
     }
   }
   const ios_push_reset = notification => {

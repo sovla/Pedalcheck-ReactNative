@@ -96,6 +96,7 @@ import {DarkBoldText} from '@/assets/global/Text';
 import CouponUseRequest from './More/Coupon/CouponUseRequest';
 import CouponDownload from './More/MyInformation/CouponDownload';
 import CouponUseRepair from './More/Coupon/CouponUseRepair';
+import BlindList from './More/MyInformation/BlindList';
 
 let count = 0; //  종료카운트
 
@@ -226,7 +227,7 @@ export default function Router() {
           }
         }
         //  다이나믹 링크 확인용
-        console.log('다이나믹링크 \n', link.url, '\nqueryStirng :::', queryString, '\nitems :::', items);
+        // console.log('다이나믹링크 \n', link.url, '\nqueryStirng :::', queryString, '\nitems :::', items);
         navigationRef?.current?.navigate(intent, items);
         return;
       } catch (error) {}
@@ -366,6 +367,10 @@ const withScrollView = WrappedComponent => {
 };
 
 const RouterSetting = [
+  {
+    name: 'BlindList',
+    component: BlindList,
+  },
   {
     name: 'BikeRegisterFirst',
     component: BikeRegisterFirst,

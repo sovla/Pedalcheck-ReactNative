@@ -108,6 +108,18 @@ export default function Information({route: {params}}) {
                   </DarkMediumText>
                 </RowBox>
               </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  if (RequireApple(login, navigation, '차단 목록을')) {
+                    navigation.navigate('BlindList');
+                  }
+                }}>
+                <RowBox backgroundColor="#0000" style={borderBottomWhiteGray} width="380px">
+                  <DarkMediumText mg="16px 0px" fontSize={Theme.fontSize.fs15}>
+                    차단 목록
+                  </DarkMediumText>
+                </RowBox>
+              </TouchableOpacity>
             </>
           )}
           <TouchableOpacity
