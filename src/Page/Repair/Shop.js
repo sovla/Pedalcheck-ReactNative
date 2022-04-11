@@ -124,7 +124,7 @@ export default function Shop({route, navigation}) {
               <ShopHeader />
               <MenuNav menuItem={isPartner ? menu : ['매장소개']} select={selectMenu} setSelect={setSelectMenu} />
 
-              {selectMenu === '매장소개' && <ShopIntroduction />}
+              {selectMenu === '매장소개' && <ShopIntroduction isPartner={isPartner} />}
               {selectMenu === '상품보기' && <ProductsShow />}
               {selectMenu === '리뷰' && <ReviewMain />}
             </>
