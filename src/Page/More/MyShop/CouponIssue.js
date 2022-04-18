@@ -19,7 +19,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useEffect} from 'react';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {dateFormat} from '@/Util/DateFormat';
-import {Modal, Platform, SafeAreaView, View} from 'react-native';
+import {Keyboard, Modal, Platform, SafeAreaView, ScrollView, View} from 'react-native';
 import {getPixel} from '@/Util/pixelChange';
 
 export default function CouponIssue() {
@@ -97,78 +97,81 @@ export default function CouponIssue() {
       <Header title="쿠폰 발급" />
 
       <Container pd="0px 16px">
-        <Box mg="20px 0px 0px">
-          <DarkMediumText mg="0px 0px 10px">쿠폰 선택</DarkMediumText>
-          <DefaultInput
-            changeFn={setSelectCoupon}
-            value={selectCoupon}
-            isDropdown
-            dropdownItem={issueCouponList.map(item => ({
-              label: item.ct_title,
-              value: item,
-            }))}
-            placeHolder={'쿠폰을 선택해주세요'}
-          />
-        </Box>
-        <Box mg="20px 0px 0px">
-          <DarkMediumText mg="0px 0px 10px">발급 쿠폰 갯수</DarkMediumText>
-          <RowBox alignItems="center">
+        <ScrollView keyboardShouldPersistTaps="handled">
+          <Box mg="20px 0px 0px">
+            <DarkMediumText mg="0px 0px 10px">쿠폰 선택</DarkMediumText>
             <DefaultInput
-              width="355px"
-              placeHolder={'쿠폰 갯수를 입력해주세요'}
-              value={issueCount}
-              changeFn={text => {
-                if (text * 1 > 10) {
-                  AlertButton('쿠폰은 최대 10개까지 발급이 가능합니다.');
-                } else {
-                  setIssueCount(text);
-                }
-              }}
-              keyboardType={'numeric'}
+              changeFn={setSelectCoupon}
+              value={selectCoupon}
+              isDropdown
+              dropdownItem={issueCouponList.map(item => ({
+                label: item.ct_title,
+                value: item,
+              }))}
+              placeHolder={'쿠폰을 선택해주세요'}
             />
-            <DarkMediumText mg="0px 0px 0px 10px">개</DarkMediumText>
-          </RowBox>
-        </Box>
-        <Box mg="20px 0px 0px">
-          <DarkMediumText mg="0px 0px 10px">사용 시작일</DarkMediumText>
-          <DefaultInput
-            value={startDate.toISOString().substring(0, 10)}
-            width="380px"
-            isText
-            PressText={() => {
-              setIsOpen('start');
-            }}
-          />
-        </Box>
-        <Box mg="20px 0px 0px">
-          <DarkMediumText mg="0px 0px 10px">사용 종료일</DarkMediumText>
-          <DefaultInput
-            value={endDate.toISOString().substring(0, 10)}
-            width="380px"
-            isText
-            PressText={() => {
-              setIsOpen('end');
-            }}
-          />
-        </Box>
-        <Box mg="20px 0px 0px">
-          <DarkMediumText mg="0px 0px 10px">고객명</DarkMediumText>
-          <DefaultInput
-            value={id?.mt_id ?? ''}
-            fontSize={Theme.fontSize.fs15}
-            width="380px"
-            placeHolder={'고객명을 입력해주세요'}
-            isText
-            PressText={() => {
-              dispatch(
-                modalOpenAndProp({
-                  modalComponent: 'searchId',
-                  setUser: setId,
-                }),
-              );
-            }}
-          />
-        </Box>
+          </Box>
+          <Box mg="20px 0px 0px">
+            <DarkMediumText mg="0px 0px 10px">발급 쿠폰 갯수</DarkMediumText>
+            <RowBox alignItems="center">
+              <DefaultInput
+                width="355px"
+                placeHolder={'쿠폰 갯수를 입력해주세요'}
+                value={issueCount}
+                changeFn={text => {
+                  if (text * 1 > 10) {
+                    AlertButton('쿠폰은 최대 10개까지 발급이 가능합니다.');
+                    Keyboard.dismiss();
+                  } else {
+                    setIssueCount(text);
+                  }
+                }}
+                keyboardType={'numeric'}
+              />
+              <DarkMediumText mg="0px 0px 0px 10px">개</DarkMediumText>
+            </RowBox>
+          </Box>
+          <Box mg="20px 0px 0px">
+            <DarkMediumText mg="0px 0px 10px">사용 시작일</DarkMediumText>
+            <DefaultInput
+              value={startDate.toISOString().substring(0, 10)}
+              width="380px"
+              isText
+              PressText={() => {
+                setIsOpen('start');
+              }}
+            />
+          </Box>
+          <Box mg="20px 0px 0px">
+            <DarkMediumText mg="0px 0px 10px">사용 종료일</DarkMediumText>
+            <DefaultInput
+              value={endDate.toISOString().substring(0, 10)}
+              width="380px"
+              isText
+              PressText={() => {
+                setIsOpen('end');
+              }}
+            />
+          </Box>
+          <Box mg="20px 0px 0px">
+            <DarkMediumText mg="0px 0px 10px">고객명</DarkMediumText>
+            <DefaultInput
+              value={id?.mt_id ?? ''}
+              fontSize={Theme.fontSize.fs15}
+              width="380px"
+              placeHolder={'고객명을 입력해주세요'}
+              isText
+              PressText={() => {
+                dispatch(
+                  modalOpenAndProp({
+                    modalComponent: 'searchId',
+                    setUser: setId,
+                  }),
+                );
+              }}
+            />
+          </Box>
+        </ScrollView>
       </Container>
       <LinkButton mg="0px 16px 20px" content={'확인'} to={onPressIssue} />
       {isOpen?.length > 0 &&
