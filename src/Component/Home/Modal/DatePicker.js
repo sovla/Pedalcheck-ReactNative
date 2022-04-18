@@ -59,6 +59,8 @@ export default function BirthDatePicker({birth, setBirth}) {
           locale="ko"
           maximumDate={new Date()}
           minimumDate={new Date('1900-01-01')}
+          textColor="#000000"
+          theme="light"
         />
       </RowBox>
       <LinkWhiteButton content="확인" to={onPressConfirm} />
