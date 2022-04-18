@@ -30,7 +30,7 @@ const AndroidPermission = [
 
 globalThis.ANDROID_VERSION = '1.18.9';
 globalThis.IOS_VERSION = '1.18.9';
-globalThis.isDev = false;
+globalThis.isDev = true;
 globalThis.isUpdate = false;
 
 function App() {
