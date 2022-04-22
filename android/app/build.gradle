@@ -146,8 +146,8 @@ android {
         applicationId "com.pedalchecka"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 33
-        versionName "1.18.9"
+        versionCode 34
+        versionName "1.18.10"
         //  해당 버전을 바꾼뒤 App.js 상단에 버전도 동일하게 변경해주세요.
     }
     splits {
