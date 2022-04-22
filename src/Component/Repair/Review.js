@@ -35,6 +35,7 @@ export default function Review({
   onPressReportHandle,
 }) {
   const [isDetailButton, setIsDetailButton] = useState(false);
+  const [isLines, setIsLines] = useState(0);
   const {login} = useSelector(state => state);
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -51,7 +52,7 @@ export default function Review({
         })
       : [];
   if (
-    (item?.srt_content?.length >= 90 || item?.srt_res_content?.length >= 90 || imageArray.length > 1) &&
+    (item?.srt_content?.length >= 90 || item?.srt_res_content?.length >= 90 || imageArray.length > 1 || isLines > 3) &&
     !isDetailButton
   ) {
     setIsDetailButton(true);
@@ -226,7 +227,16 @@ export default function Review({
         )}
       </Box>
       <Box width="380px" mg="15px 0px 20px">
-        <DarkText numberOfLines={isDetailPage ? 50 : 3} fontSize={Theme.fontSize.fs15} lineHeight="22px">
+        <DarkText
+          onTextLayout={e => {
+            console.log(e.nativeEvent.lines.length > 3 && !isDetailButton);
+            if (e?.nativeEvent?.lines?.length > 3) {
+              setIsLines(e.nativeEvent.lines.length);
+            }
+          }}
+          numberOfLines={isDetailPage ? 50 : 3}
+          fontSize={Theme.fontSize.fs15}
+          lineHeight="22px">
           {item?.srt_content}
         </DarkText>
       </Box>
