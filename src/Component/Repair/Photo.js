@@ -17,6 +17,7 @@ import {useState} from 'react';
 import AutoHeightImage from 'react-native-auto-height-image';
 import CloseWhiteIcon from '@assets/image/close_white.png';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {AlertButton} from '@/Util/Alert';
 
 const PhotoComponent = ({
   imageArray,
@@ -62,7 +63,10 @@ const PhotoComponent = ({
           setImageArray(prev => [...prev, images]);
         }
       })
-      .catch(err => err);
+      .catch(err => {
+        AlertButton('사용할 수 없는 이미지 입니다.');
+        return;
+      });
   };
   const onPressDeleteHandle = async (deleteIndex, item) => {
     const result = await onPressDelete(item);

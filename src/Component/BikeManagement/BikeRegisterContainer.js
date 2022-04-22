@@ -41,16 +41,17 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
     await ImageCropPicker.openPicker({
       width: 300,
       height: 400,
-      cropping: true, // 자르기 활성화
       forceJpg: true,
       compressImageQuality: 0.8,
       compressImageMaxWidth: 375 * 3,
       compressImageMaxHeight: 275 * 3,
     })
       .then(images => {
-        setImage(images);
+        ImageCropPicker.openCropper(images).then(cropImage => {
+          setImage(cropImage);
+        });
       })
-      .catch(err => err);
+      .catch(err => console.log(err));
   };
 
   const addBikeHandle = async () => {
