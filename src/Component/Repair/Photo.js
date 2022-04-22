@@ -64,8 +64,13 @@ const PhotoComponent = ({
         }
       })
       .catch(err => {
-        AlertButton('사용할 수 없는 이미지 입니다.');
-        return;
+        const stringErr = err + '';
+        if (stringErr.includes('User cancelled')) {
+          return;
+        } else if (stringErr.includes('Cannot find')) {
+          AlertButton('사용하실 수 없는 이미지 입니다.');
+          return;
+        }
       });
   };
   const onPressDeleteHandle = async (deleteIndex, item) => {

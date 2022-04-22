@@ -39,6 +39,7 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
 
   const onPressAddImage = async () => {
     await ImageCropPicker.openPicker({
+      cropping: true,
       width: 300,
       height: 400,
       forceJpg: true,
@@ -51,7 +52,15 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
           setImage(cropImage);
         });
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        const stringErr = err + '';
+        if (stringErr.includes('User cancelled')) {
+          return;
+        } else if (stringErr.includes('Cannot find')) {
+          AlertButton('사용할 수 없는 이미지 형식 입니다.');
+          return;
+        }
+      });
   };
 
   const addBikeHandle = async () => {
