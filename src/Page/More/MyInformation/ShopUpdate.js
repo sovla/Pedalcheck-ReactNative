@@ -289,16 +289,17 @@ export default function ShopUpdate() {
     await ImageCropPicker.openPicker({
       width: 300,
       height: 400,
-      cropping: true, // 자르기 활성화
       compressImageQuality: 0.9,
       compressImageMaxWidth: 1000,
       compressImageMaxHeight: 1000,
       forceJpg: true,
-    }).then(images => {
-      setUser(prev => ({
-        ...prev,
-        mt_bank_image: images,
-      }));
+    }).then(_image => {
+      ImageCropPicker.openCropper(_image).then(images => {
+        setUser(prev => ({
+          ...prev,
+          mt_bank_image: images,
+        }));
+      });
     });
   };
 

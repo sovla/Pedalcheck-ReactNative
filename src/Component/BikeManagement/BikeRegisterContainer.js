@@ -41,16 +41,25 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
     await ImageCropPicker.openPicker({
       width: 300,
       height: 400,
-      cropping: true, // 자르기 활성화
       forceJpg: true,
       compressImageQuality: 0.8,
       compressImageMaxWidth: 375 * 3,
       compressImageMaxHeight: 275 * 3,
     })
       .then(images => {
-        setImage(images);
+        ImageCropPicker.openCropper(images).then(cropImage => {
+          setImage(cropImage);
+        });
       })
-      .catch(err => err);
+      .catch(err => {
+        const stringErr = err + '';
+        if (stringErr.includes('User cancelled')) {
+          return;
+        } else if (stringErr.includes('Cannot find')) {
+          AlertButton('사용할 수 없는 이미지 형식 입니다.');
+          return;
+        }
+      });
   };
 
   const addBikeHandle = async () => {
