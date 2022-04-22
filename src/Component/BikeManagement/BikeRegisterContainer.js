@@ -39,7 +39,6 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
 
   const onPressAddImage = async () => {
     await ImageCropPicker.openPicker({
-      cropping: true,
       width: 300,
       height: 400,
       forceJpg: true,

@@ -112,6 +112,7 @@ export const RegisterAdditionalBody = ({
     ImageCropPicker.openPicker({
       width: 300,
       height: 400,
+      forceJpg: true,
       cropping: false, // 자르기 활성화
     }).then(images => {
       setSelectImage(images);
