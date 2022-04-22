@@ -28,8 +28,8 @@ const AndroidPermission = [
   PERMISSIONS.ANDROID.CALL_PHONE,
 ];
 
-globalThis.ANDROID_VERSION = '1.18.9';
-globalThis.IOS_VERSION = '1.18.9';
+globalThis.ANDROID_VERSION = '1.18.10';
+globalThis.IOS_VERSION = '1.18.10';
 globalThis.isDev = false;
 globalThis.isUpdate = false;
 

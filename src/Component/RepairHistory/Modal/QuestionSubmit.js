@@ -1,5 +1,5 @@
 import {BorderButton, LinkButton, LinkWhiteButton} from '@/assets/global/Button';
-import {BetweenBox, Box, RowBox} from '@/assets/global/Container';
+import {BetweenBox, Box, RowBox, ScrollBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import React from 'react';
 import ArrowUpIcon from '@assets/image/list_arr_top.png';
@@ -66,10 +66,7 @@ export default function QuestionSubmit({item, setRecomment}) {
       <ModalTitleBox title="답변하기" />
 
       <Box pd="0px 20px" width={'380px'}>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            Keyboard.dismiss();
-          }}>
+        <ScrollBox keyboardShouldPersistTaps="handled">
           <BetweenBox width="340px" style={borderBottomWhiteGray} height="55px">
             <Box>
               <DarkBoldText fontSize={Theme.fontSize.fs15}>{item?.qt_title}</DarkBoldText>
@@ -107,7 +104,7 @@ export default function QuestionSubmit({item, setRecomment}) {
             fontSize={Theme.fontSize.fs16}
             maxLength={2000}
           />
-        </TouchableWithoutFeedback>
+        </ScrollBox>
         {errorMessage !== '' && <ErrorText>{errorMessage}</ErrorText>}
         <LinkButton content="저장하기" width="340px" to={() => answerWrite()} />
       </Box>

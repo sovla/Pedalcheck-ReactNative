@@ -36,7 +36,7 @@ export default function StorageBike({item, getBikeListHandle}) {
         renderItem={({item, index}) => {
           const changeItem = {
             brandName: item?.mbt_brand,
-            modelName: item.mbt_model,
+            modelName: item?.mbt_model,
             bikeName: item?.mbt_nick,
             date: item.mbt_wdate.substring(0, 10),
             repairCount: item.mbt_orders,

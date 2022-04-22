@@ -116,6 +116,7 @@ export default function Router() {
   const [isLoading, setIsLoading] = useState(true);
   const [isToken, setIsToken] = useState(false);
   const [isGetAdmin, setIsGetAdmin] = useState(false);
+  const [isLink, setIsLink] = useState(false);
 
   const getIsAdmin = async () => {
     try {
@@ -209,9 +210,13 @@ export default function Router() {
     //  알림톡으로 들어오는 경우는 3가지 매장에 1:1문의, 예약 정보 확인사용자 , 예약 정보 확인 관리자
     //
     if (link?.url) {
+      setIsLink(true);
       try {
         const queryString = link?.url.split('https://pedalcheck/')[1].split(',');
+        console.log(queryString);
+
         const intent = queryString[0].split('=')[1];
+
         let items = {};
         for (const item of queryString) {
           if (
@@ -226,37 +231,42 @@ export default function Router() {
             });
           }
         }
+        console.log(link.url, intent);
         //  다이나믹 링크 확인용
         // console.log('다이나믹링크 \n', link.url, '\nqueryStirng :::', queryString, '\nitems :::', items);
-        navigationRef?.current?.navigate(intent, items);
+        await navigationRef?.current?.navigate(intent, items);
+        setIsLink(false);
         return;
-      } catch (error) {}
+      } catch (error) {
+      } finally {
+        () => {
+          setIsLink(false);
+        };
+      }
     }
   };
 
   useEffect(() => {
-    try {
-      getToken();
-      const unsubscribe = messaging().onMessage(async remoteMessage => {
-        showPushToastMessage({
-          remoteMessage: remoteMessage,
-          onShow: () => {
-            if (remoteMessage?.data?.intent === 'logout') {
-              getToken();
-            } else if (remoteMessage?.data?.intent === 'ShopUpdate') {
-              getToken();
-            }
-          },
-          onPress: () => {
-            mesagingHandler(remoteMessage);
-            Toast.hide();
-          },
-        });
+    getToken();
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      showPushToastMessage({
+        remoteMessage: remoteMessage,
+        onShow: () => {
+          if (remoteMessage?.data?.intent === 'logout') {
+            getToken();
+          } else if (remoteMessage?.data?.intent === 'ShopUpdate') {
+            getToken();
+          }
+        },
+        onPress: () => {
+          mesagingHandler(remoteMessage);
+          Toast.hide();
+        },
       });
+    });
 
-      dispatch(fetchBannerList()); // 배너
-      dispatch(fetchAd()); // 광고
-    } catch (error) {}
+    dispatch(fetchBannerList()); // 배너
+    dispatch(fetchAd()); // 광고
 
     return () => {
       try {
@@ -300,7 +310,7 @@ export default function Router() {
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <Stack.Navigator initialRouteName={'Home'}>
         {RouterSetting.map((item, index) => (
           <Stack.Screen
