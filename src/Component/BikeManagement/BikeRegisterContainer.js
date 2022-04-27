@@ -53,6 +53,9 @@ export default function BikeRegisterContainer({isUpdate, bike, setBike, image, s
       })
       .catch(err => {
         const stringErr = err + '';
+        if((err+"").includes("permission")){
+          return AlertButton("페달체크 앱 사진 접근 권한을 켜주세요.")
+        }
         if (stringErr.includes('User cancelled')) {
           return;
         } else if (stringErr.includes('Cannot find')) {
