@@ -29,7 +29,7 @@ const AndroidPermission = [
 ];
 
 globalThis.ANDROID_VERSION = '1.18.11';
-globalThis.IOS_VERSION = '1.18.11';
+globalThis.IOS_VERSION = '1.18.12';
 globalThis.isDev = false;
 globalThis.isUpdate = false;
 
