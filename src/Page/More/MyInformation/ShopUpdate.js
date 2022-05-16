@@ -24,6 +24,7 @@ import Loading from '@/Component/Layout/Loading';
 import pixelChange, {getPixel} from '@/Util/pixelChange';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import TimeSelect from '@/Component/MyInformation/TimeSelect';
+import { AlertButton } from '@/Util/Alert';
 
 const initAccountInfo = {
   mt_bname: '',
@@ -300,6 +301,10 @@ export default function ShopUpdate() {
           mt_bank_image: images,
         }));
       });
+    }).catch(e=>{
+      if((e+"").includes("permission")){
+        AlertButton("페달체크 앱 사진 접근 권한을 켜주세요.")
+      }
     });
   };
 

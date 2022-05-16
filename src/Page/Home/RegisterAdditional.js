@@ -18,6 +18,7 @@ import {setUserInfo} from '@/Store/loginState';
 import {imageAddress} from '@assets/global/config';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import {login} from '@react-native-seoul/kakao-login';
+import { AlertButton } from '@/Util/Alert';
 
 export default function RegisterAdditional({navigation, route}) {
   const {snsLogin, token} = useSelector(state => state);
@@ -117,6 +118,10 @@ export const RegisterAdditionalBody = ({
     }).then(images => {
       setSelectImage(images);
       setImageType(2);
+    }).catch(e=>{
+      if((e+"").includes("permission")){
+        return AlertButton("페달체크 앱 사진 접근 권한을 켜주세요.")
+      }
     });
   };
 
