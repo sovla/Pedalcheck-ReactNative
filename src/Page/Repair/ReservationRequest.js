@@ -1,5 +1,5 @@
 import {LinkButton} from '@/assets/global/Button';
-import {Box, RowBox} from '@/assets/global/Container';
+import {Box, RowBox, ScrollBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
 import DefaultLine from '@/assets/global/Line';
 import {DarkBoldText, DarkText, IndigoText} from '@/assets/global/Text';
@@ -14,6 +14,7 @@ import React from 'react';
 import {useLayoutEffect} from 'react';
 import {useState} from 'react';
 import {TouchableOpacity} from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch, useSelector} from 'react-redux';
 import RepairReservationHeader from './RepairReservationHeader';
 
@@ -89,7 +90,7 @@ export default function ShopReservationRequest({navigation}) {
       <Header title="정비예약" />
       <Box style={{flex: 1}}>
         <RepairReservationHeader step={4} content="요청사항 입력" />
-
+        <KeyboardAwareScrollView style={{flex:1}} >
         <DefaultLine height="10px" backgroundColor={Theme.borderColor.whiteLine} />
         <Box mg="20px 16px">
           <DarkBoldText mg="0px 0px 10px">요청사항 (선택)</DarkBoldText>
@@ -154,6 +155,7 @@ export default function ShopReservationRequest({navigation}) {
             </DarkText>
           </CheckBox>
         </Box>
+        </KeyboardAwareScrollView>
       </Box>
 
       <LinkButton
