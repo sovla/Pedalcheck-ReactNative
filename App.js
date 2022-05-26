@@ -8,8 +8,16 @@ import {DefaultText} from './src/assets/global/Text';
 import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
 import {API} from './src/API/Api';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import * as Sentry from '@sentry/react-native';
 
 import messaging from '@react-native-firebase/messaging';
+
+Sentry.init({
+  dsn: 'https://f6843ff9826b46888dbfacd6392457c5@o1262479.ingest.sentry.io/6441480',
+  // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+  // We recommend adjusting this value in production.
+  tracesSampleRate: 1.0,
+});
 
 const IosPermission = [
   // PERMISSIONS.IOS.ACCESS_NOTIFICATION_POLICY,
@@ -21,16 +29,17 @@ const IosPermission = [
 ];
 const AndroidPermission = [
   PERMISSIONS.ANDROID.ACCESS_NOTIFICATION_POLICY,
-  PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
   PERMISSIONS.ANDROID.CAMERA,
   PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
   PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
   PERMISSIONS.ANDROID.CALL_PHONE,
+  PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+  PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
 ];
 
 globalThis.ANDROID_VERSION = '1.18.11';
 globalThis.IOS_VERSION = '1.18.11';
-globalThis.isDev = false;
+globalThis.isDev = true;
 globalThis.isUpdate = false;
 
 function App() {
@@ -128,7 +137,6 @@ function App() {
       </TouchableOpacity>
     ),
   };
-
   return (
     <Provider store={store}>
       <Router />
@@ -139,4 +147,4 @@ function App() {
 
 const module = App;
 
-export default module;
+export default Sentry.wrap(App);

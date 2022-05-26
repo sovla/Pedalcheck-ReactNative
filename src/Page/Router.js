@@ -97,6 +97,7 @@ import CouponUseRequest from './More/Coupon/CouponUseRequest';
 import CouponDownload from './More/MyInformation/CouponDownload';
 import CouponUseRepair from './More/Coupon/CouponUseRepair';
 import BlindList from './More/MyInformation/BlindList';
+import Maps from './Home/Maps';
 
 let count = 0; //  종료카운트
 
@@ -667,5 +668,9 @@ const RouterSetting = [
   {
     name: 'Notice',
     component: Notice,
+  },
+  {
+    name: 'Maps',
+    component: Maps,
   },
 ];

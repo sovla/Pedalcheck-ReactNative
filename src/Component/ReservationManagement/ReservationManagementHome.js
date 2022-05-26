@@ -12,18 +12,7 @@ export default function ReservationManagementHome() {
 
   return (
     <Container>
-      <MenuNav
-        menuItem={subMenu}
-        select={subSelect}
-        setSelect={item => {
-          setSubSelect(item);
-        }}
-      />
-      {subSelect === '정비 예약' ? (
-        <RepairReservation key={'RepairReservation'} type="repair" />
-      ) : (
-        <RepairReservation key={'CouponReservation'} type="coupon" />
-      )}
+      <RepairReservation key={'RepairReservation'} type="repair" />
     </Container>
   );
 }

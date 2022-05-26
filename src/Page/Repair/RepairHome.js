@@ -463,6 +463,9 @@ const Header = ({
               <DefaultImage width="24px" height="24px" source={LocationIcon} />
             </RowBox>
           </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Maps')}>
+            <DarkText>Maps</DarkText>
+          </TouchableOpacity>
         </RowBox>
       </Box>
       {/* <RecommenderShop totalCount={bannerList?.length} count={selectImage + 1} /> */}
