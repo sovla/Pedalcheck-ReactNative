@@ -14,11 +14,12 @@ import WhiteBoxDownIcon from '@/assets/image/white_box_down.png';
 import AutoHeightImage from 'react-native-auto-height-image';
 import ShopComponent from '@/Component/Repair/ShopComponent';
 import DefaultImage from '@/assets/global/Image';
-import FastImage from 'react-native-fast-image';
 import DummyIcon from '@assets/image/shop_dummy.png';
+import Loading from '@/Component/Layout/Loading';
 
 const Maps = () => {
   const {login} = useSelector(state => state);
+  const [isLoading, setIsLoading] = useState(true);
   const [region, setRegion] = useState({
     latitude: login?.mt_lat.length > 0 ? +login.mt_lat : 37.541,
     longitude: login?.mt_lng.length > 0 ? +login.mt_lng : 126.986,
@@ -27,6 +28,7 @@ const Maps = () => {
   });
 
   const getLocation = useCallback(async () => {
+    setIsLoading(true);
     Geolocation.getCurrentPosition(
       info => {
         setRegion(prev => ({
@@ -34,10 +36,12 @@ const Maps = () => {
           latitude: info.coords.latitude,
           longitude: info.coords.longitude,
         }));
+        setIsLoading(false);
       },
       error => {
         if (error) {
           AlertButton('위치 권한을 허용해 주세요.');
+          setIsLoading(false);
         }
       },
     );
@@ -49,14 +53,13 @@ const Maps = () => {
 
   return (
     <View style={{flex: 1}}>
+      {isLoading && (
+        <View>
+          <Loading isAbsolute text="위치 정보를 불러오는 중..." />
+        </View>
+      )}
       <Header title="지도" />
-      <MapView
-        style={{flex: 1}}
-        region={region}
-        initialRegion={{latitudeDelta: 0.02, latitude: 37.541, longitude: 126.986, longitudeDelta: 0.02}}
-        showsUserLocation={true}
-        followsUserLocation={true}
-        zoomControlEnabled>
+      <MapView style={{flex: 1}} region={region} showsUserLocation={true} followsUserLocation={true} zoomControlEnabled>
         <Marker
           coordinate={{
             latitude: region.latitude,

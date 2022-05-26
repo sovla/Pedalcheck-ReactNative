@@ -11,17 +11,10 @@ import RepairProduct from '@/Component/ReservationManagement/RepairProduct';
 import CheckIcon from '@assets/image/ic_check_cal.png';
 import {useNavigation} from '@react-navigation/core';
 import {useEffect} from 'react';
-import {
-  getAllOrderList,
-  getCouponReservationList,
-  getOrderCount,
-  getReservationList,
-  sendAllApprove,
-} from '@/API/ReservationManagement/ReservationManagement';
+import {getAllOrderList, sendAllApprove} from '@/API/ReservationManagement/ReservationManagement';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {changeDropMenu} from '@/Page/More/MyInformation/CouponManagement';
 import {AlertButtons} from '@/Util/Alert';
-import {getDay} from '@/Util/getDateList';
 import {numberChangeFormat} from '@/Util/numberFormat';
 import {getPixel} from '@/Util/pixelChange';
 import {showToastMessage} from '@/Util/Toast';
@@ -90,7 +83,7 @@ export default function RepairReservation({type}) {
     setIsLoading(prev => ({...prev, isReservation: true}));
     await getAllOrderList({
       _mt_idx: login.idx,
-      type: 'coupon', // all로 변경 필요
+      type: 'all', // all로 변경 필요
       ot_month: daySelect.getFullYear() + '-' + numberChangeFormat(daySelect.getMonth() + 1),
       ot_status: changeDropMenu(dropDown),
     })

@@ -13,28 +13,28 @@ import * as Sentry from '@sentry/react-native';
 import messaging from '@react-native-firebase/messaging';
 
 Sentry.init({
-  dsn: 'https://f6843ff9826b46888dbfacd6392457c5@o1262479.ingest.sentry.io/6441480',
-  // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
-  // We recommend adjusting this value in production.
-  tracesSampleRate: 1.0,
+    dsn: 'https://f6843ff9826b46888dbfacd6392457c5@o1262479.ingest.sentry.io/6441480',
+    // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+    // We recommend adjusting this value in production.
+    tracesSampleRate: 1.0,
 });
 
 const IosPermission = [
-  // PERMISSIONS.IOS.ACCESS_NOTIFICATION_POLICY,
-  // PERMISSIONS.IOS.ACCESS_FINE_LOCATION,
-  // PERMISSIONS.IOS.CAMERA,
-  // PERMISSIONS.IOS.CALL_PHONE,
-  // PERMISSIONS.IOS.PHOTO_LIBRARY,
-  // PERMISSIONS.IOS.WRITE_EXTERNAL_STORAGE,
+    // PERMISSIONS.IOS.ACCESS_NOTIFICATION_POLICY,
+    // PERMISSIONS.IOS.ACCESS_FINE_LOCATION,
+    // PERMISSIONS.IOS.CAMERA,
+    // PERMISSIONS.IOS.CALL_PHONE,
+    // PERMISSIONS.IOS.PHOTO_LIBRARY,
+    // PERMISSIONS.IOS.WRITE_EXTERNAL_STORAGE,
 ];
 const AndroidPermission = [
-  PERMISSIONS.ANDROID.ACCESS_NOTIFICATION_POLICY,
-  PERMISSIONS.ANDROID.CAMERA,
-  PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
-  PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-  PERMISSIONS.ANDROID.CALL_PHONE,
-  PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
-  PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+    PERMISSIONS.ANDROID.ACCESS_NOTIFICATION_POLICY,
+    PERMISSIONS.ANDROID.CAMERA,
+    PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+    PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+    PERMISSIONS.ANDROID.CALL_PHONE,
+    PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+    PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
 ];
 
 globalThis.ANDROID_VERSION = '1.18.11';
@@ -43,106 +43,104 @@ globalThis.isDev = true;
 globalThis.isUpdate = false;
 
 function App() {
-  async function requestPermissions() {
-    if (Platform.OS === 'android') {
-      requestMultiple(AndroidPermission);
-    } else {
-      requestMultiple(IosPermission);
+    async function requestPermissions() {
+        if (Platform.OS === 'android') {
+            requestMultiple(AndroidPermission);
+        } else {
+            requestMultiple(IosPermission);
+        }
+
+        const authStatus = await messaging().requestPermission();
+        const enabled = authStatus === messaging.AuthorizationStatus.AUTHORIZED || authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+        if (enabled) {
+        }
     }
+    const ios_push_reset = notification => {
+        PushNotificationIOS.removeAllPendingNotificationRequests();
+        PushNotificationIOS.removeAllDeliveredNotifications();
+        PushNotificationIOS.removeDeliveredNotifications();
+        PushNotificationIOS.removePendingNotificationRequests();
+        PushNotificationIOS.setApplicationIconBadgeNumber(0);
+    };
 
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    useEffect(() => {
+        requestPermissions();
 
-    if (enabled) {
-    }
-  }
-  const ios_push_reset = notification => {
-    PushNotificationIOS.removeAllPendingNotificationRequests();
-    PushNotificationIOS.removeAllDeliveredNotifications();
-    PushNotificationIOS.removeDeliveredNotifications();
-    PushNotificationIOS.removePendingNotificationRequests();
-    PushNotificationIOS.setApplicationIconBadgeNumber(0);
-  };
+        if (Platform.OS === 'ios') {
+            ios_push_reset();
+        }
+    }, []);
 
-  useEffect(() => {
-    requestPermissions();
-
-    if (Platform.OS === 'ios') {
-      ios_push_reset();
-    }
-  }, []);
-
-  const toastConfig = {
-    customToast: ({text1, onPress, props}) => (
-      <View
-        onStartShouldSetResponder={onPress}
-        style={{
-          width: '92%',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginTop: Platform.OS === 'ios' ? 0 : 0,
-        }}>
-        <View
-          style={{
-            width: '100%',
-            alignItems: 'center',
-            backgroundColor: 'rgba(22,22,22,0.60)',
-            height: 60,
-            justifyContent: 'center',
-            borderRadius: 17,
-          }}>
-          <DefaultText>{text1}</DefaultText>
-        </View>
-      </View>
-    ),
-    pushToast: ({text1, text2, onPress, props, ...rest}) => (
-      <TouchableOpacity
-        activeOpacity={1}
-        onPress={onPress}
-        style={{
-          width: '100%',
-          justifyContent: 'center',
-          padding: 16,
-          marginTop: Platform.OS === 'ios' ? 0 : 0,
-          backgroundColor: '#22222290',
-        }}>
-        <View
-          style={{
-            width: '100%',
-          }}>
-          <Text
-            numberOfLines={1}
-            style={[
-              {
-                color: '#fff',
-                textAlign: 'center',
-              },
-            ]}>
-            {text1}
-          </Text>
-          <Text
-            numberOfLines={2}
-            style={[
-              {
-                color: '#fff',
-                textAlign: 'center',
-                marginTop: 10,
-              },
-            ]}>
-            {text2}
-          </Text>
-        </View>
-      </TouchableOpacity>
-    ),
-  };
-  return (
-    <Provider store={store}>
-      <Router />
-      <Toast config={toastConfig} />
-    </Provider>
-  );
+    const toastConfig = {
+        customToast: ({text1, onPress, props}) => (
+            <View
+                onStartShouldSetResponder={onPress}
+                style={{
+                    width: '92%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: Platform.OS === 'ios' ? 0 : 0,
+                }}>
+                <View
+                    style={{
+                        width: '100%',
+                        alignItems: 'center',
+                        backgroundColor: 'rgba(22,22,22,0.60)',
+                        height: 60,
+                        justifyContent: 'center',
+                        borderRadius: 17,
+                    }}>
+                    <DefaultText>{text1}</DefaultText>
+                </View>
+            </View>
+        ),
+        pushToast: ({text1, text2, onPress, props, ...rest}) => (
+            <TouchableOpacity
+                activeOpacity={1}
+                onPress={onPress}
+                style={{
+                    width: '100%',
+                    justifyContent: 'center',
+                    padding: 16,
+                    marginTop: Platform.OS === 'ios' ? 0 : 0,
+                    backgroundColor: '#22222290',
+                }}>
+                <View
+                    style={{
+                        width: '100%',
+                    }}>
+                    <Text
+                        numberOfLines={1}
+                        style={[
+                            {
+                                color: '#fff',
+                                textAlign: 'center',
+                            },
+                        ]}>
+                        {text1}
+                    </Text>
+                    <Text
+                        numberOfLines={2}
+                        style={[
+                            {
+                                color: '#fff',
+                                textAlign: 'center',
+                                marginTop: 10,
+                            },
+                        ]}>
+                        {text2}
+                    </Text>
+                </View>
+            </TouchableOpacity>
+        ),
+    };
+    return (
+        <Provider store={store}>
+            <Router />
+            <Toast config={toastConfig} />
+        </Provider>
+    );
 }
 
 const module = App;
