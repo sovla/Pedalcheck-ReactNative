@@ -11,13 +11,6 @@ import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
 import messaging from '@react-native-firebase/messaging';
 
-Sentry.init({
-    dsn: 'https://f6843ff9826b46888dbfacd6392457c5@o1262479.ingest.sentry.io/6441480',
-    // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
-    // We recommend adjusting this value in production.
-    tracesSampleRate: 1.0,
-});
-
 const IosPermission = [
     // PERMISSIONS.IOS.ACCESS_NOTIFICATION_POLICY,
     // PERMISSIONS.IOS.ACCESS_FINE_LOCATION,

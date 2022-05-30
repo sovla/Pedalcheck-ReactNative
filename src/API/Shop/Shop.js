@@ -7,6 +7,12 @@ export const getShopList = async args => {
         return response;
     } catch (error) {}
 };
+export const getShopListInMaps = async args => {
+    try {
+        const response = await API.post('store_list_map.php', args);
+        return response;
+    } catch (error) {}
+};
 
 export const getShopDetail = async args => {
     try {
