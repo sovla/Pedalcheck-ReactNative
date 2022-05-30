@@ -214,7 +214,6 @@ export default function Router() {
             setIsLink(true);
             try {
                 const queryString = link?.url.split('https://pedalcheck/')[1].split(',');
-                console.log(queryString);
 
                 const intent = queryString[0].split('=')[1];
 
@@ -227,7 +226,6 @@ export default function Router() {
                         });
                     }
                 }
-                console.log(link.url, intent);
                 //  다이나믹 링크 확인용
                 // console.log('다이나믹링크 \n', link.url, '\nqueryStirng :::', queryString, '\nitems :::', items);
                 await navigationRef?.current?.navigate(intent, items);
