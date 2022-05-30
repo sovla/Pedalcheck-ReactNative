@@ -8,7 +8,6 @@ import {DefaultText} from './src/assets/global/Text';
 import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
 import {API} from './src/API/Api';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
-import * as Sentry from '@sentry/react-native';
 
 import messaging from '@react-native-firebase/messaging';
 
@@ -145,4 +144,4 @@ function App() {
 
 const module = App;
 
-export default Sentry.wrap(App);
+export default App;
