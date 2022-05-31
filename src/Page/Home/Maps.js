@@ -22,19 +22,38 @@ import Svg, {Image as ImageSvg} from 'react-native-svg';
 import {getShopListInMaps} from '@/API/Shop/Shop';
 import FastImage from 'react-native-fast-image';
 import {imageAddress} from '@assets/global/config';
+import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
+import useUpdateEffect from '@/Hooks/useUpdateEffect';
 
-const Maps = () => {
+const sortArray = [
+    {
+        label: '전체보기',
+        value: '전체보기',
+    },
+    {
+        label: '파트너 매장',
+        value: '파트너 매장',
+    },
+];
+
+const Maps = ({navigation}) => {
     const ref = useRef(null);
     const {login} = useSelector(state => state);
     const [isLoading, setIsLoading] = useState(true);
+    const [isApiLoading, setIsApiLoading] = useState(true);
     const [region, setRegion] = useState({
         latitude: login?.mt_lat.length > 0 ? +login.mt_lat : 37.541,
         longitude: login?.mt_lng.length > 0 ? +login.mt_lng : 126.986,
         latitudeDelta: 0.02,
         longitudeDelta: 0.02,
     });
+    const [initRegion, setInitRegion] = useState({
+        latitude: 37.541,
+        longitude: 126.986,
+    });
     const [shopList, setShopList] = useState([]);
-    const [selectShop, setSelectShop] = useState(-1);
+    const [selectShop, setSelectShop] = useState(null);
+    const [selectItem, setSelectItem] = useState('전체보기');
 
     const getLocation = useCallback(async () => {
         setIsLoading(true);
@@ -45,6 +64,7 @@ const Maps = () => {
                     latitude: info.coords.latitude,
                     longitude: info.coords.longitude,
                 }));
+                setInitRegion(prev => ({latitude: info.coords.latitude, longitude: info.coords.longitude}));
                 setIsLoading(false);
             },
             error => {
@@ -57,13 +77,16 @@ const Maps = () => {
     }, []);
 
     const getShopListInMapHandle = async () => {
+        setIsApiLoading(true);
         const res = await getShopListInMaps({
             _mt_idx: login.mt_idx,
             mst_type: '',
         });
+
         if (res.data.result === 'true') {
             setShopList(res.data.data.data.store_list);
         }
+        setIsApiLoading(false);
     };
 
     useLayoutEffect(() => {
@@ -74,11 +97,11 @@ const Maps = () => {
     function getDistance(lat1, lon1, lat2, lon2) {
         if (lat1 == lat2 && lon1 == lon2) return 0;
 
-        var radLat1 = (Math.PI * lat1) / 180;
-        var radLat2 = (Math.PI * lat2) / 180;
-        var theta = lon1 - lon2;
-        var radTheta = (Math.PI * theta) / 180;
-        var dist = Math.sin(radLat1) * Math.sin(radLat2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.cos(radTheta);
+        const radLat1 = (Math.PI * lat1) / 180;
+        const radLat2 = (Math.PI * lat2) / 180;
+        const theta = lon1 - lon2;
+        const radTheta = (Math.PI * theta) / 180;
+        let dist = Math.sin(radLat1) * Math.sin(radLat2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.cos(radTheta);
         if (dist > 1) dist = 1;
 
         dist = Math.acos(dist);
@@ -89,56 +112,43 @@ const Maps = () => {
 
         return dist;
     }
-    let zoom = Math.round(Math.log(360 / region.longitudeDelta) / Math.LN2);
-    console.log(selectShop?.mst_img);
     return (
         <View style={{flex: 1}}>
-            {isLoading && (
+            {(isLoading || isApiLoading) && (
                 <View>
-                    <Loading isAbsolute text="위치 정보를 불러오는 중..." />
+                    <Loading isAbsolute text={isLoading ? '위치 정보를 불러오는 중...' : '정비소 리스트 불러오는 중...'} />
                 </View>
             )}
             <Header title="지도" />
+            <PositionBox top="60px" left="16px" zIndex={100} backgroundColor="#fff" pd="3px 10px" borderRadius="10px">
+                <DefaultDropdown data={sortArray} value={selectItem} setValue={setSelectItem} isBorder={false} width={selectItem?.length * 12 + 40} pdLeft={0} fontType="Medium" />
+            </PositionBox>
             {selectShop?.mst_name?.length > 0 && (
-                <PositionBox top="50px" left="0px" zIndex={100} width="420px">
-                    <Box width="306px" height="150px" pd="14px" borderRadius="16px">
+                <TouchableOpacity
+                    onPress={() =>
+                        navigation.navigate('Shop', {
+                            mt_idx: selectShop.mt_idx,
+                        })
+                    }
+                    style={styles.absoluteView}>
+                    <Box width="306px" pd="14px" borderRadius="16px">
                         <RowBox>
-                            <Box
-                                style={{
-                                    width: getPixel(74),
-                                    height: getPixel(74),
-                                    marginRight: getPixel(14.4),
-                                    borderRadius: 7,
-                                    overflow: 'hidden',
-                                }}>
-                                <Image
-                                    style={{
-                                        width: getPixel(74),
-                                        height: getPixel(74),
-                                    }}
-                                    source={selectShop?.mst_img ? {uri: imageAddress + selectShop.mst_img} : DummyIcon}
-                                />
+                            <Box style={styles.image}>
+                                <Image style={styles.shopImage} source={selectShop?.mst_img ? {uri: imageAddress + selectShop.mst_img} : DummyIcon} />
                             </Box>
                             <Box width="190px">
                                 <BetweenBox width="190px">
-                                    <DarkBoldText fontSize={Theme.fontSize.fs16}>{selectShop.mst_name}</DarkBoldText>
+                                    <DarkBoldText numberOfLines={1} fontSize={Theme.fontSize.fs16}>
+                                        {selectShop.mst_name}
+                                    </DarkBoldText>
                                     {selectShop.mst_type === '1' && (
                                         <RowBox fontSize={Theme.fontSize.fs12} alignItems="center">
-                                            <Text
-                                                style={{
-                                                    width: getPixel(12),
-                                                    height: getPixel(12),
-                                                }}>
-                                                <Image source={ParterIcon} style={{width: getPixel(12), height: getPixel(12)}} resizeMode="contain" />
-                                            </Text>
-                                            <IndigoText>파트너매장</IndigoText>
+                                            <Image source={ParterIcon} style={{width: getPixel(12), height: getPixel(12)}} resizeMode="contain" />
                                         </RowBox>
                                     )}
                                 </BetweenBox>
                                 <RowBox alignItems="center" mg="7.5px 0px">
-                                    <Text>
-                                        <Image source={LikeIcon} style={{width: getPixel(12), height: getPixel(12)}} resizeMode="contain" />
-                                    </Text>
+                                    <Image source={LikeIcon} style={{width: getPixel(12), height: getPixel(12)}} resizeMode="contain" />
                                     <GrayText mg="0px 8px 0px 0px" fontSize={Theme.fontSize.fs13}>
                                         {selectShop.mst_likes}
                                     </GrayText>
@@ -154,21 +164,23 @@ const Maps = () => {
                                     <GrayText fontSize={Theme.fontSize.fs13}>{selectShop.mst_orders}</GrayText>
                                 </RowBox>
                                 <RowBox alignItems="center">
-                                    <DefaultText fontSize={Theme.fontSize.fs13} color={Theme.color.skyBlue}>
+                                    <DefaultText numberOfLines={2} fontSize={Theme.fontSize.fs13} color={Theme.color.skyBlue}>
                                         {selectShop.mst_tag}
                                     </DefaultText>
                                 </RowBox>
                             </Box>
                         </RowBox>
                         <RowBox alignItems="center" mg="15px 0px 0px">
-                            <DarkText fontSize={Theme.fontSize.fs15}>4.2KM</DarkText>
+                            <DarkText fontSize={Theme.fontSize.fs15}>
+                                {(getDistance(initRegion.latitude, initRegion.longitude, selectShop.mst_lat, selectShop.mst_lng) / 1000).toLocaleString('kr') + 'km'}
+                            </DarkText>
                             <GrayText fontSize={Theme.fontSize.fs15} mg="0px 3px">
                                 |
                             </GrayText>
                             <DarkText fontSize={Theme.fontSize.fs15}>{selectShop.mst_addr}</DarkText>
                         </RowBox>
                     </Box>
-                </PositionBox>
+                </TouchableOpacity>
             )}
             <MapView
                 style={{flex: 1}}
@@ -177,7 +189,7 @@ const Maps = () => {
                 followsUserLocation={true}
                 zoomControlEnabled
                 maxZoomLevel={15}
-                minZoomLevel={12}
+                minZoomLevel={10}
                 onPanDrag={() => {
                     setSelectShop(null);
                 }}
@@ -190,13 +202,17 @@ const Maps = () => {
                 {shopList.map((v, i) => {
                     const dist = getDistance(region.latitude, region.longitude, +v?.mst_lat ?? 0, +v?.mst_lng);
 
-                    if (dist > region.latitudeDelta * 69 * 2 * 1000) {
+                    if (dist > region.latitudeDelta * 69 * 1 * 1000) {
+                        return null;
+                    }
+                    if (v.mst_type === '2' && selectItem !== '전체보기') {
                         return null;
                     }
                     return (
                         <Marker
+                            identifier={v.mst_idx}
                             tracksViewChanges={false}
-                            key={i}
+                            key={v.mst_idx}
                             coordinate={{
                                 latitude: +v?.mst_lat ?? 0,
                                 longitude: +v?.mst_lng ?? 0,
@@ -219,6 +235,24 @@ const Maps = () => {
 export default Maps;
 
 const styles = StyleSheet.create({
+    shopImage: {
+        width: getPixel(74),
+        height: getPixel(74),
+    },
+    image: {
+        width: getPixel(74),
+        height: getPixel(74),
+        marginRight: getPixel(14.4),
+        borderRadius: 7,
+        overflow: 'hidden',
+    },
+    absoluteView: {
+        backgroundColor: '#0000',
+        zIndex: 100,
+        top: getHeightPixel(200),
+        left: getPixel(57),
+        position: 'absolute',
+    },
     tooltipView: {
         position: 'absolute',
         bottom: -getHeightPixel(10),

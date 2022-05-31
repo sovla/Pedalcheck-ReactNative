@@ -19,7 +19,7 @@ import ArrowLeftDisabled from '@assets/image/slide_l_d.png';
 import ArrowRightDisable from '@assets/image/slide_r_d.png';
 import LocationIcon from '@assets/image/ic_location.png';
 import FooterButtons from '@/Component/Layout/FooterButtons';
-import {getPixel} from '@/Util/pixelChange';
+import {getHeightPixel, getPixel} from '@/Util/pixelChange';
 import scrollSlideNumber from '@/Util/scrollSlideNumber';
 import {useEffect} from 'react';
 import {getShopList} from '@/API/Shop/Shop';
@@ -392,11 +392,31 @@ const Header = ({
                     elevation: 5,
                 }}>
                 <Event />
-                <Box height="40px">
-                    <ScrollView horizontal style={{marginTop: 10}} keyboardShouldPersistTaps="handled">
-                        {tagList.map(item => (
-                            <TagButton key={`tag_${item}`} text={item} isSelect={tag.find(findItem => item === findItem)} setSelect={() => onPressTag(item)}></TagButton>
-                        ))}
+                <Box height="65px" width="420px" mg="10px 0px 0px">
+                    <ScrollView
+                        contentContainerStyle={{
+                            flexWrap: 'wrap',
+                        }}
+                        horizontal
+                        keyboardShouldPersistTaps="handled">
+                        <Box>
+                            <RowBox>
+                                {tagList.map((item, index) => {
+                                    if (index % 2 === 0) {
+                                        return null;
+                                    }
+                                    return <TagButton key={`tag_${item}`} text={item} isSelect={tag.find(findItem => item === findItem)} setSelect={() => onPressTag(item)}></TagButton>;
+                                })}
+                            </RowBox>
+                            <RowBox>
+                                {tagList.map((item, index) => {
+                                    if (index % 2 === 1) {
+                                        return null;
+                                    }
+                                    return <TagButton key={`tag_${item}`} text={item} isSelect={tag.find(findItem => item === findItem)} setSelect={() => onPressTag(item)}></TagButton>;
+                                })}
+                            </RowBox>
+                        </Box>
                     </ScrollView>
                 </Box>
                 <RowBox height="50px" alignItems="center">

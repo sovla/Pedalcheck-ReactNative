@@ -201,9 +201,10 @@ export default function ShopIntroduction({isPartner}) {
                     <Box width="380px">
                         <TouchableOpacity
                             onPress={async () => {
-                                const result = await Linking.canOpenURL(store_info?.mst_sns);
+                                const link = store_info?.mst_sns?.includes('https://') || store_info?.mst_sns?.includes('http://') ? store_info.mst_sns : `https://${store_info.mst_sns}`;
+                                const result = await Linking.canOpenURL(link);
                                 if (result) {
-                                    Linking.openURL(store_info.mst_sns);
+                                    Linking.openURL(link);
                                 }
                             }}>
                             <IndigoText lineHeight="22px" width="380px">
