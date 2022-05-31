@@ -1,33 +1,29 @@
-import {BetweenBox, Box, RowBox} from '@/assets/global/Container';
+import {Box, RowBox} from '@/assets/global/Container';
 import React from 'react';
 import {FlatList, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
-import {BorderButton, Button} from '@/assets/global/Button';
+import {Button} from '@/assets/global/Button';
 import Theme from '@/assets/global/Theme';
 import {useState} from 'react';
-import {DarkMediumText, DarkText, GrayText} from '@/assets/global/Text';
+import {DarkMediumText, DarkText} from '@/assets/global/Text';
 import DefaultImage from '@assets/global/Image';
 import RepairProduct from '@/Component/ReservationManagement/RepairProduct';
 import CheckIcon from '@assets/image/ic_check_cal.png';
 import {useNavigation} from '@react-navigation/core';
-import ScrollDays from './ScrollDays';
 import {useEffect} from 'react';
-import {
-  getCouponReservationList,
-  getOrderCount,
-  getReservationList,
-  sendAllApprove,
-} from '@/API/ReservationManagement/ReservationManagement';
-import {getPixel} from '@/Util/pixelChange';
-import DefaultDropdown from '../MyShop/DefaultDropdown';
-import {repairHistoryDropdownList} from '@/assets/global/dummy';
-import {getDay} from '@/Util/getDateList';
+import {getAllOrderList, sendAllApprove} from '@/API/ReservationManagement/ReservationManagement';
 import useUpdateEffect from '@/Hooks/useUpdateEffect';
 import {changeDropMenu} from '@/Page/More/MyInformation/CouponManagement';
 import {AlertButtons} from '@/Util/Alert';
+import {numberChangeFormat} from '@/Util/numberFormat';
+import {getPixel} from '@/Util/pixelChange';
 import {showToastMessage} from '@/Util/Toast';
 import {useIsFocused} from '@react-navigation/native';
 import Loading from '../Layout/Loading';
+import ReservationMangementCalendar from './ReservationManagementCalendar';
+import DefaultDropdown from '../MyShop/DefaultDropdown';
+import {repairHistoryDropdownList} from '@/assets/global/dummy';
+import {Shadow} from 'react-native-shadow-2';
 
 export default function RepairReservation({type}) {
   const navigation = useNavigation();
@@ -37,16 +33,15 @@ export default function RepairReservation({type}) {
   const [daySelect, setDaySelect] = useState(new Date()); // 날짜 선택
   const [isScroll, setIsScroll] = useState(false); // onEndReached 스크롤 여부
   const [dropDown, setDropDown] = useState('전체'); // 드롭다운 메뉴
-  const [list, setList] = useState([]); // 예약 현황 정비 예약 리스트
-  const [page, setPage] = useState(1); // 페이지\
-  const [orderList, setOrderList] = useState([]); // 아래에
+  const [allList, setAllList] = useState([]);
 
-  const [isLast, setIsLast] = useState(false); // 리스트 마지막 여부
   const [isLoading, setIsLoading] = useState({
-    isCount: true,
+    isCount: false,
     isReservation: true,
     isSave: false,
   }); // 로딩여부
+
+  const list = allList.filter(v => v.ot_pt_date === daySelect.toISOString().substring(0, 10));
 
   const onPressAllApprove = async () => {
     AlertButtons('예약 건 전체를 승인 처리하시겠습니까?', '확인', '취소', () => {
@@ -54,18 +49,14 @@ export default function RepairReservation({type}) {
       sendAllApprove({
         _mt_idx: login.idx,
         od_idx: list
-          .filter((value, index) => {
-            return value.ot_status === '예약';
-          })
-          .map((value, index) => {
-            return value.od_idx;
-          })
+          .filter(value => value.ot_status === '예약')
+          .map(value => value.od_idx)
           .join(','),
       })
         .then(res => {
           if (res.data?.result === 'true') {
             showToastMessage('변경되었습니다.');
-            getReservationListHandle(1);
+            getReservationAllListHandle();
           }
         })
         .finally(() => {
@@ -81,84 +72,47 @@ export default function RepairReservation({type}) {
   };
   useEffect(() => {
     if (isFocused) {
-      getReservationListHandle(1);
-
-      getOrderCount({
-        _mt_idx: login.idx,
-        date: getDay(new Date()),
-        type,
-      })
-        .then(res => res.data.result === 'true' && res.data.data.data)
-        .then(data => {
-          if (data) {
-            setOrderList(data.order_date);
-          }
-        })
-        .finally(() => {
-          setIsLoading(prev => ({...prev, isCount: false}));
-        });
+      getReservationAllListHandle();
     }
   }, [isFocused]);
   useUpdateEffect(() => {
-    getReservationListHandle(1);
-  }, [daySelect, dropDown]);
+    getReservationAllListHandle();
+  }, [daySelect.getMonth(), dropDown]);
 
-  const getReservationListHandle = async initPage => {
-    if (isLast && !initPage) {
-      return null;
-    }
-    if (initPage) {
-      await setPage(1);
-      await setIsLast(false);
-    }
-    const getListFunction = type === 'coupon' ? getCouponReservationList : getReservationList;
+  const getReservationAllListHandle = async () => {
     setIsLoading(prev => ({...prev, isReservation: true}));
-    await getListFunction({
+    await getAllOrderList({
       _mt_idx: login.idx,
-      ot_date: typeof daySelect === 'object' ? getDay(daySelect) : daySelect,
+      type: 'all', // all로 변경 필요
+      ot_month: daySelect.getFullYear() + '-' + numberChangeFormat(daySelect.getMonth() + 1),
       ot_status: changeDropMenu(dropDown),
-      page: initPage ?? page,
     })
       .then(res => res.data?.result === 'true' && res.data.data.data)
       .then(data => {
         if (data) {
-          if (initPage) {
-            // 인자 initPage가 있는경우 바로 데이터 넣기
-            setList([...data]);
-          } else {
-            setList(prev => [...prev, ...data]);
-          }
-
-          setPage(prev => prev + 1);
+          const reverse = data.reverse();
+          setAllList(reverse);
         } else {
           // 데이터가 없을때
-          setIsLast(true);
-          if (initPage) {
-            setList([]);
-          }
+          setAllList([]);
         }
+      })
+      .finally(() => {
+        setIsLoading(prev => ({...prev, isReservation: false}));
       });
-    setIsLoading(prev => ({...prev, isReservation: false}));
   };
   return (
     <>
-      {(isLoading.isCount || isLoading.isReservation || isLoading.isSave) && (
-        <Loading isAbsolute height="712px" top="-100px" />
-      )}
+      {(isLoading.isReservation || isLoading.isSave) && <Loading isAbsolute height="712px" top="-100px" />}
       <FlatList
         data={list}
-        onEndReached={() => {
-          if (isScroll) {
-            getReservationListHandle();
-            setIsScroll(false);
-          }
-        }}
-        onScrollBeginDrag={() => {
-          setIsScroll(true);
-        }}
         ListHeaderComponent={
           <Box>
-            <ScrollDays
+            <Shadow distance={3} sides={['bottom']}>
+              <ReservationMangementCalendar selectDate={daySelect} setSelectDate={setDaySelect} allList={allList} />
+            </Shadow>
+
+            {/* <ScrollDays
               daySelect={daySelect}
               setDaySelect={setDaySelect}
               orderList={orderList}
@@ -179,17 +133,21 @@ export default function RepairReservation({type}) {
                   <BorderButton>전체 내역보기</BorderButton>
                 </TouchableOpacity>
               </Box>
-              <Box mg="0px 15px 0px 0px">
-                <DefaultDropdown
-                  data={repairHistoryDropdownList}
-                  value={dropDown}
-                  setValue={setDropDown}
-                  isBorder={false}
-                  pdLeft={40 - 8 * dropDown.length}
-                  width={90}
-                />
+              
               </Box>
-            </BetweenBox>
+            </BetweenBox> */}
+            <Box
+              mg="10px 15px 0px 0px"
+              style={{justifyContent: 'flex-end', alignItems: 'flex-end', alignSelf: 'flex-end'}}>
+              <DefaultDropdown
+                data={repairHistoryDropdownList}
+                value={dropDown}
+                setValue={setDropDown}
+                isBorder={false}
+                pdLeft={40 - 8 * dropDown.length}
+                width={90}
+              />
+            </Box>
           </Box>
         }
         renderItem={({item, index}) => {
@@ -218,10 +176,8 @@ export default function RepairReservation({type}) {
           </Box>
         }
         ListFooterComponent={
-          list.length > 0 && //
-          list.filter((value, index) => {
-            return value.ot_status === '예약';
-          }).length > 0 && (
+          Array.isArray(list) &&
+          list.filter(value => value.ot_status === '예약').length > 0 && (
             <Box mg="20px 16px">
               <TouchableOpacity onPress={onPressAllApprove}>
                 <Button backgroundColor={Theme.color.white} borderColor={Theme.borderColor.whiteGray}>

@@ -1,4 +1,5 @@
 import {Box, PositionBox} from '@/assets/global/Container';
+import {DarkText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {getHeightPixel} from '@/Util/pixelChange';
 import React from 'react';
@@ -14,6 +15,7 @@ export default function Loading({
   backgroundColor = '#0004',
   width = '412px',
   height = '712px',
+  text = '',
 }) {
   return (
     <>
@@ -27,6 +29,12 @@ export default function Loading({
           backgroundColor={backgroundColor}
           alignItems="center"
           justifyContent="center">
+          {text?.length > 0 && (
+            <Box backgroundColor="#fff" pd="10px" borderRadius="5px" mg="0px 0px 5px">
+              <DarkText>{text}</DarkText>
+            </Box>
+          )}
+
           <ActivityIndicator size="large" color={Theme.color.gray} />
         </PositionBox>
       )}
@@ -42,6 +50,12 @@ export default function Loading({
             alignItems: 'center',
             justifyContent: 'center',
           }}>
+          {text?.length > 0 && (
+            <Box backgroundColor="#fff" pd="10px" borderRadius="5px" mg="0px 0px 5px">
+              <DarkText>{text}</DarkText>
+            </Box>
+          )}
+
           <ActivityIndicator size="large" color={Theme.color.gray} />
         </View>
       )}

@@ -22,139 +22,127 @@ import {clearReservation} from '@/Store/reservationState';
 import {showToastMessage} from '@/Util/Toast';
 
 export default function Shop({route, navigation}) {
-  const [selectMenu, setSelectMenu] = useState('매장소개');
-  const [isDone, setIsDone] = useState(true);
-  const [isLike, setIsLike] = useState(false);
-  const {login, shopInfo} = useSelector(state => state);
+    const [selectMenu, setSelectMenu] = useState('매장소개');
+    const [isDone, setIsDone] = useState(true);
+    const [isLike, setIsLike] = useState(false);
+    const {login, shopInfo} = useSelector(state => state);
 
-  const mt_idx = route.params?.mt_idx ?? shopInfo?.store_info?.mt_idx;
-  const isFocused = useIsFocused();
+    const mt_idx = route.params?.mt_idx ?? shopInfo?.store_info?.mt_idx;
+    const isFocused = useIsFocused();
 
-  const menu = ['매장소개', '상품보기', '리뷰'];
-  const dispatch = useDispatch();
+    const menu = ['매장소개', '상품보기', '리뷰'];
+    const dispatch = useDispatch();
 
-  useEffect(() => {
-    return () => {
-      dispatch(ResetShopInfo());
-    };
-  }, []);
-  useEffect(() => {
-    if (isFocused) {
-      getShopDetailApi();
-      dispatch(clearReservation());
-    }
-  }, [isFocused]);
-  useEffect(() => {
-    if (route?.params?.menu?.length) {
-      setSelectMenu(route?.params?.menu);
-    }
-  }, []);
-  useUpdateEffect(() => {
-    setIsLike(shopInfo?.store_info?.like_on === 'on');
-  }, [shopInfo?.store_info.like_on]);
-
-  const onPressLike = async () => {
-    if (shopInfo?.store_info?.mt_idx === login.idx) {
-      AlertButton('본인 매장에는 좋아요를 누를 수 없습니다.');
-      return;
-    }
-    if (RequireLoginAlert(login, navigation, '좋아요를')) {
-      //  로그인 여부 확인
-      setIsLike(prev => !prev);
-      await sendLikeShop({
-        //  좋아요 API 치고
-        _mt_idx: login?.idx,
-        mt_idx: mt_idx,
-      }).then(res => {
-        if (res?.data?.result === 'true') {
-          //  수정필요
-          dispatch(
-            setLikeCount(
-              res.data.msg.includes('추가')
-                ? `${parseInt(shopInfo.store_info.mst_likes) + 1}`
-                : `${parseInt(shopInfo.store_info.mst_likes) - 1}`,
-            ),
-          );
+    useEffect(() => {
+        return () => {
+            dispatch(ResetShopInfo());
+        };
+    }, []);
+    useEffect(() => {
+        if (isFocused) {
+            getShopDetailApi();
+            dispatch(clearReservation());
         }
-      }); // 좋아요 상태 바꾸기
+    }, [isFocused]);
+    useEffect(() => {
+        if (route?.params?.menu?.length) {
+            setSelectMenu(route?.params?.menu);
+        }
+    }, []);
+    useUpdateEffect(() => {
+        setIsLike(shopInfo?.store_info?.like_on === 'on');
+    }, [shopInfo?.store_info.like_on]);
+
+    const onPressLike = async () => {
+        if (shopInfo?.store_info?.mt_idx === login.idx) {
+            AlertButton('본인 매장에는 좋아요를 누를 수 없습니다.');
+            return;
+        }
+        if (RequireLoginAlert(login, navigation, '좋아요를')) {
+            //  로그인 여부 확인
+            setIsLike(prev => !prev);
+            await sendLikeShop({
+                //  좋아요 API 치고
+                _mt_idx: login?.idx,
+                mt_idx: mt_idx,
+            }).then(res => {
+                if (res?.data?.result === 'true') {
+                    //  수정필요
+                    dispatch(setLikeCount(res.data.msg.includes('추가') ? `${parseInt(shopInfo.store_info.mst_likes) + 1}` : `${parseInt(shopInfo.store_info.mst_likes) - 1}`));
+                }
+            }); // 좋아요 상태 바꾸기
+        }
+    };
+
+    const isPartner = shopInfo?.store_info?.mst_type === '1';
+
+    const getShopDetailApi = async type => {
+        if (!type) {
+            setIsDone(true);
+        }
+
+        await getShopDetail({
+            _mt_idx: login?.idx,
+            mt_idx: mt_idx,
+        }).then(res => {
+            dispatch(setShopInfo(res.data.data.data));
+        });
+        setIsDone(false);
+    };
+
+    const onPressDelete = async srt_idx => {
+        const res = await deleteReview({
+            _mt_idx: login?.idx,
+            srt_idx: srt_idx,
+        });
+        if (res.data?.result === 'true') {
+            getShopDetailApi('retry');
+            showToastMessage('리뷰가 삭제되었습니다.', 2000);
+        }
+    };
+
+    const onPressReportHandle = () => {
+        getShopDetailApi('retry');
+    };
+
+    if (isDone && !shopInfo?.store_info?.mst_idx) {
+        return <Loading />;
     }
-  };
+    return (
+        <>
+            <Container>
+                {/* {isDone && <Loading isAbsolute backgroundColor="#0000" />} */}
+                <FlatList
+                    ListHeaderComponent={
+                        <>
+                            <ShopHeader />
+                            <MenuNav menuItem={isPartner ? menu : ['매장소개']} select={selectMenu} setSelect={setSelectMenu} />
 
-  const isPartner = shopInfo?.store_info?.mst_type === '1';
-
-  const getShopDetailApi = async type => {
-    if (!type) {
-      setIsDone(true);
-    }
-
-    await getShopDetail({
-      _mt_idx: login?.idx,
-      mt_idx: mt_idx,
-    }).then(res => {
-      dispatch(setShopInfo(res.data.data.data));
-    });
-    setIsDone(false);
-  };
-
-  const onPressDelete = async srt_idx => {
-    const res = await deleteReview({
-      _mt_idx: login?.idx,
-      srt_idx: srt_idx,
-    });
-    if (res.data?.result === 'true') {
-      getShopDetailApi('retry');
-      showToastMessage('리뷰가 삭제되었습니다.', 2000);
-    }
-  };
-
-  const onPressReportHandle = () => {
-    getShopDetailApi('retry');
-  };
-
-  if (isDone && !shopInfo?.store_info?.mst_idx) {
-    return <Loading />;
-  }
-  return (
-    <>
-      <Container>
-        {/* {isDone && <Loading isAbsolute backgroundColor="#0000" />} */}
-        <FlatList
-          ListHeaderComponent={
-            <>
-              <ShopHeader />
-              <MenuNav menuItem={isPartner ? menu : ['매장소개']} select={selectMenu} setSelect={setSelectMenu} />
-
-              {selectMenu === '매장소개' && <ShopIntroduction isPartner={isPartner} />}
-              {selectMenu === '상품보기' && <ProductsShow />}
-              {selectMenu === '리뷰' && <ReviewMain />}
-            </>
-          }
-          data={selectMenu === '리뷰' ? shopInfo?.review_list : []}
-          renderItem={({item, index}) => (
-            <>
-              <Review
-                item={item}
-                index={index}
-                width="380px"
-                mg="0px 16px"
-                isRecomment={item?.srt_res_content?.length > 0}
-                isJustShow={true}
-                onPressDelete={onPressDelete}
-                onPressReportHandle={onPressReportHandle}
-              />
-            </>
-          )}
-          keyExtractor={(item, index) => index.toString()}
-          ListFooterComponent={<View style={{marginBottom: 70}}></View>}
-        />
-        <FooterButtons
-          isRepair={shopInfo?.store_info?.mst_type === '1'}
-          isLike={isLike}
-          onPressLike={onPressLike}
-          my_bike={shopInfo?.my_bike}
-          isPartner={isPartner}
-        />
-      </Container>
-    </>
-  );
+                            {selectMenu === '매장소개' && <ShopIntroduction isPartner={isPartner} />}
+                            {selectMenu === '상품보기' && <ProductsShow />}
+                            {selectMenu === '리뷰' && <ReviewMain />}
+                        </>
+                    }
+                    data={selectMenu === '리뷰' ? shopInfo?.review_list : []}
+                    renderItem={({item, index}) => (
+                        <>
+                            <Review
+                                item={item}
+                                index={index}
+                                width="380px"
+                                mg="0px 16px"
+                                isRecomment={item?.srt_res_content?.length > 0}
+                                isJustShow={true}
+                                onPressDelete={onPressDelete}
+                                onPressReportHandle={onPressReportHandle}
+                            />
+                        </>
+                    )}
+                    keyExtractor={(item, index) => index.toString()}
+                    ListFooterComponent={<View style={{marginBottom: 70}}></View>}
+                />
+                <FooterButtons isRepair={shopInfo?.store_info?.mst_type === '1'} isLike={isLike} onPressLike={onPressLike} my_bike={shopInfo?.my_bike} isPartner={isPartner} />
+            </Container>
+        </>
+    );
 }

@@ -97,575 +97,573 @@ import CouponUseRequest from './More/Coupon/CouponUseRequest';
 import CouponDownload from './More/MyInformation/CouponDownload';
 import CouponUseRepair from './More/Coupon/CouponUseRepair';
 import BlindList from './More/MyInformation/BlindList';
+import Maps from './Home/Maps';
 
 let count = 0; //  종료카운트
 
 const Stack = createStackNavigator();
 
 const forFade = ({current}) => {
-  return {
-    cardStyle: {opacity: current.progress},
-  };
+    return {
+        cardStyle: {opacity: current.progress},
+    };
 };
 
 export default function Router() {
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-  const navigationRef = useRef(null);
+    const navigationRef = useRef(null);
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [isToken, setIsToken] = useState(false);
-  const [isGetAdmin, setIsGetAdmin] = useState(false);
-  const [isLink, setIsLink] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isToken, setIsToken] = useState(false);
+    const [isGetAdmin, setIsGetAdmin] = useState(false);
+    const [isLink, setIsLink] = useState(false);
 
-  const getIsAdmin = async () => {
-    try {
-      const isAdmin = await AsyncStorage.getItem('isAdmin');
-      setIsGetAdmin(true);
-      if (isAdmin === 'true') {
-        dispatch(setIsAdmin(true));
-      } else {
-        dispatch(setIsAdmin(false));
-      }
-    } catch (error) {}
-  };
-  const getToken = async () => {
-    try {
-      if (!isToken) {
-        const token = await messaging().getToken();
-
-        dispatch(setToken(token));
-        const response = await autoLoginApi({
-          mt_app_token: token,
-        }).then(res => {
-          if (res.data?.result === 'true') {
-            if (res.data?.data?.data?.mt_wdate?.length > 0) {
-              dispatch(setUserInfo(res.data.data.data));
+    const getIsAdmin = async () => {
+        try {
+            const isAdmin = await AsyncStorage.getItem('isAdmin');
+            setIsGetAdmin(true);
+            if (isAdmin === 'true') {
+                dispatch(setIsAdmin(true));
             } else {
-              return res;
+                dispatch(setIsAdmin(false));
             }
-          }
-          return res;
-        });
-        setIsToken(true);
-        if (+response.data.data?.data?.mt_level === 5 && +response.data.data?.data?.mt_seller === 2 && !isGetAdmin) {
-          await getIsAdmin();
-        }
-      }
-    } catch (error) {
-    } finally {
-      setTimeout(() => {
-        SplashScreen.hide();
-        setIsLoading(false);
-      }, 500);
-    }
-  };
-
-  const mesagingHandler = async remoteMessage => {
-    try {
-      if (isLoading) {
-        await getToken();
-      }
-
-      if (remoteMessage?.data?.intent) {
-        if (remoteMessage.data.intent === 'ShopUpdate') {
-          // 업체정보수정일때
-          await getToken();
-          const response = await getStoreInfo({
-            _mt_idx: remoteMessage.data?.content_idx,
-          });
-          if (response?.data?.result === 'true') {
-            await dispatch(setStoreInfo(response?.data?.data?.data));
-          }
-          await navigationRef?.current?.navigate(remoteMessage?.data?.intent);
-        } else if (remoteMessage.data.intent === 'RepairHistoryHome') {
-          await navigationRef?.current?.navigate(remoteMessage?.data?.intent, {
-            menu: remoteMessage.data.content_idx,
-          });
-        } else if (remoteMessage.data.intent === 'logout') {
-          //로그아웃일때
-          // dispatch(resetSnsInfo());
-          // dispatch(resetUserInfo());
-          // dispatch(ResetStoreInfo());
-          // dispatch(setIsAdmin(false));
-          // await AsyncStorage.removeItem('isAdmin');
-          // navigationRef.current.reset({routes: [{name: 'Home'}]});
-        } else {
-          await navigationRef?.current?.navigate(remoteMessage?.data?.intent, {
-            menu: remoteMessage?.data?.content_idx2,
-            od_idx: remoteMessage?.data?.content_idx,
-            mt_idx: remoteMessage?.data?.content_idx,
-          });
-        }
-        return true;
-      } else {
-        return false;
-      }
-    } catch (error) {}
-  };
-
-  const handleDynamicLink = async link => {
-    await getToken();
-    //  다이나믹 링크 실행 함수
-    //  알림톡으로 들어오는 경우는 3가지 매장에 1:1문의, 예약 정보 확인사용자 , 예약 정보 확인 관리자
-    //
-    if (link?.url) {
-      setIsLink(true);
-      try {
-        const queryString = link?.url.split('https://pedalcheck/')[1].split(',');
-        console.log(queryString);
-
-        const intent = queryString[0].split('=')[1];
-
-        let items = {};
-        for (const item of queryString) {
-          if (
-            item.includes('od_idx') ||
-            item.includes('mt_idx') ||
-            item.includes('mst_name') ||
-            item.includes('type')
-          ) {
-            const [key, value] = item.split('=');
-            Object.assign(items, {
-              [key]: value,
-            });
-          }
-        }
-        console.log(link.url, intent);
-        //  다이나믹 링크 확인용
-        // console.log('다이나믹링크 \n', link.url, '\nqueryStirng :::', queryString, '\nitems :::', items);
-        await navigationRef?.current?.navigate(intent, items);
-        setIsLink(false);
-        return;
-      } catch (error) {
-      } finally {
-        () => {
-          setIsLink(false);
-        };
-      }
-    }
-  };
-
-  useEffect(() => {
-    getToken();
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      showPushToastMessage({
-        remoteMessage: remoteMessage,
-        onShow: () => {
-          if (remoteMessage?.data?.intent === 'logout') {
-            getToken();
-          } else if (remoteMessage?.data?.intent === 'ShopUpdate') {
-            getToken();
-          }
-        },
-        onPress: () => {
-          mesagingHandler(remoteMessage);
-          Toast.hide();
-        },
-      });
-    });
-
-    dispatch(fetchBannerList()); // 배너
-    dispatch(fetchAd()); // 광고
-
-    return () => {
-      try {
-        dispatch(resetUserInfo());
-        unsubscribe();
-        setIsLoading(true);
-        setIsGetAdmin(false);
-        setIsToken(false);
-      } catch (error) {}
+        } catch (error) {}
     };
-  }, []);
+    const getToken = async () => {
+        try {
+            if (!isToken) {
+                const token = await messaging().getToken();
 
-  useEffect(() => {
-    //종료된 상태
-    messaging()
-      .getInitialNotification()
-      .then(async remoteMessage => {
-        if (remoteMessage) {
-          mesagingHandler(remoteMessage);
-        } else {
-          return null;
+                dispatch(setToken(token));
+                const response = await autoLoginApi({
+                    mt_app_token: token,
+                }).then(res => {
+                    if (res.data?.result === 'true') {
+                        if (res.data?.data?.data?.mt_wdate?.length > 0) {
+                            dispatch(setUserInfo(res.data.data.data));
+                        } else {
+                            return res;
+                        }
+                    }
+                    return res;
+                });
+                setIsToken(true);
+                if (+response.data.data?.data?.mt_level === 5 && +response.data.data?.data?.mt_seller === 2 && !isGetAdmin) {
+                    await getIsAdmin();
+                }
+            }
+        } catch (error) {
+        } finally {
+            setTimeout(() => {
+                SplashScreen.hide();
+                setIsLoading(false);
+            }, 500);
         }
-      }, 1000);
+    };
 
-    //종료 안된 상태
-    messaging().setBackgroundMessageHandler(async remoteMessage => {
-      mesagingHandler(remoteMessage);
-    });
-  }, []);
+    const mesagingHandler = async remoteMessage => {
+        try {
+            if (isLoading) {
+                await getToken();
+            }
 
-  useEffect(() => {
-    //다이나믹 링크용
-    const unsubscribe = dynamicLinks().onLink(handleDynamicLink); // 포그라운드 열려있을때
+            if (remoteMessage?.data?.intent) {
+                if (remoteMessage.data.intent === 'ShopUpdate') {
+                    // 업체정보수정일때
+                    await getToken();
+                    const response = await getStoreInfo({
+                        _mt_idx: remoteMessage.data?.content_idx,
+                    });
+                    if (response?.data?.result === 'true') {
+                        await dispatch(setStoreInfo(response?.data?.data?.data));
+                    }
+                    await navigationRef?.current?.navigate(remoteMessage?.data?.intent);
+                } else if (remoteMessage.data.intent === 'RepairHistoryHome') {
+                    await navigationRef?.current?.navigate(remoteMessage?.data?.intent, {
+                        menu: remoteMessage.data.content_idx,
+                    });
+                } else if (remoteMessage.data.intent === 'logout') {
+                    //로그아웃일때
+                    // dispatch(resetSnsInfo());
+                    // dispatch(resetUserInfo());
+                    // dispatch(ResetStoreInfo());
+                    // dispatch(setIsAdmin(false));
+                    // await AsyncStorage.removeItem('isAdmin');
+                    // navigationRef.current.reset({routes: [{name: 'Home'}]});
+                } else {
+                    await navigationRef?.current?.navigate(remoteMessage?.data?.intent, {
+                        menu: remoteMessage?.data?.content_idx2,
+                        od_idx: remoteMessage?.data?.content_idx,
+                        mt_idx: remoteMessage?.data?.content_idx,
+                    });
+                }
+                return true;
+            } else {
+                return false;
+            }
+        } catch (error) {}
+    };
 
-    dynamicLinks().getInitialLink().then(handleDynamicLink); // 백그라운드 일때
-    return () => unsubscribe();
-  }, []);
+    const handleDynamicLink = async link => {
+        await getToken();
+        //  다이나믹 링크 실행 함수
+        //  알림톡으로 들어오는 경우는 3가지 매장에 1:1문의, 예약 정보 확인사용자 , 예약 정보 확인 관리자
+        //
+        if (link?.url) {
+            setIsLink(true);
+            try {
+                const queryString = link?.url.split('https://pedalcheck/')[1].split(',');
 
-  if (isLoading) {
-    return null;
-  }
+                const intent = queryString[0].split('=')[1];
 
-  return (
-    <NavigationContainer ref={navigationRef}>
-      <Stack.Navigator initialRouteName={'Home'}>
-        {RouterSetting.map((item, index) => (
-          <Stack.Screen
-            name={item.name}
-            component={withScrollView(item.component)}
-            key={item.name + index}
-            options={{
-              headerShown: false,
-              cardStyleInterpolator: forFade,
-              gestureDirection: 'horizontal',
-            }}
-          />
-        ))}
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+                let items = {};
+                for (const item of queryString) {
+                    if (item.includes('od_idx') || item.includes('mt_idx') || item.includes('mst_name') || item.includes('type')) {
+                        const [key, value] = item.split('=');
+                        Object.assign(items, {
+                            [key]: value,
+                        });
+                    }
+                }
+                //  다이나믹 링크 확인용
+                // console.log('다이나믹링크 \n', link.url, '\nqueryStirng :::', queryString, '\nitems :::', items);
+                await navigationRef?.current?.navigate(intent, items);
+                setIsLink(false);
+                return;
+            } catch (error) {
+            } finally {
+                () => {
+                    setIsLink(false);
+                };
+            }
+        }
+    };
+
+    useEffect(() => {
+        getToken();
+        const unsubscribe = messaging().onMessage(async remoteMessage => {
+            showPushToastMessage({
+                remoteMessage: remoteMessage,
+                onShow: () => {
+                    if (remoteMessage?.data?.intent === 'logout') {
+                        getToken();
+                    } else if (remoteMessage?.data?.intent === 'ShopUpdate') {
+                        getToken();
+                    }
+                },
+                onPress: () => {
+                    mesagingHandler(remoteMessage);
+                    Toast.hide();
+                },
+            });
+        });
+
+        dispatch(fetchBannerList()); // 배너
+        dispatch(fetchAd()); // 광고
+
+        return () => {
+            try {
+                dispatch(resetUserInfo());
+                unsubscribe();
+                setIsLoading(true);
+                setIsGetAdmin(false);
+                setIsToken(false);
+            } catch (error) {}
+        };
+    }, []);
+
+    useEffect(() => {
+        //종료된 상태
+        messaging()
+            .getInitialNotification()
+            .then(async remoteMessage => {
+                if (remoteMessage) {
+                    mesagingHandler(remoteMessage);
+                } else {
+                    return null;
+                }
+            }, 1000);
+
+        //종료 안된 상태
+        messaging().setBackgroundMessageHandler(async remoteMessage => {
+            mesagingHandler(remoteMessage);
+        });
+    }, []);
+
+    useEffect(() => {
+        //다이나믹 링크용
+        const unsubscribe = dynamicLinks().onLink(handleDynamicLink); // 포그라운드 열려있을때
+
+        dynamicLinks().getInitialLink().then(handleDynamicLink); // 백그라운드 일때
+        return () => unsubscribe();
+    }, []);
+
+    if (isLoading) {
+        return null;
+    }
+
+    return (
+        <NavigationContainer ref={navigationRef}>
+            <Stack.Navigator initialRouteName={'Home'}>
+                {RouterSetting.map((item, index) => (
+                    <Stack.Screen
+                        name={item.name}
+                        component={withScrollView(item.component)}
+                        key={item.name + index}
+                        options={{
+                            headerShown: false,
+                            cardStyleInterpolator: forFade,
+                            gestureDirection: 'horizontal',
+                        }}
+                    />
+                ))}
+            </Stack.Navigator>
+        </NavigationContainer>
+    );
 }
 
 const withScrollView = WrappedComponent => {
-  return props => {
-    const isFocus = useIsFocused();
-    const navigation = useNavigation();
+    return props => {
+        const isFocus = useIsFocused();
+        const navigation = useNavigation();
 
-    const onBackPress = async () => {
-      if (count < 1) {
-        count++;
-        //ToastAndroid.show('한번더 뒤로가기를 누르면 앱이 종료됩니다.', ToastAndroid.SHORT);
-        showToastMessage('뒤로가기를 한번 더 누르면 앱이 종료됩니다.', 1500);
-      } else {
-        BackHandler.exitApp();
-      }
-      setTimeout(() => {
-        count = 0;
-      }, 1500);
+        const onBackPress = async () => {
+            if (count < 1) {
+                count++;
+                //ToastAndroid.show('한번더 뒤로가기를 누르면 앱이 종료됩니다.', ToastAndroid.SHORT);
+                showToastMessage('뒤로가기를 한번 더 누르면 앱이 종료됩니다.', 1500);
+            } else {
+                BackHandler.exitApp();
+            }
+            setTimeout(() => {
+                count = 0;
+            }, 1500);
 
-      return true;
-    };
-    useEffect(() => {
-      if (!navigation?.canGoBack() && isFocus) {
-        BackHandler.addEventListener('hardwareBackPress', onBackPress);
-      }
+            return true;
+        };
+        useEffect(() => {
+            if (!navigation?.canGoBack() && isFocus) {
+                BackHandler.addEventListener('hardwareBackPress', onBackPress);
+            }
 
-      return () => {
-        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-      };
-    }, [isFocus]);
+            return () => {
+                BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+            };
+        }, [isFocus]);
 
-    return (
-      <>
-        <SafeAreaView style={{flex: 0, backgroundColor: '#fff'}} />
-        <SafeAreaView style={{flex: 1}}>
-          <View style={{flex: 1, backgroundColor: Theme.color.white}}>
-            <WrappedComponent {...props} />
-            {isFocus && <ModalBasic navigation={props?.navigation} />}
-            {/* <PositionBox backgroundColor="#0000" flexDirection="row" top="0px" right="0px" zIndex={3000}>
+        return (
+            <>
+                <SafeAreaView style={{flex: 0, backgroundColor: '#fff'}} />
+                <SafeAreaView style={{flex: 1}}>
+                    <View style={{flex: 1, backgroundColor: Theme.color.white}}>
+                        <WrappedComponent {...props} />
+                        {isFocus && <ModalBasic navigation={props?.navigation} />}
+                        {/* <PositionBox backgroundColor="#0000" flexDirection="row" top="0px" right="0px" zIndex={3000}>
               <DarkBoldText>{props.route.name}</DarkBoldText>
             </PositionBox> */}
-          </View>
-        </SafeAreaView>
-        <SafeAreaView style={{flex: 0, backgroundColor: '#fff'}} />
-      </>
-    );
-  };
+                    </View>
+                </SafeAreaView>
+                <SafeAreaView style={{flex: 0, backgroundColor: '#fff'}} />
+            </>
+        );
+    };
 };
 
 const RouterSetting = [
-  {
-    name: 'BlindList',
-    component: BlindList,
-  },
-  {
-    name: 'BikeRegisterFirst',
-    component: BikeRegisterFirst,
-  },
-  {
-    name: 'BikeRegister',
-    component: BikeRegister,
-  },
-  {
-    name: 'BikeDetail',
-    component: BikeDetail,
-  },
-  {
-    name: 'BikeManagement',
-    component: BikeManagement,
-  },
-  {
-    name: 'BikeRepairHistory',
-    component: BikeRepairHistory,
-  },
-  {
-    name: 'BikeRepairHistoryDetail',
-    component: BikeRepairHistoryDetail,
-  },
-  {
-    name: 'BikeUpdate',
-    component: BikeUpdate,
-  },
-  {
-    name: 'Customer',
-    component: Customer,
-  },
-  {
-    name: 'CustomerDetail',
-    component: CustomerDetail,
-  },
-  {
-    name: 'Feed',
-    component: Feed,
-  },
-  {
-    name: 'Login',
-    component: Login,
-  },
+    {
+        name: 'BlindList',
+        component: BlindList,
+    },
+    {
+        name: 'BikeRegisterFirst',
+        component: BikeRegisterFirst,
+    },
+    {
+        name: 'BikeRegister',
+        component: BikeRegister,
+    },
+    {
+        name: 'BikeDetail',
+        component: BikeDetail,
+    },
+    {
+        name: 'BikeManagement',
+        component: BikeManagement,
+    },
+    {
+        name: 'BikeRepairHistory',
+        component: BikeRepairHistory,
+    },
+    {
+        name: 'BikeRepairHistoryDetail',
+        component: BikeRepairHistoryDetail,
+    },
+    {
+        name: 'BikeUpdate',
+        component: BikeUpdate,
+    },
+    {
+        name: 'Customer',
+        component: Customer,
+    },
+    {
+        name: 'CustomerDetail',
+        component: CustomerDetail,
+    },
+    {
+        name: 'Feed',
+        component: Feed,
+    },
+    {
+        name: 'Login',
+        component: Login,
+    },
 
-  {
-    name: 'Register',
-    component: Register,
-  },
-  {
-    name: 'RegisterAdditional',
-    component: RegisterAdditional,
-  },
-  {
-    name: 'RegisterInformation',
-    component: RegisterInformation,
-  },
-  {
-    name: 'Home',
-    component: Home,
-  },
-  {
-    name: 'IdentityVerification',
-    component: IdentityVerification,
-  },
-  {
-    name: 'AlarmSetting',
-    component: AlarmSetting,
-  },
-  {
-    name: 'FAQ',
-    component: FAQ,
-  },
-  {
-    name: 'Post',
-    component: Post,
-  },
-  {
-    name: 'PrivacyPolicy',
-    component: PrivacyPolicy,
-  },
-  {
-    name: 'More',
-    component: More,
-  },
-  {
-    name: 'Question',
-    component: Question,
-  },
-  {
-    name: 'QuestionWrite',
-    component: QuestionWrite,
-  },
-  {
-    name: 'Coupon',
-    component: Coupon,
-  },
-  {
-    name: 'CouponUseBikeSelect',
-    component: CouponUseBikeSelect,
-  },
-  {
-    name: 'CouponUseDateSelect',
-    component: CouponUseDateSelect,
-  },
-  {
-    name: 'CouponUseRequest',
-    component: CouponUseRequest,
-  },
-  {
-    name: 'CouponUseComplete',
-    component: CouponUseComplete,
-  },
-  {
-    name: 'Information',
-    component: Information,
-  },
-  {
-    name: 'LikeShop',
-    component: LikeShop,
-  },
-  {
-    name: 'RepairHistory',
-    component: RepairHistory,
-  },
-  {
-    name: 'RepairHistoryDetail',
-    component: RepairHistoryDetail,
-  },
-  {
-    name: 'ShopUpdate',
-    component: ShopUpdate,
-  },
-  {
-    name: 'Update',
-    component: Update,
-  },
-  {
-    name: 'UpdateHome',
-    component: UpdateHome,
-  },
-  {
-    name: 'BikeExport',
-    component: BikeExport,
-  },
-  {
-    name: 'BikeExportList',
-    component: BikeExportList,
-  },
-  {
-    name: 'CouponDetail',
-    component: CouponDetail,
-  },
-  {
-    name: 'CouponIssue',
-    component: CouponIssue,
-  },
-  {
-    name: 'CouponManagement',
-    component: CouponManagement,
-  },
-  {
-    name: 'CouponDownload',
-    component: CouponDownload,
-  },
-  {
-    name: 'ExportRegister',
-    component: ExportRegister,
-  },
-  {
-    name: 'ProductManagement',
-    component: ProductManagement,
-  },
-  {
-    name: 'ProductRegister',
-    component: ProductRegister,
-  },
-  {
-    name: 'RepairQuestion',
-    component: RepairQuestion,
-  },
-  {
-    name: 'ReservationBike',
-    component: ReservationBike,
-  },
-  {
-    name: 'ReservationDate',
-    component: ReservationDate,
-  },
+    {
+        name: 'Register',
+        component: Register,
+    },
+    {
+        name: 'RegisterAdditional',
+        component: RegisterAdditional,
+    },
+    {
+        name: 'RegisterInformation',
+        component: RegisterInformation,
+    },
+    {
+        name: 'Home',
+        component: Home,
+    },
+    {
+        name: 'IdentityVerification',
+        component: IdentityVerification,
+    },
+    {
+        name: 'AlarmSetting',
+        component: AlarmSetting,
+    },
+    {
+        name: 'FAQ',
+        component: FAQ,
+    },
+    {
+        name: 'Post',
+        component: Post,
+    },
+    {
+        name: 'PrivacyPolicy',
+        component: PrivacyPolicy,
+    },
+    {
+        name: 'More',
+        component: More,
+    },
+    {
+        name: 'Question',
+        component: Question,
+    },
+    {
+        name: 'QuestionWrite',
+        component: QuestionWrite,
+    },
+    {
+        name: 'Coupon',
+        component: Coupon,
+    },
+    {
+        name: 'CouponUseBikeSelect',
+        component: CouponUseBikeSelect,
+    },
+    {
+        name: 'CouponUseDateSelect',
+        component: CouponUseDateSelect,
+    },
+    {
+        name: 'CouponUseRequest',
+        component: CouponUseRequest,
+    },
+    {
+        name: 'CouponUseComplete',
+        component: CouponUseComplete,
+    },
+    {
+        name: 'Information',
+        component: Information,
+    },
+    {
+        name: 'LikeShop',
+        component: LikeShop,
+    },
+    {
+        name: 'RepairHistory',
+        component: RepairHistory,
+    },
+    {
+        name: 'RepairHistoryDetail',
+        component: RepairHistoryDetail,
+    },
+    {
+        name: 'ShopUpdate',
+        component: ShopUpdate,
+    },
+    {
+        name: 'Update',
+        component: Update,
+    },
+    {
+        name: 'UpdateHome',
+        component: UpdateHome,
+    },
+    {
+        name: 'BikeExport',
+        component: BikeExport,
+    },
+    {
+        name: 'BikeExportList',
+        component: BikeExportList,
+    },
+    {
+        name: 'CouponDetail',
+        component: CouponDetail,
+    },
+    {
+        name: 'CouponIssue',
+        component: CouponIssue,
+    },
+    {
+        name: 'CouponManagement',
+        component: CouponManagement,
+    },
+    {
+        name: 'CouponDownload',
+        component: CouponDownload,
+    },
+    {
+        name: 'ExportRegister',
+        component: ExportRegister,
+    },
+    {
+        name: 'ProductManagement',
+        component: ProductManagement,
+    },
+    {
+        name: 'ProductRegister',
+        component: ProductRegister,
+    },
+    {
+        name: 'RepairQuestion',
+        component: RepairQuestion,
+    },
+    {
+        name: 'ReservationBike',
+        component: ReservationBike,
+    },
+    {
+        name: 'ReservationDate',
+        component: ReservationDate,
+    },
 
-  {
-    name: 'ReservationPayment',
-    component: ReservationPayment,
-  },
-  {
-    name: 'ReservationProduct',
-    component: ReservationProduct,
-  },
-  {
-    name: 'ReservationRequest',
-    component: ReservationRequest,
-  },
-  {
-    name: 'ProductDetail',
-    component: ProductDetail,
-  },
+    {
+        name: 'ReservationPayment',
+        component: ReservationPayment,
+    },
+    {
+        name: 'ReservationProduct',
+        component: ReservationProduct,
+    },
+    {
+        name: 'ReservationRequest',
+        component: ReservationRequest,
+    },
+    {
+        name: 'ProductDetail',
+        component: ProductDetail,
+    },
 
-  {
-    name: 'ReviewDetail',
-    component: ReviewDetail,
-  },
-  {
-    name: 'ReviewHome',
-    component: ReviewHome,
-  },
-  {
-    name: 'ReviewWrite',
-    component: ReviewWrite,
-  },
-  {
-    name: 'Payment',
-    component: Payment,
-  },
-  {
-    name: 'Shop',
-    component: Shop,
-  },
-  {
-    name: 'AdjustmentHistory',
-    component: AdjustmentHistory,
-  },
-  {
-    name: 'AdjustmentDetail',
-    component: AdjustmentDetail,
-  },
-  {
-    name: 'BikeStats',
-    component: BikeStats,
-  },
-  {
-    name: 'BrandStats',
-    component: BrandStats,
-  },
-  {
-    name: 'Detail',
-    component: Detail,
-  },
-  {
-    name: 'RepairHistoryHome',
-    component: RepairHistoryHome,
-  },
-  {
-    name: 'RepairStats',
-    component: RepairStats,
-  },
-  {
-    name: 'RepairHistoryReviewDetail',
-    component: RepairHistoryReviewDetail,
-  },
-  {
-    name: 'Approval',
-    component: Approval,
-  },
-  {
-    name: 'DateChange',
-    component: DateChange,
-  },
-  {
-    name: 'ReservationManagement',
-    component: ReservationManagement,
-  },
-  {
-    name: 'ReservationManagementAll',
-    component: ReservationManagementAll,
-  },
-  {
-    name: 'ReservationManagementDetail',
-    component: ReservationManagementDetail,
-  },
-  {
-    name: 'RepairHome',
-    component: RepairHome,
-  },
-  {
-    name: 'Notice',
-    component: Notice,
-  },
+    {
+        name: 'ReviewDetail',
+        component: ReviewDetail,
+    },
+    {
+        name: 'ReviewHome',
+        component: ReviewHome,
+    },
+    {
+        name: 'ReviewWrite',
+        component: ReviewWrite,
+    },
+    {
+        name: 'Payment',
+        component: Payment,
+    },
+    {
+        name: 'Shop',
+        component: Shop,
+    },
+    {
+        name: 'AdjustmentHistory',
+        component: AdjustmentHistory,
+    },
+    {
+        name: 'AdjustmentDetail',
+        component: AdjustmentDetail,
+    },
+    {
+        name: 'BikeStats',
+        component: BikeStats,
+    },
+    {
+        name: 'BrandStats',
+        component: BrandStats,
+    },
+    {
+        name: 'Detail',
+        component: Detail,
+    },
+    {
+        name: 'RepairHistoryHome',
+        component: RepairHistoryHome,
+    },
+    {
+        name: 'RepairStats',
+        component: RepairStats,
+    },
+    {
+        name: 'RepairHistoryReviewDetail',
+        component: RepairHistoryReviewDetail,
+    },
+    {
+        name: 'Approval',
+        component: Approval,
+    },
+    {
+        name: 'DateChange',
+        component: DateChange,
+    },
+    {
+        name: 'ReservationManagement',
+        component: ReservationManagement,
+    },
+    {
+        name: 'ReservationManagementAll',
+        component: ReservationManagementAll,
+    },
+    {
+        name: 'ReservationManagementDetail',
+        component: ReservationManagementDetail,
+    },
+    {
+        name: 'RepairHome',
+        component: RepairHome,
+    },
+    {
+        name: 'Notice',
+        component: Notice,
+    },
+    {
+        name: 'Maps',
+        component: Maps,
+    },
 ];
