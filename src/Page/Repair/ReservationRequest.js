@@ -1,5 +1,5 @@
 import {LinkButton} from '@/assets/global/Button';
-import {Box, RowBox} from '@/assets/global/Container';
+import {Box, RowBox, ScrollBox} from '@/assets/global/Container';
 import {DefaultInput} from '@/assets/global/Input';
 import DefaultLine from '@/assets/global/Line';
 import {DarkBoldText, DarkText, IndigoText} from '@/assets/global/Text';
@@ -14,6 +14,7 @@ import React from 'react';
 import {useLayoutEffect} from 'react';
 import {useState} from 'react';
 import {TouchableOpacity} from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch, useSelector} from 'react-redux';
 import RepairReservationHeader from './RepairReservationHeader';
 
@@ -71,6 +72,7 @@ export default function ShopReservationRequest({navigation}) {
                 modalComponent: 'paymentInformationCheck',
                 onPressComplete: () => {
                     dispatch(modalClose());
+
 
                     navigation.navigate('Payment', {
                         bank,

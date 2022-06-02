@@ -115,7 +115,7 @@ export default function RepairQuestion({route: {params}}) {
     <>
       <Header title="문의하기" />
       <Container height={`${height - 120}px`}>
-        <ScrollBox pd="0px 16px">
+        <ScrollBox pd="0px 16px" keyboardShouldPersistTaps="handled">
           <RowBox style={borderBottomWhiteGray} width="380px" mg="20px 0px 20px" keyboardShouldPersistTaps="handled">
             <DarkText mg="0px 0px 20px" fontSize={Theme.fontSize.fs16} fontWeight={Theme.fontWeight.bold}>
               필수 입력 항목{' '}
