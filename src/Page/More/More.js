@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Platform, TouchableOpacity} from 'react-native';
 import {BetweenBox, Box, Container, RowBox, ScrollBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
@@ -6,7 +6,7 @@ import GradientHeader from '@/Component/Layout/GradientHeader';
 import WhiteMoreIcon from '@assets/image/menu04_top.png';
 import FooterButtons from '@/Component/Layout/FooterButtons';
 import {useDispatch, useSelector} from 'react-redux';
-import {BoldText, DarkBoldText, DarkMediumText, GrayText} from '@/assets/global/Text';
+import {BoldText, DarkBoldText, DarkMediumText, DarkText, GrayText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import DefaultLine from '@/assets/global/Line';
 import SwitchOnIcon from '@assets/image/toggle_on.png';
@@ -40,6 +40,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setIsAdmin} from '@/Store/adminState';
 import isAdminCheck from '@/Util/isAdminCheck';
 import {RequireApple} from '@/Util/Alert';
+import {getHeightPixel} from '@/Util/pixelChange';
 
 const VERSION_CODE = '1.18.3';
 
@@ -300,6 +301,7 @@ const MoreFooter = () => {
 };
 
 const PedalCheckInfo = () => {
+    const [isShow, setIsShow] = useState(false);
     const {companyInfo} = useSelector(state => state);
     const dispatch = useDispatch();
     useEffect(() => {
@@ -312,6 +314,15 @@ const PedalCheckInfo = () => {
             dispatch(setCompanyInfo(response.data.data.data));
         }
     };
+    if (!isShow) {
+        return (
+            <TouchableOpacity onPress={() => setIsShow(true)} style={{marginTop: getHeightPixel(24)}}>
+                <Box backgroundColor="#fff" height="44px" width="380px" mg="20px 16px" borderRadius="16px" justifyContent="center" alignItems="center" borderColor={Theme.borderColor.gray}>
+                    <GrayText fontSize={Theme.fontSize.fs16}>페달체크 정보 더보기</GrayText>
+                </Box>
+            </TouchableOpacity>
+        );
+    }
 
     return (
         <Box backgroundColor="#0000" width="380px" mg="20px 16px">

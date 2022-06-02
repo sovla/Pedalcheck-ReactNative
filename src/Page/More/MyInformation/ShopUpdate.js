@@ -25,6 +25,7 @@ import pixelChange, {getPixel} from '@/Util/pixelChange';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import TimeSelect from '@/Component/MyInformation/TimeSelect';
 import {AlertButton} from '@/Util/Alert';
+import CheckBox from '@/Component/Home/CheckBox';
 
 const initAccountInfo = {
     mt_bname: '',
@@ -57,6 +58,8 @@ export default function ShopUpdate() {
 
     const [yoil, setYoil] = useState(initYoil);
     const [bankList, setBankList] = useState([]);
+
+    const [isAuto, setIsAuto] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -559,6 +562,22 @@ export default function ShopUpdate() {
                             }));
                         }}
                     />
+                    <Box width="380px" mg="0px 0px 20px">
+                        <DefaultText color={Theme.color.black} fontSize={Theme.fontSize.fs15} fontWeight={Theme.fontWeight.bold}>
+                            예약 승인 방식
+                        </DefaultText>
+                        <RowBox pd="0px 0px 5px">
+                            <RowBox mg="10px 0px 0px" width="100%">
+                                <CheckBox width="auto" isCheck={isAuto} setIsCheck={() => setIsAuto(true)} pd="0px 40px 0px 0px" isRadio>
+                                    <DarkText pd="0px 0px 0px 10px">자동승인</DarkText>
+                                </CheckBox>
+                                <CheckBox width="auto" isCheck={!isAuto} setIsCheck={() => setIsAuto(false)} pd="0px 40px 0px 0px" isRadio>
+                                    <DarkText pd="0px 0px 0px 10px">확인 후 승인</DarkText>
+                                </CheckBox>
+                            </RowBox>
+                        </RowBox>
+                    </Box>
+
                     <LinkButton to={updateStoreHandle} content="저장하기" mg="0px 0px 20px" />
                 </Box>
             </ScrollBox>

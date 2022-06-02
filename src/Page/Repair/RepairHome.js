@@ -19,7 +19,7 @@ import ArrowLeftDisabled from '@assets/image/slide_l_d.png';
 import ArrowRightDisable from '@assets/image/slide_r_d.png';
 import LocationIcon from '@assets/image/ic_location.png';
 import FooterButtons from '@/Component/Layout/FooterButtons';
-import {getHeightPixel, getPixel} from '@/Util/pixelChange';
+import {getPixel} from '@/Util/pixelChange';
 import scrollSlideNumber from '@/Util/scrollSlideNumber';
 import {useEffect} from 'react';
 import {getShopList} from '@/API/Shop/Shop';
