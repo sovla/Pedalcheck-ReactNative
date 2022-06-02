@@ -1,6 +1,7 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useCallback, useEffect, useLayoutEffect, useRef, useState} from 'react';
-import MapView, {Callout, Marker} from 'react-native-maps';
+import MapView from 'react-native-map-clustering';
+import {Callout, Marker} from 'react-native-maps';
 import {BetweenBox, Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
 import {DarkBoldText, DarkMediumText, DarkText, DefaultText, GrayText, IndigoText} from '@/assets/global/Text';
 import Geolocation from '@react-native-community/geolocation';
@@ -183,13 +184,12 @@ const Maps = ({navigation}) => {
                 </TouchableOpacity>
             )}
             <MapView
+                clusterColor={Theme.color.skyBlue}
                 style={{flex: 1}}
                 initialRegion={region}
                 showsUserLocation={true}
                 followsUserLocation={true}
                 zoomControlEnabled
-                maxZoomLevel={15}
-                minZoomLevel={10}
                 onPanDrag={() => {
                     setSelectShop(null);
                 }}
@@ -202,9 +202,6 @@ const Maps = ({navigation}) => {
                 {shopList.map((v, i) => {
                     const dist = getDistance(region.latitude, region.longitude, +v?.mst_lat ?? 0, +v?.mst_lng);
 
-                    if (dist > region.latitudeDelta * 69 * 1 * 1000) {
-                        return null;
-                    }
                     if (v.mst_type === '2' && selectItem !== '전체보기') {
                         return null;
                     }
