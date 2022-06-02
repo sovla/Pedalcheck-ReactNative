@@ -196,12 +196,13 @@ const Maps = ({navigation}) => {
                 onPress={() => {
                     setSelectShop(null);
                 }}
+                onClusterPress={() => {
+                    setSelectShop(null);
+                }}
                 onRegionChangeComplete={region => {
                     setRegion(prev => ({...prev, ...region}));
                 }}>
                 {shopList.map((v, i) => {
-                    const dist = getDistance(region.latitude, region.longitude, +v?.mst_lat ?? 0, +v?.mst_lng);
-
                     if (v.mst_type === '2' && selectItem !== '전체보기') {
                         return null;
                     }
