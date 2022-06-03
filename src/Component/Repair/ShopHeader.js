@@ -1,6 +1,6 @@
 import {Box, PositionBox} from '@/assets/global/Container';
 import React, {useCallback} from 'react';
-import {Linking} from 'react-native';
+import {Linking, Share} from 'react-native';
 import {useSelector} from 'react-redux';
 import ShopDummyImage from '@assets/image/shop_default.png';
 
@@ -71,7 +71,11 @@ const ShopHeader = ({mt_idx}) => {
                 forcedRedirectEnabled: true,
             },
         });
-
+        Share.share({
+            message: `앱 이름 : 페달체크\n\n정비소 이름 : ${store_info.mst_name}\n\n주소 : ${store_info.mst_addr1} ${store_info.mst_addr2}\n\n연락처 : ${store_info.mst_tel}\n\n링크 : ${link}`,
+            url: '',
+            title: '',
+        });
         Clipboard.setString(`앱 이름 : 페달체크
 
 정비소 이름 : ${store_info.mst_name}
