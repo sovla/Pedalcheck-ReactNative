@@ -231,7 +231,11 @@ export default function Router() {
 
                 // intent : 이동할 경로
                 // 넣을값
-                await navigationRef?.current?.navigate(intent, items);
+
+                setTimeout(() => {
+                    navigationRef?.current?.navigate(intent, items);
+                }, 500);
+
                 setIsLink(false);
                 return;
             } catch (error) {
