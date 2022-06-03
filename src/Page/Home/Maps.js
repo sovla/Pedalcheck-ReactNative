@@ -1,30 +1,22 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useCallback, useEffect, useLayoutEffect, useRef, useState} from 'react';
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+import React, {useCallback, useLayoutEffect, useRef, useState} from 'react';
 import MapView from 'react-native-map-clustering';
-import {Callout, Marker} from 'react-native-maps';
-import {BetweenBox, Box, Container, PositionBox, RowBox} from '@/assets/global/Container';
-import {DarkBoldText, DarkMediumText, DarkText, DefaultText, GrayText, IndigoText} from '@/assets/global/Text';
+import {Marker} from 'react-native-maps';
+import {BetweenBox, Box, PositionBox, RowBox} from '@/assets/global/Container';
+import {DarkBoldText, DarkText, DefaultText, GrayText} from '@/assets/global/Text';
 import Geolocation from '@react-native-community/geolocation';
 import {AlertButton} from '@/Util/Alert';
-import {PERMISSIONS, requestMultiple} from 'react-native-permissions';
 import {useSelector} from 'react-redux';
 import Header from '@/Component/Layout/Header';
 import {getHeightPixel, getPixel} from '@/Util/pixelChange';
 import Theme from '@/assets/global/Theme';
-import WhiteBoxDownIcon from '@/assets/image/white_box_down.png';
-import AutoHeightImage from 'react-native-auto-height-image';
-import ShopComponent from '@/Component/Repair/ShopComponent';
-import DefaultImage from '@/assets/global/Image';
 import DummyIcon from '@assets/image/shop_dummy.png';
 import Loading from '@/Component/Layout/Loading';
 import ParterIcon from '@assets/image/ic_partner.png';
 import LikeIcon from '@assets/image/ic_good.png';
-import Svg, {Image as ImageSvg} from 'react-native-svg';
 import {getShopListInMaps} from '@/API/Shop/Shop';
-import FastImage from 'react-native-fast-image';
 import {imageAddress} from '@assets/global/config';
 import DefaultDropdown from '@/Component/MyShop/DefaultDropdown';
-import useUpdateEffect from '@/Hooks/useUpdateEffect';
 
 const sortArray = [
     {

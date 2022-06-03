@@ -19,7 +19,6 @@ import {showToastMessage} from '@/Util/Toast';
 import {AlertButton} from '@/Util/Alert';
 import numberFormat from '@/Util/numberFormat';
 import Loading from '@/Component/Layout/Loading';
-import {CardStyleInterpolators} from '@react-navigation/stack';
 
 export default function Approval({navigation, route: {params}}) {
     const {login} = useSelector(state => state);
@@ -278,7 +277,7 @@ const initCheckList = [
     },
 ];
 
-export function changeCheckList(checkList) {
+export function changeCheckList(object) {
     let data = {};
     let result = false;
 

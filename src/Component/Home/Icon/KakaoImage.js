@@ -13,7 +13,6 @@ import {getProfile as getKakaoProfile, login, logout} from '@react-native-seoul/
 import {SnsLogin} from '../../../Hooks/SnsLogin';
 
 export default function KakaoImage({onPress}) {
-    const [result, setResult] = useState();
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const {token} = useSelector(state => state);
