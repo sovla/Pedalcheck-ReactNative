@@ -228,7 +228,14 @@ export default function Router() {
                 }
                 //  다이나믹 링크 확인용
                 // console.log('다이나믹링크 \n', link.url, '\nqueryStirng :::', queryString, '\nitems :::', items);
-                await navigationRef?.current?.navigate(intent, items);
+
+                // intent : 이동할 경로
+                // 넣을값
+
+                setTimeout(() => {
+                    navigationRef?.current?.navigate(intent, items);
+                }, 500);
+
                 setIsLink(false);
                 return;
             } catch (error) {

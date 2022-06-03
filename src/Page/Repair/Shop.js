@@ -115,7 +115,7 @@ export default function Shop({route, navigation}) {
                 <FlatList
                     ListHeaderComponent={
                         <>
-                            <ShopHeader />
+                            <ShopHeader mt_idx={mt_idx} />
                             <MenuNav menuItem={isPartner ? menu : ['매장소개']} select={selectMenu} setSelect={setSelectMenu} />
 
                             {selectMenu === '매장소개' && <ShopIntroduction isPartner={isPartner} />}

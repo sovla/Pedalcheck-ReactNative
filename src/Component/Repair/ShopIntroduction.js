@@ -1,21 +1,18 @@
-import {Box, Container, RowBox} from '@/assets/global/Container';
+import {Box, RowBox} from '@/assets/global/Container';
 import DefaultImage from '@/assets/global/Image';
 import React from 'react';
 import LocationIcon from '@assets/image/ic_location2.png';
 import TimeIcon from '@assets/image/ic_time.png';
 import BikeIcon from '@assets/image/ic_brand.png';
-import {DarkBoldText, DarkMediumText, DarkText, DefaultText, IndigoText} from '@/assets/global/Text';
-import DefaultLine from '@/assets/global/Line';
+import {DarkBoldText, DarkMediumText, DarkText, IndigoText} from '@/assets/global/Text';
 import Theme from '@/assets/global/Theme';
 import {useSelector} from 'react-redux';
-import Dummy from '@assets/image/map.png';
-import {Dimensions, Linking, TouchableOpacity} from 'react-native';
+import {Linking, TouchableOpacity} from 'react-native';
 import {borderBottomWhiteGray} from '../BikeManagement/ShopRepairHistory';
 import MapView, {Marker} from 'react-native-maps';
 import {getPixel} from '@/Util/pixelChange';
 import {useState} from 'react';
-
-export default function ShopIntroduction({isPartner}) {
+export default function ShopIntroduction({isPartner, mt_idx}) {
     const {
         shopInfo: {store_info},
     } = useSelector(state => state);
